@@ -1,15 +1,12 @@
-# ---------------------------------------
-# powershell_profile helper functions.
-# site: github.com/alanlivio/powershell_profile
-# ---------------------------------------
+# URL: github.com/alanlivio/powershell-helper-functions
 
 # ---------------------------------------
-# load powershell_profile_cfg
+# load powershell_helper_functions_cfg
 # ---------------------------------------
 
-$SCRIPT_NAME = "$PSScriptRoot\powershell_profile.ps1"
+$SCRIPT_NAME = "$PSScriptRoot\powershell_helper_functions.ps1"
 $SCRIPT_DIR = $PSScriptRoot
-$SCRIPT_CFG = "$SCRIPT_DIR\powershell_profile_cfg.ps1"
+$SCRIPT_CFG = "$SCRIPT_DIR\powershell_helper_functions_cfg.ps1"
 if (Test-Path $SCRIPT_CFG) {
   Import-Module -Force -Global $SCRIPT_CFG
 }
@@ -267,6 +264,10 @@ function hf_choco_cleaner() {
   \ProgramData\chocolatey\bin\Choco-Cleaner.ps1
 }
 
+function hf_choco() {
+  hf_choco "$args"
+}
+
 # ---------------------------------------
 # init function
 # ---------------------------------------
@@ -282,22 +283,27 @@ function hf_windows_sanity() {
   hf_uninstall_ondrive
 }
 
+
 function hf_install_chocolatey() {
   Write-Host $MyInvocation.MyCommand.ToString() -ForegroundColor YELLOW
   Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
   Set-Variable "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
   cmd /c 'setx ChocolateyToolsLocation C:\opt\'
 
-  choco -y --acceptlicense --no-progress enable -n allowGlobalConfirmation
-  choco -y --acceptlicense --no-progress disable -n showNonElevatedWarnings
-  choco -y --acceptlicense --no-progress disable -n showDownloadProgress
-  choco -y --acceptlicense --no-progress enable -n removePackageInformationOnUninstall
+  hf_choco enable -n allowGlobalConfirmation
+  hf_choco disable -n showNonElevatedWarnings
+  hf_choco disable -n showDownloadProgress
+  hf_choco enable -n removePackageInformationOnUninstall
   choco -y --acceptlicense feature enable -name=exitOnRebootDetected
 }
 
 function hf_install_bash() {
   Write-Host $MyInvocation.MyCommand.ToString() -ForegroundColor YELLOW
-  choco install -y --acceptlicense --no-progress msys2
+  hf_choco install msys2
+}
+
+function hf_install_tesseract() {
+  hf_choco install tesseract --pre
 }
 
 function hf_windows_init() {
