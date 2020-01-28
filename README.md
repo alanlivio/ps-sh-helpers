@@ -40,8 +40,14 @@ The shell.env can be used as a [PowerShell Profile](https://docs.microsoft.com/e
 To do that, fetch powershell-helpers andmport it as module:
 
 ```powershell
+<<<<<<< HEAD
 Invoke-WebRequest raw.githubusercontent.com/alanlivio/powershell-helper-functions/master/powershell_helpers.ps1 -OutFile C:\Windows\System32\WindowsPowerShell\v1.0\powershell_helpers.ps1;`
   Set-ExecutionPolicy unrestricted -force;`
   Import-Module -Force -Global C:\Windows\System32\WindowsPowerShell\v1.0\powershell_helpers.ps1;`
   hf_profile_install
+=======
+Invoke-WebRequest raw.githubusercontent.com/alanlivio/powershell-helper-functions/master/powershell_helper_functions.ps1 -OutFile C:\Windows\System32\WindowsPowerShell\v1.0\powershell_helper_functions.ps1;`
+  Set-ExecutionPolicy unrestricted -force;`
+  Import-Module -Force -Global C:\Windows\System32\WindowsPowerShell\v1.0\powershell_helper_functions.ps1
+>>>>>>> ea7f023 (update readme.md)
 ```
