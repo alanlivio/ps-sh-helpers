@@ -1,5 +1,5 @@
 # author: Alan Livio <alan@telemidia.puc-rio.br>
-# URL:    https://github.com/alanlivio/powershell-helpers
+# URL:    https://github.com/alanlivio/shell-env
 
 # thanks
 # https://gist.github.com/alirobe/7f3b34ad89a159e6daa1
