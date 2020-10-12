@@ -225,6 +225,7 @@ function hf_optimize_features() {
       "*MapsBroker*" # Downloaded Maps Manager
       "*RetailDemo*" # Retail Demo Service
       "*RemoteRegistry*" # Remote Registry
+      "*FoxitReaderUpdateService*" # Remote Registry
       "*RemoteAccess*" # Routing and Remote Access (routing services to businesses in LAN)
       "*TrkWks*" # Distributed Link Tracking Client
       "*XblAuthManager*" # Xbox Live Auth Manager
@@ -250,7 +251,7 @@ function hf_optimize_features_advanced() {
       # "*Bonjour Service*" # bootcamp: Bonjour Service
       # "*BootCampService*" # bootcamp: Boot Camp Service
       
-      "*FoxitReaderUpdateService*" # Foxit Reader Update Service
+      "*Phone*" # Foxit Reader Update Service
       "*gupdate*" # Google Update Service
       "*gupdatem*" # Google Update Service
       
