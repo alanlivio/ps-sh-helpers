@@ -597,7 +597,7 @@ function hf_store_reinstall_all() {
 }
 
 # ---------------------------------------
-# explorer functions
+# clean functions
 # ---------------------------------------
 
 function hf_clean_unused_folders() {
@@ -627,6 +627,10 @@ function hf_clean_unused_folders() {
     # 'Pictures/'
   )
   $folders | ForEach-Object { Remove-Item -Force -Recurse -ErrorAction Ignore $_ }
+}
+
+function hf_clean_choco() {
+  gsudo \tools\BCURRAN3\choco-cleaner.ps1
 }
 
 # ---------------------------------------
@@ -695,10 +699,6 @@ function hf_windows_update() {
 # ---------------------------------------
 # choco function
 # ---------------------------------------
-
-function hf_choco_cleaner() {
-  gsudo \tools\BCURRAN3\choco-cleaner.ps1
-}
 
 function hf_choco_install() {
   Write-Host -ForegroundColor YELLOW $MyInvocation.MyCommand.ToString() $args
