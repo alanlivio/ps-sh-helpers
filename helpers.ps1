@@ -19,7 +19,7 @@ if (Test-Path $SCRIPT_CFG) {
 }
 
 # ---------------------------------------
-# alias and log
+# alias
 # ---------------------------------------
 Set-Alias -Name grep -Value Select-String
 Set-Alias -Name choco -Value C:\ProgramData\chocolatey\bin\choco.exe
@@ -38,12 +38,7 @@ function hf_log_l2() {
 }
 
 # ---------------------------------------
-# go home
-# ---------------------------------------
-Set-Location ~
-
-# ---------------------------------------
-# profile funcs
+# profile
 # ---------------------------------------
 
 function hf_profile_install() {
@@ -59,7 +54,7 @@ function hf_profile_import($path) {
 }
 
 # ---------------------------------------
-# ps funcs
+# ps
 # ---------------------------------------
 
 function hf_ps_enable_PSWindowsUpdate() {
@@ -99,7 +94,7 @@ function hf_ps_wait_for_fey {
 }
 
 # ---------------------------------------
-# system funcs
+# system
 # ---------------------------------------
 
 function hf_system_rename($new_name) {
@@ -137,7 +132,7 @@ function hf_system_disable_password_policy {
 }
 
 # ---------------------------------------
-# path funcs
+# path
 # ---------------------------------------
 function hf_path_add($addPath) {
   if (Test-Path $addPath) {
@@ -167,7 +162,7 @@ function hf_path_add_choco_tools() {
 }
 
 # ---------------------------------------
-# optimize funcs
+# optimize
 # ---------------------------------------
 
 function hf_optimize_features() {
@@ -586,7 +581,7 @@ function hf_optimize_appx() {
 }
 
 # ---------------------------------------
-# network funcs
+# network
 # ---------------------------------------
 
 function hf_network_list_wifi_SSIDs() {
@@ -594,7 +589,7 @@ function hf_network_list_wifi_SSIDs() {
 }
 
 # ---------------------------------------
-# link funcs
+# link
 # ---------------------------------------
 
 function hf_link_create($desntination, $source) {
@@ -602,7 +597,7 @@ function hf_link_create($desntination, $source) {
 }
 
 # ---------------------------------------
-# winpackage funcs
+# winpackage
 # ---------------------------------------
 
 function hf_winpackage_uninstall_like() {
@@ -617,7 +612,7 @@ function hf_winpackage_uninstall_like() {
 }
 
 # ---------------------------------------
-# appx funcs
+# appx
 # ---------------------------------------
 
 function hf_appx_list_installed() {
@@ -659,7 +654,7 @@ function hf_appx_install_essentials() {
 }
 
 # ---------------------------------------
-# clean funcs
+# clean
 # ---------------------------------------
 
 function hf_clean_unused_folders() {
@@ -697,7 +692,7 @@ function hf_clean_choco() {
 }
 
 # ---------------------------------------
-# explorer funcs
+# explorer
 # ---------------------------------------
 
 function hf_explorer_hide_dotfiles() {
@@ -729,7 +724,7 @@ function hf_explorer_restart() {
 }
 
 # ---------------------------------------
-# customize funcs
+# customize
 # ---------------------------------------
 
 function hf_enable_dark_mode() {
@@ -738,7 +733,7 @@ function hf_enable_dark_mode() {
 }
 
 # ---------------------------------------
-# permissions funcs
+# permissions
 # ---------------------------------------
 
 function hf_adminstrator_user_enable() {
@@ -927,7 +922,7 @@ function hf_uninstall_onedrive() {
 }
 
 # ---------------------------------------
-# config funcs
+# config
 # ---------------------------------------
 
 function hf_config_install_wt($path) {
@@ -943,7 +938,7 @@ function hf_config_wt_open() {
 }
 
 # ---------------------------------------
-# winupdate funcs
+# winupdate
 # ---------------------------------------
 
 function hf_winupdate_list() {
@@ -973,13 +968,17 @@ function hf_winupdate_update_hidden() {
 }
 
 # ---------------------------------------
-# init funcs
+# sync
 # ---------------------------------------
 function hf_sync {
   hf_choco_upgrade
   hf_clean_choco
   hf_winupdate_update
 }
+
+# ---------------------------------------
+# init
+# ---------------------------------------
 
 function hf_init_windows() {
   Invoke-Expression $hf_log_func
@@ -1003,7 +1002,7 @@ function hf_init_user_bash() {
   hf_log "INFO: (2) run hf_wsl_enable"
   hf_log "INFO: (3) when sign in WindowStore, run hf_appx_install Microsoft.WindowsTerminal CanonicalGroupLimited.UbuntuonWindows"
   hf_log "INFO: (4) when WindowsTerminal installed, run hf_config_install_wt <profiles.jon>"
-  hf_log "INFO: (5) when Ubuntu installed, run hf_wsl_set_version2"
+  hf_log "INFO: (5) when Ubuntu installed, run hf_wsl_set_version2 Ubuntu"
   hf_log "INFO: (6) when Ubuntu installed, run hf_wsl_fix_home_user"
   hf_install_choco
   hf_install_winget
