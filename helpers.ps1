@@ -60,16 +60,8 @@ function hf_profile_import($path) {
 # ps
 # ---------------------------------------
 
-function hf_ps_drives() {
-  if (!(Get-PSDrive HKCR -ea 0)) {
-    New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
-  }
-  if (!(Get-PSDrive HKCU)) {
-    New-PSDrive -Name HKCU -PSProvider Registry -Root HKEY_CURRENT_USER | Out-Null
-  }
-  if (!(Get-PSDrive HKLM)) {
-    New-PSDrive -Name HKLM -PSProvider Registry -Root HKEY_LOCAL_MACHINE | Out-Null
-  }
+function hf_ps_ver() {
+  Write-Output "$($PSVersionTable.PSEdition.ToString()) $($PSVersionTable.PSVersion.ToString())"
 }
 
 function hf_ps_essentials() {
@@ -132,10 +124,26 @@ function hf_ps_profiles_reset() {
   $profile.CurrentUserCurrentHost = "WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
 }
 
-function hf_ps_new_path {
+# ---------------------------------------
+# reg
+# ---------------------------------------
+
+function hf_reg_new_path {
   $path = $args[0]
   if (-not (Test-Path $path)) {
     New-Item -Path $Path -ItemType Directory -Force $path
+  }
+}
+
+function hf_reg_drives() {
+  if (!(Get-PSDrive HKCR -ea 0)) {
+    New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
+  }
+  if (!(Get-PSDrive HKCU)) {
+    New-PSDrive -Name HKCU -PSProvider Registry -Root HKEY_CURRENT_USER | Out-Null
+  }
+  if (!(Get-PSDrive HKLM)) {
+    New-PSDrive -Name HKLM -PSProvider Registry -Root HKEY_LOCAL_MACHINE | Out-Null
   }
 }
 
@@ -158,6 +166,10 @@ function hf_system_info() {
 
 function hf_system_env() {
   [Environment]::GetEnvironmentVariables()
+}
+
+function hf_system_ver() {
+  [Environment]::OSVersion.Version.ToString()
 }
 
 function hf_system_disable_password_policy {
@@ -257,7 +269,7 @@ function hf_optimize_services() {
 
   # Disable Autorun for all drives
   hf_log "Disable Autorun for all drives"
-  hf_ps_new_path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+  hf_reg_new_path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer"
   Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoDriveTypeAutoRun" -Value 255 
 
   # Disable error reporting
@@ -355,7 +367,7 @@ function hf_optimize_services_experimental() {
 
 function hf_optimize_explorer() {
   Invoke-Expression $hf_log_func
-  hf_ps_drives
+  hf_reg_drives
 
   # Use small icons
   hf_log "Use small icons "
@@ -393,10 +405,10 @@ function hf_optimize_explorer() {
   # Disable Cortana
   hf_log "Disable Cortana"
 
-  hf_ps_new_path "HKCU:\Software\Microsoft\Personalization\Settings"
-  hf_ps_new_path "HKCU:\Software\Microsoft\InputPersonalization"
-  hf_ps_new_path "HKCU:\Software\Microsoft\InputPersonalization\TrainedDataStore"
-  hf_ps_new_path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" 
+  hf_reg_new_path "HKCU:\Software\Microsoft\Personalization\Settings"
+  hf_reg_new_path "HKCU:\Software\Microsoft\InputPersonalization"
+  hf_reg_new_path "HKCU:\Software\Microsoft\InputPersonalization\TrainedDataStore"
+  hf_reg_new_path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" 
 
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Personalization\Settings" -Name "AcceptedPrivacyPolicy" -Value 0
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\InputPersonalization" -Name "RestrictImplicitTextCollection" -Value 1
@@ -426,7 +438,7 @@ function hf_optimize_explorer() {
 
   # Disable store search for unknown extensions
   hf_log "Disable store search unknown extensions" 
-  hf_ps_new_path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer"
+  hf_reg_new_path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer"
   Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer" -Name "NoUseStoreOpenWith" -Value 1
  
   # 'Hide Most used Apps in Start Menu'
