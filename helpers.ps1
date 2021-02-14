@@ -790,20 +790,6 @@ function hf_explorer_restart() {
 }
 
 # ---------------------------------------
-# permissions
-# ---------------------------------------
-
-function hf_adminstrator_user_enable() {
-  Invoke-Expression $hf_log_func
-  net user administrator /active:yes
-}
-
-function hf_adminstrator_user_disable() {
-  Invoke-Expression $hf_log_func
-  net user administrator /active:no
-}
-
-# ---------------------------------------
 # choco function
 # ---------------------------------------
 
@@ -831,7 +817,6 @@ function hf_choco_uninstall() {
 function hf_choco_upgrade() {
   Invoke-Expression $hf_log_func
   choco outdated | Out-Null
-  # 2: outdated packages have been found
   if ($LastExitCode -eq 2) {
     choco upgrade -y --acceptlicense all
   }
@@ -1056,6 +1041,7 @@ function hf_install_common_user_software() {
 }
 
 function hf_install_wsl_ubuntu_and_windowsterminal() {
+  # this helper automate the process describred in https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
   Invoke-Expression $hf_log_func
   # install winget
   if (!(Get-Command 'choco.exe' -ea 0)) {
@@ -1079,7 +1065,6 @@ function hf_install_wsl_ubuntu_and_windowsterminal() {
   }
   # enable wsl feature (require restart)
   if (!(Get-Command 'wsl.exe' -ea 0)) {
-    # https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
     hf_log "INFO: Windows features for WSL not enabled, enabling..."
     dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
     dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
@@ -1100,7 +1085,6 @@ function hf_install_wsl_ubuntu_and_windowsterminal() {
   # enable wsl 2
   wsl -l -v | Out-null
   if ($LASTEXITCODE -eq -1) {
-    # https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
     Invoke-WebRequest -Uri "https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi" -Outfile $env:TEMP\wsl_update_x64.msi
     msiexec.exe /I "$env:TEMP\wsl_update_x64.msi"
   }
