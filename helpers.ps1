@@ -739,24 +739,12 @@ function hf_appx_install_essentials() {
 }
 
 # ---------------------------------------
-# clean
+# home
 # ---------------------------------------
 
-$CLEAN_SHORTCUTS = @(
-  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Chrome Apps\"
-  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Access.lnk"
-  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Chocolatey Cleaner.lnk"
-  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\OneNote.lnk"
-  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Outlook.lnk"
-  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Publisher.lnk"
-  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Foxit Reader\Uninstall Foxit Reader.lnk"
-  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools\"
-  "$env:userprofile\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\\Chrome Apps\"
-)
-
-function hf_clean_unused_shortcuts() {
+function hf_home_hide_dotfiles() {
   Invoke-Expression $hf_log_func
-  $CLEAN_SHORTCUTS | ForEach-Object { Remove-Item -Force -Recurse -ea 0 $_ }
+  Get-ChildItem "$env:userprofile\.*" | ForEach-Object { $_.Attributes += "Hidden" }
 }
 
 $HF_CLEAN_DIRS = @(
@@ -781,7 +769,7 @@ $HF_CLEAN_DIRS = @(
   'Searches'
   'SendTo'
 )
-function hf_clean_unused_dirs() {
+function hf_home_clean_unused_dirs() {
   Invoke-Expression $hf_log_func
   $HF_CLEAN_DIRS | ForEach-Object { Remove-Item -Force -Recurse -ea 0 $_ }
 }
@@ -790,11 +778,6 @@ function hf_clean_unused_dirs() {
 # explorer
 # ---------------------------------------
 
-function hf_explorer_hide_dotfiles() {
-  Invoke-Expression $hf_log_func
-  Get-ChildItem "$env:userprofile\.*" | ForEach-Object { $_.Attributes += "Hidden" }
-}
-
 function hf_explorer_open_trash() {
   Start-Process explorer shell:recyclebinfolder
 }
@@ -802,6 +785,22 @@ function hf_explorer_open_trash() {
 function hf_explorer_restart() {
   taskkill /f /im explorer.exe | Out-Null
   Start-Process explorer.exe
+}
+
+$CLEAN_SHORTCUTS = @(
+  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Chrome Apps\"
+  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Access.lnk"
+  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Chocolatey Cleaner.lnk"
+  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\OneNote.lnk"
+  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Outlook.lnk"
+  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Publisher.lnk"
+  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Foxit Reader\Uninstall Foxit Reader.lnk"
+  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools\"
+  "$env:userprofile\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\\Chrome Apps\"
+)
+function hf_explorer_clean_unused_shortcuts() {
+  Invoke-Expression $hf_log_func
+  $CLEAN_SHORTCUTS | ForEach-Object { Remove-Item -Force -Recurse -ea 0 $_ }
 }
 
 # ---------------------------------------
@@ -1159,7 +1158,7 @@ function hf_uninstall_onedrive() {
 
 function hf_init_windows_sanity() {
   Invoke-Expression $hf_log_func
-  hf_explorer_hide_dotfiles
+  hf_home_hide_dotfiles
   hf_optimize_services
   hf_optimize_appx
   hf_optimize_explorer
@@ -1179,8 +1178,8 @@ function hf_init_windows() {
   # disable passwd
   hf_system_disable_password_policy
   # cleanup unused
-  hf_clean_unused_dirs
-  hf_clean_unused_shortcuts
+  hf_home_clean_unused_dirs
+  hf_explorer_clean_unused_shortcuts
   # install choco, gsudo
   hf_install_choco
   hf_install_gsudo
