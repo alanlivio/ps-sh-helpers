@@ -13,10 +13,13 @@
 $SCRIPT_DIR = $PSScriptRoot
 $SCRIPT_NAME = "$PSScriptRoot\helpers.ps1"
 $SCRIPT_CFG = "$SCRIPT_DIR\helpers-cfg.ps1"
-$DOTFILES_WT = "$SCRIPT_DIR\dotfiles\wt"
-$DOTFILES_VSCODE = "$SCRIPT_DIR\dotfiles\vscode"
+$SKEL_WT = "$SCRIPT_DIR\skel\wt"
+$SKEL_VSCODE = "$SCRIPT_DIR\skel\vscode"
 $MSYS_HOME = "C:\msys64"
 $MSYS_BASH = "$MSYS_HOME\usr\bin\bash.exe"
+$WT_SETTINGS = "${env:userprofile}\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
+$VSCODE_SETTINGS = "${env:userprofile}\AppData\Roaming\Code\User\settings.json"
+$VSCODE_KEYS = "${env:userprofile}\AppData\Roaming\Code\User\keybindings.json"
 
 if (Test-Path $SCRIPT_CFG) {
   Import-Module -Force -Global $SCRIPT_CFG
@@ -965,8 +968,10 @@ function hf_keyboard_disable_shortcut_altgr() {
 # wt
 # ---------------------------------------
 
-function hf_wt_install_settings($path) {
-  Copy-Item $path ${env:userprofile}\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json
+function hf_wt_copy_skel_if_no_bash($path) {
+  if ((Select-String $WT_SETTINGS -Pattern "bash").Length -eq 0) {
+    Copy-Item $SKEL_WT\settings.json $WT_SETTINGS
+  }
 }
 
 function hf_wt_open_settings($path) {
@@ -977,10 +982,10 @@ function hf_wt_open_settings($path) {
 # vscode
 # ---------------------------------------
 
-function hf_vscode_install_config_files() {
-  if (Test-Path $DOTFILES_VSCODE) {
-    Copy-Item $DOTFILES_VSCODE\settings.json ${env:userprofile}\AppData\Roaming\Code\User\
-    Copy-Item $DOTFILES_VSCODE\keybindings.json ${env:userprofile}\AppData\Roaming\Code\User\
+function hf_vscode_copy_skel_if_no_bash() {
+  if ((Select-String $VSCODE_SETTINGS -Pattern "bash").Length -eq 0) {
+    Copy-Item $SKEL_VSCODE\settings.json $VSCODE_SETTINGS
+    Copy-Item $SKEL_VSCODE\keybindings.json $VSCODE_KEYS
   }
 }
 
@@ -1097,9 +1102,8 @@ function hf_install_wt() {
   hf_install_winget
   if (!(Get-Command 'wt.exe' -ea 0)) {
     hf_winget_install Microsoft.WindowsTerminal
-    if (Test-Path $DOTFILES_WT) {
-      hf_wt_install_settings $DOTFILES_WT\settings.json
-    }
+  }
+}
 
 function hf_install_python() {
   hf_install_winget
@@ -1226,6 +1230,7 @@ function hf_setup_windows() {
   hf_install_git
   hf_install_python
   hf_install_wt
+  hf_wt_copy_skel_if_no_bash
   hf_install_vscode
-  hf_vscode_install_config_files
+  hf_vscode_copy_skel_if_no_bash
 }
