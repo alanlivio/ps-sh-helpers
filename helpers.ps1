@@ -20,6 +20,12 @@ $WT_SETTINGS = "${env:userprofile}\AppData\Local\Packages\Microsoft.WindowsTermi
 $VSCODE_SETTINGS = "${env:userprofile}\AppData\Roaming\Code\User\settings.json"
 $VSCODE_KEYS = "${env:userprofile}\AppData\Roaming\Code\User\keybindings.json"
 
+
+# ---------------------------------------
+# ps preferences
+# ---------------------------------------
+$ProgressPreference = "SilentlyContinue"
+
 # ---------------------------------------
 # alias
 # ---------------------------------------
@@ -76,15 +82,22 @@ function hf_ps_ver() {
   Write-Output "$($PSVersionTable.PSEdition.ToString()) $($PSVersionTable.PSVersion.ToString())"
 }
 
+function hf_elevate_if_not_admin() {
+  $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+  if ( -not ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator))) {
+    gsudo
+  }
+}
+
 function hf_ps_enable_appx_if_core() {
   if ( $PSVersionTable.PSEdition -eq "Core") {
-    Import-Module -Name Appx -UseWindowsPowershell -WarningAction Ignore
+    Import-Module -Name Appx -UseWindowsPowershell -WarningAction Ignore 
   }
 }
 
 function hf_ps_enable_scheduledtask_if_core() {
   if ( $PSVersionTable.PSEdition -eq "Core") {
-    Import-Module -Name Appx ScheduledTasks  -WarningAction Ignore
+    Import-Module -Name ScheduledTasks -UseWindowsPowershell -WarningAction Ignore
   }
 }
 
@@ -135,7 +148,7 @@ function hf_reg_new_path ($path) {
 }
 
 function hf_reg_drives() {
-  if (!(Get-PSDrive HKCR -ea 0)) {
+  if ((Get-PSDrive HKCR -ea 0)) {
     New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
   }
   if (!(Get-PSDrive HKCU)) {
@@ -233,6 +246,7 @@ function hf_env() {
 
 function hf_optimize_services() {
   Invoke-Expression $hf_log_func
+  hf_elevate_if_not_admin
 
   # Visual to performace
   hf_log_msg "Visuals to performace"
@@ -357,6 +371,7 @@ function hf_optimize_services() {
 
 function hf_optimize_explorer() {
   Invoke-Expression $hf_log_func
+  hf_elevate_if_not_admin
   hf_reg_drives
 
   # Use small icons
@@ -530,6 +545,7 @@ function hf_optimize_explorer() {
 
 function hf_optimize_appx() {
   Invoke-Expression $hf_log_func
+  hf_elevate_if_not_admin
   # microsoft
   $pkgs = @(
     'Microsoft.3DBuilder'
@@ -709,7 +725,7 @@ function hf_appx_install() {
   if ($pkgs_to_install) {
     hf_log_msg "pkgs_to_install=$pkgs_to_install"
     foreach ($pkg in $pkgs_to_install) {
-      Get-AppxPackage -allusers $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
+      gsudo Get-AppxPackage -allusers $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
     }
   }
 }
@@ -860,7 +876,6 @@ function hf_choco_install() {
     $pkgs = choco list -l
     if (!($pkgs -Match "$name")) {
       $pkgs_to_install = "$pkgs_to_install $name"
-      gsudo choco install -y --acceptlicense $name
     }
   }
   if ($pkgs_to_install) {
@@ -871,14 +886,14 @@ function hf_choco_install() {
 
 function hf_choco_uninstall() {
   Invoke-Expression $hf_log_func
-  choco uninstall -y --acceptlicense ($args -join ";")
+  gsudo choco uninstall -y --acceptlicense ($args -join ";")
 }
 
 function hf_choco_upgrade() {
   Invoke-Expression $hf_log_func
   choco outdated | Out-Null
   if ($LastExitCode -eq 2) {
-    choco upgrade -y --acceptlicense all
+    gsudo choco upgrade -y --acceptlicense all
   }
 }
 
@@ -1067,6 +1082,7 @@ function hf_msys_sanity() {
 function hf_install_choco() {
   Invoke-Expression $hf_log_func
   if (!(Get-Command 'choco.exe' -ea 0)) {
+    hf_elevate_if_not_admin
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
     hf_env_path_add "%ALLUSERSPROFILE%\chocolatey\bin"
     cmd /c 'setx ChocolateyToolsLocation C:\opt\'
