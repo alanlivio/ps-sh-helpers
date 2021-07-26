@@ -1424,7 +1424,7 @@ function hf_cmake_uninstall() {
 
 function hf_cmake_clean_retain_objs() {
   if test -d CMakeFiles; then
-    find . -maxdepth 1 -not -name CMakeFiles -delete
+    find . -maxdepth 1 -not -name '.' -not -name CMakeFiles -exec rm -rf {} \;
   else
     hf_log_error "there is no CMakeFiles folder"
   fi
