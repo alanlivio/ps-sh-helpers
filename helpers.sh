@@ -2184,19 +2184,27 @@ function hf_python_venv_load() {
   if test requirements.txt; then pip install -r requirements.txt; fi
 }
 
-function hf_python_jupyter_notebook() {
+# ---------------------------------------
+# jupyter
+# ---------------------------------------
+
+function hf_jupyter_notebook() {
   jupyter notebook
 }
 
-function hf_python_jupyter_configure_git_diff() {
-  sudo python install nbdime
+function hf_jupyter_configure_git_diff() {
+  sudo pip install nbdime nbstripout 
   nbdime config-git --enable --global
   sed -i "s/git-nbdiffdriver diff$/git-nbdiffdriver diff -s/g" $HOME/.gitconfig
 }
 
-function hf_python_jupyter_dark_theme() {
-  pip install jupyterthemes
+function hf_jupyter_dark_theme() {
+  sudo pip install jupyterthemes
   jt -t monokai
+}
+
+function hf_jupyter_remove_output() {
+  jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace $@
 }
 
 # ---------------------------------------
