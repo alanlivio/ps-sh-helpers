@@ -1406,8 +1406,9 @@ function hf_cmake_install() {
     cmake --install . --prefix /mingw64
   elif test -n "$IS_LINUX"; then
     sudo cmake --install . --prefix /usr
+  else
+    sudo cmake --install .
   fi
-  sudo cmake --install .
 }
 
 function hf_cmake_uninstall() {
