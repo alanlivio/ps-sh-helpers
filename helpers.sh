@@ -179,7 +179,7 @@ if test $IS_LINUX; then
     PKGS="git deborphan apt-file $PKGS_ESSENTIALS "
     # python
     PKGS+="python3 python3-pip "
-    hf_apt_install_pkgs $PKGS
+    hf_apt_install $PKGS
     # set python3 as default
     hf_python_set_python3_default
     # install vscode
@@ -196,7 +196,7 @@ if test -n "$IS_WINDOWS"; then
     PKGS="git deborphan apt-file $PKGS_ESSENTIALS "
     # python
     PKGS+="python3-pip "
-    hf_apt_install_pkgs $PKGS
+    hf_apt_install $PKGS
     # set python3 as default
     hf_python_set_python3_default
   }
@@ -240,19 +240,19 @@ fi
 if test -n "$IS_LINUX"; then
   function hf_update_clean_gnome() {
     # snap
-    hf_snap_install_pkgs $PKGS_SNAP
-    hf_snap_install_pkgs_classic $PKGS_SNAP_CLASSIC
+    hf_snap_install $PKGS_SNAP
+    hf_snap_install_classic $PKGS_SNAP_CLASSIC
     hf_snap_upgrade
     hf_apt_upgrade
     # apt
-    hf_apt_install_pkgs $PKGS_APT
+    hf_apt_install $PKGS_APT
     hf_apt_remove_pkgs $PKGS_REMOVE_APT
     hf_apt_autoremove
     hf_apt_remove_orphan_pkgs $PKGS_APT_ORPHAN_EXPECTIONS
     # python
-    hf_python_install_pkgs $PKGS_PYTHON
+    hf_python_install $PKGS_PYTHON
     # vscode
-    hf_vscode_install_pkgs $PKGS_VSCODE
+    hf_vscode_install $PKGS_VSCODE
     # cleanup
     hf_home_clean_unused_dirs
   }
@@ -269,7 +269,7 @@ elif test -n "$IS_WINDOWS"; then
     if test -n "$IS_WINDOWS_WSL"; then
       # apt
       hf_apt_upgrade
-      hf_apt_install_pkgs $PKGS_APT
+      hf_apt_install $PKGS_APT
       hf_apt_autoremove
       hf_apt_remove_pkgs $PKGS_REMOVE_APT
       hf_apt_remove_orphan_pkgs $PKGS_APT_ORPHAN_EXPECTIONS
@@ -280,10 +280,10 @@ elif test -n "$IS_WINDOWS"; then
     if test -n "$IS_WINDOWS_MSYS"; then
       hf_msys_install $PKGS_PYTHON_MSYS
     elif test -n "$IS_WINDOWS_GITBASH"; then
-      hf_python_install_pkgs $PKGS_PYTHON
+      hf_python_install $PKGS_PYTHON
     fi
     # vscode
-    hf_vscode_install_pkgs $PKGS_VSCODE
+    hf_vscode_install $PKGS_VSCODE
     # cleanup
     hf_home_clean_unused_dirs
     hf_ps_call hf_home_hide_dotfiles
@@ -295,9 +295,9 @@ elif test -n "$IS_MAC"; then
     hf_brew_install $PKGS_BREW
     hf_brew_upgrade
     # python
-    hf_python_install_pkgs $PKGS_PYTHON
+    hf_python_install $PKGS_PYTHON
     # vscode
-    hf_vscode_install_pkgs $PKGS_VSCODE
+    hf_vscode_install $PKGS_VSCODE
   }
 fi
 
@@ -334,7 +334,7 @@ fi
 # ---------------------------------------
 
 if test -n "$IS_WINDOWS_WSL"; then
-  # this is used for hf_vscode_install_pkgs
+  # this is used for hf_vscode_install
   function codewin() {
     cmd.exe /c 'C:\Program Files\Microsoft VS Code\bin\code' $@
   }
@@ -1188,18 +1188,19 @@ if type adb &>/dev/null; then
     adb pull /sdcard/screenshot.png screenshot.png
   }
 
-  function hf_android_installed_package() {
+  function hf_android_list_installed() {
     : ${1?"Usage: ${FUNCNAME[0]} <package>"}
     adb shell pm list packages | grep $1
   }
 
-  function hf_android_uninstall_package() {
-    : ${1?"Usage: ${FUNCNAME[0]} <package_in_format_XXX.YYY.ZZZ>"}
-    adb uninstall $1
-  }
-  function hf_android_install_package() {
+  function hf_android_install() {
     : ${1?"Usage: ${FUNCNAME[0]} <package>"}
     adb install $1
+  }
+
+  function hf_android_uninstall() {
+    : ${1?"Usage: ${FUNCNAME[0]} <package_in_format_XXX.YYY.ZZZ>"}
+    adb uninstall $1
   }
 fi
 
@@ -1311,7 +1312,7 @@ function hf_latex_clean() {
 
 function hf_latex_apt_essentials() {
   local pkgs_to_install+="texlive-base texlive-latex-recommended texlive-latex-extra texlive-bibtex-extra texlive-extra-utils texlive-fonts-extra texlive-xetex texlive-lang-english"
-  hf_apt_install_pkgs $pkgs_to_install
+  hf_apt_install $pkgs_to_install
 }
 
 function hf_latex_gitignore() {
@@ -1719,7 +1720,7 @@ function hf_ssh_send_keys_to_server_old() {
 # snap
 # ---------------------------------------
 if type snap &>/dev/null; then
-  function hf_snap_install_pkgs() {
+  function hf_snap_install() {
     hf_log_func
     hf_test_noargs_then_return
 
@@ -1739,7 +1740,7 @@ if type snap &>/dev/null; then
     fi
   }
 
-  function hf_snap_install_pkgs_classic() {
+  function hf_snap_install_classic() {
     hf_log_func
     hf_test_noargs_then_return
 
@@ -1759,7 +1760,7 @@ if type snap &>/dev/null; then
     fi
   }
 
-  function hf_snap_install_pkgs_edge() {
+  function hf_snap_install_edge() {
     hf_log_func
     hf_test_noargs_then_return
 
@@ -1822,7 +1823,7 @@ function hf_vscode_diff() {
   fi
 }
 
-function hf_vscode_install_pkgs() {
+function hf_vscode_install() {
   hf_log_func
   hf_test_noargs_then_return
   local codetmp=$(if test -n "$IS_WINDOWS_WSL"; then echo "codewin"; else echo "code"; fi)
@@ -1902,7 +1903,7 @@ if test -n "$IS_LINUX"; then
     gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
     gsettings set org.gnome.desktop.interface icon-theme 'ubuntu-mono-dark'
   }
-  
+
   function hf_gnome_dark_desktop_background() {
     # desktop
     gsettings set org.gnome.desktop.background color-shading-type "solid"
@@ -2062,7 +2063,7 @@ function hf_system_list_gpu() {
 # npm
 # ---------------------------------------
 
-function hf_npm_install_pkgs() {
+function hf_npm_install() {
   hf_log_func
   hf_test_noargs_then_return
 
@@ -2097,7 +2098,7 @@ function hf_npm_install_pkgs() {
 # ruby
 # ---------------------------------------
 
-function hf_ruby_install_pkgs() {
+function hf_ruby_install() {
   hf_log_func
   hf_test_noargs_then_return
 
@@ -2141,7 +2142,7 @@ function hf_python_list_installed() {
   pip list
 }
 
-function hf_python_install_pkgs() {
+function hf_python_install() {
   hf_log_func
   hf_test_noargs_then_return
 
@@ -2164,12 +2165,7 @@ function hf_python_install_pkgs() {
   sudo pip install -U "$@" &>/dev/null
 }
 
-function hf_python_remove_python35() {
-  sudo rm -r /usr/local/bin/python3.5
-  sudo rm -r /usr/local/lib/python3.5/
-}
-
-function hf_python_remove_home_pkgs() {
+function hf_python_clean_home_pkgs() {
   hf_folder_remove $HOME/local/bin/
   hf_folder_remove $HOME/.local/lib/python3.5/
   hf_folder_remove $HOME/.local/lib/python3.7/
@@ -2583,7 +2579,7 @@ if type apt &>/dev/null; then
     sudo apt dist-upgrade
   }
 
-  function hf_apt_install_pkgs() {
+  function hf_apt_install() {
     hf_log_func
     hf_test_noargs_then_return
 
