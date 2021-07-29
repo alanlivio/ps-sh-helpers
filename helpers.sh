@@ -2342,16 +2342,22 @@ if test -n "$IS_WINDOWS"; then
 fi
 
 # ---------------------------------------
-# install_gnome
+# ubuntu
 # ---------------------------------------
 
 if test -n "$IS_LINUX"; then
-  function hf_ubuntu_upgrade() {
+  function hf_ubuntu_distro_upgrade() {
     sudo sed -i 's/Prompt=lts/Prompt=normal/g' /etc/update-manager/release-upgrades
     sudo apt update && sudo apt dist-upgrade
     do-release-upgrade
   }
+fi
 
+# ---------------------------------------
+# install_gnome
+# ---------------------------------------
+
+if test -n "$IS_LINUX"; then
   function hf_install_gnome_bluetooth_audio() {
     sudo apt nstall pulseaudio pulseaudio-utils pavucontrol pulseaudio-module-bluetooth rtbth-dkms
   }
