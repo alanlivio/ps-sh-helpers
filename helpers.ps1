@@ -358,11 +358,11 @@ function hf_optimize_services() {
 
   # XPS Services
   hf_log_msg "Disable XPS "
-  dism.exe /online /quiet /disable-feature /featurename:Printing-XPSServices-Features /norestart
+  hf_windows_feature_disable Printing-XPSServices-Features
 
   # Work Folders
   hf_log_msg "Disable Work Folders "
-  dism.exe /online /quiet /disable-feature /featurename:WorkFolders-Client /norestart
+  hf_windows_feature_disable WorkFolders-Client
   
   # Disable scheduled tasks
   hf_log_msg "Disable scheduled tasks "
@@ -1034,20 +1034,20 @@ function hf_vscode_copy_skel_if_no_bash() {
 }
 
 # ---------------------------------------
-# winupdate
+# windows
 # ---------------------------------------
 
-function hf_winupdate_list() {
-  Invoke-Expression $hf_log_func
-  Get-WindowsUpdate
+function hf_windows_feature_enable($featurename) {
+  Invoke-Expression "$hf_log_func $featurename"
+  gsudo dism.exe /online /quiet /enable-feature /featurename:$featurename /all/norestart
 }
 
-function hf_winupdate_list_last_installed() {
-  Invoke-Expression $hf_log_func
-  Get-WUHistory -Last 10 | Select-Object Date, Title, Result
+function hf_windows_feature_disable($featurename) {
+  Invoke-Expression "$hf_log_func $featurename"
+  gsudo dism.exe /online /quiet /disable-feature /featurename:$featurename /norestart
 }
 
-function hf_winupdate_update() {
+function hf_windows_update() {
   Invoke-Expression $hf_log_func
   $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
     if ($_ -is [string]) {
@@ -1055,6 +1055,17 @@ function hf_winupdate_update() {
     } 
   }
 }
+
+function hf_windows_update_list() {
+  Invoke-Expression $hf_log_func
+  Get-WindowsUpdate
+}
+
+function hf_windows_update_list_last_installed() {
+  Invoke-Expression $hf_log_func
+  Get-WUHistory -Last 10 | Select-Object Date, Title, Result
+}
+
 
 # ---------------------------------------
 # msys
@@ -1179,8 +1190,8 @@ function hf_install_wsl_ubuntu() {
   # enable wsl feature (require restart)
   if (!(Get-Command 'wsl.exe' -ea 0)) {
     hf_log_msg "INFO: Windows features for WSL not enabled, enabling..."
-    dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-    dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+    hf_windows_feature_enable /featurename:VirtualMachinePlatform 
+    hf_windows_feature_enable Microsoft-Windows-Subsystem-Linux
     hf_log_msg "INFO: restart windows and run hf_setup_ubuntu again"
     return
   }

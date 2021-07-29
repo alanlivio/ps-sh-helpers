@@ -259,7 +259,7 @@ if test -n "$IS_LINUX"; then
 elif test -n "$IS_WINDOWS"; then
   function hf_update_clean_windows() {
     # windows
-    hf_ps_call_admin "hf_winupdate_update"
+    hf_ps_call_admin "hf_windows_update"
     hf_ps_call_admin "hf_winget_install $PKGS_WINGET"
     hf_ps_call_admin "hf_appx_install $PKGS_APPX"
     hf_ps_call_admin "hf_choco_install $PKGS_CHOCO"
