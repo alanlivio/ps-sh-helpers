@@ -2193,7 +2193,7 @@ function hf_jupyter_notebook() {
 }
 
 function hf_jupyter_configure_git_diff() {
-  sudo pip install nbdime nbstripout 
+  sudo pip install nbdime nbstripout
   nbdime config-git --enable --global
   sed -i "s/git-nbdiffdriver diff$/git-nbdiffdriver diff -s/g" $HOME/.gitconfig
 }
@@ -2208,10 +2208,30 @@ function hf_jupyter_remove_output() {
 }
 
 # ---------------------------------------
+# docker
+# ---------------------------------------
+
+function hf_docker_service_start() {
+  sudo usermod -aG docker $USER
+  sudo service docker start
+}
+
+# ---------------------------------------
 # install_linux
 # ---------------------------------------
 
 if test -n "$IS_LINUX"; then
+  function hf_install_linux_docker() {
+    hf_log_funch
+    sudo apt-get install apt-transport-https ca-certificates curl gnupg lsb-release
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    echo \
+      "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+        $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+    sudo apt-get update
+    sudo apt-get install docker-ce docker-ce-cli containerd.io
+  }
+
   function hf_install_linux_node() {
     hf_log_funch
     curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
