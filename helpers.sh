@@ -150,6 +150,7 @@ if test -n "$IS_WINDOWS"; then
 
   # winget funcs from helpers.ps1
   hf_ps_def_func_admin hf_winget_install
+  hf_ps_def_func_admin hf_winget_uninstall
   hf_ps_def_func_admin hf_winget_upgrade
   hf_ps_def_func hf_winget_settings
 

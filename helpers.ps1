@@ -866,6 +866,27 @@ function hf_winget_install() {
   }
 }
 
+function hf_winget_uninstall() {
+  Invoke-Expression $hf_log_func
+  $pkgs_to_uninstall = ""
+  # get installed pkgs
+  $tmpfile = New-TemporaryFile
+  winget export $tmpfile | Out-null
+  $pkgs = ((Get-Content $tmpfile | ConvertFrom-Json).Sources.Packages | ForEach-Object { Write-Output $_.PackageIdentifier }) -join " "
+  # select to uninstall
+  foreach ($name in $args) {
+    if (-not ([string]::IsNullOrEmpty("$name")) -and ($pkgs -match "$name" )) {
+      $pkgs_to_uninstall = "$pkgs_to_uninstall $name"
+    }
+  }
+  if ($pkgs_to_uninstall) {
+    hf_log_msg "pkgs_to_uninstall=$pkgs_to_uninstall"
+    foreach ($pkg in $pkgs_to_uninstall) {
+      Invoke-Expression "winget uninstall --silent $pkg"
+    }
+  }
+}
+
 # ---------------------------------------
 # choco
 # ---------------------------------------
