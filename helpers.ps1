@@ -1166,7 +1166,9 @@ function hf_install_python() {
 }
 
 function hf_install_wsl_ubuntu() {
-  # this helper automate the process describred in https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
+  # this helper automate the process describred in :
+  # - https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
+  # - https://ubuntu.com/wsl
   Invoke-Expression $hf_log_func
 
   # install winget
@@ -1190,21 +1192,25 @@ function hf_install_wsl_ubuntu() {
   # configure ubuntu distro
   wsl -l | Out-null
   if ($LastExitCode -eq -1) {
-    hf_log_msg "INFO: Ubuntu is not configured, running..."
+    hf_log_msg "INFO: Ubuntu is not configured, running it..."
+    hf_log_msg "INFO: You should configure username and passwd, after that exit Ubuntu by invoke 'exit'."
     Invoke-Expression (Get-Command "ubuntu*.exe").Source
   }
   # enable wsl 2
   wsl -l -v | Out-null # -v is only avaliable in wsl 2
   if ($LastExitCode -eq -1) {
+    hf_log_msg "INFO: WSL 2 kernel update is not installed, installing..."
     Invoke-WebRequest -Uri "https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi" -Outfile $env:TEMP\wsl_update_x64.msi
     msiexec.exe /I "$env:TEMP\wsl_update_x64.msi"
   }
   # set to version 2
   if ((hf_wsl_get_default_version) -eq 1) {
+    hf_log_msg "INFO: Ubuntu distro is in wsl version 1, converting it to version 2..."
     hf_wsl_set_version2 hf_wsl_get_default
   }
   # fix home user to \Users
   if (!(wsl echo '$HOME').Contains("Users")) {
+    hf_log_msg "INFO: Configuring to same home folder as windows..."
     hf_wsl_fix_home
   }
 }
