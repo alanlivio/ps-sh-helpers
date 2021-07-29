@@ -1897,10 +1897,18 @@ if test -n "$IS_LINUX"; then
     gsettings reset-recursively org.gnome.settings-daemon.plugins.media-keys
   }
 
-  function hf_gnome_dark() {
+  function hf_gnome_dark_mode() {
     gsettings set org.gnome.desktop.interface cursor-theme 'DMZ-Black'
     gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
     gsettings set org.gnome.desktop.interface icon-theme 'ubuntu-mono-dark'
+  }
+  
+  function hf_gnome_dark_desktop_background() {
+    # desktop
+    gsettings set org.gnome.desktop.background color-shading-type "solid"
+    gsettings set org.gnome.desktop.background picture-uri ''
+    gsettings set org.gnome.desktop.background primary-color "#000000"
+    gsettings set org.gnome.desktop.background secondary-color "#000000"
   }
 
   function hf_gnome_sanity() {
@@ -1911,11 +1919,7 @@ if test -n "$IS_LINUX"; then
     gsettings set org.gnome.desktop.search-providers disabled "['org.gnome.Calculator.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.clocks.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Software.desktop']"
     # animation
     gsettings set org.gnome.desktop.interface enable-animations false
-    # background
-    gsettings set org.gnome.desktop.background color-shading-type "solid"
-    gsettings set org.gnome.desktop.background picture-uri ''
-    gsettings set org.gnome.desktop.background primary-color "#000000"
-    gsettings set org.gnome.desktop.background secondary-color "#000000"
+    # desktop
     gsettings set org.gnome.desktop.background show-desktop-icons false
     # cloack
     gsettings set org.gnome.desktop.interface clock-show-date true
