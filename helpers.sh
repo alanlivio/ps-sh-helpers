@@ -115,7 +115,6 @@ if test -n "$IS_WINDOWS_WSL"; then
 elif test -n "$IS_WINDOWS"; then
   alias unixpath='cygpath'
   alias winpath='cygpath -w'
-  alias sudo=''
   # fix mingw tmp
   unset temp
   unset tmp
@@ -1681,13 +1680,23 @@ function hf_user_logout() {
   sudo skill -KILL -u $1
 }
 
-function hf_user_permissions_sudo_nopasswd() {
+function hf_user_sudo_nopasswd() {
   if ! test -d /etc/sudoers.d/; then hf_folder_create_if_not_exist /etc/sudoers.d/; fi
   SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
 }
 
 function hf_user_passwd_disable_len_restriction() {
   sudo sed -i 's/sha512/minlen=1 sha512/g' /etc/pam.d/common-password
+}
+
+function hf_user_tty1_autologing() {
+  local file="/etc/systemd/system/getty@tty1.service.d/override.conf"
+  sudo mkdir -p $(dirname $file)
+  sudo touch $file
+  echo '[Service]' | sudo tee $file
+  echo 'ExecStart=' | sudo tee -a $file
+  echo "ExecStart=-/sbin/agetty --noissue --autologin $USER %I $TERM" | sudo tee -a $file
+  echo 'Type=idle' | sudo tee -a $file
 }
 
 function hf_user_permissions_opt() {

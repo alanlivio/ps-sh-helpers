@@ -1196,6 +1196,7 @@ function hf_install_python() {
   hf_install_winget
   if (!(Test-Path "C:\Python*")) {
     gsudo choco install python
+    # TODO: given Users full access to "C:\Python39"
   }
 }
 
