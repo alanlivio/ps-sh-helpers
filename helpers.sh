@@ -1580,14 +1580,18 @@ function hf_rename_to_lowercase_with_dash() {
 }
 
 # ---------------------------------------
-# partitions funcs
+# mount funcs
 # ---------------------------------------
 
-function hf_partitions_list() {
+function hf_mount_list() {
   df -h
 }
 
-function hf_partitions_mounted_list() {
+function hf_mount_devices_list() {
+  sudo blkid
+}
+
+function hf_mount_devices_list_tree() {
   sudo lsblk -f
 }
 
