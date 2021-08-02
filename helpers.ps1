@@ -934,8 +934,10 @@ function hf_choco_clean() {
 
 function hf_choco_delete_local_lib() {
   Invoke-Expression $hf_log_func
-  gsduo rm -Recurse -Force "'C:\ProgramData\chocolatey\lib"
-  gsduo rm -Recurse -Force "'C:\ProgramData\chocolatey\lib-bkp"
+  $dir1 = "C:\ProgramData\chocolatey\lib"
+  $dir2 = "C:\ProgramData\chocolatey\lib-bkp"
+  if (Test-Path $dir1) { gsudo rm -Recurse -Force $dir1 }
+  if (Test-Path $dir2) { gsudo rm -Recurse -Force $dir2 }
 }
 
 # ---------------------------------------

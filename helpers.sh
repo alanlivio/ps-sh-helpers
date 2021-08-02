@@ -147,6 +147,8 @@ if test -n "$IS_WINDOWS"; then
   hf_ps_def_func_admin hf_choco_install
   hf_ps_def_func_admin hf_choco_uninstall
   hf_ps_def_func_admin hf_choco_list_installed
+  hf_ps_def_func_admin hf_choco_clean
+  hf_ps_def_func_admin hf_choco_delete_local_lib
 
   # winget funcs from helpers.ps1
   hf_ps_def_func_admin hf_winget_install
