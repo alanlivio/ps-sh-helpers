@@ -253,6 +253,7 @@ if test -n "$IS_LINUX"; then
     hf_apt_autoremove
     hf_apt_remove_orphan_pkgs $PKGS_APT_ORPHAN_EXPECTIONS
     # python
+    hf_python_upgrade
     hf_python_install $PKGS_PYTHON
     # vscode
     hf_vscode_install $PKGS_VSCODE
@@ -283,6 +284,7 @@ elif test -n "$IS_WINDOWS"; then
     if test -n "$IS_WINDOWS_MSYS"; then
       hf_msys_install $PKGS_PYTHON_MSYS
     elif test -n "$IS_WINDOWS_GITBASH"; then
+      hf_python_upgrade
       hf_python_install $PKGS_PYTHON
     fi
     # vscode
@@ -2148,7 +2150,7 @@ function hf_python_list_installed() {
 function hf_python_upgrade() {
   pip install --upgrade pip 2>/dev/null
   local outdated=$(pip list --outdated --format=freeze 2>/dev/null | grep -v '^\-e' | cut -d = -f 1)
-  if test $outdated; then pip install --upgrade $outdated 2>/dev/null; fi
+  if test "$outdated"; then pip install --upgrade $outdated 2>/dev/null; fi
 }
 
 function hf_python_install() {
