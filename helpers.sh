@@ -1608,44 +1608,47 @@ function hf_mount_devices_list_tree() {
 # ---------------------------------------
 # network funcs
 # ---------------------------------------
+if $IS_LINUX; then
 
-function hf_network_wait_for_conectivity() {
-  watch -g -n 1 ping -c 1 google.com
-}
+  function hf_network_gateways() {
+    ip r
+  }
 
-function hf_network_ports() {
-  netstat -a -n -o
-}
+  function hf_network_wait_for_conectivity() {
+    watch -g -n 1 ping -c 1 google.com
+  }
 
-function hf_network_ports_list() {
-  if $IS_WINDOWS; then
-    hf_log_not_implemented_return
-  fi
-  lsof -i
-}
+  function hf_network_ports() {
+    netstat -a -n -o
+  }
 
-function hf_network_ports_list_one() {
-  if $IS_WINDOWS; then
-    hf_log_not_implemented_return
-  fi
-  : ${1?"Usage: ${FUNCNAME[0]} <port>"}
-  sudo lsof -i:$1
-}
+  function hf_network_ports_list() {
+    lsof -i
+  }
 
-function hf_network_ports_kill_using() {
-  if $IS_WINDOWS; then
-    hf_log_not_implemented_return
-  fi
-  : ${1?"Usage: ${FUNCNAME[0]} <port>"}
-  pid=$(sudo lsof -t -i:$1)
-  if test -n "$pid"; then
-    sudo kill -9 "$pid"
-  fi
-}
+  function hf_network_ports_kill_using() {
+    : ${1?"Usage: ${FUNCNAME[0]} <port>"}
+    pid=$(sudo lsof -t -i:$1)
+    if test -n "$pid"; then
+      sudo kill -9 "$pid"
+    fi
+  }
 
-function hf_network_domain_info() {
-  whois $1
-}
+  function hf_network_ports_list_one() {
+    : ${1?"Usage: ${FUNCNAME[0]} <port>"}
+    sudo lsof -i:$1
+  }
+
+  function hf_network_arp_scan() {
+    sudo arp-scan --localnet
+  }
+
+  function hf_network_arp_scan_for_interface() {
+    : ${1?"Usage: ${FUNCNAME[0]} <network_interface>"}
+    sudo arp-scan --localnet --interface=$1
+  }
+
+fi
 
 function hf_network_ip() {
   if $IS_WINDOWS; then
@@ -1653,15 +1656,6 @@ function hf_network_ip() {
   else
     echo "$(hostname -I | cut -d' ' -f1)"
   fi
-}
-
-function hf_network_arp_scan() {
-  sudo arp-scan --localnet
-}
-
-function hf_network_arp_scan_for_interface() {
-  : ${1?"Usage: ${FUNCNAME[0]} <network_interface>"}
-  sudo arp-scan --localnet --interface=$1
 }
 
 # ---------------------------------------
@@ -2295,7 +2289,6 @@ function hf_lxc_login_as_ubuntu_user() {
   : ${2?"Usage: ${FUNCNAME[0]} <lxc_name>"}
   lxc exec $1 -- sudo --user ubuntu --login
 }
-
 
 # ---------------------------------------
 # install_linux
