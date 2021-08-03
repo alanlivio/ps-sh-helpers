@@ -4,24 +4,29 @@
 # OS vars
 # ---------------------------------------
 
+IS_MAC=false
+IS_LINUX=false
+IS_WINDOWS=false
+IS_WINDOWS_WSL=false
+IS_WINDOWS_GITBASH=false
 case "$(uname -s)" in
 Darwin)
-  IS_MAC=1
+  IS_MAC=true
   ;;
 Linux)
   if [[ $(uname -r) == *"icrosoft"* ]]; then
-    IS_WINDOWS=1
-    IS_WINDOWS_WSL=1
+    IS_WINDOWS=true
+    IS_WINDOWS_WSL=true
   else
-    IS_LINUX=1
+    IS_LINUX=true
   fi
   ;;
 CYGWIN* | MINGW* | MSYS*)
-  IS_WINDOWS=1
+  IS_WINDOWS=true
   if type pacman &>/dev/null; then
-    IS_WINDOWS_MSYS=1
+    IS_WINDOWS_MSYS=true
   else
-    IS_WINDOWS_GITBASH=1
+    IS_WINDOWS_GITBASH=true
   fi
   ;;
 esac
@@ -105,14 +110,14 @@ alias hf_test_arg1_then_return='if test -z "$1"; then return; fi'
 # path alias
 # ---------------------------------------
 
-if test -n "$IS_WINDOWS_WSL"; then
+if $IS_WINDOWS_WSL; then
   # fix writting permissions
   if [[ "$(umask)" = "0000" ]]; then
     umask 0022
   fi
   alias unixpath='wslpath'
   alias winpath='wslpath -w'
-elif test -n "$IS_WINDOWS"; then
+elif $IS_WINDOWS; then
   alias unixpath='cygpath'
   alias winpath='cygpath -w'
   # fix mingw tmp
@@ -124,7 +129,7 @@ fi
 # ps funcs
 # ---------------------------------------
 
-if test -n "$IS_WINDOWS"; then
+if $IS_WINDOWS; then
   SCRIPT_PS_WPATH=$(unixpath -w "$SCRIPT_DIR/helpers.ps1")
   function hf_ps_call() {
     powershell.exe -command "& { . $SCRIPT_PS_WPATH; $* }"
@@ -190,7 +195,7 @@ if test $IS_LINUX; then
   }
 fi
 
-if test -n "$IS_WINDOWS"; then
+if $IS_WINDOWS; then
   function hf_setup_wsl() {
     # sudo nopasswd
     hf_user_permissions_sudo_nopasswd
@@ -217,7 +222,7 @@ if test -n "$IS_WINDOWS"; then
   hf_ps_def_func_admin hf_setup_windows
 fi
 
-if test -n "$IS_MAC"; then
+if $IS_MAC; then
   function hf_setup_mac() {
     hf_log_func
     hf_user_permissions_sudo_nopasswd
@@ -239,7 +244,7 @@ fi
 # The following funcs requeres variables with PKGS_ prefix.
 # Such variables can be configured in .bashrc or helpers-cfg.sh.
 
-if test -n "$IS_LINUX"; then
+if $IS_LINUX; then
   function hf_update_clean_gnome() {
     # snap
     hf_snap_install $PKGS_SNAP
@@ -259,7 +264,7 @@ if test -n "$IS_LINUX"; then
     # cleanup
     hf_home_clean_unused_dirs
   }
-elif test -n "$IS_WINDOWS"; then
+elif $IS_WINDOWS; then
   function hf_update_clean_windows() {
     # windows
     hf_ps_call_admin "hf_windows_update"
@@ -269,7 +274,7 @@ elif test -n "$IS_WINDOWS"; then
     hf_ps_call_admin "hf_choco_upgrade"
     hf_ps_call_admin "hf_choco_clean"
     # if WSL
-    if test -n "$IS_WINDOWS_WSL"; then
+    if $IS_WINDOWS_WSL; then
       # apt
       hf_apt_upgrade
       hf_apt_install $PKGS_APT
@@ -280,9 +285,9 @@ elif test -n "$IS_WINDOWS"; then
     # python
     # python pkgs in msys require be builded from msys
     # python pkgs in gitbash not
-    if test -n "$IS_WINDOWS_MSYS"; then
+    if $IS_WINDOWS_MSYS; then
       hf_msys_install $PKGS_PYTHON_MSYS
-    elif test -n "$IS_WINDOWS_GITBASH"; then
+    elif $IS_WINDOWS_GITBASH; then
       hf_python_upgrade
       hf_python_install $PKGS_PYTHON
     fi
@@ -293,7 +298,7 @@ elif test -n "$IS_WINDOWS"; then
     hf_ps_call hf_home_hide_dotfiles
     hf_ps_call hf_explorer_clean_unused_shortcuts
   }
-elif test -n "$IS_MAC"; then
+elif $IS_MAC; then
   function hf_update_clean_mac() {
     # brew
     hf_brew_install $PKGS_BREW
@@ -306,11 +311,11 @@ elif test -n "$IS_MAC"; then
 fi
 
 function hf_update_clean() {
-  if test -n "$IS_LINUX"; then
+  if $IS_LINUX; then
     hf_update_clean_gnome
-  elif test -n "$IS_WINDOWS"; then
+  elif $IS_WINDOWS; then
     hf_update_clean_windows
-  elif test -n "$IS_MAC"; then
+  elif $IS_MAC; then
     hf_update_clean_mac
   fi
 }
@@ -319,11 +324,11 @@ function hf_update_clean() {
 # alias
 # ---------------------------------------
 
-if test -n "$IS_LINUX"; then
+if $IS_LINUX; then
   alias ls='ls --color=auto'
   alias grep='grep --color=auto'
   alias start='xdg-open'
-elif test -n "$IS_WINDOWS"; then
+elif $IS_WINDOWS; then
   # hide windows user files when ls home
   alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
   alias grep='grep --color=auto'
@@ -337,7 +342,7 @@ fi
 # alias code
 # ---------------------------------------
 
-if test -n "$IS_WINDOWS_WSL"; then
+if $IS_WINDOWS_WSL; then
   # this is used for hf_vscode_install
   function codewin() {
     cmd.exe /c 'C:\Program Files\Microsoft VS Code\bin\code' $@
@@ -345,7 +350,7 @@ if test -n "$IS_WINDOWS_WSL"; then
   function codewin_folder() {
     cmd.exe /c 'C:\Program Files\Microsoft VS Code\bin\code' $(winpath $1)
   }
-elif test -n "$IS_MAC"; then
+elif $IS_MAC; then
   alias code='/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code'
 fi
 
@@ -353,7 +358,7 @@ fi
 # wsl x_pulseaudio
 # ---------------------------------------
 
-if test -n "$IS_WINDOWS_WSL"; then
+if $IS_WINDOWS_WSL; then
   function hf_wsl_x_pulseaudio_enable() {
     hf_ps_call_admin "hf_choco_install pulseaudio vcxsrv"
 
@@ -395,7 +400,7 @@ fi
 # wsl ssh
 # ---------------------------------------
 
-if test -n "$IS_WINDOWS_WSL"; then
+if $IS_WINDOWS_WSL; then
   function hf_wsl_ssh_config() {
     sudo apt install -y openssh-server
     # https://github.com/JetBrains/clion-wsl/blob/master/ubuntu_setup_env.sh
@@ -433,11 +438,11 @@ function hf_config_func() {
   : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
   hf_log_func
   declare -a files_array
-  if test -n "$IS_LINUX"; then
+  if $IS_LINUX; then
     files_array=($BKP_FILES $BKP_FILES_LINUX)
-  elif test -n "$IS_WINDOWS"; then
+  elif $IS_WINDOWS; then
     files_array=($BKP_FILES $BKP_FILES_WIN)
-  elif test -n "$IS_MAC"; then
+  elif $IS_MAC; then
     files_array=($BKP_FILES $BKP_FILES_MAC)
   fi
   for ((i = 0; i < ${#files_array[@]}; i = i + 2)); do
@@ -488,7 +493,7 @@ function hf_profile_install() {
 
 function hf_profile_reload() {
   hf_log_func
-  if test -n "$IS_WINDOWS"; then
+  if $IS_WINDOWS; then
     # for WSL
     source $HOME/.profile
   else
@@ -500,7 +505,7 @@ function hf_profile_reload() {
 # msys funcs
 # ---------------------------------------
 
-if test -n "$IS_WINDOWS_MSYS"; then
+if $IS_WINDOWS_MSYS; then
   function hf_msys_admin_bash() {
     hf_log_func
     MSYS_CMD="C:\\msys64\\msys2_shell.cmd -defterm -mingw64 -no-start -use-full-path -here"
@@ -557,7 +562,7 @@ fi
 # macos-only funcs
 # ---------------------------------------
 
-if test -n "$IS_MAC"; then
+if $IS_MAC; then
   function hf_mac_install_brew() {
     hf_log_func
     sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -1280,7 +1285,7 @@ function hf_folder_files_sizes() {
 # latex_win funcs
 # ---------------------------------------
 
-if test -n "$IS_WINDOWS"; then
+if $IS_WINDOWS; then
   function hf_install_latex_win() {
     gsudo choco install texlive
   }
@@ -1407,9 +1412,9 @@ function hf_cmake_check() {
 }
 
 function hf_cmake_install() {
-  if test -n "$IS_WINDOWS_MSYS"; then
+  if $IS_WINDOWS_MSYS; then
     cmake --install . --prefix /mingw64
-  elif test -n "$IS_LINUX"; then
+  elif $IS_LINUX; then
     sudo cmake --install . --prefix /usr
   else
     sudo cmake --install .
@@ -1608,14 +1613,14 @@ function hf_network_ports() {
 }
 
 function hf_network_ports_list() {
-  if test -n "$IS_WINDOWS"; then
+  if $IS_WINDOWS; then
     hf_log_not_implemented_return
   fi
   lsof -i
 }
 
 function hf_network_ports_list_one() {
-  if test -n "$IS_WINDOWS"; then
+  if $IS_WINDOWS; then
     hf_log_not_implemented_return
   fi
   : ${1?"Usage: ${FUNCNAME[0]} <port>"}
@@ -1623,7 +1628,7 @@ function hf_network_ports_list_one() {
 }
 
 function hf_network_ports_kill_using() {
-  if test -n "$IS_WINDOWS"; then
+  if $IS_WINDOWS; then
     hf_log_not_implemented_return
   fi
   : ${1?"Usage: ${FUNCNAME[0]} <port>"}
@@ -1638,7 +1643,7 @@ function hf_network_domain_info() {
 }
 
 function hf_network_ip() {
-  if test -n "$IS_WINDOWS"; then
+  if $IS_WINDOWS; then
     ipconfig | grep "IPv4 Address" | awk 'NR==1{print $NF}'
   else
     echo "$(hostname -I | cut -d' ' -f1)"
@@ -1844,7 +1849,7 @@ function hf_vscode_diff() {
 function hf_vscode_install() {
   hf_log_func
   hf_test_noargs_then_return
-  local codetmp=$(if test -n "$IS_WINDOWS_WSL"; then echo "codewin"; else echo "code"; fi)
+  local codetmp=$(if $IS_WINDOWS_WSL; then echo "codewin"; else echo "code"; fi)
   local pkgs_to_install=""
   local pkgs_installed_tmp_file="/tmp/code-list-extensions"
   $codetmp --list-extensions >$pkgs_installed_tmp_file
@@ -1866,7 +1871,7 @@ function hf_vscode_install() {
 # service
 # ---------------------------------------
 
-if test -n "$IS_LINUX"; then
+if $IS_LINUX; then
   function hf_services_initd_list() {
     service --status-all
   }
@@ -1902,7 +1907,7 @@ fi
 # gnome
 # ---------------------------------------
 
-if test -n "$IS_LINUX"; then
+if $IS_LINUX; then
   function hf_gnome_execute_desktop_file() {
     awk '/^Exec=/ {sub("^Exec=", ""); gsub(" ?%[cDdFfikmNnUuv]", ""); exit system($0)}' $1
   }
@@ -2244,7 +2249,7 @@ function hf_docker_service_start() {
 # install_linux
 # ---------------------------------------
 
-if test -n "$IS_LINUX"; then
+if $IS_LINUX; then
   function hf_install_linux_docker() {
     hf_log_funch
     sudo apt-get install apt-transport-https ca-certificates curl gnupg lsb-release
@@ -2324,7 +2329,7 @@ fi
 # install_windows
 # ---------------------------------------
 
-if test -n "$IS_WINDOWS"; then
+if $IS_WINDOWS; then
   function hf_install_windows_android_flutter() {
     hf_log_func
     OPT_DST="$HELPERS_OPT/win/"
@@ -2369,7 +2374,7 @@ fi
 # ubuntu
 # ---------------------------------------
 
-if test -n "$IS_LINUX"; then
+if $IS_LINUX; then
   function hf_ubuntu_distro_upgrade() {
     sudo sed -i 's/Prompt=lts/Prompt=normal/g' /etc/update-manager/release-upgrades
     sudo apt update && sudo apt dist-upgrade
@@ -2381,7 +2386,7 @@ fi
 # install_gnome
 # ---------------------------------------
 
-if test -n "$IS_LINUX"; then
+if $IS_LINUX; then
   function hf_install_gnome_bluetooth_audio() {
     sudo apt nstall pulseaudio pulseaudio-utils pavucontrol pulseaudio-module-bluetooth rtbth-dkms
   }
@@ -2836,9 +2841,9 @@ fi
 
 function hf_zotero_sanity() {
   local prefs
-  if test -n "$IS_LINUX"; then
+  if $IS_LINUX; then
     prefs="$HOME/.zotero/zotero/*.default/prefs.js"
-  elif test -n "$IS_WINDOWS"; then
+  elif $IS_WINDOWS; then
     prefs="$HOME/AppData/Roaming/Zotero/Zotero/Profiles/*.default/prefs.js"
   fi
   echo 'user_pref("extensions.zotero.automaticSnapshots", false);' >>$prefs
@@ -2850,9 +2855,9 @@ function hf_zotero_sanity() {
 
 function hf_zotero_onedrive() {
   local prefs
-  if test -n "$IS_LINUX"; then
+  if $IS_LINUX; then
     prefs="$HOME/.zotero/zotero/*.default/prefs.js"
-  elif test -n "$IS_WINDOWS"; then
+  elif $IS_WINDOWS; then
     prefs="$HOME/AppData/Roaming/Zotero/Zotero/Profiles/*.default/prefs.js"
   fi
   echo 'user_pref("extensions.zotero.dataDir", "C:\\Users\\alan\\OneDrive\\Zotero");' >>$prefs
@@ -2897,13 +2902,13 @@ HF_CLEAN_DIRS=(
   'Pictures'
 )
 
-if test -n "$IS_LINUX"; then
+if $IS_LINUX; then
   HF_CLEAN_DIRS+=(
     'Documents' # sensible data in Windows
   )
 fi
 
-if test -n "$IS_WINDOWS"; then
+if $IS_WINDOWS; then
   HF_CLEAN_DIRS+=(
     'Application Data'
     'Cookies'
@@ -2931,14 +2936,14 @@ function hf_home_clean_unused_dirs() {
   hf_log_func
   for i in "${HF_CLEAN_DIRS[@]}"; do
     if test -d "$HOME/$i"; then
-      if test -n "$IS_MAC"; then
+      if $IS_MAC; then
         sudo rm -rf "$HOME/${i:?}" >/dev/null
       else
         rm -rf "$HOME/${i:?}" >/dev/null
       fi
     elif test -f "$HOME/$i"; then
       echo remove $i
-      if test -n "$IS_MAC"; then
+      if $IS_MAC; then
         sudo rm -f "$HOME/$i" >/dev/null
       else
         rm -f "$HOME/${i:?}" >/dev/null
