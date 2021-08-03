@@ -2167,6 +2167,9 @@ function hf_python_list_installed() {
 
 function hf_python_upgrade() {
   pip install --upgrade pip 2>/dev/null
+  # TODO: in gitbash, fix "Defaulting to user installation because normal site-packages is not writeable"
+  # in gitbash, fix  "WARNING: Ignoring invalid distribution"
+  if $IS_WINDOWS_GITBASH; then gsudo rm -rf /c/Python39/Lib/site-packages/~*; fi
   local outdated=$(pip list --outdated --format=freeze 2>/dev/null | grep -v '^\-e' | cut -d = -f 1)
   if test "$outdated"; then pip install --upgrade $outdated 2>/dev/null; fi
 }
