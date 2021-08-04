@@ -8,6 +8,7 @@ IS_MAC=false
 IS_LINUX=false
 IS_WINDOWS=false
 IS_WINDOWS_WSL=false
+IS_WINDOWS_MSYS=false
 IS_WINDOWS_GITBASH=false
 case "$(uname -s)" in
 Darwin)
@@ -273,7 +274,7 @@ elif $IS_WINDOWS; then
   function hf_update_clean_windows() {
     # windows
     hf_ps_call_admin "hf_windows_update"
-    hf_ps_call_admin "hf_winget_install $PKGS_WINGET"
+    hf_ps_call_admin "hf_winget_install \'$PKGS_WINGET\'"
     hf_ps_call_admin "hf_appx_install $PKGS_APPX"
     hf_ps_call_admin "hf_choco_install $PKGS_CHOCO"
     hf_ps_call_admin "hf_choco_upgrade"
@@ -289,7 +290,6 @@ elif $IS_WINDOWS; then
     fi
     # python
     # python pkgs in msys require be builded from msys
-    # python pkgs in gitbash not
     if $IS_WINDOWS_MSYS; then
       hf_msys_install $PKGS_PYTHON_MSYS
     elif $IS_WINDOWS_GITBASH; then
@@ -2165,6 +2165,7 @@ function hf_python_list_installed() {
 }
 
 function hf_python_upgrade() {
+  hf_log_func
   pip install --upgrade pip 2>/dev/null
   # TODO: in gitbash, fix "Defaulting to user installation because normal site-packages is not writeable"
   # in gitbash, fix  "WARNING: Ignoring invalid distribution"
@@ -2272,6 +2273,11 @@ function hf_lxc_profile_assign() {
 function hf_lxc_launch() {
   : ${2?"Usage: ${FUNCNAME[0]} <image_name> <lxc_name>"}
   lxc launch $1 $2
+}
+
+function hf_lxc_pull_file() {
+  : ${2?"Usage: ${FUNCNAME[0]} <lxc_name> <lxc_file>"}
+  lxc file pull $1/$2 .
 }
 
 function hf_lxc_share_dir_home_to_home() {

@@ -833,7 +833,18 @@ function hf_explorer_clean_unused_shortcuts() {
 # winget
 # ---------------------------------------
 
+function hf_winget_installed() {
+  $tmpfile = New-TemporaryFile
+  winget export $tmpfile | Out-null
+  $pkgs = ((Get-Content $tmpfile | ConvertFrom-Json).Sources.Packages | ForEach-Object { $_.PackageIdentifier }) -join " "
+  return $pkgs
+}
+
 function hf_winget_list_installed() {
+  $(hf_winget_installed).Split()
+}
+
+function hf_winget_list_installed_verbose() {
   winget list
 }
 
@@ -849,19 +860,17 @@ function hf_winget_install() {
   Invoke-Expression $hf_log_func
   $pkgs_to_install = ""
   # get installed pkgs
-  $tmpfile = New-TemporaryFile
-  winget export $tmpfile | Out-null
-  $pkgs = ((Get-Content $tmpfile | ConvertFrom-Json).Sources.Packages | ForEach-Object { Write-Output $_.PackageIdentifier }) -join " "
+  $pkgs = $(hf_winget_installed)
   # select to install
   foreach ($name in $args) {
-    if (-not ([string]::IsNullOrEmpty("$name")) -and ($pkgs -notmatch "$name" )) {
+    if (-not ([string]::IsNullOrEmpty("$name")) -and (-not $pkgs.Contains("$name") )) {
       $pkgs_to_install = "$pkgs_to_install $name"
     }
   }
   if ($pkgs_to_install) {
     hf_log_msg "pkgs_to_install=$pkgs_to_install"
     foreach ($pkg in $pkgs_to_install) {
-      Invoke-Expression "winget install --silent $pkg"
+      Invoke-Expression "gsudo winget install --silent $pkg"
     }
   }
 }
@@ -870,12 +879,10 @@ function hf_winget_uninstall() {
   Invoke-Expression $hf_log_func
   $pkgs_to_uninstall = ""
   # get installed pkgs
-  $tmpfile = New-TemporaryFile
-  winget export $tmpfile | Out-null
-  $pkgs = ((Get-Content $tmpfile | ConvertFrom-Json).Sources.Packages | ForEach-Object { Write-Output $_.PackageIdentifier }) -join " "
+  $pkgs = $(hf_winget_installed)
   # select to uninstall
   foreach ($name in $args) {
-    if (-not ([string]::IsNullOrEmpty("$name")) -and ($pkgs -match "$name" )) {
+    if (-not ([string]::IsNullOrEmpty("$name")) -and ($pkgs.Contains("$name") )) {
       $pkgs_to_uninstall = "$pkgs_to_uninstall $name"
     }
   }
@@ -899,7 +906,7 @@ function hf_choco_install() {
   foreach ($name in $args) {
     $pkgs_to_install = ""
     $pkgs = choco list -l
-    if (!($pkgs -Match "$name")) {
+    if (-not ($pkgs.Contains("$name"))) {
       $pkgs_to_install = "$pkgs_to_install $name"
     }
   }
