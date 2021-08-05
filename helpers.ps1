@@ -222,8 +222,7 @@ function hf_env_refresh() {
 }
 
 function hf_env_add($name, $value) {
-  hf_elevate_if_not_admin
-  [Environment]::SetEnvironmentVariable("$name", "$value", 'Machine')
+  [System.Environment]::SetEnvironmentVariable("$name", "$value", 'Machine')
 }
 
 # ---------------------------------------
@@ -237,11 +236,11 @@ function hf_path() {
 
 function hf_path_add($addPath) {
   if (Test-Path $addPath) {
-    $currentpath = [Environment]::GetEnvironmentVariable('path', 'Machine')
+    $currentpath = [System.Environment]::GetEnvironmentVariable('PATH', 'Machine')
     $regexAddPath = [regex]::Escape($addPath)
     $arrPath = $currentpath -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
     $newpath = ($arrPath + $addPath) -join ';'
-    hf_path_add "PATH" $newpath
+    hf_env_add 'PATH' $newpath
     hf_env_refresh
   }
   else {

@@ -1179,7 +1179,6 @@ if type adb &>/dev/null; then
     #adb shell am start -a android.intent.action.MAIN -n com.android.browser/.BrowserActivity
     #adb shell am start -a android.intent.action.MAIN -n org.libsdl.app/org.libsdl.app.SDLActivity
     : ${1?"Usage: ${FUNCNAME[0]} <activity>"}
-
     adb shell am start -a android.intent.action.MAIN -n "$1"
   }
 
@@ -2605,11 +2604,15 @@ fi
 # env
 # ---------------------------------------
 
-function hf_env_add() {
-  if test $# -eq 2 && ! grep -q "export $1=$2" $HOME/.bashrc; then
-    echo "export $1=$2" >>$HOME/.bashrc
-  fi
-}
+if $IS_LINUX; then
+  function hf_env_add() {
+    if test $# -eq 2 && ! grep -q "export $1=$2" $HOME/.bashrc; then
+      echo "export $1=$2" >>$HOME/.bashrc
+    fi
+  }
+elif $IS_WINDOWS; then
+  hf_ps_def_func_admin hf_env_add
+fi
 
 # ---------------------------------------
 # path
@@ -2619,11 +2622,18 @@ function hf_path() {
   echo "$PATH"
 }
 
-function hf_path_add() {
-  if [[ ! "$PATH" =~ (^|:)"$1"(|/)(:|$) ]]; then
-    echo "export PATH=\$PATH:$1" >>$HOME/.bashrc
-  fi
-}
+if $IS_LINUX; then
+  function hf_path_add() {
+    if [[ ! "$PATH" =~ (^|:)"$1"(|/)(:|$) ]]; then
+      echo "export PATH=\$PATH:$1" >>$HOME/.bashrc
+    fi
+  }
+elif $IS_WINDOWS; then
+  function hf_path_add() {
+    local dir=$(winpath $1)
+    hf_ps_call "hf_path_add $dir"
+  }
+fi
 
 # ---------------------------------------
 # apt
