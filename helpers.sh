@@ -55,8 +55,11 @@ if test -f $HELPERS_CFG; then
 fi
 
 # if $HELPERS_CFG not defined use $HOME/opt
-if test -z "$HELPERS_OPT"; then
-  HELPERS_OPT="$HOME/opt"
+if test -z "$HELPERS_OPT_WIN"; then
+  HELPERS_OPT_WIN="/c/opt"
+fi
+if test -z "$HELPERS_OPT_LINUX"; then
+  HELPERS_OPT_LINUX="/opt"
 fi
 
 # if $HELPERS_DEV not defined use $HOME/dev
@@ -2298,6 +2301,12 @@ function hf_lxc_login_as_ubuntu_user() {
 }
 
 # ---------------------------------------
+# install ver
+# ---------------------------------------
+
+HF_FLUTTER_VER="2.2.3"
+
+# ---------------------------------------
 # install_linux
 # ---------------------------------------
 
@@ -2344,14 +2353,17 @@ if $IS_LINUX; then
     fi
   }
 
-  function hf_install_linux_android_flutter() {
+  function hf_install_linux_androidcmd_flutter() {
     hf_log_func
-    OPT_DST="$HELPERS_OPT/linux"
+
+    # create opt
+    local OPT_DST="$HELPERS_OPT_LINUX"
+    hf_folder_create_if_not_exist $OPT_DST
 
     # android cmd and sdk
-    ANDROID_SDK_DIR="$OPT_DST/android"
-    ANDROID_CMD_DIR="$ANDROID_SDK_DIR/cmdline-tools"
-    ANDROID_CMD_URL="https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip"
+    local ANDROID_SDK_DIR="$OPT_DST/android"
+    local ANDROID_CMD_DIR="$ANDROID_SDK_DIR/cmdline-tools"
+    local ANDROID_CMD_URL="https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip"
     if ! test -d $ANDROID_CMD_DIR; then
       hf_folder_create_if_not_exist $ANDROID_CMD_DIR
       hf_compression_extract_from_url $ANDROID_CMD_URL $ANDROID_SDK_DIR
@@ -2367,9 +2379,10 @@ if $IS_LINUX; then
     fi
 
     # flutter
-    FLUTTER_SDK_DIR="$OPT_DST/flutter"
-    FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_1.22.6-stable.tar.xz"
+    local FLUTTER_SDK_DIR="$OPT_DST/flutter"
+    local FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_${HF_FLUTTER_VER}-stable.tar.xz"
     if ! test -d $FLUTTER_SDK_DIR; then
+      # OPT_DST beacuase zip extract the flutter dir
       hf_compression_extract_from_url $FLUTTER_SDK_URL $OPT_DST
       if test $? != 0; then hf_log_error "wget failed." && return 1; fi
       hf_path_add $FLUTTER_SDK_DIR/bin
@@ -2382,14 +2395,17 @@ fi
 # ---------------------------------------
 
 if $IS_WINDOWS; then
-  function hf_install_windows_android_flutter() {
+  function hf_install_windows_androidcmd_flutter() {
     hf_log_func
-    OPT_DST="$HELPERS_OPT/win/"
+
+    # create opt
+    local OPT_DST="$HELPERS_OPT_WIN/"
+    hf_folder_create_if_not_exist $OPT_DST
 
     # android cmd and sdk
-    ANDROID_SDK_DIR="$OPT_DST/android"
-    ANDROID_CMD_DIR="$ANDROID_SDK_DIR/cmdline-tools"
-    ANDROID_CMD_URL="https://dl.google.com/android/repository/commandlinetools-win-6858069_latest.zip"
+    local ANDROID_SDK_DIR="$OPT_DST/android"
+    local ANDROID_CMD_DIR="$ANDROID_SDK_DIR/cmdline-tools"
+    local ANDROID_CMD_URL="https://dl.google.com/android/repository/commandlinetools-win-6858069_latest.zip"
     if ! test -d $ANDROID_CMD_DIR; then
       hf_compression_extract_from_url $ANDROID_CMD_URL $ANDROID_SDK_DIR
       if test $? != 0; then hf_log_error "wget failed." && return 1; fi
@@ -2404,10 +2420,11 @@ if $IS_WINDOWS; then
     fi
 
     # flutter
-    FLUTTER_SDK_DIR="$OPT_DST/flutter"
-    FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_1.22.6-stable.tar.xz"
+    local FLUTTER_SDK_DIR="$OPT_DST/flutter"
+    local FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_${HF_FLUTTER_VER}-stable.zip"
     if ! test -d $FLUTTER_SDK_DIR; then
-      hf_compression_extract_from_url $FLUTTER_SDK_URL $HELPERS_OPT
+      # OPT_DST beacuase zip extract the flutter dir
+      hf_compression_extract_from_url $FLUTTER_SDK_URL $OPT_DST
       if test $? != 0; then hf_log_error "wget failed." && return 1; fi
       hf_ps_call_admin "hf_path_add $(winpath $FLUTTER_SDK_DIR/bin)"
     fi
