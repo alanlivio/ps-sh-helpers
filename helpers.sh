@@ -101,14 +101,14 @@ function hf_log_try() {
 }
 
 # ---------------------------------------
-# test funcs
+# alias for test args
 # ---------------------------------------
 
 alias hf_test_noargs_then_return='if test $# -eq 0; then return; fi'
 alias hf_test_arg1_then_return='if test -z "$1"; then return; fi'
 
 # ---------------------------------------
-# path alias
+# alias for path
 # ---------------------------------------
 
 if $IS_WINDOWS_WSL; then
@@ -124,6 +124,42 @@ elif $IS_WINDOWS; then
   # fix mingw tmp
   unset temp
   unset tmp
+fi
+
+# ---------------------------------------
+# alias for code
+# ---------------------------------------
+
+if $IS_WINDOWS_WSL; then
+  # this is used for hf_vscode_install
+  function codewin() {
+    cmd.exe /c 'C:\Program Files\Microsoft VS Code\bin\code' $@
+  }
+  function codewin_folder() {
+    cmd.exe /c 'C:\Program Files\Microsoft VS Code\bin\code' $(winpath $1)
+  }
+elif $IS_MAC; then
+  alias code='/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code'
+fi
+
+# ---------------------------------------
+# alias fot others
+# ---------------------------------------
+
+if $IS_LINUX; then
+  alias ls='ls --color=auto'
+  alias grep='grep --color=auto'
+  alias start='xdg-open'
+elif $IS_WINDOWS; then
+  # hide windows user files when ls home
+  alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
+  alias grep='grep --color=auto'
+  alias start="cmd.exe /c start"
+  alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
+  alias gsudo='/c/Program\ Files\ \(x86\)/gsudo/gsudo.exe'
+  alias choco='/c/ProgramData/chocolatey/bin/choco.exe'
+  # whereis
+  if $IS_WINDOWS_GITBASH; then alias whereis='where'; fi
 fi
 
 # ---------------------------------------
@@ -324,40 +360,6 @@ function hf_update_clean() {
     hf_update_clean_mac
   fi
 }
-
-# ---------------------------------------
-# alias
-# ---------------------------------------
-
-if $IS_LINUX; then
-  alias ls='ls --color=auto'
-  alias grep='grep --color=auto'
-  alias start='xdg-open'
-elif $IS_WINDOWS; then
-  # hide windows user files when ls home
-  alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
-  alias grep='grep --color=auto'
-  alias start="cmd.exe /c start"
-  alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
-  alias gsudo='/c/Program\ Files\ \(x86\)/gsudo/gsudo.exe'
-  alias choco='/c/ProgramData/chocolatey/bin/choco.exe'
-fi
-
-# ---------------------------------------
-# alias code
-# ---------------------------------------
-
-if $IS_WINDOWS_WSL; then
-  # this is used for hf_vscode_install
-  function codewin() {
-    cmd.exe /c 'C:\Program Files\Microsoft VS Code\bin\code' $@
-  }
-  function codewin_folder() {
-    cmd.exe /c 'C:\Program Files\Microsoft VS Code\bin\code' $(winpath $1)
-  }
-elif $IS_MAC; then
-  alias code='/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code'
-fi
 
 # ---------------------------------------
 # wsl x_pulseaudio
