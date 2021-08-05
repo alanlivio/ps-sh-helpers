@@ -29,10 +29,14 @@ $ProgressPreference = "SilentlyContinue"
 # ---------------------------------------
 # alias
 # ---------------------------------------
-Set-Alias -Name grep -Value Select-String
+Set-Alias -Name grep -Value findstr
 Set-Alias -Name msysbash -Value C:\msys64\usr\bin\bash.exe # TODO: replace by $MSYS_BASH 
 Set-Alias -Name env -Value hf_env
 Set-Alias -Name trash -Value hf_explorer_open_trash
+
+function whereis ($command) {
+  $(get-command $command).Source
+}
 
 # ---------------------------------------
 # log
@@ -218,7 +222,8 @@ function hf_env_refresh() {
 }
 
 function hf_env_add($name, $value) {
-  gsudo [Environment]::SetEnvironmentVariable($name, $value, 'Machine')
+  hf_elevate_if_not_admin
+  [Environment]::SetEnvironmentVariable("$name", "$value", 'Machine')
 }
 
 # ---------------------------------------
@@ -236,7 +241,7 @@ function hf_path_add($addPath) {
     $regexAddPath = [regex]::Escape($addPath)
     $arrPath = $currentpath -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
     $newpath = ($arrPath + $addPath) -join ';'
-    [Environment]::SetEnvironmentVariable("path", $newpath, 'Machine')
+    hf_path_add "PATH" $newpath
     hf_env_refresh
   }
   else {
@@ -1160,6 +1165,14 @@ function hf_install_tesseract() {
   if (!(Get-Command 'tesseract.exe' -ea 0)) {
     hf_winget_install tesseract
     hf_path_add 'C:\Program Files\Tesseract-OCR'
+  }
+}
+
+function hf_install_java() {
+  Invoke-Expression $hf_log_func
+  if (!(Get-Command 'java.exe' -ea 0)) {
+    hf_winget_install Microsoft.OpenJDK.16
+    hf_env_add "JAVA_HOME" $(get-command java).Source.replace("\bin\java.exe", "")
   }
 }
 
