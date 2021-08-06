@@ -163,6 +163,7 @@ elif $IS_WINDOWS; then
   alias choco='/c/ProgramData/chocolatey/bin/choco.exe'
   # whereis
   if $IS_WINDOWS_GITBASH; then alias whereis='where'; fi
+  if $IS_WINDOWS_GITBASH; then alias reboot='gsudo shutdown \/r'; fi
 fi
 
 # ---------------------------------------
@@ -313,7 +314,7 @@ elif $IS_WINDOWS; then
   function hf_update_clean_windows() {
     # windows
     hf_ps_call_admin "hf_windows_update"
-    hf_ps_call_admin "hf_winget_install \'$PKGS_WINGET\'"
+    hf_ps_call_admin "hf_winget_install $PKGS_WINGET"
     hf_ps_call_admin "hf_appx_install $PKGS_APPX"
     hf_ps_call_admin "hf_choco_install $PKGS_CHOCO"
     hf_ps_call_admin "hf_choco_upgrade"

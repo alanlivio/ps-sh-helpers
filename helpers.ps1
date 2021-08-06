@@ -1159,6 +1159,14 @@ function hf_install_choco() {
   }
 }
 
+function hf_install_docker() {
+  Invoke-Expression $hf_log_func
+  hf_install_wsl_ubuntu
+  gsudo Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
+  gsudo Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
+  hf_winget_install Docker.DockerDesktop 
+}
+
 function hf_install_tesseract() {
   Invoke-Expression $hf_log_func
   if (!(Get-Command 'tesseract.exe' -ea 0)) {
