@@ -159,7 +159,7 @@ elif $IS_WINDOWS; then
   alias grep='grep --color=auto'
   alias start="cmd.exe /c start"
   alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
-  alias gsudo='/c/Program\ Files\ \(x86\)/gsudo/gsudo.exe'
+  alias sudo='gsudo'
   alias choco='/c/ProgramData/chocolatey/bin/choco.exe'
   # whereis
   if $IS_WINDOWS_GITBASH; then alias whereis='where'; fi
@@ -177,7 +177,7 @@ if $IS_WINDOWS; then
   }
 
   function hf_ps_call_admin() {
-    gsudo powershell.exe -command "& { . $SCRIPT_PS_WPATH;  $* }"
+    sudo powershell.exe -command "& { . $SCRIPT_PS_WPATH;  $* }"
   }
 
   function hf_ps_def_func() {
@@ -375,8 +375,8 @@ if $IS_WINDOWS_WSL; then
 
     # https://wiki.ubuntu.com/WSL#Running_Graphical_Applications
     sudo apt-get install pulseaudio
-    echo -e "load-module module-native-protocol-tcp auth-anonymous=1" | gsudo sudo tee -a $(unixpath C:\\ProgramData\\chocolatey\\lib\\pulseaudio\\tools\\etc\\pulse\\default.pa)
-    echo -e "exit-idle-time = -1" | gsudo sudo tee -a $(unixpath C:\\ProgramData\\chocolatey\\lib\\pulseaudio\\tools\\etc\\pulse\\daemon.conf)
+    echo -e "load-module module-native-protocol-tcp auth-anonymous=1" | sudo "sudo tee -a $(unixpath C:\\ProgramData\\chocolatey\\lib\\pulseaudio\\tools\\etc\\pulse\\default.pa)"
+    echo -e "exit-idle-time = -1" | sudo "sudo tee -a $(unixpath C:\\ProgramData\\chocolatey\\lib\\pulseaudio\\tools\\etc\\pulse\\daemon.conf)"
 
     # configure .profile
     if ! grep -q "PULSE_SERVER" $HOME/.profile; then
@@ -520,7 +520,7 @@ if $IS_WINDOWS_MSYS; then
   function hf_msys_admin_bash() {
     hf_log_func
     MSYS_CMD="C:\\msys64\\msys2_shell.cmd -defterm -mingw64 -no-start -use-full-path -here"
-    gsudo $MSYS_CMD
+    sudo $MSYS_CMD
   }
 
   function hf_msys_search() {
@@ -1297,15 +1297,15 @@ function hf_folder_files_sizes() {
 
 if $IS_WINDOWS; then
   function hf_install_latex_win() {
-    gsudo choco install texlive
+    sudo choco install texlive
   }
 
   function hf_latex_win_texlive_install() {
-    gsudo tlmgr.bat install $@
+    sudo tlmgr.bat install $@
   }
 
   function hf_latex_win_texlive_search_file() {
-    gsudo tlmgr.bat search -file $1
+    sudo tlmgr.bat search -file $1
   }
 
   function hf_latex_win_texlive_list_installed() {
@@ -2156,11 +2156,6 @@ function hf_python_clean() {
   find . -name .ipynb_checkpoints -o -name __pycache__ | xargs -r rm -r
 }
 
-function hf_python_set_python3_default() {
-  sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
-  sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
-}
-
 function hf_python_version() {
   python -V 2>&1 | grep -Po '(?<=Python ).{1}'
 }
@@ -2171,12 +2166,15 @@ function hf_python_list_installed() {
 
 function hf_python_upgrade() {
   hf_log_func
-  pip install --upgrade pip 2>/dev/null
-  # TODO: in gitbash, fix "Defaulting to user installation because normal site-packages is not writeable"
-  # in gitbash, fix  "WARNING: Ignoring invalid distribution"
-  if $IS_WINDOWS_GITBASH; then gsudo rm -rf /c/Python39/Lib/site-packages/~*; fi
+  if $IS_WINDOWS_GITBASH; then
+    # in gitbash, fix  "WARNING: Ignoring invalid distribution"
+    if test -d '/c/Python39/Lib/site-packages/~*'; then sudo rm -r /c/Python39/Lib/site-packages/~*; fi
+  fi
   local outdated=$(pip list --outdated --format=freeze 2>/dev/null | grep -v '^\-e' | cut -d = -f 1)
-  if test "$outdated"; then pip install --upgrade $outdated 2>/dev/null; fi
+  if test "$outdated"; then
+    sudo pip install --upgrade pip 2>/dev/null
+    sudo pip install --upgrade $outdated 2>/dev/null
+  fi
 }
 
 function hf_python_install() {
@@ -2202,11 +2200,12 @@ function hf_python_install() {
   sudo pip install -U "$@" &>/dev/null
 }
 
-function hf_python_clean_home_pkgs() {
-  hf_folder_remove $HOME/local/bin/
-  hf_folder_remove $HOME/.local/lib/python3.5/
-  hf_folder_remove $HOME/.local/lib/python3.7/
-}
+if $IS_LINUX; then
+  function hf_python_set_python3_default() {
+    sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+    sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+  }
+fi
 
 function hf_python_venv_create() {
   deactivate
