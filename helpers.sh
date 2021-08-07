@@ -1292,32 +1292,43 @@ function hf_folder_files_sizes() {
 }
 
 # ---------------------------------------
-# latex_win funcs
+# texlive funcs
 # ---------------------------------------
 
 if $IS_WINDOWS; then
-  function hf_install_latex_win() {
+  function hf_install_texlive() {
     sudo choco install texlive
   }
 
-  function hf_latex_win_texlive_install() {
+  function hf_texlive_install() {
     sudo tlmgr.bat install $@
   }
 
-  function hf_latex_win_texlive_search_file() {
+  function hf_texlive_install_from_saved_lis() {
+    local pkgs_to_install=$(cat $BKP_DOTFILES_DIR/texlive_installed_pkgs.txt | awk '{print substr($2, 1, length($2)-1)}' | tr '\n' ' ')
+    sudo tlmgr.bat install $pkgs_to_install
+  }
+
+  function hf_texlive_search_file() {
     sudo tlmgr.bat search -file $1
   }
 
-  function hf_latex_win_texlive_list_installed() {
+  function hf_texlive_list_installed() {
     tlmgr.bat list --only-installed
   }
 
-  function hf_latex_win_texlive_save_list_installed() {
+  function hf_texlive_save_list_installed() {
     tlmgr.bat list --only-installed >$BKP_DOTFILES_DIR/texlive_installed_pkgs.txt
   }
 
-  function hf_latex_win_texlive_gui_tlmgr() {
+  function hf_texlive_gui_tlmgr() {
     tlshell.exe
+  }
+  
+elif $IS_LINUX; then
+  function hf_texlive_essentials() {
+    local pkgs_to_install+="texlive-base texlive-latex-recommended texlive-latex-extra texlive-bibtex-extra texlive-extra-utils texlive-fonts-extra texlive-xetex texlive-lang-english"
+    hf_apt_install $pkgs_to_install
   }
 fi
 
@@ -1327,11 +1338,6 @@ fi
 
 function hf_latex_clean() {
   rm -rf ./*.aux ./*.dvi ./*.log ./*.lox ./*.out ./*.lol ./*.pdf ./*.synctex.gz ./_minted-* ./*.bbl ./*.blg ./*.lot ./*.lof ./*.toc ./*.lol ./*.fdb_latexmk ./*.fls ./*.bcf
-}
-
-function hf_latex_apt_essentials() {
-  local pkgs_to_install+="texlive-base texlive-latex-recommended texlive-latex-extra texlive-bibtex-extra texlive-extra-utils texlive-fonts-extra texlive-xetex texlive-lang-english"
-  hf_apt_install $pkgs_to_install
 }
 
 function hf_latex_gitignore() {
