@@ -188,6 +188,10 @@ if $IS_WINDOWS; then
     eval "function $1()"'{ echo $*; hf_ps_call_admin '"$1"' $*; }'
   }
 
+  function hf_ps_test_command() {
+    powershell -c '(Get-Command' "$1" '-ea 0) -ne $null'
+  }
+
   # winget funcs from helpers.ps1
   hf_ps_def_func_admin hf_choco_install
   hf_ps_def_func_admin hf_choco_uninstall
@@ -1324,7 +1328,7 @@ if $IS_WINDOWS; then
   function hf_texlive_gui_tlmgr() {
     tlshell.exe
   }
-  
+
 elif $IS_LINUX; then
   function hf_texlive_essentials() {
     local pkgs_to_install+="texlive-base texlive-latex-recommended texlive-latex-extra texlive-bibtex-extra texlive-extra-utils texlive-fonts-extra texlive-xetex texlive-lang-english"

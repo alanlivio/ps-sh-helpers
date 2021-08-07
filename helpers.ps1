@@ -940,6 +940,9 @@ function hf_choco_list_installed() {
 
 function hf_choco_clean() {
   Invoke-Expression $hf_log_func
+  if (!(Get-Command choco-cleaner -ea 0)) {
+    gsudo choco install choco-cleaner
+  }
   gsudo Invoke-Expression "$env:ChocolateyToolsLocation\BCURRAN3\choco-cleaner.ps1" | Out-Null
 }
 
