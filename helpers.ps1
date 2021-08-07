@@ -1178,7 +1178,7 @@ function hf_install_tesseract() {
 function hf_install_java() {
   Invoke-Expression $hf_log_func
   if (!(Get-Command 'java.exe' -ea 0)) {
-    hf_winget_install Microsoft.OpenJDK.16
+    hf_winget_install ojdkbuild.ojdkbuild
     hf_env_add "JAVA_HOME" $(get-command java).Source.replace("\bin\java.exe", "")
   }
 }
