@@ -158,12 +158,13 @@ elif $IS_WINDOWS; then
   alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
   alias grep='grep --color=auto'
   alias start="cmd.exe /c start"
-  alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
-  alias sudo='gsudo'
   alias choco='/c/ProgramData/chocolatey/bin/choco.exe'
-  # whereis
-  if $IS_WINDOWS_GITBASH; then alias whereis='where'; fi
-  if $IS_WINDOWS_GITBASH; then alias reboot='gsudo shutdown \/r'; fi
+  alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
+  alias whereis='where'
+  if $IS_WINDOWS_GITBASH; then
+    alias reboot='gsudo shutdown \/r'
+    alias sudo='gsudo'
+  fi
 fi
 
 # ---------------------------------------
