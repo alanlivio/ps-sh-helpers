@@ -66,16 +66,16 @@ There are other herpers related with install software (`hf_install_`\*), git (`h
 
 ## References
 
-Other github projects were used as inspiration and reference.
+Other github projects were used as inspiration and reference:
 
-bash references:
-
-* https://github.com/mdo/config
-* https://github.com/jenkins-x/dev-env
+* https://github.com/wd5gnr/bashrc
+* https://github.com/martinburger/bash-common-helpers
+* https://github.com/jonathantneal/git-bash-helpers
+* https://github.com/Bash-it/bash-it
 * https://github.com/donnemartin/dev-setup
 * https://github.com/aspiers/shell-env
 
-powershell references:
+particulary for helpers on win:
 
 + https://github.com/adolfintel/Windows10-Privacy
 + https://gist.github.com/alirobe/7f3b34ad89a159e6daa1
