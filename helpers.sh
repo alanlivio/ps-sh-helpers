@@ -1606,19 +1606,11 @@ function hf_rename_to_lowercase_with_dash() {
 }
 
 # ---------------------------------------
-# mount funcs
+# devices funcs
 # ---------------------------------------
 
-function hf_mount_list() {
-  df -h
-}
-
-function hf_mount_devices_list() {
-  sudo blkid
-}
-
-function hf_mount_devices_list_tree() {
-  sudo lsblk -f
+function hf_devices_list() {
+  df -haT
 }
 
 # ---------------------------------------
