@@ -167,7 +167,6 @@ if type ruby &>/dev/null; then source "$BH_DIR/lib/ruby.sh"; fi
 if type snap &>/dev/null; then source "$BH_DIR/lib/snap.sh"; fi
 if type ssh &>/dev/null; then source "$BH_DIR/lib/ssh.sh"; fi
 if type tesseract &>/dev/null; then source "$BH_DIR/lib/tesseract.sh"; fi
-if type tlshell.exe &>/dev/null; then source "$BH_DIR/lib/texlive-win.sh"; fi
 if type wget &>/dev/null; then source "$BH_DIR/lib/wget.sh"; fi
 if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/youtube-dl.sh"; fi
 if type zip tar &>/dev/null; then source "$BH_DIR/lib/compression.sh"; fi
@@ -191,7 +190,8 @@ elif $IS_WINDOWS; then
     source "$BH_DIR/lib/win-wsl.sh"
     source "$BH_DIR/lib/linux.sh"
   elif $IS_WINDOWS_GITBASH; then
-    source "$BH_DIR/lib/win.sh"
+    if type tlshell.exe &>/dev/null; then source "$BH_DIR/lib/win-texlive.sh"; fi
+    source "$BH_DIR/lib/win-gitbash.sh"
   fi
 elif $IS_MAC; then
   source "$BH_DIR/lib/mac.sh"
