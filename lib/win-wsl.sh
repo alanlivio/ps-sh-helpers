@@ -1,5 +1,5 @@
-function hf_wsl_x_pulseaudio_enable() {
-  hf_ps_call_admin "hf_choco_install pulseaudio vcxsrv"
+function bh_wsl_x_pulseaudio_enable() {
+  bh_ps_call_admin "bh_choco_install pulseaudio vcxsrv"
 
   # https://wiki.ubuntu.com/WSL#Running_Graphical_Applications
   sudo apt-get install pulseaudio
@@ -14,18 +14,18 @@ function hf_wsl_x_pulseaudio_enable() {
   fi
 }
 
-function hf_wsl_x_pulseaudio_start() {
-  hf_wsl_x_pulseaudio_kill
+function bh_wsl_x_pulseaudio_start() {
+  bh_wsl_x_pulseaudio_kill
   $(unixpath C:\\ProgramData\\chocolatey\\bin\\pulseaudio.exe) &
   "$(unixpath 'C:\Program Files\VcXsrv\vcxsrv.exe')" :0 -multiwindow -clipboard -wgl -ac -silent-dup-error &
 }
 
-function hf_wsl_x_pulseaudio_stop() {
+function bh_wsl_x_pulseaudio_stop() {
   cmd.exe /c "taskkill /IM pulseaudio.exe /F"
   cmd.exe /c "taskkill /IM vcxsrv.exe /F"
 }
 
-function hf_wsl_fix_snap_lxc() {
+function bh_wsl_fix_snap_lxc() {
   # https://www.youtube.com/watch?v=SLDrvGUksv0
   sudo apt install lxd snap
   sudo apt-get install -yqq daemonize dbus-user-session fontconfig
@@ -34,7 +34,7 @@ function hf_wsl_fix_snap_lxc() {
   sudo snap install lxd
 }
 
-function hf_wsl_ssh_config() {
+function bh_wsl_ssh_config() {
   sudo apt install -y openssh-server
   # https://github.com/JetBrains/clion-wsl/blob/master/ubuntu_setup_env.sh
   SSHD_LISTEN_ADDRESS=127.0.0.1
@@ -55,7 +55,7 @@ function hf_wsl_ssh_config() {
   sudo service ssh --full-restart
 }
 
-function hf_wsl_ssh_start() {
+function bh_wsl_ssh_start() {
   sshd_status=$(service ssh status)
   if [[ $sshd_status = *"is not running"* ]]; then
     sudo service ssh --full-restart

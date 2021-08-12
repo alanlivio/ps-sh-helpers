@@ -1,6 +1,6 @@
-function hf_snap_install() {
-  hf_log_func
-  hf_test_noargs_then_return
+function bh_snap_install() {
+  bh_log_func
+  bh_test_noargs_then_return
 
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""
@@ -18,9 +18,9 @@ function hf_snap_install() {
   fi
 }
 
-function hf_snap_install_classic() {
-  hf_log_func
-  hf_test_noargs_then_return
+function bh_snap_install_classic() {
+  bh_log_func
+  bh_test_noargs_then_return
 
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""
@@ -38,9 +38,9 @@ function hf_snap_install_classic() {
   fi
 }
 
-function hf_snap_install_edge() {
-  hf_log_func
-  hf_test_noargs_then_return
+function bh_snap_install_edge() {
+  bh_log_func
+  bh_test_noargs_then_return
 
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""
@@ -58,11 +58,11 @@ function hf_snap_install_edge() {
   fi
 }
 
-function hf_snap_upgrade() {
-  hf_log_func
+function bh_snap_upgrade() {
+  bh_log_func
   sudo snap refresh 2>/dev/null
 }
 
-function hf_snap_hide_home_folder() {
+function bh_snap_hide_home_folder() {
   echo snap >>$HOME/.hidden
 }

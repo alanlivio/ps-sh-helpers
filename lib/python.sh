@@ -1,17 +1,17 @@
-function hf_python_clean() {
+function bh_python_clean() {
   find . -name .ipynb_checkpoints -o -name __pycache__ | xargs -r rm -r
 }
 
-function hf_python_version() {
+function bh_python_version() {
   python -V 2>&1 | grep -Po '(?<=Python ).{1}'
 }
 
-function hf_python_list_installed() {
+function bh_python_list_installed() {
   pip list
 }
 
-function hf_python_upgrade() {
-  hf_log_func
+function bh_python_upgrade() {
+  bh_log_func
   if $IS_WINDOWS_GITBASH; then
     # in gitbash, fix  "WARNING: Ignoring invalid distribution"
     if test -d '/c/Python39/Lib/site-packages/~*'; then sudo rm -r /c/Python39/Lib/site-packages/~*; fi
@@ -23,9 +23,9 @@ function hf_python_upgrade() {
   fi
 }
 
-function hf_python_install() {
-  hf_log_func
-  hf_test_noargs_then_return
+function bh_python_install() {
+  bh_log_func
+  bh_test_noargs_then_return
 
   local pkgs_to_install=""
   local pkgs_installed=$(pip list --format=columns | cut -d' ' -f1 | grep -v Package | sed '1d' | tr '\n' ' ')
@@ -47,25 +47,25 @@ function hf_python_install() {
 }
 
 if $IS_LINUX; then
-  function hf_python_set_python3_default() {
+  function bh_python_set_python3_default() {
     sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
     sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
   }
 fi
 
-function hf_python_venv_create() {
+function bh_python_venv_create() {
   deactivate
   if test -d ./venv/bin/; then rm -r ./venv; fi
   python3 -m venv venv
   if test requirements.txt; then pip install -r requirements.txt; fi
 }
 
-function hf_python_venv_load() {
+function bh_python_venv_load() {
   deactivate
   source venv/bin/activate
   if test requirements.txt; then pip install -r requirements.txt; fi
 }
 
-function hf_folder_host_http() {
+function bh_folder_host_http() {
   sudo python3 -m http.server 80
 }

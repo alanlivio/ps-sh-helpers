@@ -2,6 +2,6 @@
 # mount
 # ---------------------------------------
 
-function hf_mount_list() {
+function bh_mount_list() {
   df -haT
 }

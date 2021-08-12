@@ -1,8 +1,8 @@
-function hf_folder_sorted_by_size() {
+function bh_folder_sorted_by_size() {
   du -ahd 1 | sort -h
 }
 
-function hf_folder_info() {
+function bh_folder_info() {
   local extensions=$(for f in *.*; do printf "%s\n" "${f##*.}"; done | sort -u)
   echo "size="$(du -sh | awk '{print $1;exit}')
   echo "dirs="$(find . -mindepth 1 -maxdepth 1 -type d | wc -l)

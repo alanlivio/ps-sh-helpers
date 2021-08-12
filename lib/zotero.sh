@@ -2,7 +2,7 @@
 # zotero
 # ---------------------------------------
 
-function hf_zotero_sanity() {
+function bh_zotero_sanity() {
   local prefs
   if $IS_LINUX; then
     prefs="$HOME/.zotero/zotero/*.default/prefs.js"
@@ -16,7 +16,7 @@ function hf_zotero_sanity() {
   echo 'user_pref("extensions.zoteroWinWordIntegration.installed", false);' >>$prefs
 }
 
-function hf_zotero_onedrive() {
+function bh_zotero_onedrive() {
   local prefs
   if $IS_LINUX; then
     prefs="$HOME/.zotero/zotero/*.default/prefs.js"

@@ -1,51 +1,51 @@
-function hf_setup_mac() {
-  hf_log_func
-  hf_user_permissions_sudo_nopasswd
-  hf_mac_install_brew
-  hf_brew_upgrade
+function bh_setup_mac() {
+  bh_log_func
+  bh_user_permissions_sudo_nopasswd
+  bh_mac_install_brew
+  bh_brew_upgrade
   # essentials
   PKGS="git bash $PKGS_ESSENTIALS "
   # python
   PKGS+="python python-pip "
-  hf_brew_install $PKGS
+  bh_brew_install $PKGS
   # install vscode
   sudo brew install --cask visual-studio-code
 }
 
-function hf_update_clean_mac() {
+function bh_update_clean_mac() {
   # brew
-  hf_brew_install $PKGS_BREW
-  hf_brew_upgrade
+  bh_brew_install $PKGS_BREW
+  bh_brew_upgrade
   # python
-  hf_python_install $PKGS_PYTHON
+  bh_python_install $PKGS_PYTHON
   # vscode
-  hf_vscode_install $PKGS_VSCODE
+  bh_vscode_install $PKGS_VSCODE
 }
 
 # ---------------------------------------
 # brew functions
 # ---------------------------------------
 
-function hf_mac_install_brew() {
-  hf_log_func
+function bh_mac_install_brew() {
+  bh_log_func
   sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 }
 
-function hf_brew_install() {
+function bh_brew_install() {
   sudo brew install "$@"
 }
 
-function hf_brew_upgrade() {
+function bh_brew_upgrade() {
   sudo brew update
   sudo brew upgrade
 }
 
 # ---------------------------------------
-# ubuntu-on-mac funcs
+# ubuntu-on-mac helpers
 # ---------------------------------------
 
-function hf_mac_ubuntu_keyboard_fixes() {
-  hf_log_func
+function bh_mac_ubuntu_keyboard_fixes() {
+  bh_log_func
 
   # enable fn keys
   echo -e 2 | sudo tee -a /sys/module/hid_apple/parameters/fnmode
@@ -65,8 +65,8 @@ function hf_mac_ubuntu_keyboard_fixes() {
   fi
 }
 
-function hf_mac_ubuntu_enable_wifi() {
-  hf_log_func
+function bh_mac_ubuntu_enable_wifi() {
+  bh_log_func
   dpkg --status bcmwl-kernel-source &>/dev/null
   if test $? != 0; then
     sudo apt install -y bcmwl-kernel-source

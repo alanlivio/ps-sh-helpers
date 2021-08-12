@@ -1,26 +1,26 @@
-function hf_compression_zip_files() {
+function bh_compression_zip_files() {
   : ${2?"Usage: ${FUNCNAME[0]} <zip-name> <files... >"}
   zipname=$1
   shift
   zip "$zipname" -r "$@"
 }
 
-function hf_compression_zip_folder() {
+function bh_compression_zip_folder() {
   : ${1?"Usage: ${FUNCNAME[0]} <folder-name>"}
   zip "$(basename $1).zip" -r $1
 }
 
-function hf_compression_zip_extract() {
+function bh_compression_zip_extract() {
   : ${1?"Usage: ${FUNCNAME[0]} <zip-name>"}
   unzip $1 -d "${1%%.zip}"
 }
 
-function hf_compression_zip_list() {
+function bh_compression_zip_list() {
   : ${1?"Usage: ${FUNCNAME[0]} <zip-name>"}
   unzip -l $1
 }
 
-function hf_compression_extract() {
+function bh_compression_extract() {
   : ${1?"Usage: ${FUNCNAME[0]} <zip-name> [folder-name]"}
   local EXT=${1##*.}
   local DST
@@ -50,7 +50,7 @@ function hf_compression_extract() {
     unrar x $1 -C $DST
     ;;
   *)
-    hf_log_error "$EXT is not supported compression." && exit
+    bh_log_error "$EXT is not supported compression." && exit
     ;;
   esac
 }

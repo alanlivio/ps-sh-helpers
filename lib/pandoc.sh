@@ -1,8 +1,8 @@
 # ---------------------------------------
-# markdown funcs
+# markdown helpers
 # ---------------------------------------
 
-function hf_markdown_convert_to() {
+function bh_markdown_convert_to() {
   : ${1?"Usage: ${FUNCNAME[0]} <file_name>"}
   pandoc -s $1 -t markdown -o ${1%.*}.md
 }

@@ -1,6 +1,6 @@
-function hf_npm_install() {
-  hf_log_func
-  hf_test_noargs_then_return
+function bh_npm_install() {
+  bh_log_func
+  bh_test_noargs_then_return
 
   local pkgs_to_install=""
   local pkgs_installed=$(npm ls -g --depth 0 2>/dev/null | grep -v UNMET | cut -d' ' -f2 -s | cut -d'@' -f1 | tr '\n' ' ')
