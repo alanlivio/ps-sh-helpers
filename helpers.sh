@@ -149,19 +149,18 @@ fi
 # alias fot others
 # ---------------------------------------
 
+alias grep='grep --color=auto'
 if $IS_LINUX; then
   alias ls='ls --color=auto'
-  alias grep='grep --color=auto'
   alias start='xdg-open'
 elif $IS_WINDOWS; then
   # hide windows user files when ls home
   alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
-  alias grep='grep --color=auto'
   alias start="cmd.exe /c start"
   alias choco='/c/ProgramData/chocolatey/bin/choco.exe'
   alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
-  alias whereis='where'
   if $IS_WINDOWS_GITBASH; then
+    alias whereis='where'
     alias reboot='gsudo shutdown \/r'
     alias sudo='gsudo'
   fi
