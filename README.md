@@ -7,7 +7,7 @@ This project offers cross-plataform (linux, macOS, windows) bash helpers to: con
 To enable bash-helpers (windows git-bash, macOS bash, MSYS bash, WSL bash), you can it as  a [Bash Startup File](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html). To do that, run the followings commands for fetch rc.sh and load at `~/.bashrc` :
 
 ```bash
-  git clone git@github.com:alanlivio/shell-helpers.git ~/.bh
+  git clone https://github.com/alanlivio/bash-helpers.git ~/.bh
     echo "source ~/.bh/rc.sh" >> ~/.bashrc &&\
     source ~/.bashrc
   ```
@@ -52,16 +52,16 @@ To enable bash-helpers (windows git-bash, macOS bash, MSYS bash, WSL bash), you 
 ## Other helpers
 
 There are other herpers related with install software, please see the [libs folder](libs/). Some examplesas are:
-[bh_git_*](libs/git.sh),
-[bh_python_*](libs/git.sh),
-[bh_ffmpeg_*](libs/git.sh),
-[bh_diff_*](libs/git.sh),
-[bh_pdf_*](libs/git.sh),
-[bh_wget_*](libs/git.sh),
-[bh_curl_*](libs/git.sh),
-[bh_cmake_*](libs/git.sh),
-[bh_meson_*](libs/git.sh),
-[bh_code_*](libs/git.sh),
+[bh_git_*](libs/git.sh), 
+[bh_python_*](libs/git.sh), 
+[bh_ffmpeg_*](libs/git.sh), 
+[bh_diff_*](libs/git.sh), 
+[bh_pdf_*](libs/git.sh), 
+[bh_wget_*](libs/git.sh), 
+[bh_curl_*](libs/git.sh), 
+[bh_cmake_*](libs/git.sh), 
+[bh_meson_*](libs/git.sh), 
+[bh_code_*](libs/git.sh), 
 [bh_compress_*](libs/compression.sh), etc.
   
 
