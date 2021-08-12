@@ -27,7 +27,7 @@ To enable helpers in powershell (Windows), the shell-helpers can be used as a [P
 
 ## setup Gnome-based Ubuntu
 
-1. at bash, run `hf_setup_gnome`: configure Gnome (e.g., disable unused services/features/apps, dark mode) and install essential software (e.g., git, wget, curl, python, vscode).
+1. at bash, run `hf_setup_ubuntu`: configure Gnome (e.g., disable unused services/features/apps, dark mode) and install essential software (e.g., git, wget, curl, python, vscode).
 2. at bash, run `hf_update_clean` (run routinely): configure/upgrade packges using variables (PKGS_APT, PKGS_PYTHON, PKGS_SNAP, PKGS_SNAP_CLASSIC, PKGS_REMOVE_APT) in ~/.bashrc or ~/.helpers-cfg.sh, and cleanup.
 
 ## setup macOS
