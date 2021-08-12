@@ -1,7 +1,6 @@
 #!/bin/powershell
 
 $MSYS_HOME = "C:\msys64"
-$MSYS_BASH = "$MSYS_HOME\usr\bin\bash.exe"
 $ProgressPreference = "SilentlyContinue"
 
 # ---------------------------------------
@@ -486,26 +485,6 @@ function bh_office_sanity() {
 }
 
 # ---------------------------------------
-# network
-# ---------------------------------------
-
-function bh_network_list_wifi_SSIDs() {
-  return (netsh wlan show net mode=bssid)
-}
-
-function bh_network_set_max_users_port() {
-  Set-ItemProperty -Path "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\" -Name "MaxUserPort " -Value 0xffffffff
-}
-
-# ---------------------------------------
-# link
-# ---------------------------------------
-
-function bh_link_create($desntination, $source) {
-  cmd /c mklink /D $desntination $source
-}
-
-# ---------------------------------------
 # scheduledtask
 # ---------------------------------------
 
@@ -616,19 +595,6 @@ function bh_explorer_restore_desktop() {
 }
 
 # ---------------------------------------
-# explorer
-# ---------------------------------------
-
-function bh_explorer_open_trash() {
-  Start-Process explorer shell:recyclebinfolder
-}
-
-function bh_explorer_restart() {
-  taskkill /f /im explorer.exe | Out-Null
-  Start-Process explorer.exe
-}
-
-# ---------------------------------------
 # winget
 # ---------------------------------------
 
@@ -637,22 +603,6 @@ function bh_winget_installed() {
   winget export $tmpfile | Out-null
   $pkgs = ((Get-Content $tmpfile | ConvertFrom-Json).Sources.Packages | ForEach-Object { $_.PackageIdentifier }) -join " "
   return $pkgs
-}
-
-function bh_winget_list_installed() {
-  $(bh_winget_installed).Split()
-}
-
-function bh_winget_list_installed_verbose() {
-  winget list
-}
-
-function bh_winget_settings() {
-  winget settings
-}
-
-function bh_winget_upgrade() {
-  winget upgrade --all --silent
 }
 
 function bh_winget_install() {
@@ -718,35 +668,6 @@ function bh_choco_install() {
 function bh_choco_uninstall() {
   Invoke-Expression $bh_log_func
   gsudo choco uninstall -y --acceptlicense ($args -join ";")
-}
-
-function bh_choco_upgrade() {
-  Invoke-Expression $bh_log_func
-  choco outdated | Out-Null
-  if ($LastExitCode -eq 2) {
-    gsudo choco upgrade -y --acceptlicense all
-  }
-}
-
-function bh_choco_list_installed() {
-  Invoke-Expression $bh_log_func
-  choco list -l
-}
-
-function bh_choco_clean() {
-  Invoke-Expression $bh_log_func
-  if (!(Get-Command choco-cleaner -ea 0)) {
-    gsudo choco install choco-cleaner
-  }
-  gsudo Invoke-Expression "$env:ChocolateyToolsLocation\BCURRAN3\choco-cleaner.ps1" | Out-Null
-}
-
-function bh_choco_delete_local_lib() {
-  Invoke-Expression $bh_log_func
-  $dir1 = "C:\ProgramData\chocolatey\lib"
-  $dir2 = "C:\ProgramData\chocolatey\lib-bkp"
-  if (Test-Path $dir1) { gsudo rm -Recurse -Force $dir1 }
-  if (Test-Path $dir2) { gsudo rm -Recurse -Force $dir2 }
 }
 
 # ---------------------------------------
@@ -904,7 +825,6 @@ function bh_install_choco() {
     choco feature enable -n failOnAutoUninstaller
     choco feature enable -n removePackageInformationOnUninstall
     choco feature enable -n useRememberedArgumentsForUpgrades
-
     # enable use without restarting Powershell
     refreshenv
   }
@@ -960,46 +880,6 @@ function bh_install_wget() {
   if (!(Test-Path $wget_path)) {
     bh_winget_install GnuWin32.Wget
     bh_path_add "$wget_path"
-  }
-}
-# ---------------------------------------
-# install extras
-# ---------------------------------------
-
-function bh_install_docker() {
-  Invoke-Expression $bh_log_func
-  bh_install_wsl_ubuntu
-  gsudo Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
-  gsudo Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
-  bh_winget_install Docker.DockerDesktop 
-}
-
-function bh_install_tesseract() {
-  Invoke-Expression $bh_log_func
-  if (!(Get-Command 'tesseract.exe' -ea 0)) {
-    bh_winget_install tesseract
-    bh_path_add 'C:\Program Files\Tesseract-OCR'
-  }
-}
-
-function bh_install_java() {
-  Invoke-Expression $bh_log_func
-  if (!(Get-Command 'java.exe' -ea 0)) {
-    bh_winget_install ojdkbuild.ojdkbuild
-    bh_env_add "JAVA_HOME" $(get-command java).Source.replace("\bin\java.exe", "")
-  }
-}
-
-function bh_install_battle_steam() {
-  Invoke-Expression $bh_log_func
-  bh_winget_install Blizzard.BattleNet Valve.Steam
-}
-
-function bh_install_msys() {
-  Invoke-Expression $bh_log_func
-  if (!(Test-Path $MSYS_BASH)) {
-    bh_winget_install msys2.msys2
-    bh_msys_sanity
   }
 }
 
@@ -1064,12 +944,6 @@ function bh_setup_windows_sanity() {
   bh_optimize_explorer
   bh_keyboard_disable_shortcut_lang
   bh_keyboard_disable_shortcut_altgr
-}
-
-function bh_setup_windows_common_user() {
-  Invoke-Expression $bh_log_func
-  bh_setup_windows_sanity
-  bh_winget_install Google.Chrome VideoLAN.VLC 7zip.7zip Piriform.CCleaner
 }
 
 function bh_setup_windows() {

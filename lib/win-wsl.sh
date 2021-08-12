@@ -1,3 +1,10 @@
+# fix writting permissions
+if [[ "$(umask)" = "0000" ]]; then
+  umask 0022
+fi
+alias unixpath='wslpath'
+alias winpath='wslpath -w'
+
 function bh_wsl_x_pulseaudio_enable() {
   bh_ps_call_admin "bh_choco_install pulseaudio vcxsrv"
 

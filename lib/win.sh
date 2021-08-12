@@ -4,21 +4,11 @@
 # alias for path
 # ---------------------------------------
 
-if $IS_WINDOWS_WSL; then
-  # fix writting permissions
-  if [[ "$(umask)" = "0000" ]]; then
-    umask 0022
-  fi
-  alias unixpath='wslpath'
-  alias winpath='wslpath -w'
-elif $IS_WINDOWS; then
-  alias unixpath='cygpath'
-  alias winpath='cygpath -w'
-  # fix mingw tmp
-  unset temp
-  unset tmp
-fi
-
+alias unixpath='cygpath'
+alias winpath='cygpath -w'
+# fix mingw tmp
+unset temp
+unset tmp
 SCRIPT_PS_WPATH=$(unixpath -w "$BH_DIR/lib/win.ps1")
 
 # ---------------------------------------
@@ -64,6 +54,13 @@ function bh_ps_test_command() {
 }
 
 # ---------------------------------------
+# msys helpers
+# ---------------------------------------
+
+bh_ps_def_func_admin bh_msys_add_to_path
+bh_ps_def_func_admin bh_msys_sanity
+
+# ---------------------------------------
 # path helpers
 # ---------------------------------------
 
@@ -81,19 +78,17 @@ function bh_path_add() {
 }
 
 # ---------------------------------------
-# install helpers
-# ---------------------------------------
-
-bh_ps_def_func_admin bh_install_wsl_ubuntu
-bh_ps_def_func_admin bh_install_msys
-
-# ---------------------------------------
 # setup helpers
 # ---------------------------------------
 
 bh_ps_def_func_admin bh_setup_windows_sanity
-bh_ps_def_func_admin bh_setup_windows_common_user
 bh_ps_def_func_admin bh_setup_windows
+
+function bh_setup_windows_common_user() {
+  bh_log_func
+  bh_setup_windows_sanity
+  bh_winget_install Google.Chrome VideoLAN.VLC 7zip.7zip Piriform.CCleaner
+}
 
 # ---------------------------------------
 # appx helpers
@@ -121,6 +116,26 @@ bh_ps_def_func_admin bh_choco_list_installed
 bh_ps_def_func_admin bh_choco_clean
 bh_ps_def_func_admin bh_choco_delete_local_lib
 
+# function bh_choco_upgrade() {
+#   Invoke-Expression $bh_log_func
+#   choco outdated | Out-Null
+#   if ($LastExitCode -eq 2) {
+#     gsudo choco upgrade -y --acceptlicense all
+#   }
+# }
+
+function bh_choco_list_installed() {
+  choco list -l
+}
+
+function bh_choco_clean() {
+  bh_log_func
+  if type choco-cleaner.exe &>/dev/null; then
+    gsudo choco install choco-cleaner
+  fi
+  ps_call_admin 'Invoke-Expression "$env:ChocolateyToolsLocation\BCURRAN3\choco-cleaner.ps1" | Out-Null'
+}
+
 # ---------------------------------------
 # winget helpers
 # ---------------------------------------
@@ -128,7 +143,22 @@ bh_ps_def_func_admin bh_choco_delete_local_lib
 bh_ps_def_func_admin bh_winget_install
 bh_ps_def_func_admin bh_winget_uninstall
 bh_ps_def_func_admin bh_winget_upgrade
-bh_ps_def_func bh_winget_settings
+
+function bh_winget_list_installed() {
+  ps_lib_call '$(bh_winget_installed).Split()'
+}
+
+function bh_winget_list_installed_verbose() {
+  winget list
+}
+
+function bh_winget_settings() {
+  winget settings
+}
+
+function bh_winget_upgrade() {
+  winget upgrade --all --silent
+}
 
 # ---------------------------------------
 # outside wsl helpers
@@ -150,12 +180,27 @@ bh_ps_def_func_admin bh_wsl_get_default
 bh_ps_def_func_admin bh_wsl_terminate
 
 # ---------------------------------------
-# env helpers
+# home helpers
 # ---------------------------------------
+
+bh_ps_def_func_admin bh_explorer_restore_desktop
 
 function bh_home_hide_dotfiles() {
   bh_log_func
   powershell -c 'Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
+}
+
+# ---------------------------------------
+# explorer
+# ---------------------------------------
+
+function bh_explorer_open_trash() {
+  ps_call 'Start-Process explorer shell:recyclebinfolder'
+}
+
+function bh_explorer_restart() {
+  ps_call_admin 'taskkill /f /im explorer.exe | Out-Null'
+  ps_call 'Start-Process explorer.exe'
 }
 
 # ---------------------------------------
@@ -187,55 +232,105 @@ function bh_windows_update_list_last_installed() {
 }
 
 # ---------------------------------------
+# network
+# ---------------------------------------
+
+function bh_network_list_wifi_SSIDs() {
+  ps_call 'netsh wlan show net mode=bssid'
+}
+
+function bh_network_set_max_users_port() {
+  ps_call_admin 'Set-ItemProperty -Path "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\" -Name "MaxUserPort " -Value 0xffffffff'
+}
+
+# ---------------------------------------
 # install helpers
 # ---------------------------------------
 
-if $IS_WINDOWS_GITBASH; then
-  BH_FLUTTER_VER="2.2.3"
+bh_ps_def_func_admin bh_install_wsl_ubuntu
+bh_ps_def_func_admin bh_install_msys
 
-  function bh_install_windows_androidcmd_flutter() {
-    bh_log_func
+function bh_install_docker() {
+  bh_log_func
+  ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
+  ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
+  bh_winget_install Docker.DockerDesktop
+}
 
-    # create opt
-    local OPT_DST="$HELPERS_OPT_WIN/"
-    bh_test_and_create_folder $OPT_DST
+function bh_install_tesseract() {
+  bh_log_func
+  if type tesseract.exe &>/dev/null; then
+    bh_winget_install tesseract
+    bh_path_add 'C:\Program Files\Tesseract-OCR'
+  fi
+}
 
-    # android cmd and sdk
-    local ANDROID_SDK_DIR="$OPT_DST/android"
-    local ANDROID_CMD_DIR="$ANDROID_SDK_DIR/cmdline-tools"
-    local ANDROID_CMD_URL="https://dl.google.com/android/repository/commandlinetools-win-6858069_latest.zip"
-    if ! test -d $ANDROID_CMD_DIR; then
-      bh_wget_extract $ANDROID_CMD_URL $ANDROID_SDK_DIR
-      if test $? != 0; then bh_log_error "wget failed." && return 1; fi
-      bh_ps_lib_call_admin "bh_path_add $(winpath $ANDROID_CMD_DIR/bin)"
-    fi
-    if ! test -d $ANDROID_SDK_DIR/platforms; then
-      $ANDROID_CMD_DIR/bin/sdkmanager.bat --sdk_root="$ANDROID_SDK_DIR" --install 'platform-tools' 'platforms;android-29'
-      yes | $ANDROID_CMD_DIR/bin/sdkmanager.bat --sdk_root="$ANDROID_SDK_DIR" --licenses
-      bh_ps_lib_call_admin "bh_env_add ANDROID_HOME $(winpath $ANDROID_SDK_DIR)"
-      bh_ps_lib_call_admin "bh_env_add ANDROID_SDK_ROOT $(winpath $ANDROID_SDK_DIR)"
-      bh_ps_lib_call_admin "bh_path_add $(winpath $ANDROID_SDK_DIR/platform-tools)"
-    fi
+function bh_install_java() {
+  bh_log_func
+  if type java.exe &>/dev/null; then
+    bh_winget_install ojdkbuild.ojdkbuild
+    local javahome=$(ps_call '$(get-command java).Source.replace("\bin\java.exe", "")')
+    bh_env_add "JAVA_HOME" "$javahome"
+  fi
+}
 
-    # flutter
-    local FLUTTER_SDK_DIR="$OPT_DST/flutter"
-    local FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_${BH_FLUTTER_VER}-stable.zip"
-    if ! test -d $FLUTTER_SDK_DIR; then
-      # OPT_DST beacuase zip extract the flutter dir
-      bh_wget_extract $FLUTTER_SDK_URL $OPT_DST
-      if test $? != 0; then bh_log_error "wget failed." && return 1; fi
-      bh_ps_lib_call_admin "bh_path_add $(winpath $FLUTTER_SDK_DIR/bin)"
-    fi
-  }
+function bh_install_msys() {
+  bh_log_func
+  if test -d '/c/msys64/'; then
+    bh_winget_install msys2.msys2
+    bh_msys_sanity
+  fi
+}
 
-  function bh_install_windows_latexindent() {
-    bh_log_func
-    if ! type latexindent.exe &>/dev/null; then
-      wget https://github.com/cmhughes/latexindent.pl/releases/download/V3.10/latexindent.exe -P /c/tools/
-      wget https://raw.githubusercontent.com/cmhughes/latexindent.pl/main/defaultSettings.yaml -P /c/tools/
-    fi
-  }
-fi
+function bh_install_battle_steam() {
+  bh_log_func
+  bh_winget_install Blizzard.BattleNet Valve.Steam
+}
+
+BH_FLUTTER_VER="2.2.3"
+
+function bh_install_windows_androidcmd_flutter() {
+  bh_log_func
+
+  # create opt
+  local OPT_DST="$HELPERS_OPT_WIN/"
+  bh_test_and_create_folder $OPT_DST
+
+  # android cmd and sdk
+  local ANDROID_SDK_DIR="$OPT_DST/android"
+  local ANDROID_CMD_DIR="$ANDROID_SDK_DIR/cmdline-tools"
+  local ANDROID_CMD_URL="https://dl.google.com/android/repository/commandlinetools-win-6858069_latest.zip"
+  if ! test -d $ANDROID_CMD_DIR; then
+    bh_wget_extract $ANDROID_CMD_URL $ANDROID_SDK_DIR
+    if test $? != 0; then bh_log_error "wget failed." && return 1; fi
+    bh_ps_lib_call_admin "bh_path_add $(winpath $ANDROID_CMD_DIR/bin)"
+  fi
+  if ! test -d $ANDROID_SDK_DIR/platforms; then
+    $ANDROID_CMD_DIR/bin/sdkmanager.bat --sdk_root="$ANDROID_SDK_DIR" --install 'platform-tools' 'platforms;android-29'
+    yes | $ANDROID_CMD_DIR/bin/sdkmanager.bat --sdk_root="$ANDROID_SDK_DIR" --licenses
+    bh_ps_lib_call_admin "bh_env_add ANDROID_HOME $(winpath $ANDROID_SDK_DIR)"
+    bh_ps_lib_call_admin "bh_env_add ANDROID_SDK_ROOT $(winpath $ANDROID_SDK_DIR)"
+    bh_ps_lib_call_admin "bh_path_add $(winpath $ANDROID_SDK_DIR/platform-tools)"
+  fi
+
+  # flutter
+  local FLUTTER_SDK_DIR="$OPT_DST/flutter"
+  local FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_${BH_FLUTTER_VER}-stable.zip"
+  if ! test -d $FLUTTER_SDK_DIR; then
+    # OPT_DST beacuase zip extract the flutter dir
+    bh_wget_extract $FLUTTER_SDK_URL $OPT_DST
+    if test $? != 0; then bh_log_error "wget failed." && return 1; fi
+    bh_ps_lib_call_admin "bh_path_add $(winpath $FLUTTER_SDK_DIR/bin)"
+  fi
+}
+
+function bh_install_windows_latexindent() {
+  bh_log_func
+  if ! type latexindent.exe &>/dev/null; then
+    wget https://github.com/cmhughes/latexindent.pl/releases/download/V3.10/latexindent.exe -P /c/tools/
+    wget https://raw.githubusercontent.com/cmhughes/latexindent.pl/main/defaultSettings.yaml -P /c/tools/
+  fi
+}
 
 function bh_install_texlive() {
   sudo choco install texlive

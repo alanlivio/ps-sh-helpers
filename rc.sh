@@ -189,8 +189,10 @@ elif $IS_WINDOWS; then
     source "$BH_DIR/lib/win-msys.sh"
   elif $IS_WINDOWS_WSL; then
     source "$BH_DIR/lib/win-wsl.sh"
+    source "$BH_DIR/lib/linux.sh"
+  elif $IS_WINDOWS_GITBASH; then
+    source "$BH_DIR/lib/win.sh"
   fi
-  source "$BH_DIR/lib/win.sh"
 elif $IS_MAC; then
   source "$BH_DIR/lib/mac.sh"
 fi
@@ -206,6 +208,25 @@ function bh_update_clean() {
     bh_update_clean_windows
   elif $IS_MAC; then
     bh_update_clean_mac
+  fi
+}
+
+# ---------------------------------------
+# profile helpers
+# ---------------------------------------
+
+function bh_profile_install() {
+  bh_log_func
+  echo -e "\nsource $BH_RC" >>$HOME/.bashrc
+}
+
+function bh_profile_reload() {
+  bh_log_func
+  if $IS_WINDOWS_WSL; then
+    # for WSL
+    source $HOME/.profile
+  else
+    source $HOME/.bashrc
   fi
 }
 
@@ -243,25 +264,6 @@ function bh_config_func() {
 alias bh_config_install="bh_config_func install"
 alias bh_config_backup="bh_config_func backup"
 alias bh_config_diff="bh_config_func diff"
-
-# ---------------------------------------
-# profile helpers
-# ---------------------------------------
-
-function bh_profile_install() {
-  bh_log_func
-  echo -e "\nsource $BH_RC" >>$HOME/.bashrc
-}
-
-function bh_profile_reload() {
-  bh_log_func
-  if $IS_WINDOWS_WSL; then
-    # for WSL
-    source $HOME/.profile
-  else
-    source $HOME/.bashrc
-  fi
-}
 
 # ---------------------------------------
 # home
