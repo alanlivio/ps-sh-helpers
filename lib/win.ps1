@@ -1,36 +1,8 @@
 #!/bin/powershell
 
-# ---------------------------------------
-# load helpers-cfg
-# ---------------------------------------
-
-$BH_DIR = $PSScriptRoot
-$BH_RC = "$PSScriptRoot\rc.ps1"
-$SKEL_WT = "$BH_DIR\skel\wt"
-$SKEL_VSCODE = "$BH_DIR\skel\vscode"
 $MSYS_HOME = "C:\msys64"
 $MSYS_BASH = "$MSYS_HOME\usr\bin\bash.exe"
-$WT_SETTINGS = "${env:userprofile}\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
-$VSCODE_SETTINGS = "${env:userprofile}\AppData\Roaming\Code\User\settings.json"
-$VSCODE_KEYS = "${env:userprofile}\AppData\Roaming\Code\User\keybindings.json"
-
-
-# ---------------------------------------
-# ps preferences
-# ---------------------------------------
 $ProgressPreference = "SilentlyContinue"
-
-# ---------------------------------------
-# alias
-# ---------------------------------------
-Set-Alias -Name grep -Value findstr
-Set-Alias -Name msysbash -Value C:\msys64\usr\bin\bash.exe # TODO: replace by $MSYS_BASH 
-Set-Alias -Name env -Value bh_env
-Set-Alias -Name trash -Value bh_explorer_open_trash
-
-function whereis ($command) {
-  $(get-command $command).Source
-}
 
 # ---------------------------------------
 # log
@@ -45,39 +17,8 @@ function bh_log_msg_2nd () {
 }
 
 # ---------------------------------------
-# profile
-# ---------------------------------------
-
-function bh_profile_install() {
-  Write-Output "Import-Module -Force -Global $BH_RC" > $Profile.AllUsersAllHosts
-}
-
-function bh_profile_reload() {
-  powershell -nologo
-}
-
-function bh_profile_load($path) {
-  Write-Output "RUN: Import-Module -Force -Global $path"
-}
-
-# ---------------------------------------
-# HELPERS_INSTALL_OPT
-# ---------------------------------------
-# if $HELPERS_CFG not defined use from same dir
-if (-not ($HELPERS_INSTALL_OPT)) {
-  $HELPERS_INSTALL_OPT = "${env:userprofile}\opt\win"
-  if ( -not (Test-Path $HELPERS_INSTALL_OPT)) {
-    New-Item -ItemType Directory -Path $HELPERS_INSTALL_OPT
-  }
-}
-
-# ---------------------------------------
 # ps
 # ---------------------------------------
-
-function bh_ps_ver() {
-  Write-Output "$($PSVersionTable.PSEdition.ToString()) $($PSVersionTable.PSVersion.ToString())"
-}
 
 function bh_elevate_if_not_admin() {
   $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
@@ -98,40 +39,8 @@ function bh_ps_enable_scheduledtask_if_core() {
   }
 }
 
-function bh_ps_module_list() {
-  Get-Module
-}
-
-function bh_ps_module_show_commands($name) {
-  Get-Command -module $name
-}
-
-function bh_ps_show_function($name) {
-  Get-Content Function:\$name
-}
-
 function bh_ps_enable_scripts() {
   Set-ExecutionPolicy unrestricted
-}
-
-function bh_ps_profiles_list() {
-  $profile | Select-Object -Property *
-}
-
-function bh_ps_profiles_reset() {
-  Invoke-Expression $bh_log_func
-  $profile.AllUsersAllHosts = "\Windows\System32\WindowsPowerShell\v1.0\profile.ps1"
-  $profile.AllUsersCurrentHost = "\Windows\System32\WindowsPowerShell\v1.0\Microsoft.PowerShell_profile.ps1"
-  $profile.CurrentUserAllHosts = "WindowsPowerShell\profile.ps1"
-  $profile.CurrentUserCurrentHost = "WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
-}
-
-# ---------------------------------------
-# rm
-# ---------------------------------------
-
-function bh_rm_rf ($path) {
-  Remove-Item -Force -Recurse $path
 }
 
 # ---------------------------------------
@@ -160,32 +69,7 @@ function bh_reg_drives() {
 # system
 # ---------------------------------------
 
-Function bh_system_restart {
-  Invoke-Expression $bh_log_func
-  Restart-Computer
-}
-
-function bh_system_rename($new_name) {
-  Rename-Computer -NewName "$new_name"
-}
-
-function bh_system_info() {
-  cmd.exe /c systeminfo
-}
-
-function bh_system_admin_user_enable() {
-  net user administrator /active:yes
-}
-
-function bh_system_admin_user_disable() {
-  net user administrator /active:no
-}
-
-function bh_system_ver() {
-  [Environment]::OSVersion.Version.ToString()
-}
-
-function bh_system_disable_password_policy {
+function bh_user_disable_password_policy {
   Invoke-Expression $bh_log_func
   $tmpfile = New-TemporaryFile
   secedit /export /cfg $tmpfile /quiet
@@ -195,25 +79,8 @@ function bh_system_disable_password_policy {
 }
 
 # ---------------------------------------
-# sounds
-# ---------------------------------------
-
-function bh_system_disable_beep() {
-  Invoke-Expression $bh_log_func
-  net stop beep
-}
-
-# ---------------------------------------
 # env
 # ---------------------------------------
-
-function bh_env() {
-  [Environment]::GetEnvironmentVariables()
-}
-
-function bh_env_refresh() {
-  refreshenv 
-}
 
 function bh_env_add($name, $value) {
   [System.Environment]::SetEnvironmentVariable("$name", "$value", 'Machine')
@@ -223,11 +90,6 @@ function bh_env_add($name, $value) {
 # path
 # ---------------------------------------
 
-function bh_path() {
-  $path = [Environment]::GetEnvironmentVariable('path', 'Machine')
-  Write-Output $path
-}
-
 function bh_path_add($addPath) {
   if (Test-Path $addPath) {
     $currentpath = [System.Environment]::GetEnvironmentVariable('PATH', 'Machine')
@@ -235,7 +97,7 @@ function bh_path_add($addPath) {
     $arrPath = $currentpath -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
     $newpath = ($arrPath + $addPath) -join ';'
     bh_env_add 'PATH' $newpath
-    bh_env_refresh
+    refreshenv
   }
   else {
     Throw "$addPath' is not a valid path."
@@ -334,6 +196,9 @@ function bh_optimize_services() {
   bh_log_msg "Disable Windows Timeline "
   Set-ItemProperty -Path 'HKLM:\Software\Policies\Microsoft\Windows\System' -Name 'EnableActivityFeed' -Value 0
 
+  # disable beep
+  net stop beep
+  
   # Disable unused services
   bh_log_msg "Disable unused services "
   $services = @("*diagnosticshub.standardcollector.service*" # Diagnostics Hub
@@ -709,12 +574,6 @@ function bh_winpackage_disable_like() {
 # appx
 # ---------------------------------------
 
-function bh_appx_list_installed() {
-  Invoke-Expression $bh_log_func
-  bh_ps_enable_appx_if_core
-  Get-AppxPackage -AllUsers | Select-Object Name, PackageFullName
-}
-
 function bh_appx_install() {
   Invoke-Expression $bh_log_func
   bh_ps_enable_appx_if_core
@@ -743,24 +602,9 @@ function bh_appx_uninstall() {
   }
 }
 
-function bh_appx_install_essentials() {
-  Invoke-Expression $bh_log_func
-  bh_ps_enable_appx_if_core
-  $pkgs = @(
-    'Microsoft.WindowsStore'
-    'Microsoft.WindowsCalculator'
-    'Microsoft.Windows.Photos'
-    'Microsoft.WindowsFeedbackHub'
-    'Microsoft.WindowsCamera'
-    'Microsoft.WindowsSoundRecorder'
-  )
-  bh_appx_install @pkgs
-}
-
 # ---------------------------------------
 # home
 # ---------------------------------------
-
 
 function bh_explorer_restore_desktop() {
   if (Test-Path "${env:userprofile}\Desktop") {
@@ -769,37 +613,6 @@ function bh_explorer_restore_desktop() {
   reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v "Desktop" /t REG_SZ /d "C:\Users\${env:username}\Desktop" /f
   reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" /v "Desktop" /t REG_EXPAND_SZ /d "${env:userprofile}\Desktop" /f
   attrib +r -s -h "${env:userprofile}\Desktop"
-}
-
-function bh_home_hide_dotfiles() {
-  Invoke-Expression $bh_log_func
-  Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }
-}
-
-$BH_CLEAN_DIRS = @(
-  'Application Data'
-  'Cookies'
-  'Local Settings'
-  'Start Menu'
-  '3D Objects'
-  'Contacts'
-  'Cookies'
-  'Favorites'
-  'Intel'
-  'IntelGraphicsProfiles'
-  'Links'
-  'MicrosoftEdgeBackups'
-  'My Documents'
-  'NetHood'
-  'PrintHood'
-  'Recent'
-  'Saved Games'
-  'Searches'
-  'SendTo'
-)
-function bh_home_clean_unused_dirs() {
-  Invoke-Expression $bh_log_func
-  $BH_CLEAN_DIRS | ForEach-Object { Remove-Item -Force -Recurse -ea 0 $_ }
 }
 
 # ---------------------------------------
@@ -813,18 +626,6 @@ function bh_explorer_open_trash() {
 function bh_explorer_restart() {
   taskkill /f /im explorer.exe | Out-Null
   Start-Process explorer.exe
-}
-
-$CLEAN_SHORTCUTS = @(
-  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Access.lnk"
-  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Chocolatey Cleaner.lnk"
-  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Publisher.lnk"
-  "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Office Tools\"
-)
-
-function bh_explorer_clean_unused_shortcuts() {
-  Invoke-Expression $bh_log_func
-  $CLEAN_SHORTCUTS | ForEach-Object { Remove-Item -Force -Recurse -ea 0 $_ }
 }
 
 # ---------------------------------------
@@ -952,18 +753,6 @@ function bh_choco_delete_local_lib() {
 # wsl
 # ---------------------------------------
 
-function bh_wsl_root() {
-  wsl -u root
-}
-
-function bh_wsl_list() {
-  wsl -l -v
-}
-
-function bh_wsl_list_running() {
-  wsl -l -v --running
-}
-
 function bh_wsl_get_default() {
   [System.Text.Encoding]::Unicode.GetString([System.Text.Encoding]::UTF8.GetBytes((wsl -l))) -split '\s\s+' | ForEach-Object {
     if ($_.Contains('(')) {
@@ -1022,7 +811,6 @@ function bh_wsl_fix_home() {
   wsl -u root chown $env:UserName:$env:UserName /mnt/c/Users/$env:UserName/*
 }
 
-
 # ---------------------------------------
 # keyboard
 # ---------------------------------------
@@ -1038,31 +826,6 @@ function bh_keyboard_disable_shortcut_lang {
 
 function bh_keyboard_disable_shortcut_altgr() {
   Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Value ([byte[]](0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x38, 0x00, 0x38, 0xe0, 0x00, 0x00, 0x00, 0x00))
-}
-
-# ---------------------------------------
-# wt
-# ---------------------------------------
-
-function bh_wt_copy_skel_if_no_bash($path) {
-  if ((Select-String $WT_SETTINGS -Pattern "bash").Length -eq 0) {
-    Copy-Item $SKEL_WT\settings.json $WT_SETTINGS
-  }
-}
-
-function bh_wt_settings($path) {
-  Start-Process ${env:userprofile}\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json
-}
-
-# ---------------------------------------
-# vscode
-# ---------------------------------------
-
-function bh_vscode_copy_skel_if_no_bash() {
-  if ((Select-String $VSCODE_SETTINGS -Pattern "bash").Length -eq 0) {
-    Copy-Item $SKEL_VSCODE\settings.json $VSCODE_SETTINGS
-    Copy-Item $SKEL_VSCODE\keybindings.json $VSCODE_KEYS
-  }
 }
 
 # ---------------------------------------
@@ -1088,17 +851,6 @@ function bh_windows_update() {
   }
 }
 
-function bh_windows_update_list() {
-  Invoke-Expression $bh_log_func
-  Get-WindowsUpdate
-}
-
-function bh_windows_update_list_last_installed() {
-  Invoke-Expression $bh_log_func
-  Get-WUHistory -Last 10 | Select-Object Date, Title, Result
-}
-
-
 # ---------------------------------------
 # msys
 # ---------------------------------------
@@ -1109,6 +861,7 @@ function bh_msys_add_to_path() {
 }
 
 function bh_msys_sanity() {
+  Set-Alias -Name msysbash -Value C:\msys64\usr\bin\bash.exe # TODO: replace by $MSYS_BASH 
   msysbash -c 'echo none / cygdrive binary,posix=0,noacl,user 0 0 > /etc/fstab'
   # mount /Users to use in both windows and WSL
   msysbash -c 'echo C:/Users/ /Users ntfs binary,noacl,auto 1 1 >>  /etc/fstab'
@@ -1209,7 +962,6 @@ function bh_install_wget() {
     bh_path_add "$wget_path"
   }
 }
-
 # ---------------------------------------
 # install extras
 # ---------------------------------------
@@ -1325,10 +1077,6 @@ function bh_setup_windows() {
   bh_setup_windows_sanity
   # disable passwd
   bh_system_disable_password_policy
-  # cleanup unused
-  bh_home_clean_unused_dirs
-  bh_home_hide_dotfiles
-  bh_explorer_clean_unused_shortcuts
   # install choco, gsudo, winget
   bh_install_choco
   bh_install_gsudo
@@ -1338,7 +1086,5 @@ function bh_setup_windows() {
   bh_install_wget
   bh_install_python
   bh_install_wt
-  bh_wt_copy_skel_if_no_bash
   bh_install_vscode
-  bh_vscode_copy_skel_if_no_bash
 }
