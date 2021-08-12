@@ -191,6 +191,30 @@ function bh_home_hide_dotfiles() {
 }
 
 # ---------------------------------------
+# keyboard
+# ---------------------------------------
+
+function bh_keyboard_lang_stgs_open() {
+  cmd '/c rundll32.exe Shell32,Control_RunDLL input.dll,,{C07337D3-DB2C-4D0B-9A93-B722A6C106E2}'
+}
+
+# ---------------------------------------
+# service
+# ---------------------------------------
+
+function bh_service_list_running() {
+  ps_call_admin 'Get-Service | Where-Object { $_.Status -eq "Running" }'
+}
+
+function bh_service_list_enabled() {
+  ps_call_admin 'Get-Service | Where-Object { $_.StartType -eq "Automatic" }'
+}
+
+function bh_service_list_disabled() {
+  ps_call_admin 'Get-Service | Where-Object { $_.StartType -eq "Disabled" }'
+}
+
+# ---------------------------------------
 # explorer
 # ---------------------------------------
 
