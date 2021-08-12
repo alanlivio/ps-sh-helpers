@@ -1,6 +1,5 @@
 function bh_ruby_install() {
   bh_log_func
-  bh_test_noargs_then_return
 
   local pkgs_to_install=""
   local pkgs_installed=$(gem list | cut -d' ' -f1 -s | tr '\n' ' ')

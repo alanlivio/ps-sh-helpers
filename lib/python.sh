@@ -25,7 +25,6 @@ function bh_python_upgrade() {
 
 function bh_python_install() {
   bh_log_func
-  bh_test_noargs_then_return
 
   local pkgs_to_install=""
   local pkgs_installed=$(pip list --format=columns | cut -d' ' -f1 | grep -v Package | sed '1d' | tr '\n' ' ')

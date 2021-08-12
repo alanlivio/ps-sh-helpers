@@ -52,18 +52,7 @@ To enable bash-helpers (windows git-bash, macOS bash, MSYS bash, WSL bash), you 
 ## Other helpers
 
 There are other herpers related with install software, please see the [libs folder](libs/). Some examplesas are:
-[bh_git_*](libs/git.sh), 
-[bh_python_*](libs/git.sh), 
-[bh_ffmpeg_*](libs/git.sh), 
-[bh_diff_*](libs/git.sh), 
-[bh_pdf_*](libs/git.sh), 
-[bh_wget_*](libs/git.sh), 
-[bh_curl_*](libs/git.sh), 
-[bh_cmake_*](libs/git.sh), 
-[bh_meson_*](libs/git.sh), 
-[bh_code_*](libs/git.sh), 
-[bh_compress_*](libs/compression.sh), etc.
-  
+[bh_git_*](libs/git.sh), [bh_python_*](libs/git.sh), [bh_ffmpeg_*](libs/git.sh), [bh_diff_*](libs/git.sh), [bh_pdf_*](libs/git.sh), [bh_wget_*](libs/git.sh), [bh_curl_*](libs/git.sh), [bh_cmake_*](libs/git.sh), [bh_meson_*](libs/git.sh), [bh_code_*](libs/git.sh), [bh_compress_*](libs/compression.sh), etc.
 
 ## References
 

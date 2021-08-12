@@ -59,7 +59,6 @@ function bh_apt_fixes() {
 
 function bh_apt_install() {
   bh_log_func
-  bh_test_noargs_then_return
 
   local pkgs_to_install=""
   for i in "$@"; do
@@ -94,7 +93,6 @@ function bh_apt_autoremove() {
 
 function bh_apt_remove_pkgs() {
   bh_log_func
-  bh_test_noargs_then_return
   local pkgs_to_remove=""
   for i in "$@"; do
     dpkg --status "$i" &>/dev/null

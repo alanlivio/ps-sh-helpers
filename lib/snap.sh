@@ -1,6 +1,5 @@
 function bh_snap_install() {
   bh_log_func
-  bh_test_noargs_then_return
 
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""
@@ -20,7 +19,6 @@ function bh_snap_install() {
 
 function bh_snap_install_classic() {
   bh_log_func
-  bh_test_noargs_then_return
 
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""
@@ -40,7 +38,6 @@ function bh_snap_install_classic() {
 
 function bh_snap_install_edge() {
   bh_log_func
-  bh_test_noargs_then_return
 
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""

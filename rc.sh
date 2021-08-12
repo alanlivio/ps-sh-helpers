@@ -111,9 +111,6 @@ function bh_log_try() {
 # test helpers
 # ---------------------------------------
 
-alias bh_test_noargs_then_return='if $# -eq 0; then return; fi'
-alias bh_test_arg1_then_return='if test -z "$1"; then return; fi'
-
 function bh_test_and_create_folder() {
   if test ! -d $1; then
     bh_log_msg "creating $1"
