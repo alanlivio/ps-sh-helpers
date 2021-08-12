@@ -19,7 +19,7 @@ elif $IS_WINDOWS; then
   unset tmp
 fi
 
-SCRIPT_PS_WPATH=$(unixpath -w "$SCRIPT_DIR/rc.ps1")
+SCRIPT_PS_WPATH=$(unixpath -w "$BH_DIR/lib/win.ps1")
 
 # ---------------------------------------
 # alias for others
@@ -72,29 +72,26 @@ function bh_path_add() {
   local dir=$(winpath $1)
   bh_ps_call "bh_path_add $dir"
 }
+
+# ---------------------------------------
+# install helpers
+# ---------------------------------------
+
+bh_ps_def_func_admin bh_install_wsl_ubuntu
+bh_ps_def_func_admin bh_install_msys
+
 # ---------------------------------------
 # setup helpers
 # ---------------------------------------
 
-function bh_setup_wsl() {
-  # sudo nopasswd
-  bh_user_permissions_sudo_nopasswd
-  # essentials
-  PKGS="git deborphan apt-file $PKGS_ESSENTIALS "
-  # python
-  PKGS+="python3-pip "
-  bh_apt_install $PKGS
-  # set python3 as default
-  bh_python_set_python3_default
-}
-
+bh_ps_def_func_admin bh_setup_windows_sanity
+bh_ps_def_func_admin bh_setup_windows_common_user
 bh_ps_def_func_admin bh_setup_windows
 
 # ---------------------------------------
 # choco helpers
 # ---------------------------------------
 
-# choco helpers from rc.ps1
 bh_ps_def_func_admin bh_choco_install
 bh_ps_def_func_admin bh_choco_uninstall
 bh_ps_def_func_admin bh_choco_list_installed
@@ -105,7 +102,6 @@ bh_ps_def_func_admin bh_choco_delete_local_lib
 # winget helpers
 # ---------------------------------------
 
-# winget helpers from rc.ps1
 bh_ps_def_func_admin bh_winget_install
 bh_ps_def_func_admin bh_winget_uninstall
 bh_ps_def_func_admin bh_winget_upgrade
@@ -129,7 +125,7 @@ bh_ps_def_func_admin bh_env_add
 # wt helpers
 # ---------------------------------------
 
-# wt helpers from rc.ps1
+# wt helpers from win.ps1
 bh_ps_def_func bh_wt_settings
 
 # ---------------------------------------

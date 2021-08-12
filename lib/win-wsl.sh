@@ -61,3 +61,15 @@ function bh_wsl_ssh_start() {
     sudo service ssh --full-restart
   fi
 }
+
+function bh_setup_wsl() {
+  # sudo nopasswd
+  bh_user_permissions_sudo_nopasswd
+  # essentials
+  PKGS="git deborphan apt-file $PKGS_ESSENTIALS "
+  # python
+  PKGS+="python3-pip "
+  bh_apt_install $PKGS
+  # set python3 as default
+  bh_python_set_python3_default
+}
