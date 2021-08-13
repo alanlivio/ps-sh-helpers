@@ -20,11 +20,9 @@ alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=In
 alias start="cmd.exe /c start"
 alias choco='/c/ProgramData/chocolatey/bin/choco.exe'
 alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
-if $IS_WINDOWS_GITBASH; then
-  alias whereis='where'
-  alias reboot='gsudo shutdown \/r'
-  alias sudo='gsudo'
-fi
+alias whereis='where'
+alias reboot='gsudo shutdown \/r'
+alias sudo='gsudo'
 
 # ---------------------------------------
 # ps helpers

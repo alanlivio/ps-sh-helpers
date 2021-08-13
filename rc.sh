@@ -180,21 +180,20 @@ source "$BH_DIR/lib/md5.sh"
 
 if $IS_LINUX; then
   if $IS_WINDOWS_UBUNTU; then
-    source "$BH_DIR/lib/linux-ubuntu.sh"
+    source "$BH_DIR/rc-ubuntu.sh"
   fi
-  source "$BH_DIR/lib/linux.sh"
 elif $IS_WINDOWS; then
   if $IS_WINDOWS_MSYS; then
-    source "$BH_DIR/lib/win-msys.sh"
+    source "$BH_DIR/rc-win-msys.sh"
   elif $IS_WINDOWS_WSL; then
-    source "$BH_DIR/lib/win-wsl.sh"
-    source "$BH_DIR/lib/linux.sh"
+    source "$BH_DIR/rc-win-wsl.sh"
+    source "$BH_DIR/rc-ubuntu.sh"
   elif $IS_WINDOWS_GITBASH; then
     if type tlshell.exe &>/dev/null; then source "$BH_DIR/lib/win-texlive.sh"; fi
-    source "$BH_DIR/lib/win-gitbash.sh"
+    source "$BH_DIR/rc-win-gitbash.sh"
   fi
 elif $IS_MAC; then
-  source "$BH_DIR/lib/mac.sh"
+  source "$BH_DIR/rc-mac.sh"
 fi
 
 # ---------------------------------------
@@ -228,6 +227,28 @@ function bh_profile_reload() {
   else
     source $HOME/.bashrc
   fi
+}
+
+# ---------------------------------------
+# config
+# ---------------------------------------
+#!/bin/bash
+
+function bh_user_sudo_nopasswd() {
+  if ! test -d /etc/sudoers.d/; then bh_test_and_create_folder /etc/sudoers.d/; fi
+  SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
+}
+
+function bh_user_passwd_disable_len_restriction() {
+  sudo sed -i 's/sha512/minlen=1 sha512/g' /etc/pam.d/common-password
+}
+
+function bh_user_permissions_opt() {
+  bh_log_func
+  sudo chown -R root:root /opt
+  sudo chmod -R 775 /opt/
+  grep root /etc/group | grep $USER >/dev/null
+  newgrp root
 }
 
 # ---------------------------------------

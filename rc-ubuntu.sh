@@ -3,7 +3,7 @@
 # ---------------------------------------
 
 function bh_install_bluetooth_audio() {
-  sudo apt nstall pulseaudio pulseaudio-utils pavucontrol pulseaudio-module-bluetooth rtbth-dkms
+  sudo apt install pulseaudio pulseaudio-utils pavucontrol pulseaudio-module-bluetooth rtbth-dkms
 }
 
 function bh_install_bb_warsaw() {
