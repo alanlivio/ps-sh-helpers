@@ -18,11 +18,7 @@ function bh_wget_continue() {
   wget --continue $1
 }
 
-# ---------------------------------------
-# fetch
-# ---------------------------------------
-
-function bh_wget_extract () {
+function bh_wget_extract() {
   : ${2?"Usage: ${FUNCNAME[0]} <URL> <folder>"}
   local file_name="/tmp/$(basename $1)"
 

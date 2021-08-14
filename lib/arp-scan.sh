@@ -1,3 +1,7 @@
+# ---------------------------------------
+# arp_scan helpers
+# ---------------------------------------
+
 function bh_arp_scan() {
   sudo arp-scan --localnet
 }

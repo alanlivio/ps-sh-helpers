@@ -1,11 +1,15 @@
-function bh_code_install_config_files() {
+# ---------------------------------------
+# vscode helpers
+# ---------------------------------------
+
+function bh_vscode_install_config_files() {
   if test -d $DOTFILES_VSCODE; then
     cp $DOTFILES_VSCODE/settings.json $HOME/.config/Code/User
     cp $DOTFILES_VSCODE/keybindings.json $HOME/.config/Code/User
   fi
 }
 
-function bh_code_diff() {
+function bh_vscode_diff() {
   : ${1?"Usage: ${FUNCNAME[0]} <old_file> <new_file>"}
   diff "$1" "$2" &>/dev/null
   if test $? -eq 1; then
@@ -13,7 +17,7 @@ function bh_code_diff() {
   fi
 }
 
-function bh_code_install() {
+function bh_vscode_install() {
   bh_log_func
   local pkgs_to_install=""
   local pkgs_installed_tmp_file="/tmp/code-list-extensions"

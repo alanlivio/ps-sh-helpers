@@ -1,3 +1,7 @@
+# ---------------------------------------
+# folder helpers
+# ---------------------------------------
+
 function bh_folder_sorted_by_size() {
   du -ahd 1 | sort -h
 }

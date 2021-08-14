@@ -1,3 +1,6 @@
+# ---------------------------------------
+# ffmpeg helpers
+# ---------------------------------------
 function bh_ffmpeg_show_motion_vectors() {
   : ${1?"Usage: ${FUNCNAME[0]} <video>"}
   bh_log_func

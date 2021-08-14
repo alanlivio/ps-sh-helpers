@@ -1,3 +1,6 @@
+# ---------------------------------------
+# helpers helpers
+# ---------------------------------------
 function bh_compression_zip_files() {
   : ${2?"Usage: ${FUNCNAME[0]} <zip-name> <files... >"}
   zipname=$1

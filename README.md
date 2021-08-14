@@ -43,6 +43,8 @@ To enable bash-helpers (windows git-bash, macOS bash, MSYS bash, WSL bash), you 
   2. at msys bash, run `bh_setup_msys`: install essential software (e.g., wget, curl, python).
   3. at msys bash, run `bh_update_clean` (run routinely): configure/upgrade packges using variables (e.g., PKGS_MSYS, PKGS_PYTHON_MSYS) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 * git helpers: see `bh_git_*` at [lib/git.sh](lib/git.sh).
+* git helpers: see `bh_wget_*` at [lib/wget.sh](lib/wget.sh).
+* git helpers: see `bh_gnome_*` at [lib/gnome.sh](lib/gnome.sh).
 * python helpers: see `bh_python_*` at [lib/python.sh](lib/python.sh).
 * ffmpeg helpers: see `bh_ffmpeg_*` at [lib/ffmpeg.sh](lib/ffmpeg.sh).
 * diff helpers: see `bh_diff_*` at [lib/diff.sh](lib/diff.sh).
@@ -51,7 +53,7 @@ To enable bash-helpers (windows git-bash, macOS bash, MSYS bash, WSL bash), you 
 * curl helpers: see `bh_curl_*` at [lib/curl.sh](lib/curl.sh).
 * cmake helpers: see `bh_cmake_*` at [lib/cmake.sh](lib/cmake.sh).
 * meson helpers: see `bh_meson_*` at [lib/meson.sh](lib/meson.sh).
-* code helpers: see `bh_code_*` at [lib/code.sh](lib/code.sh).
+* vscode helpers: see `bh_vscode_*` at [lib/vscode.sh](lib/vscode.sh).
 * compression helpers: see `bh_compress_*` at [lib/compression.sh](lib/compression.sh), etc.
 * other helpers: There are other herpers related with install software, please see the [libs folder](lib/). Some examplesas are:
 

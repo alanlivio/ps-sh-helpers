@@ -1,3 +1,7 @@
+# ---------------------------------------
+# gst helpers
+# ---------------------------------------
+
 function bh_gst_audio_create_empty() {
   : ${1?"Usage: ${FUNCNAME[0]} [audio_output]"}
   bh_log_func

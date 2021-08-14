@@ -1,5 +1,5 @@
 # ---------------------------------------
-# gnome
+# gnome helpers
 # ---------------------------------------
 
 function bh_gnome_execute_desktop_file() {
