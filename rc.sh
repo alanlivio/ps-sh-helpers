@@ -138,7 +138,7 @@ if type adb &>/dev/null; then source "$BH_DIR/lib/android.sh"; fi
 if type apt &>/dev/null; then source "$BH_DIR/lib/deb.sh"; fi
 if type arp-scan &>/dev/null; then source "$BH_DIR/lib/arp-scan.sh"; fi
 if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.sh"; fi
-if type code &>/dev/null; then source "$BH_DIR/lib/code.sh"; fi
+if type code &>/dev/null; then source "$BH_DIR/lib/vscode.sh"; fi
 if type curl &>/dev/null; then source "$BH_DIR/lib/curl.sh"; fi
 if type diff &>/dev/null; then source "$BH_DIR/lib/diff.sh"; fi
 if type docker &>/dev/null; then source "$BH_DIR/lib/docker.sh"; fi
