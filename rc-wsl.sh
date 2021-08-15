@@ -1,9 +1,61 @@
+# ---------------------------------------
+# alias
+# ---------------------------------------
+alias unixpath='wslpath'
+alias winpath='wslpath -w'
 # fix writting permissions
 if [[ "$(umask)" = "0000" ]]; then
   umask 0022
 fi
-alias unixpath='wslpath'
-alias winpath='wslpath -w'
+
+# ---------------------------------------
+# load libs for specific commands
+# ---------------------------------------
+
+IS_GNOME=false
+HAS_SNAP=false
+if type gnome-shell &>/dev/null; then IS_GNOME=true; fi
+if type snap &>/dev/null; then HAS_SNAP=true; fi
+if $IS_GNOME; then source "$BH_DIR/lib-ubuntu/gnome.sh"; fi
+if $HAS_SNAP; then source "$BH_DIR/lib-ubuntu/snap.sh"; fi
+if type apt tar &>/dev/null; then source "$BH_DIR/lib-ubuntu/apt.sh"; fi
+if type systemctl tar &>/dev/null; then source "$BH_DIR/lib-ubuntu/systemd.sh"; fi
+if type service tar &>/dev/null; then source "$BH_DIR/lib-ubuntu/initd.sh"; fi
+if type lxc &>/dev/null; then source "$BH_DIR/lib-ubuntu/lxc.sh"; fi
+if type lsof &>/dev/null; then source "$BH_DIR/lib-ubuntu/ports.sh"; fi
+
+# ---------------------------------------
+# setup/update_clean helpers
+# ---------------------------------------
+
+function bh_wsl_setup() {
+  # sudo nopasswd
+  bh_user_permissions_sudo_nopasswd
+  # essentials
+  local pkgs="git deborphan apt-file $PKGS_ESSENTIALS "
+  # python
+  pkgs+="python3-pip "
+  bh_apt_install $pkgs
+  # set python3 as default
+  bh_python_set_python3_default
+}
+
+function bh_wsl_update_clean() {
+  # apt
+  bh_apt_install $PKGS_APT
+  bh_apt_remove_pkgs $PKGS_REMOVE_APT
+  bh_apt_autoremove
+  bh_apt_remove_orphan_pkgs $PKGS_APT_ORPHAN_EXPECTIONS
+  # python
+  bh_python_upgrade
+  bh_python_install $PKGS_PYTHON
+  # cleanup
+  bh_home_clean_unused
+}
+
+# ---------------------------------------
+# x_pulseaudio helpers
+# ---------------------------------------
 
 function bh_wsl_x_pulseaudio_enable() {
   bh_ps_call_admin "bh_choco_install pulseaudio vcxsrv"
@@ -32,7 +84,11 @@ function bh_wsl_x_pulseaudio_stop() {
   cmd.exe /c "taskkill /IM vcxsrv.exe /F"
 }
 
-function bh_wsl_fix_snap_lxc() {
+# ---------------------------------------
+# wsl_install helpers
+# ---------------------------------------
+
+function bh_wsl_install_lxc() {
   # https://www.youtube.com/watch?v=SLDrvGUksv0
   sudo apt install lxd snap
   sudo apt-get install -yqq daemonize dbus-user-session fontconfig
@@ -41,7 +97,7 @@ function bh_wsl_fix_snap_lxc() {
   sudo snap install lxd
 }
 
-function bh_wsl_ssh_config() {
+function bh_wsl_install_ssh() {
   sudo apt install -y openssh-server
   # https://github.com/JetBrains/clion-wsl/blob/master/ubuntu_setup_env.sh
   SSHD_LISTEN_ADDRESS=127.0.0.1
@@ -60,23 +116,4 @@ function bh_wsl_ssh_config() {
   echo "PasswordAuthentication yes" | sudo tee -a $SSHD_FILE
   echo "%sudo ALL=(ALL) NOPASSWD: /usr/sbin/service ssh --full-restart" | sudo tee -a $SUDOERS_FILE
   sudo service ssh --full-restart
-}
-
-function bh_wsl_ssh_start() {
-  sshd_status=$(service ssh status)
-  if [[ $sshd_status = *"is not running"* ]]; then
-    sudo service ssh --full-restart
-  fi
-}
-
-function bh_setup_wsl() {
-  # sudo nopasswd
-  bh_user_permissions_sudo_nopasswd
-  # essentials
-  PKGS="git deborphan apt-file $PKGS_ESSENTIALS "
-  # python
-  PKGS+="python3-pip "
-  bh_apt_install $PKGS
-  # set python3 as default
-  bh_python_set_python3_default
 }

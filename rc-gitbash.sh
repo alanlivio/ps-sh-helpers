@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ---------------------------------------
-# alias for path
+# var/alias
 # ---------------------------------------
 
 alias unixpath='cygpath'
@@ -9,12 +9,6 @@ alias winpath='cygpath -w'
 # fix mingw tmp
 unset temp
 unset tmp
-SCRIPT_PS_WPATH=$(unixpath -w "$BH_DIR/lib/win.ps1")
-
-# ---------------------------------------
-# alias for others
-# ---------------------------------------
-
 # hide windows user files when ls home
 alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
 alias start="cmd.exe /c start"
@@ -23,14 +17,13 @@ alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
 alias whereis='where'
 alias reboot='gsudo shutdown \/r'
 alias sudo='gsudo'
-
-# ---------------------------------------
-# ps helpers
-# ---------------------------------------
-
 alias ps_call="powershell -c"
 alias ps_call_admin="gsudo powershell -c"
 
+# ---------------------------------------
+# wrapper calls to libs-win/win.ps1
+# ---------------------------------------
+SCRIPT_PS_WPATH=$(unixpath -w "$BH_DIR/lib-win/setup.ps1")
 function bh_ps_lib_call() {
   powershell.exe -command "& { . $SCRIPT_PS_WPATH; $* }"
 }
@@ -52,6 +45,43 @@ function bh_ps_test_command() {
 }
 
 # ---------------------------------------
+# load libs for specific commands
+# ---------------------------------------
+
+if type tlshell.exe &>/dev/null; then source "$BH_DIR/lib-win/texlive.sh"; fi
+if type wsl.exe &>/dev/null; then source "$BH_DIR/lib-win/wsl.sh"; fi
+
+# ---------------------------------------
+# setup/update_clean helpers
+# ---------------------------------------
+
+bh_ps_def_func_admin bh_win_setup
+bh_ps_def_func_admin bh_win_setup_sanity
+
+function bh_win_setup_common_user() {
+  bh_log_func
+  bh_win_setup_sanity
+  bh_win_get_install Google.Chrome VideoLAN.VLC 7zip.7zip Piriform.CCleaner
+}
+
+function bh_win_sysupdate_clean() {
+  # windows
+  bh_ps_lib_call_admin "bh_win_sysupdate"
+  bh_ps_lib_call_admin "bh_win_get_install $PKGS_WINGET"
+  bh_ps_lib_call_admin "bh_appx_install $PKGS_APPX"
+  bh_ps_lib_call_admin "bh_choco_install $PKGS_CHOCO"
+  bh_choco_upgrade
+  bh_choco_clean
+  bh_python_upgrade
+  bh_python_install $PKGS_PYTHON
+  # vscode
+  bh_vscode_install $PKGS_VSCODE
+  # cleanup
+  bh_home_clean_unused
+  bh_home_hide_dotfiles
+}
+
+# ---------------------------------------
 # msys helpers
 # ---------------------------------------
 
@@ -62,30 +92,13 @@ bh_ps_def_func_admin bh_msys_sanity
 # path helpers
 # ---------------------------------------
 
-function bh_path() {
-  echo "$PATH"
-}
-
-function bh_path_windows() {
+function bh_win_path() {
   powershell -c "[Environment]::GetEnvironmentVariable('path', 'Machine')"
 }
 
-function bh_path_add() {
+function bh_win_path_add() {
   local dir=$(winpath $1)
   bh_ps_lib_call "bh_path_add $dir"
-}
-
-# ---------------------------------------
-# setup helpers
-# ---------------------------------------
-
-bh_ps_def_func_admin bh_setup_windows_sanity
-bh_ps_def_func_admin bh_setup_windows
-
-function bh_setup_windows_common_user() {
-  bh_log_func
-  bh_setup_windows_sanity
-  bh_winget_install Google.Chrome VideoLAN.VLC 7zip.7zip Piriform.CCleaner
 }
 
 # ---------------------------------------
@@ -93,7 +106,7 @@ function bh_setup_windows_common_user() {
 # ---------------------------------------
 
 function bh_appx_list_installed() {
-  gsudo powershell -c "Get-AppxPackage -AllUsers | Select-Object Name, PackageFullName"
+  sudo powershell -c "Get-AppxPackage -AllUsers | Select-Object Name, PackageFullName"
 }
 
 bh_ps_def_func_admin bh_appx_install
@@ -114,13 +127,12 @@ bh_ps_def_func_admin bh_choco_list_installed
 bh_ps_def_func_admin bh_choco_clean
 bh_ps_def_func_admin bh_choco_delete_local_lib
 
-# function bh_choco_upgrade() {
-#   Invoke-Expression $bh_log_func
-#   choco outdated | Out-Null
-#   if ($LastExitCode -eq 2) {
-#     gsudo choco upgrade -y --acceptlicense all
-#   }
-# }
+function bh_choco_upgrade() {
+  bh_log_func
+  local outdated=false
+  sudo choco outdated | grep '0 package' >/dev/null || outdated=true
+  if $outdated; then sudo choco upgrade -y --acceptlicense all; fi
+}
 
 function bh_choco_list_installed() {
   choco list -l
@@ -129,7 +141,7 @@ function bh_choco_list_installed() {
 function bh_choco_clean() {
   bh_log_func
   if type choco-cleaner.exe &>/dev/null; then
-    gsudo choco install choco-cleaner
+    sudo choco install choco-cleaner
   fi
   ps_call_admin 'Invoke-Expression "$env:ChocolateyToolsLocation\BCURRAN3\choco-cleaner.ps1" | Out-Null'
 }
@@ -138,44 +150,25 @@ function bh_choco_clean() {
 # winget helpers
 # ---------------------------------------
 
-bh_ps_def_func_admin bh_winget_install
-bh_ps_def_func_admin bh_winget_uninstall
-bh_ps_def_func_admin bh_winget_upgrade
+bh_ps_def_func_admin bh_win_get_install
+bh_ps_def_func_admin bh_win_get_uninstall
+bh_ps_def_func_admin bh_win_get_upgrade
 
-function bh_winget_list_installed() {
-  ps_lib_call '$(bh_winget_installed).Split()'
+function bh_win_get_list_installed() {
+  ps_lib_call '$(bh_win_get_installed).Split()'
 }
 
-function bh_winget_list_installed_verbose() {
+function bh_win_get_list_installed_verbose() {
   winget list
 }
 
-function bh_winget_settings() {
+function bh_win_get_settings() {
   winget settings
 }
 
-function bh_winget_upgrade() {
+function bh_win_get_upgrade() {
   winget upgrade --all --silent
 }
-
-# ---------------------------------------
-# outside wsl helpers
-# ---------------------------------------
-
-function bh_wsl_root() {
-  wsl -u root
-}
-
-function bh_wsl_list() {
-  wsl -l -v
-}
-
-function bh_wsl_list_running() {
-  wsl -l -v --running
-}
-
-bh_ps_def_func_admin bh_wsl_get_default
-bh_ps_def_func_admin bh_wsl_terminate
 
 # ---------------------------------------
 # home helpers
@@ -192,7 +185,7 @@ function bh_home_hide_dotfiles() {
 # keyboard
 # ---------------------------------------
 
-function bh_keyboard_lang_stgs_open() {
+function bh_win_keyboard_lang_stgs_open() {
   cmd '/c rundll32.exe Shell32,Control_RunDLL input.dll,,{C07337D3-DB2C-4D0B-9A93-B722A6C106E2}'
 }
 
@@ -200,15 +193,15 @@ function bh_keyboard_lang_stgs_open() {
 # service
 # ---------------------------------------
 
-function bh_service_list_running() {
+function bh_win_service_list_running() {
   ps_call_admin 'Get-Service | Where-Object { $_.Status -eq "Running" }'
 }
 
-function bh_service_list_enabled() {
+function bh_win_service_list_enabled() {
   ps_call_admin 'Get-Service | Where-Object { $_.StartType -eq "Automatic" }'
 }
 
-function bh_service_list_disabled() {
+function bh_win_service_list_disabled() {
   ps_call_admin 'Get-Service | Where-Object { $_.StartType -eq "Disabled" }'
 }
 
@@ -242,14 +235,14 @@ function bh_wt_settings() {
 }
 
 # ---------------------------------------
-# windows_update helpers
+# sysupdate helpers
 # ---------------------------------------
 
-function bh_windows_update_list() {
+function bh_win_sysupdate_list() {
   ps_call_admin 'Get-WindowsUpdate'
 }
 
-function bh_windows_update_list_last_installed() {
+function bh_win_sysupdate_list_last_installed() {
   ps_call_admin 'Get-WUHistory -Last 10 | Select-Object Date, Title, Result'
 }
 
@@ -257,11 +250,11 @@ function bh_windows_update_list_last_installed() {
 # network
 # ---------------------------------------
 
-function bh_network_list_wifi_SSIDs() {
+function bh_win_network_list_wifi_SSIDs() {
   ps_call 'netsh wlan show net mode=bssid'
 }
 
-function bh_network_set_max_users_port() {
+function bh_win_network_set_max_users_port() {
   ps_call_admin 'Set-ItemProperty -Path "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\" -Name "MaxUserPort " -Value 0xffffffff'
 }
 
@@ -269,53 +262,53 @@ function bh_network_set_max_users_port() {
 # install helpers
 # ---------------------------------------
 
-bh_ps_def_func_admin bh_install_wsl_ubuntu
-bh_ps_def_func_admin bh_install_msys
+bh_ps_def_func_admin bh_win_install_wsl_ubuntu
+bh_ps_def_func_admin bh_win_install_msys
 
-function bh_install_docker() {
+function bh_win_install_docker() {
   bh_log_func
   ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
   ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
-  bh_winget_install Docker.DockerDesktop
+  bh_win_get_install Docker.DockerDesktop
 }
 
-function bh_install_tesseract() {
+function bh_win_install_tesseract() {
   bh_log_func
   if type tesseract.exe &>/dev/null; then
-    bh_winget_install tesseract
+    bh_win_get_install tesseract
     bh_path_add 'C:\Program Files\Tesseract-OCR'
   fi
 }
 
-function bh_install_java() {
+function bh_win_install_java() {
   bh_log_func
   if type java.exe &>/dev/null; then
-    bh_winget_install ojdkbuild.ojdkbuild
+    bh_win_get_install ojdkbuild.ojdkbuild
     local javahome=$(ps_call '$(get-command java).Source.replace("\bin\java.exe", "")')
     bh_env_add "JAVA_HOME" "$javahome"
   fi
 }
 
-function bh_install_msys() {
+function bh_win_install_msys() {
   bh_log_func
   if test -d '/c/msys64/'; then
-    bh_winget_install msys2.msys2
+    bh_win_get_install msys2.msys2
     bh_msys_sanity
   fi
 }
 
-function bh_install_battle_steam() {
+function bh_win_install_battle_steam() {
   bh_log_func
-  bh_winget_install Blizzard.BattleNet Valve.Steam
+  bh_win_get_install Blizzard.BattleNet Valve.Steam
 }
 
 BH_FLUTTER_VER="2.2.3"
 
-function bh_install_windows_androidcmd_flutter() {
+function bh_win_install_windows_androidcmd_flutter() {
   bh_log_func
 
   # create opt
-  local OPT_DST="$HELPERS_OPT_WIN/"
+  local OPT_DST="$BH_OPT_WIN/"
   bh_test_and_create_folder $OPT_DST
 
   # android cmd and sdk
@@ -346,7 +339,7 @@ function bh_install_windows_androidcmd_flutter() {
   fi
 }
 
-function bh_install_windows_latexindent() {
+function bh_win_install_windows_latexindent() {
   bh_log_func
   if ! type latexindent.exe &>/dev/null; then
     wget https://github.com/cmhughes/latexindent.pl/releases/download/V3.10/latexindent.exe -P /c/tools/
@@ -354,42 +347,6 @@ function bh_install_windows_latexindent() {
   fi
 }
 
-function bh_install_texlive() {
+function bh_win_install_texlive() {
   sudo choco install texlive
-}
-
-# ---------------------------------------
-# update helpers
-# ---------------------------------------
-
-function bh_update_clean_windows() {
-  # windows
-  bh_ps_lib_call_admin "bh_windows_update"
-  bh_ps_lib_call_admin "bh_winget_install $PKGS_WINGET"
-  bh_ps_lib_call_admin "bh_appx_install $PKGS_APPX"
-  bh_ps_lib_call_admin "bh_choco_install $PKGS_CHOCO"
-  bh_ps_lib_call_admin "bh_choco_upgrade"
-  bh_ps_lib_call_admin "bh_choco_clean"
-  # if WSL
-  if $IS_WINDOWS_WSL; then
-    # apt
-    bh_apt_upgrade
-    bh_apt_install $PKGS_APT
-    bh_apt_autoremove
-    bh_apt_remove_pkgs $PKGS_REMOVE_APT
-    bh_apt_remove_orphan_pkgs $PKGS_APT_ORPHAN_EXPECTIONS
-  fi
-  # python
-  # python pkgs in msys require be builded from msys
-  if $IS_WINDOWS_MSYS; then
-    bh_msys_install $PKGS_PYTHON_MSYS
-  elif $IS_WINDOWS_GITBASH; then
-    bh_python_upgrade
-    bh_python_install $PKGS_PYTHON
-  fi
-  # vscode
-  bh_vscode_install $PKGS_VSCODE
-  # cleanup
-  bh_home_clean_unused_dirs
-  bh_home_hide_dotfiles
 }

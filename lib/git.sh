@@ -269,13 +269,13 @@ function bh_git_dev_folder_tree() {
   bh_log_func
 
   # create dev dir
-  bh_test_and_create_folder $HELPERS_DEV
+  bh_test_and_create_folder $BH_DEV
   local cwd=$(pwd)
 
   declare -a repos_array
   repos_array=($REPOS)
   for ((i = 0; i < ${#repos_array[@]}; i = i + 2)); do
-    local parent=$HELPERS_DEV/${repos_array[$i]}
+    local parent=$BH_DEV/${repos_array[$i]}
     local repo=${repos_array[$((i + 1))]}
     # create parent
     if ! test -d $parent; then

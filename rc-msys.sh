@@ -1,4 +1,31 @@
 # ---------------------------------------
+# setup/update_clean helpers
+# ---------------------------------------
+
+function bh_msys_setup() {
+  bh_log_func
+  bh_user_permissions_sudo_nopasswd
+  # essentials
+  local pkgs="pacman pacman-mirrors msys2-runtime $PKGS_ESSENTIALS"
+  # python
+  pkgs+="python-pip "
+  bh_msys_install $pkgs
+  # python
+  bh_python_install $PKGS_PYTHON_MSYS
+}
+
+function bh_msys_update_clean() {
+  bh_msys_upgrade
+  # python
+  bh_python_upgrade
+  bh_python_install $PKGS_PYTHON_MSYS
+  # vscode
+  bh_vscode_install $PKGS_VSCODE
+  # cleanup
+  bh_home_clean_unused
+}
+
+# ---------------------------------------
 # msys helpers
 # ---------------------------------------
 
@@ -51,15 +78,4 @@ function bh_msys_fix_lock() {
 
 function bh_msys_sanity() {
   bh_ps_call_admin "bh_msys_sanity"
-}
-
-function bh_setup_msys() {
-  bh_user_permissions_sudo_nopasswd
-  # update runtime
-  PKGS="pacman pacman-mirrors msys2-runtime "
-  # essentials
-  PKGS+="$PKGS_ESSENTIALS "
-  # python
-  PKGS+="python-pip "
-  bh_msys_install $PKGS
 }

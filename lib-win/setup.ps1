@@ -1,6 +1,5 @@
 #!/bin/powershell
 
-$MSYS_HOME = "C:\msys64"
 $ProgressPreference = "SilentlyContinue"
 
 # ---------------------------------------
@@ -26,22 +25,6 @@ function bh_elevate_if_not_admin() {
   }
 }
 
-function bh_ps_enable_appx_if_core() {
-  if ( $PSVersionTable.PSEdition -eq "Core") {
-    Import-Module -Name Appx -UseWindowsPowershell -WarningAction Ignore 
-  }
-}
-
-function bh_ps_enable_scheduledtask_if_core() {
-  if ( $PSVersionTable.PSEdition -eq "Core") {
-    Import-Module -Name ScheduledTasks -UseWindowsPowershell -WarningAction Ignore
-  }
-}
-
-function bh_ps_enable_scripts() {
-  Set-ExecutionPolicy unrestricted
-}
-
 # ---------------------------------------
 # reg
 # ---------------------------------------
@@ -65,7 +48,7 @@ function bh_reg_drives() {
 }
 
 # ---------------------------------------
-# system
+# user
 # ---------------------------------------
 
 function bh_user_disable_password_policy {
@@ -220,11 +203,11 @@ function bh_optimize_services() {
 
   # XPS Services
   bh_log_msg "Disable XPS "
-  bh_windows_feature_disable Printing-XPSServices-Features
+  bh_win_feature_disable Printing-XPSServices-Features
 
   # Work Folders
   bh_log_msg "Disable Work Folders "
-  bh_windows_feature_disable WorkFolders-Client
+  bh_win_feature_disable WorkFolders-Client
   
   # Disable scheduled tasks
   bh_log_msg "Disable scheduled tasks "
@@ -543,7 +526,6 @@ function bh_winpackage_disable_like() {
 
 function bh_appx_install() {
   Invoke-Expression $bh_log_func
-  bh_ps_enable_appx_if_core
   $pkgs_to_install = ""
   foreach ($name in $args) {
     if ( !(Get-AppxPackage -Name $name)) {
@@ -560,7 +542,6 @@ function bh_appx_install() {
 
 function bh_appx_uninstall() {
   Invoke-Expression $bh_log_func
-  bh_ps_enable_appx_if_core
   foreach ($name in $args) {
     if (Get-AppxPackage -Name $name) {
       bh_log_msg "uninstall $name"
@@ -583,21 +564,21 @@ function bh_explorer_restore_desktop() {
 }
 
 # ---------------------------------------
-# winget
+# win_get
 # ---------------------------------------
 
-function bh_winget_installed() {
+function bh_win_get_installed() {
   $tmpfile = New-TemporaryFile
   winget export $tmpfile | Out-null
   $pkgs = ((Get-Content $tmpfile | ConvertFrom-Json).Sources.Packages | ForEach-Object { $_.PackageIdentifier }) -join " "
   return $pkgs
 }
 
-function bh_winget_install() {
+function bh_win_get_install() {
   Invoke-Expression $bh_log_func
   $pkgs_to_install = ""
   # get installed pkgs
-  $pkgs = $(bh_winget_installed)
+  $pkgs = $(bh_win_get_installed)
   # select to install
   foreach ($name in $args) {
     if (-not ([string]::IsNullOrEmpty("$name")) -and (-not $pkgs.Contains("$name") )) {
@@ -612,11 +593,11 @@ function bh_winget_install() {
   }
 }
 
-function bh_winget_uninstall() {
+function bh_win_get_uninstall() {
   Invoke-Expression $bh_log_func
   $pkgs_to_uninstall = ""
   # get installed pkgs
-  $pkgs = $(bh_winget_installed)
+  $pkgs = $(bh_win_get_installed)
   # select to uninstall
   foreach ($name in $args) {
     if (-not ([string]::IsNullOrEmpty("$name")) -and ($pkgs.Contains("$name") )) {
@@ -638,7 +619,7 @@ function bh_winget_uninstall() {
 function bh_choco_install() {
   Invoke-Expression $bh_log_func
   if (!(Get-Command 'gsudo.exe' -ea 0)) {
-    bh_install_gsudo
+    bh_win_install_gsudo
   }
   foreach ($name in $args) {
     $pkgs_to_install = ""
@@ -737,17 +718,17 @@ function bh_keyboard_disable_shortcut_altgr() {
 # windows
 # ---------------------------------------
 
-function bh_windows_feature_enable($featurename) {
+function bh_win_feature_enable($featurename) {
   Invoke-Expression "$bh_log_func $featurename"
   gsudo dism.exe /online /quiet /enable-feature /featurename:$featurename /all/norestart
 }
 
-function bh_windows_feature_disable($featurename) {
+function bh_win_feature_disable($featurename) {
   Invoke-Expression "$bh_log_func $featurename"
   gsudo dism.exe /online /quiet /disable-feature /featurename:$featurename /norestart
 }
 
-function bh_windows_update() {
+function bh_win_sysupdate() {
   Invoke-Expression $bh_log_func
   $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
     if ($_ -is [string]) {
@@ -761,6 +742,7 @@ function bh_windows_update() {
 # ---------------------------------------
 
 function bh_msys_add_to_path() {
+  $MSYS_HOME = "C:\msys64"
   bh_path_add "$MSYS_HOME\usr\bin"
   bh_path_add "$MSYS_HOME\mingw64\bin"
 }
@@ -784,7 +766,7 @@ function bh_msys_sanity() {
 # install
 # ---------------------------------------
 
-function bh_install_choco() {
+function bh_win_install_choco() {
   Invoke-Expression $bh_log_func
   if (!(Get-Command 'choco.exe' -ea 0)) {
     bh_elevate_if_not_admin
@@ -814,60 +796,60 @@ function bh_install_choco() {
   }
 }
 
-function bh_install_gsudo() {
+function bh_win_install_gsudo() {
   Invoke-Expression $bh_log_func
   if (!(Get-Command 'gsudo.exe' -ea 0)) {
-    bh_winget_install gsudo
+    bh_win_get_install gsudo
     bh_path_add 'C:\Program Files (x86)\gsudo'
   }
 }
 
-function bh_install_winget() {
+function bh_win_install_winget() {
   Invoke-Expression $bh_log_func
   if (!(Get-Command 'winget.exe' -ea 0)) {
     bh_appx_install Microsoft.DesktopAppInstaller
   }
 }
 
-function bh_install_wt() {
-  bh_install_winget
+function bh_win_install_wt() {
+  bh_win_install_winget
   if (!(Get-Command 'wt.exe' -ea 0)) {
-    bh_winget_install Microsoft.WindowsTerminal
+    bh_win_get_install Microsoft.WindowsTerminal
   }
 }
 
-function bh_install_python() {
-  bh_install_winget
+function bh_win_install_python() {
+  bh_win_install_winget
   if (!(Test-Path "C:\Python*")) {
     gsudo choco install python
     # TODO: given Users full access to "C:\Python39"
   }
 }
 
-function bh_install_git() {
+function bh_win_install_git() {
   Invoke-Expression $bh_log_func
   if (!(Get-Command 'git.exe' -ea 0)) {
-    bh_winget_install Git.Git
+    bh_win_get_install Git.Git
   }
 }
 
-function bh_install_vscode() {
+function bh_win_install_vscode() {
   Invoke-Expression $bh_log_func
   if (!(Get-Command 'code.exe' -ea 0)) {
-    bh_winget_install Microsoft.VisualStudioCode
+    bh_win_get_install Microsoft.VisualStudioCode
   }
 }
 
-function bh_install_wget() {
+function bh_win_install_wget() {
   Invoke-Expression $bh_log_func
   $wget_path = "C:\Program Files (x86)\GnuWin32\bin\"
   if (!(Test-Path $wget_path)) {
-    bh_winget_install GnuWin32.Wget
+    bh_win_get_install GnuWin32.Wget
     bh_path_add "$wget_path"
   }
 }
 
-function bh_install_wsl_ubuntu() {
+function bh_win_install_wsl_ubuntu() {
   # this helper automate the process describred in :
   # - https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
   # - https://ubuntu.com/wsl
@@ -876,20 +858,20 @@ function bh_install_wsl_ubuntu() {
   # install winget
   if (!(Get-Command "winget.exe" -ea 0)) {
     bh_log_msg "INFO: winget is not installed, installing..."
-    bh_install_winget
+    bh_win_install_winget
   } 
   # enable wsl feature (require restart)
   if (!(Get-Command 'wsl.exe' -ea 0)) {
     bh_log_msg "INFO: Windows features for WSL not enabled, enabling..."
-    bh_windows_feature_enable /featurename:VirtualMachinePlatform 
-    bh_windows_feature_enable Microsoft-Windows-Subsystem-Linux
-    bh_log_msg "INFO: restart windows and run bh_setup_ubuntu again"
+    bh_win_feature_enable /featurename:VirtualMachinePlatform 
+    bh_win_feature_enable Microsoft-Windows-Subsystem-Linux
+    bh_log_msg "INFO: restart windows and run bh_ubuntu_setup again"
     return
   }
   # install ubuntu
   if (!(Get-Command "ubuntu*.exe" -ea 0)) {
     bh_log_msg "INFO: Ubuntu is not installed, installing..."
-    bh_winget_install Canonical.Ubuntu
+    bh_win_get_install Canonical.Ubuntu
   } 
   # configure ubuntu distro
   wsl -l | Out-null
@@ -921,7 +903,7 @@ function bh_install_wsl_ubuntu() {
 # setup
 # ---------------------------------------
 
-function bh_setup_windows_sanity() {
+function bh_win_setup_sanity() {
   Invoke-Expression $bh_log_func
   bh_optimize_services
   bh_optimize_appx
@@ -930,19 +912,19 @@ function bh_setup_windows_sanity() {
   bh_keyboard_disable_shortcut_altgr
 }
 
-function bh_setup_windows() {
+function bh_win_setup() {
   Invoke-Expression $bh_log_func
-  bh_setup_windows_sanity
+  bh_win_setup_sanity
   # disable passwd
   bh_system_disable_password_policy
   # install choco, gsudo, winget
-  bh_install_choco
-  bh_install_gsudo
-  bh_install_winget
+  bh_win_install_choco
+  bh_win_install_gsudo
+  bh_win_install_winget
   # install git, git-bash, wt, vscode
-  bh_install_git
-  bh_install_wget
-  bh_install_python
-  bh_install_wt
-  bh_install_vscode
+  bh_win_install_git
+  bh_win_install_wget
+  bh_win_install_python
+  bh_win_install_wt
+  bh_win_install_vscode
 }

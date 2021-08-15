@@ -1,3 +1,7 @@
+# ---------------------------------------
+# gnome helpers
+# ---------------------------------------
+
 function bh_texlive_install() {
   sudo tlmgr.bat install $@
 }
