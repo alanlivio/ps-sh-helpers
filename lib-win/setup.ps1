@@ -48,19 +48,6 @@ function bh_reg_drives() {
 }
 
 # ---------------------------------------
-# user
-# ---------------------------------------
-
-function bh_user_disable_password_policy {
-  Invoke-Expression $bh_log_func
-  $tmpfile = New-TemporaryFile
-  secedit /export /cfg $tmpfile /quiet
-  (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
-  secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
-  Remove-Item -Path $tmpfile
-}
-
-# ---------------------------------------
 # env
 # ---------------------------------------
 
@@ -459,15 +446,6 @@ function bh_optimize_appx() {
 }
 
 # ---------------------------------------
-# office
-# ---------------------------------------
-
-function bh_office_sanity() {
-  # disable hyperlink warning
-  Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Office\16.0\Common\Security" -Name "DisableHyperlinkWarning" -Value 1
-}
-
-# ---------------------------------------
 # scheduledtask
 # ---------------------------------------
 
@@ -622,8 +600,8 @@ function bh_choco_install() {
     bh_win_install_gsudo
   }
   $pkgs_to_install = ""
+  $pkgs = $(choco list -l | ForEach-Object { $_.split(' ')[0] }) -join (" ")
   foreach ($name in $args) {
-    $pkgs = choco list -l
     if (-not ($pkgs.Contains("$name"))) {
       $pkgs_to_install += "$name $pkgs_to_install"
     }
@@ -632,11 +610,6 @@ function bh_choco_install() {
     bh_log_msg "pkgs_to_install=$pkgs_to_install"
     gsudo choco install -y --acceptlicense ($pkgs_to_install -join ";")
   }
-}
-
-function bh_choco_uninstall() {
-  Invoke-Expression $bh_log_func
-  gsudo choco uninstall -y --acceptlicense ($args -join ";")
 }
 
 # ---------------------------------------
@@ -715,7 +688,7 @@ function bh_keyboard_disable_shortcut_altgr() {
 }
 
 # ---------------------------------------
-# windows
+# feature
 # ---------------------------------------
 
 function bh_win_feature_enable($featurename) {
@@ -726,15 +699,6 @@ function bh_win_feature_enable($featurename) {
 function bh_win_feature_disable($featurename) {
   Invoke-Expression "$bh_log_func $featurename"
   gsudo dism.exe /online /quiet /disable-feature /featurename:$featurename /norestart
-}
-
-function bh_win_sysupdate() {
-  Invoke-Expression $bh_log_func
-  $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
-    if ($_ -is [string]) {
-      $_.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) 
-    } 
-  }
 }
 
 # ---------------------------------------
@@ -903,11 +867,21 @@ function bh_win_install_wsl_ubuntu() {
 # setup
 # ---------------------------------------
 
+function bh_win_disable_password_policy {
+  Invoke-Expression $bh_log_func
+  $tmpfile = New-TemporaryFile
+  secedit /export /cfg $tmpfile /quiet
+  (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
+  secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
+  Remove-Item -Path $tmpfile
+}
+
 function bh_setup_win_sanity() {
   Invoke-Expression $bh_log_func
   bh_optimize_services
   bh_optimize_appx
   bh_optimize_explorer
+  bh_win_disable_password_policy
   bh_keyboard_disable_shortcut_lang
   bh_keyboard_disable_shortcut_altgr
 }
@@ -916,7 +890,6 @@ function bh_setup_win() {
   Invoke-Expression $bh_log_func
   bh_setup_win_sanity
   # disable passwd
-  bh_system_disable_password_policy
   # install choco, gsudo, winget
   bh_win_install_choco
   bh_win_install_gsudo

@@ -2,8 +2,14 @@
 # sysupdate helpers
 # ---------------------------------------
 
-bh_ps_def_func_admin bh_win_sysupdate
-
+function bh_win_sysupdate() {
+  bh_log_func
+  ps_call_admin '$(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
+    if ($_ -is [string]) {
+      $_.Split("", [System.StringSplitOptions]::RemoveEmptyEntries) 
+    } 
+  }'
+}
 function bh_win_sysupdate_list() {
   ps_call_admin 'Get-WindowsUpdate'
 }

@@ -3,10 +3,13 @@
 # ---------------------------------------
 
 bh_ps_def_func_admin bh_choco_install
-bh_ps_def_func_admin bh_choco_uninstall
 bh_ps_def_func_admin bh_choco_list_installed
-bh_ps_def_func_admin bh_choco_clean
-bh_ps_def_func_admin bh_choco_delete_local_lib
+
+function bh_choco_uninstall() {
+  bh_log_func
+  local pkgs_to_uninstall=$(echo $@ | tr ' ' ';')
+  sudo choco uninstall -y --acceptlicense $pkgs_to_uninstall
+}
 
 function bh_choco_upgrade() {
   bh_log_func
