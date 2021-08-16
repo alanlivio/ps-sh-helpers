@@ -29,7 +29,7 @@ function bh_ubuntu_setup() {
     bh_gnome_disable_super_workspace_change
   fi
   # essentials
-  local pkgs="git deborphan apt-file $PKGS_ESSENTIALS "
+  local pkgs="git deborphan apt-file $BH_PKGS_ESSENTIALS "
   # python
   pkgs+="python3 python3-pip "
   bh_apt_install $pkgs
@@ -87,8 +87,8 @@ if $IS_GNOME; then
   function bh_ubuntu_install_foxit() {
     bh_log_func
     if ! type FoxitReader &>/dev/null; then
-      URL=https://cdn01.foxitsoftware.com/pub/foxit/reader/desktop/linux/2.x/2.4/en_us/FoxitReader.enu.setup.2.4.4.0911.x64.run.tar.gz
-      bh_wget_extract $URL /tmp/
+      local url=https://cdn01.foxitsoftware.com/pub/foxit/reader/desktop/linux/2.x/2.4/en_us/FoxitReader.enu.setup.2.4.4.0911.x64.run.tar.gz
+      bh_wget_extract $url /tmp/
       sudo /tmp/FoxitReader.enu.setup.2.4.4.0911\(r057d814\).x64.run
     fi
     if ! test -d $HELPERS_OPT/foxitsoftware; then
@@ -100,8 +100,8 @@ if $IS_GNOME; then
   function bh_ubuntu_install_tor() {
     bh_log_func
     if ! test -d $HELPERS_OPT/tor; then
-      URL=https://dist.torproject.org/torbrowser/9.5/tor-browser-linux64-9.5_en-US.tar.xz
-      bh_wget_extract $URL $HELPERS_OPT/
+      local url=https://dist.torproject.org/torbrowser/9.5/tor-browser-linux64-9.5_en-US.tar.xz
+      bh_wget_extract $url $HELPERS_OPT/
     fi
     if test $? != 0; then bh_log_error "wget failed." && return 1; fi
     mv $HELPERS_OPT/tor-browser_en-US $HELPERS_OPT/tor/
@@ -112,8 +112,8 @@ if $IS_GNOME; then
   function bh_ubuntu_install_zotero() {
     bh_log_func
     if ! test -d $HELPERS_OPT/zotero; then
-      URL=https://download.zotero.org/client/release/5.0.82/Zotero-5.0.82_linux-x86_64.tar.bz2
-      bh_wget_extract $URL /tmp/
+      local url=https://download.zotero.org/client/release/5.0.82/Zotero-5.0.82_linux-x86_64.tar.bz2
+      bh_wget_extract $url /tmp/
       mv /tmp/Zotero_linux-x86_64 $HELPERS_OPT/zotero
     fi
     {
@@ -206,35 +206,35 @@ function bh_ubuntu_install_androidcmd_flutter() {
   bh_log_func
 
   # create opt
-  local OPT_DST="$BH_OPT_LINUX"
-  bh_test_and_create_folder $OPT_DST
+  local opt_dst="$BH_OPT_LINUX"
+  bh_test_and_create_folder $opt_dst
 
   # android cmd and sdk
-  local ANDROID_SDK_DIR="$OPT_DST/android"
-  local ANDROID_CMD_DIR="$ANDROID_SDK_DIR/cmdline-tools"
-  local ANDROID_CMD_URL="https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip"
-  if ! test -d $ANDROID_CMD_DIR; then
-    bh_test_and_create_folder $ANDROID_CMD_DIR
-    bh_wget_extract $ANDROID_CMD_URL $ANDROID_SDK_DIR
+  local android_sdk_dir="$opt_dst/android"
+  local android_cmd_dir="$android_sdk_dir/cmdline-tools"
+  local android_cmd_url="https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip"
+  if ! test -d $android_cmd_dir; then
+    bh_test_and_create_folder $android_cmd_dir
+    bh_wget_extract $android_cmd_url $android_sdk_dir
     if test $? != 0; then bh_log_error "wget failed." && return 1; fi
-    bh_path_add $ANDROID_CMD_DIR/bin/
+    bh_path_add $android_cmd_dir/bin/
   fi
-  if ! test -d $ANDROID_SDK_DIR/platforms; then
-    $ANDROID_CMD_DIR/bin/sdkmanager --sdk_root="$ANDROID_SDK_DIR" --install 'platform-tools' 'platforms;android-29'
-    yes | $ANDROID_CMD_DIR/bin/sdkmanager --sdk_root="$ANDROID_SDK_DIR" --licenses
-    bh_env_add ANDROID_HOME $ANDROID_SDK_DIR
-    bh_env_add ANDROID_SDK_ROOT $ANDROID_SDK_DIR
-    bh_path_add $ANDROID_SDK_DIR/platform-tools
+  if ! test -d $android_sdk_dir/platforms; then
+    $android_cmd_dir/bin/sdkmanager --sdk_root="$android_sdk_dir" --install 'platform-tools' 'platforms;android-29'
+    yes | $android_cmd_dir/bin/sdkmanager --sdk_root="$android_sdk_dir" --licenses
+    bh_env_add ANDROID_HOME $android_sdk_dir
+    bh_env_add ANDROID_SDK_ROOT $android_sdk_dir
+    bh_path_add $android_sdk_dir/platform-tools
   fi
 
   # flutter
-  local FLUTTER_SDK_DIR="$OPT_DST/flutter"
-  local FLUTTER_SDK_URL="https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_${BH_FLUTTER_VER}-stable.tar.xz"
-  if ! test -d $FLUTTER_SDK_DIR; then
-    # OPT_DST beacuase zip extract the flutter dir
-    bh_wget_extract $FLUTTER_SDK_URL $OPT_DST
+  local flutter_sdk_dir="$opt_dst/flutter"
+  local flutter_sdk_url="https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_${BH_FLUTTER_VER}-stable.tar.xz"
+  if ! test -d $flutter_sdk_dir; then
+    # opt_dst beacuase zip extract the flutter dir
+    bh_wget_extract $flutter_sdk_url $opt_dst
     if test $? != 0; then bh_log_error "wget failed." && return 1; fi
-    bh_path_add $FLUTTER_SDK_DIR/bin
+    bh_path_add $flutter_sdk_dir/bin
   fi
 }
 

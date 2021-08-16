@@ -273,7 +273,7 @@ function bh_git_dev_folder_tree() {
   local cwd=$(pwd)
 
   declare -a repos_array
-  repos_array=($REPOS)
+  repos_array=($BH_DEV_REPOS)
   for ((i = 0; i < ${#repos_array[@]}; i = i + 2)); do
     local parent=$BH_DEV/${repos_array[$i]}
     local repo=${repos_array[$((i + 1))]}

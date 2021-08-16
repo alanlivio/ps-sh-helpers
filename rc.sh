@@ -41,8 +41,8 @@ esac
 
 BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BH_RC="$BH_DIR/rc.sh"
-DOTFILES_VSCODE="$BH_DIR/skel/vscode"
-PKGS_ESSENTIALS="vim diffutils curl wget "
+BH_SKEL_VSCODE="$BH_DIR/skel/vscode"
+BH_PKGS_ESSENTIALS="vim diffutils curl wget "
 # BH_OPT
 if test -z "$BH_OPT_WIN"; then BH_OPT_WIN="/c/opt"; fi
 if test -z "$BH_OPT_LINUX"; then BH_OPT_LINUX="/opt"; fi

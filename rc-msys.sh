@@ -6,7 +6,7 @@ function bh_msys_setup() {
   bh_log_func
   bh_user_permissions_sudo_nopasswd
   # essentials
-  local pkgs="pacman pacman-mirrors msys2-runtime $PKGS_ESSENTIALS"
+  local pkgs="pacman pacman-mirrors msys2-runtime $BH_PKGS_ESSENTIALS"
   # python
   pkgs+="python-pip "
   bh_msys_install $pkgs

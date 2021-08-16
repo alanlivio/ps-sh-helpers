@@ -32,7 +32,7 @@ function bh_wsl_setup() {
   # sudo nopasswd
   bh_user_permissions_sudo_nopasswd
   # essentials
-  local pkgs="git deborphan apt-file $PKGS_ESSENTIALS "
+  local pkgs="git deborphan apt-file $BH_PKGS_ESSENTIALS "
   # python
   pkgs+="python3-pip "
   bh_apt_install $pkgs
@@ -100,20 +100,20 @@ function bh_wsl_install_lxc() {
 function bh_wsl_install_ssh() {
   sudo apt install -y openssh-server
   # https://github.com/JetBrains/clion-wsl/blob/master/ubuntu_setup_env.sh
-  SSHD_LISTEN_ADDRESS=127.0.0.1
-  SSHD_PORT=2222
-  SSHD_FILE=/etc/ssh/sshd_config
-  SUDOERS_FILE=/etc/sudoers
+  local sshd_listen_address=127.0.0.1
+  local sshd_port=2222
+  local sshd_file=/etc/ssh/sshd_config
+  local sudoers_file=/etc/sudoers
   sudo apt install -y openssh-server
-  sudo cp $SSHD_FILE ${SSHD_FILE}.$(date '+%Y-%m-%d_%H-%M-%S').back
-  sudo sed -i '/^Port/ d' $SSHD_FILE
-  sudo sed -i '/^ListenAddress/ d' $SSHD_FILE
-  sudo sed -i '/^UsePrivilegeSeparation/ d' $SSHD_FILE
-  sudo sed -i '/^PasswordAuthentication/ d' $SSHD_FILE
-  echo "# configured by CLion" | sudo tee -a $SSHD_FILE
-  echo "ListenAddress ${SSHD_LISTEN_ADDRESS}" | sudo tee -a $SSHD_FILE
-  echo "Port ${SSHD_PORT}" | sudo tee -a $SSHD_FILE
-  echo "PasswordAuthentication yes" | sudo tee -a $SSHD_FILE
-  echo "%sudo ALL=(ALL) NOPASSWD: /usr/sbin/service ssh --full-restart" | sudo tee -a $SUDOERS_FILE
+  sudo cp $sshd_file ${sshd_file}.$(date '+%Y-%m-%d_%H-%M-%S').back
+  sudo sed -i '/^Port/ d' $sshd_file
+  sudo sed -i '/^ListenAddress/ d' $sshd_file
+  sudo sed -i '/^UsePrivilegeSeparation/ d' $sshd_file
+  sudo sed -i '/^PasswordAuthentication/ d' $sshd_file
+  echo "# configured by CLion" | sudo tee -a $sshd_file
+  echo "ListenAddress ${sshd_listen_address}" | sudo tee -a $sshd_file
+  echo "Port ${sshd_port}" | sudo tee -a $sshd_file
+  echo "PasswordAuthentication yes" | sudo tee -a $sshd_file
+  echo "%sudo ALL=(ALL) NOPASSWD: /usr/sbin/service ssh --full-restart" | sudo tee -a $sudoers_file
   sudo service ssh --full-restart
 }

@@ -3,9 +3,9 @@
 # ---------------------------------------
 
 function bh_vscode_install_config_files() {
-  if test -d $DOTFILES_VSCODE; then
-    cp $DOTFILES_VSCODE/settings.json $HOME/.config/Code/User
-    cp $DOTFILES_VSCODE/keybindings.json $HOME/.config/Code/User
+  if test -d $BH_SKEL_VSCODE; then
+    cp $BH_SKEL_VSCODE/settings.json $HOME/.config/Code/User
+    cp $BH_SKEL_VSCODE/keybindings.json $HOME/.config/Code/User
   fi
 }
 

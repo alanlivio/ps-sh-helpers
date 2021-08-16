@@ -8,10 +8,10 @@ function bh_mac_setup() {
   bh_mac_install_brew
   bh_brew_upgrade
   # essentials
-  PKGS="git bash $PKGS_ESSENTIALS "
+  local pkgs="git bash $BH_PKGS_ESSENTIALS "
   # python
-  PKGS+="python python-pip "
-  bh_brew_install $PKGS
+  pkgs+="python python-pip "
+  bh_brew_install $pkgs
   # install vscode
   sudo brew install --cask visual-studio-code
 }

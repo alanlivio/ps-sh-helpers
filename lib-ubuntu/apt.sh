@@ -110,7 +110,7 @@ function bh_apt_remove_orphan_pkgs() {
   local pkgs_orphan_to_remove=""
   while [ "$(deborphan | wc -l)" -gt 0 ]; do
     for i in $(deborphan); do
-      found_exception=false
+      local found_exception=false
       for j in "$@"; do
         if test "$i" = "$j"; then
           found_exception=true

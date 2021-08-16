@@ -8,7 +8,7 @@ function bh_ports_list() {
 
 function bh_ports_kill_using() {
   : ${1?"Usage: ${FUNCNAME[0]} <port>"}
-  pid=$(sudo lsof -t -i:$1)
+  local pid=$(sudo lsof -t -i:$1)
   if test -n "$pid"; then
     sudo kill -9 "$pid"
   fi
