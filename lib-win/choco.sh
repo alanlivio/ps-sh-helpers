@@ -2,8 +2,8 @@
 # choco helpers
 # ---------------------------------------
 
-bh_ps_def_func_admin bh_choco_install
-bh_ps_def_func_admin bh_choco_list_installed
+bh_ps_lib_def_func_admin bh_choco_install
+bh_ps_lib_def_func_admin bh_choco_list_installed
 
 function bh_choco_uninstall() {
   bh_log_func

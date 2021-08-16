@@ -2,9 +2,9 @@
 # winget helpers
 # ---------------------------------------
 
-bh_ps_def_func_admin bh_win_get_install
-bh_ps_def_func_admin bh_win_get_uninstall
-bh_ps_def_func_admin bh_win_get_upgrade
+bh_ps_lib_def_func_admin bh_win_get_install
+bh_ps_lib_def_func_admin bh_win_get_uninstall
+bh_ps_lib_def_func_admin bh_win_get_upgrade
 
 function bh_win_get_list_installed() {
   ps_lib_call '$(bh_win_get_installed).Split()'

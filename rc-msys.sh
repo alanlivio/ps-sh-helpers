@@ -75,7 +75,3 @@ function bh_msys_fix_lock() {
   bh_log_func
   sudo rm /var/lib/pacman/db.lck
 }
-
-function bh_msys_sanity() {
-  bh_ps_call_admin "bh_msys_sanity"
-}

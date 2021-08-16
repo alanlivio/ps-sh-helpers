@@ -24,19 +24,20 @@ alias ps_call_admin="gsudo powershell -c"
 # wrapper calls to libs-win/win.ps1
 # ---------------------------------------
 SCRIPT_PS_WPATH=$(unixpath -w "$BH_DIR/lib-win/setup.ps1")
+
 function bh_ps_lib_call() {
   powershell.exe -command "& { . $SCRIPT_PS_WPATH; $* }"
+}
+
+function bh_ps_lib_def_func() {
+  eval "function $1() { bh_ps_lib_call $*; }"
 }
 
 function bh_ps_lib_call_admin() {
   sudo powershell.exe -command "& { . $SCRIPT_PS_WPATH;  $* }"
 }
 
-function bh_ps_def_func() {
-  eval "function $1() { bh_ps_lib_call $*; }"
-}
-
-function bh_ps_def_func_admin() {
+function bh_ps_lib_def_func_admin() {
   eval "function $1()"'{ bh_ps_lib_call_admin '"$1"' $*; }'
 }
 
@@ -60,8 +61,8 @@ source "$BH_DIR/lib-win/explorer.sh"
 # setup/update_clean helpers
 # ---------------------------------------
 
-bh_ps_def_func_admin bh_setup_win
-bh_ps_def_func_admin bh_setup_win_sanity
+bh_ps_lib_def_func_admin bh_setup_win
+bh_ps_lib_def_func_admin bh_setup_win_sanity
 
 function bh_setup_win_common_user() {
   bh_log_func
@@ -85,13 +86,6 @@ function bh_update_clean_win() {
   bh_home_clean_unused
   bh_home_hide_dotfiles
 }
-
-# ---------------------------------------
-# msys helpers
-# ---------------------------------------
-
-bh_ps_def_func_admin bh_msys_add_to_path
-bh_ps_def_func_admin bh_msys_sanity
 
 # ---------------------------------------
 # path helpers
@@ -143,7 +137,7 @@ function bh_win_service_list_disabled() {
 # env helpers
 # ---------------------------------------
 
-bh_ps_def_func_admin bh_env_add
+bh_ps_lib_def_func_admin bh_env_add
 
 # ---------------------------------------
 # wt helpers
@@ -151,7 +145,7 @@ bh_ps_def_func_admin bh_env_add
 BH_WT_STGS="$HOME/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json"
 
 function bh_wt_settings() {
-  bh_ps_def_func bh_wt_settings
+  bh_ps_lib_def_func bh_wt_settings
   code $BH_WT_STGS
 }
 
@@ -171,8 +165,8 @@ function bh_win_network_set_max_users_port() {
 # install helpers
 # ---------------------------------------
 
-bh_ps_def_func_admin bh_win_install_wsl_ubuntu
-bh_ps_def_func_admin bh_win_install_msys
+bh_ps_lib_def_func_admin bh_win_install_wsl_ubuntu
+bh_ps_lib_def_func_admin bh_win_install_msys
 
 function bh_win_install_docker() {
   bh_log_func
@@ -202,7 +196,7 @@ function bh_win_install_msys() {
   bh_log_func
   if test -d '/c/msys64/'; then
     bh_win_get_install msys2.msys2
-    bh_msys_sanity
+    bh_ps_lib_call_admin "bh_msys_sanity"
   fi
 }
 
