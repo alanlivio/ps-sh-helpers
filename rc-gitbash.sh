@@ -37,7 +37,7 @@ function bh_ps_def_func() {
 }
 
 function bh_ps_def_func_admin() {
-  eval "function $1()"'{ echo $*; bh_ps_lib_call_admin '"$1"' $*; }'
+  eval "function $1()"'{ bh_ps_lib_call_admin '"$1"' $*; }'
 }
 
 function bh_ps_test_command() {
@@ -50,6 +50,10 @@ function bh_ps_test_command() {
 
 if type tlshell.exe &>/dev/null; then source "$BH_DIR/lib-win/texlive.sh"; fi
 if type wsl.exe &>/dev/null; then source "$BH_DIR/lib-win/wsl.sh"; fi
+source "$BH_DIR/lib-win/appx.sh"
+source "$BH_DIR/lib-win/choco.sh"
+source "$BH_DIR/lib-win/sysupdate.sh"
+source "$BH_DIR/lib-win/winget.sh"
 
 # ---------------------------------------
 # setup/update_clean helpers
@@ -66,10 +70,10 @@ function bh_setup_win_common_user() {
 
 function bh_update_clean_win() {
   # windows
-  bh_ps_lib_call_admin "bh_win_sysupdate"
-  bh_ps_lib_call_admin "bh_win_get_install $PKGS_WINGET"
-  bh_ps_lib_call_admin "bh_appx_install $PKGS_APPX"
-  bh_ps_lib_call_admin "bh_choco_install $PKGS_CHOCO"
+  bh_win_sysupdate
+  bh_win_get_install "$PKGS_WINGET"
+  bh_appx_install "$PKGS_APPX"
+  bh_choco_install "$PKGS_CHOCO"
   bh_choco_upgrade
   bh_choco_clean
   bh_python_upgrade
@@ -99,75 +103,6 @@ function bh_win_path() {
 function bh_win_path_add() {
   local dir=$(winpath $1)
   bh_ps_lib_call "bh_path_add $dir"
-}
-
-# ---------------------------------------
-# appx helpers
-# ---------------------------------------
-
-function bh_appx_list_installed() {
-  sudo powershell -c "Get-AppxPackage -AllUsers | Select-Object Name, PackageFullName"
-}
-
-bh_ps_def_func_admin bh_appx_install
-bh_ps_def_func_admin bh_appx_uninstall
-
-function bh_appx_install_essentials() {
-  local pkgs='Microsoft.WindowsStore Microsoft.WindowsCalculator Microsoft.Windows.Photos Microsoft.WindowsFeedbackHub Microsoft.WindowsCamera Microsoft.WindowsSoundRecorder'
-  bh_appx_install $pkgs
-}
-
-# ---------------------------------------
-# choco helpers
-# ---------------------------------------
-
-bh_ps_def_func_admin bh_choco_install
-bh_ps_def_func_admin bh_choco_uninstall
-bh_ps_def_func_admin bh_choco_list_installed
-bh_ps_def_func_admin bh_choco_clean
-bh_ps_def_func_admin bh_choco_delete_local_lib
-
-function bh_choco_upgrade() {
-  bh_log_func
-  local outdated=false
-  sudo choco outdated | grep '0 package' >/dev/null || outdated=true
-  if $outdated; then sudo choco upgrade -y --acceptlicense all; fi
-}
-
-function bh_choco_list_installed() {
-  choco list -l
-}
-
-function bh_choco_clean() {
-  bh_log_func
-  if type choco-cleaner.exe &>/dev/null; then
-    sudo choco install choco-cleaner
-  fi
-  ps_call_admin 'Invoke-Expression "$env:ChocolateyToolsLocation\BCURRAN3\choco-cleaner.ps1" | Out-Null'
-}
-
-# ---------------------------------------
-# winget helpers
-# ---------------------------------------
-
-bh_ps_def_func_admin bh_win_get_install
-bh_ps_def_func_admin bh_win_get_uninstall
-bh_ps_def_func_admin bh_win_get_upgrade
-
-function bh_win_get_list_installed() {
-  ps_lib_call '$(bh_win_get_installed).Split()'
-}
-
-function bh_win_get_list_installed_verbose() {
-  winget list
-}
-
-function bh_win_get_settings() {
-  winget settings
-}
-
-function bh_win_get_upgrade() {
-  winget upgrade --all --silent
 }
 
 # ---------------------------------------
@@ -232,18 +167,6 @@ BH_WT_STGS="$HOME/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe
 function bh_wt_settings() {
   bh_ps_def_func bh_wt_settings
   code $BH_WT_STGS
-}
-
-# ---------------------------------------
-# sysupdate helpers
-# ---------------------------------------
-
-function bh_win_sysupdate_list() {
-  ps_call_admin 'Get-WindowsUpdate'
-}
-
-function bh_win_sysupdate_list_last_installed() {
-  ps_call_admin 'Get-WUHistory -Last 10 | Select-Object Date, Title, Result'
 }
 
 # ---------------------------------------

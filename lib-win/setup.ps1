@@ -529,7 +529,7 @@ function bh_appx_install() {
   $pkgs_to_install = ""
   foreach ($name in $args) {
     if ( !(Get-AppxPackage -Name $name)) {
-      $pkgs_to_install = "$pkgs_to_install $name"
+      $pkgs_to_install += "$name $pkgs_to_install"
     }
   }
   if ($pkgs_to_install) {
@@ -621,11 +621,11 @@ function bh_choco_install() {
   if (!(Get-Command 'gsudo.exe' -ea 0)) {
     bh_win_install_gsudo
   }
+  $pkgs_to_install = ""
   foreach ($name in $args) {
-    $pkgs_to_install = ""
     $pkgs = choco list -l
     if (-not ($pkgs.Contains("$name"))) {
-      $pkgs_to_install = "$pkgs_to_install $name"
+      $pkgs_to_install += "$name $pkgs_to_install"
     }
   }
   if ($pkgs_to_install) {
