@@ -529,19 +529,6 @@ function bh_appx_uninstall() {
 }
 
 # ---------------------------------------
-# home
-# ---------------------------------------
-
-function bh_explorer_restore_desktop() {
-  if (Test-Path "${env:userprofile}\Desktop") {
-    mkdir "${env:userprofile}\Desktop"
-  }
-  reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v "Desktop" /t REG_SZ /d "C:\Users\${env:username}\Desktop" /f
-  reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" /v "Desktop" /t REG_EXPAND_SZ /d "${env:userprofile}\Desktop" /f
-  attrib +r -s -h "${env:userprofile}\Desktop"
-}
-
-# ---------------------------------------
 # win_get
 # ---------------------------------------
 

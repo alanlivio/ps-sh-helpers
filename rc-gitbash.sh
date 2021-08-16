@@ -54,6 +54,7 @@ source "$BH_DIR/lib-win/appx.sh"
 source "$BH_DIR/lib-win/choco.sh"
 source "$BH_DIR/lib-win/sysupdate.sh"
 source "$BH_DIR/lib-win/winget.sh"
+source "$BH_DIR/lib-win/explorer.sh"
 
 # ---------------------------------------
 # setup/update_clean helpers
@@ -109,8 +110,6 @@ function bh_win_path_add() {
 # home helpers
 # ---------------------------------------
 
-bh_ps_def_func_admin bh_explorer_restore_desktop
-
 function bh_home_hide_dotfiles() {
   bh_log_func
   powershell -c 'Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
@@ -138,19 +137,6 @@ function bh_win_service_list_enabled() {
 
 function bh_win_service_list_disabled() {
   ps_call_admin 'Get-Service | Where-Object { $_.StartType -eq "Disabled" }'
-}
-
-# ---------------------------------------
-# explorer
-# ---------------------------------------
-
-function bh_explorer_open_trash() {
-  ps_call 'Start-Process explorer shell:recyclebinfolder'
-}
-
-function bh_explorer_restart() {
-  ps_call_admin 'taskkill /f /im explorer.exe | Out-Null'
-  ps_call 'Start-Process explorer.exe'
 }
 
 # ---------------------------------------
