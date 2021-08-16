@@ -2,7 +2,7 @@
 # setup/update_clean helpers
 # ---------------------------------------
 
-function bh_msys_setup() {
+function bh_setup_msys() {
   bh_log_func
   bh_user_permissions_sudo_nopasswd
   # essentials
@@ -14,7 +14,7 @@ function bh_msys_setup() {
   bh_python_install $PKGS_PYTHON_MSYS
 }
 
-function bh_msys_update_clean() {
+function bh_update_clean_msys() {
   bh_msys_upgrade
   # python
   bh_python_upgrade

@@ -155,7 +155,9 @@ source "$BH_DIR/lib/md5.sh"
 
 # ---------------------------------------
 # load libs for specific OS
-# they define bh_*_setup bh_*_update_clean
+# they define: 
+# - bh_setup_{ubuntu,msys,wsl,mac}
+# - bh_update_clean_{ubuntu,msys,wsl,mac}
 # ---------------------------------------
 
 if $IS_LINUX_UBUNTU; then

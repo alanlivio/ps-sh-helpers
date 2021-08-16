@@ -55,16 +55,16 @@ if type wsl.exe &>/dev/null; then source "$BH_DIR/lib-win/wsl.sh"; fi
 # setup/update_clean helpers
 # ---------------------------------------
 
-bh_ps_def_func_admin bh_win_setup
-bh_ps_def_func_admin bh_win_setup_sanity
+bh_ps_def_func_admin bh_setup_win
+bh_ps_def_func_admin bh_setup_win_sanity
 
-function bh_win_setup_common_user() {
+function bh_setup_win_common_user() {
   bh_log_func
-  bh_win_setup_sanity
+  bh_setup_win_sanity
   bh_win_get_install Google.Chrome VideoLAN.VLC 7zip.7zip Piriform.CCleaner
 }
 
-function bh_win_sysupdate_clean() {
+function bh_update_clean_win() {
   # windows
   bh_ps_lib_call_admin "bh_win_sysupdate"
   bh_ps_lib_call_admin "bh_win_get_install $PKGS_WINGET"

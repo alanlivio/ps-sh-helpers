@@ -2,7 +2,7 @@
 # setup/update_clean functions
 # ---------------------------------------
 
-function bh_mac_setup() {
+function bh_setup_mac() {
   bh_log_func
   bh_user_permissions_sudo_nopasswd
   bh_mac_install_brew
@@ -16,7 +16,7 @@ function bh_mac_setup() {
   sudo brew install --cask visual-studio-code
 }
 
-function bh_mac_update_clean() {
+function bh_update_clean_mac() {
   # brew
   bh_brew_upgrade
   bh_brew_install $PKGS_BREW

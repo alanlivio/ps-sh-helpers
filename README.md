@@ -16,23 +16,18 @@ To enable bash-helpers (windows git bash, macOS bash, msys bash, wsl bash), you 
 
 ### setup Gnome-based Ubuntu  
 
-  1. at bash, run `bh_ubuntu_setup`: configure Gnome (e.g., disable unused services/features/apps, dark mode) and install essential software (e.g., git, wget, curl, python, vscode).
-  2. at bash, run `bh_ubuntu_update_clean` (run routinely): configure/upgrade packges using variables (PKGS_APT, PKGS_PYTHON, PKGS_SNAP, PKGS_SNAP_CLASSIC, PKGS_REMOVE_APT) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
+  1. at bash, run `bh_setup_ubuntu`: configure Gnome (e.g., disable unused services/features/apps, dark mode) and install essential software (e.g., git, wget, curl, python, vscode).
+  2. at bash, run `bh_update_clean_ubuntu` (run routinely): configure/upgrade packges using variables (PKGS_APT, PKGS_PYTHON, PKGS_SNAP, PKGS_SNAP_CLASSIC, PKGS_REMOVE_APT) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 
 ### setup macOS  
 
-  1. at bash, run `bh_mac_setup`: install essential software (brew, bash last version, python, vscode)
-  2. at bash, run `bh_mac_update_clean` (run routinely): configure/upgrade packges using variables (PKGS_BREW) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
-
-### setup Windows for common (non-dev) users
-
-  1. at git bash, run `bh_win_setup_common_user`: install common user software (i.e., googlechrome, vlc, 7zip, ccleaner, FoxitReader).
-  2. at git bash, run `bh_win_install_battle_steam` (optional for gamers): install BattleNet and Steam
+  1. at bash, run `bh_setup_mac`: install essential software (brew, bash last version, python, vscode)
+  2. at bash, run `bh_update_clean_mac` (run routinely): configure/upgrade packges using variables (PKGS_BREW) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 
 ### setup Windows
 
-  1. at git bash, run `bh_win_setup`: configure Windows (e.g., disable unused services/features/apps, dark mode) and install essential software (e.g., choco, gsudo, winget, python, WindowsTerminal, vscode).
-  2. `bh_win_sysupdate_clean` (run routinely): configure/upgrade packges using variables (e.g. PKGS_PYTHON) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
+  1. at git bash, run `bh_setup_win`: configure Windows (e.g., disable unused services/features/apps, dark mode) and install essential software (e.g., choco, gsudo, winget, python, WindowsTerminal, vscode).
+  2. `bh_update_clean_win` (run routinely): configure/upgrade packges using variables (e.g. PKGS_PYTHON) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 
 ### setup WSL (after setup Windows)
 
@@ -41,14 +36,14 @@ To enable bash-helpers (windows git bash, macOS bash, msys bash, wsl bash), you 
     1.2. It aso require run Ubuntu app and configure your username/password.  
     1.1. Then run it again.
 
-  2. at wsl bash, run `bh_wsl_setup`: install essential software (e.g., git, wget, curl, python).
-  3. at wsl bash, run `bh_wsl_update_clean` (run routinely): configure/upgrade packges using variables (e.g., PKGS_APT, PKGS_PYTHON, PKGS_REMOVE_APT) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
+  2. at wsl bash, run `bh_setup_wsl`: install essential software (e.g., git, wget, curl, python).
+  3. at wsl bash, run `bh_update_clean_wsl` (run routinely): configure/upgrade packges using variables (e.g., PKGS_APT, PKGS_PYTHON, PKGS_REMOVE_APT) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 
 ### setup Windows msys2 (after setup Windows)
 
   1. at git bash, run `bh_win_install_msys`: install msys (Cygwin-based) with bash to build GNU-based win32 applications
-  2. at msys bash, run `bh_msys_setup`: install essential software (e.g., wget, curl, python).
-  3. at msys bash, run `bh_msys_update_clean` (run routinely): configure/upgrade packges using variables (e.g., PKGS_MSYS, PKGS_PYTHON_MSYS) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
+  2. at msys bash, run `bh_setup_msys`: install essential software (e.g., wget, curl, python).
+  3. at msys bash, run `bh_update_clean_msys` (run routinely): configure/upgrade packges using variables (e.g., PKGS_MSYS, PKGS_PYTHON_MSYS) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
   
 
 # helpers for commands

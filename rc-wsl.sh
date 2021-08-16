@@ -28,7 +28,7 @@ if type lsof &>/dev/null; then source "$BH_DIR/lib-ubuntu/ports.sh"; fi
 # setup/update_clean helpers
 # ---------------------------------------
 
-function bh_wsl_setup() {
+function bh_setup_wsl() {
   # sudo nopasswd
   bh_user_permissions_sudo_nopasswd
   # essentials
@@ -40,7 +40,7 @@ function bh_wsl_setup() {
   bh_python_set_python3_default
 }
 
-function bh_wsl_update_clean() {
+function bh_update_clean_wsl() {
   # apt
   bh_apt_install $PKGS_APT
   bh_apt_remove_pkgs $PKGS_REMOVE_APT

@@ -865,7 +865,7 @@ function bh_win_install_wsl_ubuntu() {
     bh_log_msg "INFO: Windows features for WSL not enabled, enabling..."
     bh_win_feature_enable /featurename:VirtualMachinePlatform 
     bh_win_feature_enable Microsoft-Windows-Subsystem-Linux
-    bh_log_msg "INFO: restart windows and run bh_ubuntu_setup again"
+    bh_log_msg "INFO: restart windows and run bh_setup_ubuntu again"
     return
   }
   # install ubuntu
@@ -903,7 +903,7 @@ function bh_win_install_wsl_ubuntu() {
 # setup
 # ---------------------------------------
 
-function bh_win_setup_sanity() {
+function bh_setup_win_sanity() {
   Invoke-Expression $bh_log_func
   bh_optimize_services
   bh_optimize_appx
@@ -912,9 +912,9 @@ function bh_win_setup_sanity() {
   bh_keyboard_disable_shortcut_altgr
 }
 
-function bh_win_setup() {
+function bh_setup_win() {
   Invoke-Expression $bh_log_func
-  bh_win_setup_sanity
+  bh_setup_win_sanity
   # disable passwd
   bh_system_disable_password_policy
   # install choco, gsudo, winget

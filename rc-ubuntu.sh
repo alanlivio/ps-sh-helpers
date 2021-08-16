@@ -19,7 +19,7 @@ if test -z "$(sudo dmidecode | grep 'Apple')"; then "$BH_DIR/lib-ubuntu/on_mac.s
 # setup/update_clean
 # ---------------------------------------
 
-function bh_ubuntu_setup() {
+function bh_setup_ubuntu() {
   bh_log_func
   # gnome configure
   if $IS_GNOME; then
@@ -42,7 +42,7 @@ function bh_ubuntu_setup() {
   bh_home_clean_unused
 }
 
-function bh_ubuntu_update_clean() {
+function bh_update_clean_ubuntu() {
   if $HAS_SNAP; then
     # snap
     bh_snap_install $PKGS_SNAP
