@@ -61,8 +61,8 @@ source "$BH_DIR/lib-win/user.sh"
 # setup/update_clean helpers
 # ---------------------------------------
 
-bh_ps_lib_def_func_admin bh_setup_win
-bh_ps_lib_def_func_admin bh_setup_win_sanity
+bh_ps_lib_def_func bh_setup_win
+bh_ps_lib_def_func bh_setup_explorer_sanity
 
 function bh_setup_win_common_user() {
   bh_log_func
