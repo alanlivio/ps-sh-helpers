@@ -220,20 +220,14 @@ function bh_config_func() {
   : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
   bh_log_func
   declare -a files_array
-  if $IS_WINDOWS_UBUNTU; then
-    files_array=($BKP_FILES $BKP_FILES_GNOME)
-  elif $IS_WINDOWS; then
-    files_array=($BKP_FILES $BKP_FILES_WIN)
-  elif $IS_MAC; then
-    files_array=($BKP_FILES $BKP_FILES_MAC)
-  fi
+  files_array=($BKP_FILES)
   if [ ${#files_array[@]} -eq 0 ]; then
     bh_log_error "BKP_FILES empty"
   fi
   for ((i = 0; i < ${#files_array[@]}; i = i + 2)); do
     bh_test_and_create_file ${files_array[$i]}
     bh_test_and_create_file ${files_array[$((i + 1))]}
-    if [ $1 = "backup" ]; then
+    if [ $1 = "backup" ]; then  
       cp ${files_array[$i]} ${files_array[$((i + 1))]}
     elif [ $1 = "install" ]; then
       cp ${files_array[$((i + 1))]} ${files_array[$i]}
