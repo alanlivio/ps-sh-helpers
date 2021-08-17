@@ -13,7 +13,7 @@ function bh_setup_mac() {
   pkgs+="python python-pip "
   bh_brew_install $pkgs
   # install vscode
-  sudo brew install --cask visual-studio-code
+  brew install --cask visual-studio-code
 }
 
 function bh_update_clean_mac() {
@@ -34,14 +34,14 @@ function bh_update_clean_mac() {
 
 function bh_mac_install_brew() {
   bh_log_func
-  sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 }
 
 function bh_brew_install() {
-  sudo brew install "$@"
+  brew install "$@"
 }
 
 function bh_brew_upgrade() {
-  sudo brew update
+  brew update
   sudo brew upgrade
 }

@@ -16,7 +16,6 @@ alias choco='/c/ProgramData/chocolatey/bin/choco.exe'
 alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
 alias whereis='where'
 alias reboot='gsudo shutdown \/r'
-alias sudo='gsudo'
 alias ps_call="powershell -c"
 alias ps_call_admin="gsudo powershell -c"
 
@@ -34,7 +33,7 @@ function bh_ps_lib_def_func() {
 }
 
 function bh_ps_lib_call_admin() {
-  sudo powershell.exe -command "& { . $SCRIPT_PS_WPATH;  $* }"
+  gsudo powershell.exe -command "& { . $SCRIPT_PS_WPATH;  $* }"
 }
 
 function bh_ps_lib_def_func_admin() {
@@ -81,10 +80,11 @@ function bh_update_clean_win() {
     bh_choco_upgrade
     bh_choco_clean
   fi
+  # python
   bh_python_upgrade
   bh_python_install $PKGS_PYTHON
   # vscode
-  bh_vscode_install $PKGS_VSCODE  
+  bh_vscode_install $PKGS_VSCODE
   # cleanup
   bh_home_clean_unused
   bh_home_hide_dotfiles
@@ -94,7 +94,7 @@ function bh_update_clean_win() {
 # path helpers
 # ---------------------------------------
 
-function bh_win_path() {  
+function bh_win_path() {
   powershell -c "[Environment]::GetEnvironmentVariable('path', 'Machine')"
 }
 
@@ -254,5 +254,5 @@ function bh_win_install_windows_latexindent() {
 }
 
 function bh_win_install_texlive() {
-  sudo choco install texlive
+  bh_choco_install install texlive
 }

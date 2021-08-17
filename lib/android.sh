@@ -8,10 +8,6 @@ function bh_android_start_activity() {
   adb shell am start -a android.intent.action.MAIN -n "$1"
 }
 
-function bh_android_restart_adb() {
-  sudo adb kill-server && sudo adb start-server
-}
-
 function bh_android_get_ip() {
   adb shell netcfg
   adb shell ifconfig wlan0

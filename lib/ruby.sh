@@ -15,7 +15,7 @@ function bh_ruby_install() {
   done
   if test ! -z "$pkgs_to_install"; then
     echo "pkgs_to_install=$pkgs_to_install"
-    sudo gem install $pkgs_to_install
+    gem install $pkgs_to_install
     if test "$(pwd)" == "/tmp"; then cd - >/dev/null; fi
   fi
 }

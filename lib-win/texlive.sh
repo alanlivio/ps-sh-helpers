@@ -1,18 +1,18 @@
 # ---------------------------------------
-# gnome helpers
+# texlive helpers
 # ---------------------------------------
 
 function bh_texlive_install() {
-  sudo tlmgr.bat install $@
+  tlmgr.bat install $@
 }
 
 function bh_texlive_install_from_saved_lis() {
   local pkgs_to_install=$(cat $BKP_DOTFILES_DIR/texlive_installed_pkgs.txt | awk '{print substr($2, 1, length($2)-1)}' | tr '\n' ' ')
-  sudo tlmgr.bat install $pkgs_to_install
+  tlmgr.bat install $pkgs_to_install
 }
 
 function bh_texlive_search_file() {
-  sudo tlmgr.bat search -file $1
+  tlmgr.bat search -file $1
 }
 
 function bh_texlive_list_installed() {

@@ -3,10 +3,10 @@
 # ---------------------------------------
 
 function bh_ssh_fix_permissions() {
-  sudo chmod 700 $HOME/.ssh/
+  chmod 700 $HOME/.ssh/
   if test -f $HOME/.ssh/id_rsa; then
-    sudo chmod 600 $HOME/.ssh/id_rsa
-    sudo chmod 640 $HOME/.ssh/id_rsa.pubssh-rsa
+    chmod 600 $HOME/.ssh/id_rsa
+    chmod 640 $HOME/.ssh/id_rsa.pubssh-rsa
   fi
 }
 
