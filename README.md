@@ -4,7 +4,16 @@ This project offers cross-plataform (linux, macOS, windows) bash helpers to: con
 
 # How to install
 
-To enable bash-helpers (windows git bash, macOS bash, msys bash, wsl bash), you can it as  a [Bash Startup File](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html). To do that, run the followings commands to fetch the project and load `rc.sh` at `~/.bashrc` :
+The bash-helpers has two requeriments: a `bash shell` and `git`.   
+Linux and macOS support bash by default. 
+You install Git in any OS following steps from [here](https://git-scm.com/download). 
+For windows, the Git installer will also install a bash called `git bash`. However, it do not use your home folder, to fix that run in powershell: 
+
+```powershell
+  [Environment]::SetEnvironmentVariable("HOME", "${env:UserProfile}")
+```
+
+Then, you can fetch and enable it bash-helpers (windows git bash, macOS bash, msys bash, wsl bash) by extending your [Bash Startup File](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html). To do that, run in bash:
 
 ```bash
   git clone https://github.com/alanlivio/bash-helpers.git ~/.bh
