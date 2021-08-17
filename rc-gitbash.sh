@@ -56,6 +56,7 @@ source "$BH_DIR/lib-win/choco.sh"
 source "$BH_DIR/lib-win/sysupdate.sh"
 source "$BH_DIR/lib-win/winget.sh"
 source "$BH_DIR/lib-win/explorer.sh"
+source "$BH_DIR/lib-win/user.sh"
 
 # ---------------------------------------
 # setup/update_clean helpers
@@ -72,12 +73,14 @@ function bh_setup_win_common_user() {
 
 function bh_update_clean_win() {
   # windows
-  bh_win_sysupdate
-  bh_win_get_install "$PKGS_WINGET"
-  bh_appx_install "$PKGS_APPX"
-  bh_choco_install "$PKGS_CHOCO"
-  bh_choco_upgrade
-  bh_choco_clean
+  if [ $(bh_win_user_check_admin) = "False" ]; then
+    bh_win_sysupdate
+    bh_win_get_install "$PKGS_WINGET"
+    bh_appx_install "$PKGS_APPX"
+    bh_choco_install "$PKGS_CHOCO"
+    bh_choco_upgrade
+    bh_choco_clean
+  fi
   bh_python_upgrade
   bh_python_install $PKGS_PYTHON
   # vscode
