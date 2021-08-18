@@ -41,17 +41,17 @@ function bh_reg_drives() {
 # ---------------------------------------
 
 function bh_env_add($name, $value) {
-  [System.Environment]::SetEnvironmentVariable("$name", "$value", 'Machine')
+  [System.Environment]::SetEnvironmentVariable("$name", "$value", 'user')
 }
 
 function bh_path_add($addPath) {
   if (Test-Path $addPath) {
-    $currentpath = [System.Environment]::GetEnvironmentVariable('PATH', 'Machine')
+    $currentpath = [System.Environment]::GetEnvironmentVariable('PATH', 'user')
     $regexAddPath = [regex]::Escape($addPath)
     $arrPath = $currentpath -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
     $newpath = ($arrPath + $addPath) -join ';'
     bh_env_add 'PATH' $newpath
-    refreshenv
+    refreshenv | Out-null
   }
   else {
     Throw "$addPath' is not a valid path."
@@ -138,17 +138,16 @@ function bh_appx_install() {
   if ($pkgs_to_install) {
     bh_log "pkgs_to_install=$pkgs_to_install"
     foreach ($pkg in $pkgs_to_install) {
-      gsudo Get-AppxPackage -allusers $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
+      Get-AppxPackage $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
     }
   }
 }
 
 function bh_appx_uninstall() {
-  Invoke-Expression $bh_log_func
   foreach ($name in $args) {
     if (Get-AppxPackage -Name $name) {
-      bh_log "uninstall $name"
-      Get-AppxPackage -allusers $name | Remove-AppxPackage
+      Invoke-Expression "$bh_log_func $name"
+      Get-AppxPackage $name | Remove-AppxPackage
     }
   }
 }
@@ -315,10 +314,17 @@ function bh_msys_sanity() {
 # install
 # ---------------------------------------
 
+function bh_win_install_winget() {
+  if (!(Get-Command 'winget.exe' -ea 0)) {
+    Invoke-Expression $bh_log_func
+    bh_appx_install Microsoft.DesktopAppInstaller
+  }
+}
+
 function bh_win_install_choco() {
   if (!(Get-Command 'choco.exe' -ea 0)) {
     Invoke-Expression $bh_log_func
-    if (!(bh_user_is_admin)) { bh_log "not admin"; return; }
+    if (!(bh_user_is_admin)) { bh_log "not admin."; return; }
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
     bh_path_add "%ALLUSERSPROFILE%\chocolatey\bin"
     cmd /c 'setx ChocolateyToolsLocation C:\opt\'
@@ -348,52 +354,30 @@ function bh_win_install_choco() {
 function bh_win_install_gsudo() {
   if (!(Get-Command 'gsudo.exe' -ea 0)) {
     Invoke-Expression $bh_log_func
-    if (!(bh_user_is_admin)) { bh_log "not admin"; return; }
+    if (!(bh_user_is_admin)) { bh_log "not admin."; return; }
     bh_win_get_install gsudo
     bh_path_add 'C:\Program Files (x86)\gsudo'
   }
 }
 
-function bh_win_install_winget() {
-  if (!(Get-Command 'winget.exe' -ea 0)) {
-    Invoke-Expression $bh_log_func
-    if (!(bh_user_is_admin)) { bh_log "not admin"; return; }
-    bh_appx_install Microsoft.DesktopAppInstaller
-  }
-}
-
-function bh_win_install_wt() {
-  if (!(Get-Command 'wt' -ea 0)) {
-    Invoke-Expression $bh_log_func
-    if (!(bh_user_is_admin)) { bh_log "not admin"; return; }
-    bh_win_install_winget
-    bh_win_get_install Microsoft.WindowsTerminal
-  }
-}
-
 function bh_win_install_python() {
-  if (!(Get-Command 'python3')) {
-    Invoke-Expression $bh_log_func
-    if (!(bh_user_is_admin)) { bh_log "not admin"; return; }
-    bh_win_install_winget
-    winget install python
+  # path depends if your winget settings uses "scope": "user" or "machine"
+  $py_exe_1 = "${env:UserProfile}\AppData\Local\Programs\Python\Python39\python.exe"
+  $py_exe_2 = "C:\Program Files\Python39\python.exe"
+  if (!(Test-Path $py_exe_1) -and !(Test-Path $py_exe_2)) {
+    winget install Python.Python.3
   }
-}
-
-function bh_win_install_vscode() {
-  if (!(Get-Command 'code' -ea 0)) {
-    Invoke-Expression $bh_log_func
-    if (!(bh_user_is_admin)) { bh_log "not admin"; return; }
-    bh_win_install_winget
-    bh_win_get_install Microsoft.VisualStudioCode
-  }
+  # Remove windows alias. See https://superuser.com/questions/1437590/typing-python-on-windows-10-version-1903-command-prompt-opens-microsoft-stor
+  Remove-Item $env:USERPROFILE\AppData\Local\Microsoft\WindowsApps\python*.exe
+  if (Test-Path $py_exe_1) { bh_path_add $(Split-Path $py_exe_1) }
+  elseif (Test-Path $py_exe_2) { bh_path_add $(Split-Path $py_exe_2) }
 }
 
 function bh_win_install_wget() {
   $wget_path = "C:\Program Files (x86)\GnuWin32\bin\"
   if (!(Test-Path $wget_path)) {
     Invoke-Expression $bh_log_func
-    if (!(bh_user_is_admin)) { bh_log "not admin"; return; }
+    if (!(bh_user_is_admin)) { bh_log "not admin."; return; }
     bh_win_install_winget
     bh_win_get_install GnuWin32.Wget
     bh_path_add "$wget_path"
@@ -405,7 +389,7 @@ function bh_win_install_wsl_ubuntu() {
   # - https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
   # - https://ubuntu.com/wsl
   Invoke-Expression $bh_log_func
-  if (!(bh_user_is_admin)) { bh_log "not admin"; return; }
+  if (!(bh_user_is_admin)) { bh_log "not admin."; return; }
 
   # install winget
   if (!(Get-Command "winget.exe" -ea 0)) {
@@ -553,75 +537,9 @@ function bh_optimize_explorer() {
   Stop-Process -ProcessName explorer
 }
 
-function bh_optimize_appx() {
-  Invoke-Expression $bh_log_func
-  if (!(bh_user_is_admin)) { bh_log "not admin"; return; }
-  # microsoft
-  $pkgs = @(
-    'Microsoft.3DBuilder'
-    'Microsoft.549981C3F5F10' # cortana
-    'Microsoft.Appconnector'
-    'Microsoft.BingNews'
-    'Microsoft.BingSports'
-    'Microsoft.BingWeather'
-    'Microsoft.CommsPhone'
-    'Microsoft.ConnectivityStore'
-    'Microsoft.Getstarted'
-    'Microsoft.Messaging'
-    'Microsoft.Microsoft3DViewer'
-    'Microsoft.MicrosoftOfficeHub'
-    'Microsoft.MicrosoftSolitaireCollection'
-    'Microsoft.MicrosoftStickyNotes'
-    'Microsoft.MinecraftUWP'
-    'Microsoft.MixedReality.Portal'
-    'Microsoft.MSPaint'
-    'Microsoft.Office.Desktop'
-    'Microsoft.Office.OneNote'
-    'Microsoft.Office.Sway'
-    'Microsoft.OneConnect'
-    'Microsoft.People'
-    'Microsoft.Print3D'
-    'Microsoft.StorePurchaseApp'
-    'Microsoft.Wallet'
-    'Microsoft.WindowsAlarms'
-    'Microsoft.windowscommunicationsapps'
-    'Microsoft.WindowsMaps'
-    'Microsoft.WindowsPhone'
-    'Microsoft.Xbox.TCUI'
-    'Microsoft.XboxApp'
-    'Microsoft.XboxGameOverlay'
-    'Microsoft.XboxGamingOverlay'
-    'Microsoft.XboxIdentityProvider'
-    'Microsoft.XboxSpeechToTextOverlay'
-    'Microsoft.YourPhone'
-    'Microsoft.ZuneMusic'
-    'Microsoft.ZuneVideo'
-  )
-  bh_appx_uninstall @pkgs
-
-  # others
-  $pkgs = @(
-    '7EE7776C.LinkedInforWindows'
-    '9E2F88E3.Twitter'
-    'A278AB0D.DisneyMagicKingdoms'
-    'A278AB0D.MarchofEmpires'
-    'Facebook.Facebook'
-    'king.com.BubbleWitch3Saga'
-    'king.com.BubbleWitch3Saga'
-    'king.com.CandyCrushFriends'
-    'king.com.CandyCrushSaga'
-    'king.com.CandyCrushSodaSaga'
-    'king.com.FarmHeroesSaga_5.34.8.0_x86__kgqvnymyfvs32'
-    'king.com.FarmHeroesSaga'
-    'NORDCURRENT.COOKINGFEVER'
-    'SpotifyAB.SpotifyMusic'
-  )
-  bh_appx_uninstall @pkgs
-}
-
 function bh_optimize_windows() {
   Invoke-Expression $bh_log_func
-  if (!(bh_user_is_admin)) { bh_log "not admin"; return; }
+  if (!(bh_user_is_admin)) { bh_log "not admin."; return; }
 
   # Remove Lock screen
   bh_log "Remove Lockscreen "
@@ -757,6 +675,56 @@ function bh_optimize_disable_password_policy {
 # setup
 # ---------------------------------------
 
+
+function bh_setup_start_menu_sanity() {
+  Invoke-Expression $bh_log_func
+  # microsoft
+  $pkgs = @(
+    'Microsoft.3DBuilder'
+    'Microsoft.Appconnector'
+    'Microsoft.BingNews'
+    'Microsoft.BingSports'
+    'Microsoft.BingWeather'
+    'Microsoft.CommsPhone'
+    'Microsoft.ConnectivityStore'
+    'Microsoft.Getstarted'
+    'Microsoft.Microsoft3DViewer'
+    'Microsoft.MicrosoftOfficeHub'
+    'Microsoft.MicrosoftSolitaireCollection'
+    'Microsoft.MicrosoftStickyNotes'
+    'Microsoft.MixedReality.Portal'
+    'Microsoft.Office.Desktop'
+    'Microsoft.Office.Sway'
+    'Microsoft.OneConnect'
+    'Microsoft.Print3D'
+    'Microsoft.StorePurchaseApp'
+    'Microsoft.Wallet'
+    'Microsoft.WindowsAlarms'
+    'Microsoft.WindowsMaps'
+    'Microsoft.Xbox.TCUI'
+    'Microsoft.XboxApp'
+    'Microsoft.XboxGameOverlay'
+    'Microsoft.XboxGamingOverlay'
+    'Microsoft.XboxIdentityProvider'
+    'Microsoft.XboxSpeechToTextOverlay'
+    '7EE7776C.LinkedInforWindows'
+    '9E2F88E3.Twitter'
+    'A278AB0D.DisneyMagicKingdoms'
+    'A278AB0D.MarchofEmpires'
+    'Facebook.Facebook'
+    'king.com.BubbleWitch3Saga'
+    'king.com.BubbleWitch3Saga'
+    'king.com.CandyCrushFriends'
+    'king.com.CandyCrushSaga'
+    'king.com.CandyCrushSodaSaga'
+    'king.com.FarmHeroesSaga_5.34.8.0_x86__kgqvnymyfvs32'
+    'king.com.FarmHeroesSaga'
+    'NORDCURRENT.COOKINGFEVER'
+    'SpotifyAB.SpotifyMusic'
+  )
+  bh_appx_uninstall @pkgs
+}
+
 function bh_setup_explorer_sanity() {
   Invoke-Expression $bh_log_func
 
@@ -813,22 +781,29 @@ function bh_setup_explorer_sanity() {
 
 function bh_setup_win_optmized() {
   Invoke-Expression $bh_log_func
-  if (!(bh_user_is_admin)) { bh_log "not admin"; return; }
+  if (!(bh_user_is_admin)) { bh_log "not admin."; return; }
   bh_optimize_disable_shortcut_altgr
   bh_optimize_disable_password_policy
   bh_optimize_windows
-  bh_optimize_appx
   bh_optimize_explorer
 }
 
 function bh_setup_win() {
   Invoke-Expression $bh_log_func
-  # install choco, gsudo
+  # install choco, gsudo, skiped if not admin
   bh_win_install_choco
   bh_win_install_gsudo
-  # install python, wt, vscode
+  # install winget
+  bh_win_install_winget
+  # install python
   bh_win_install_python
-  bh_win_install_wt
-  bh_win_install_vscode
+  # install wt, vscode
+  if (!(Get-Command 'wt' -ea 0)) {
+    bh_win_get_install Microsoft.WindowsTerminal
+  }
+  if (!(Get-Command 'code' -ea 0)) {
+    bh_win_get_install Microsoft.VisualStudioCode
+  }
   bh_setup_explorer_sanity
+  bh_setup_start_menu_sanity
 }

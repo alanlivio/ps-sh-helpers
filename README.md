@@ -8,7 +8,7 @@ The bash-helpers has two requeriments: a `bash shell` and `git`.
 You can install `git` in any OS following steps from [here](https://git-scm.com/download).  
 
 Linux and macOS support bash by default.  
-In Windows, the [Git Installer](https://git-scm.com/download/win) also install a bash called `git bash` (when installer, enable WindowsTerminal config and use unix like ending lines). However, `git bash` do not use your home folder by default, to fix that run in powershell: 
+In Windows, the [Git Installer](https://git-scm.com/download/win) also install a bash called `git bash` (when installer, enable WindowsTerminal config and use unix like ending lines). However, `git bash` do not use your home folder by default, to fix that run in powershell:
 
 ```powershell
   [Environment]::SetEnvironmentVariable("HOME", "${env:UserProfile}")
