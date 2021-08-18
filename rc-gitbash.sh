@@ -38,24 +38,24 @@ function bh_ps_test_command() {
 # load libs for specific commands
 # ---------------------------------------
 
-source "$BH_DIR/lib-win/user.sh" # bh_win_user_check_admin
-if type tlshell.exe &>/dev/null; then source "$BH_DIR/lib-win/texlive.sh"; fi
-if type wsl.exe &>/dev/null; then source "$BH_DIR/lib-win/wsl.sh"; fi
-source "$BH_DIR/lib-win/appx.sh"
-source "$BH_DIR/lib-win/choco.sh"
-source "$BH_DIR/lib-win/sysupdate.sh"
-source "$BH_DIR/lib-win/winget.sh"
-source "$BH_DIR/lib-win/explorer.sh"
+source "$BH_DIR/win/user.sh" # bh_win_user_check_admin
+if type tlshell.exe &>/dev/null; then source "$BH_DIR/win/texlive.sh"; fi
+if type wsl.exe &>/dev/null; then source "$BH_DIR/win/wsl.sh"; fi
+source "$BH_DIR/win/appx.sh"
+source "$BH_DIR/win/choco.sh"
+source "$BH_DIR/win/sysupdate.sh"
+source "$BH_DIR/win/winget.sh"
+source "$BH_DIR/win/explorer.sh"
 
 # ---------------------------------------
 # load scripts as funcs
 # ---------------------------------------
 
-BH_INSTALL_CHOCO=$(unixpath -w "$BH_DIR/lib-win/install-choco.ps1")
-BH_INSTALL_MSYS=$(unixpath -w "$BH_DIR/lib-win/install-msys.ps1")
-BH_INSTALL_WSL=$(unixpath -w "$BH_DIR/lib-win/install-wsl.ps1")
-BH_SETUP_WIN=$(unixpath -w "$BH_DIR/lib-win/setup-win.ps1")
-BH_SETUP_WIN_ADM=$(unixpath -w "$BH_DIR/lib-win/setup-win.ps1")
+BH_INSTALL_CHOCO=$(unixpath -w "$BH_DIR/win/install-choco.ps1")
+BH_INSTALL_MSYS=$(unixpath -w "$BH_DIR/win/install-msys.ps1")
+BH_INSTALL_WSL=$(unixpath -w "$BH_DIR/win/install-wsl.ps1")
+BH_SETUP_WIN=$(unixpath -w "$BH_DIR/win/setup-win.ps1")
+BH_SETUP_WIN_ADM=$(unixpath -w "$BH_DIR/win/setup-win.ps1")
 function bh_win_install_choco() { powershell.exe -command "& { . $BH_INSTALL_CHOCO}"; }
 function bh_win_install_wsl() { powershell.exe -command "& { . $BH_INSTALL_WSL}"; }
 function bh_win_install_msys() { powershell.exe -command "& { . $BH_INSTALL_MSYS}"; }
