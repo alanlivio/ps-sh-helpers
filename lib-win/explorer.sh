@@ -7,7 +7,7 @@ function bh_explorer_open_trash() {
 }
 
 function bh_explorer_restart() {
-  ps_call_admin 'taskkill /f /im explorer.exe | Out-Null'
+  ps_call 'taskkill /f /im explorer.exe | Out-Null'
   ps_call 'Start-Process explorer.exe'
 }
 

@@ -41,7 +41,7 @@ Then, in `bash` (or `git bash`), you can clone and enable bash-helpers by extend
 
 ### setup WSL (after setup Windows)
 
-  1. at git bash, run `bh_win_install_wsl_ubuntu`: install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install)  
+  1. at admin git bash, run `bh_win_install_wsl_ubuntu`: install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install)  
     1.1. After run, it requeres restart windows and run it again.  
     1.2. It aso require run Ubuntu app and configure your username/password.  
     1.1. Then run it again.
@@ -51,7 +51,7 @@ Then, in `bash` (or `git bash`), you can clone and enable bash-helpers by extend
 
 ### setup Windows msys2 (after setup Windows)
 
-  1. at git bash, run `bh_win_install_msys`: install msys (Cygwin-based) with bash to build GNU-based win32 applications
+  1. at admin git bash, run `bh_win_install_msys`: install msys (Cygwin-based) with bash to build GNU-based win32 applications
   2. at msys bash, run `bh_setup_msys`: install essential software (e.g., python).
   3. at msys bash, run `bh_update_clean_msys` (run routinely): configure/upgrade packges using variables (e.g., PKGS_MSYS, PKGS_PYTHON_MSYS) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
   

@@ -30,5 +30,5 @@ function bh_choco_clean() {
   if type choco-cleaner.exe &>/dev/null; then
     sudo choco install choco-cleaner
   fi
-  ps_call_admin 'Invoke-Expression "$env:ChocolateyToolsLocation\BCURRAN3\choco-cleaner.ps1" | Out-Null'
+  ps_call 'Invoke-Expression "$env:ChocolateyToolsLocation\BCURRAN3\choco-cleaner.ps1" | Out-Null'
 }

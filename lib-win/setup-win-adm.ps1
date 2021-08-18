@@ -1,19 +1,7 @@
-# ---------------------------------------
-# utils
-# ---------------------------------------
 $bh_log_func = 'Write-Host -ForegroundColor DarkYellow "--" $MyInvocation.MyCommand.ToString()'
-
 function bh_log() {
   Write-Host -ForegroundColor DarkYellow "--" ($args -join " ")
 }
-
-function bh_user_is_admin() {
-  return (New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-}
-
-# ---------------------------------------
-# reg
-# ---------------------------------------
 
 function bh_reg_new_path ($path) {
   if (-not (Test-Path $path)) {
@@ -21,66 +9,11 @@ function bh_reg_new_path ($path) {
   }
 }
 
-# ---------------------------------------
-# env
-# ---------------------------------------
-
-function bh_env_add($name, $value) {
-  [System.Environment]::SetEnvironmentVariable("$name", "$value", 'machine')
-}
-
-function bh_path_add($addPath) {
-  if (Test-Path $addPath) {
-    $currentpath = [System.Environment]::GetEnvironmentVariable('PATH', 'machine')
-    $regexAddPath = [regex]::Escape($addPath)
-    $arrPath = $currentpath -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
-    $newpath = ($arrPath + $addPath) -join ';'
-    bh_env_add 'PATH' $newpath
-    refreshenv | Out-null
-  }
-  else {
-    Throw "$addPath' is not a valid path."
-  }
-}
-
-# ---------------------------------------
-# scheduledtask
-# ---------------------------------------
-
-function bh_scheduledtask_list_enabled() {
-  Get-ScheduledTask | Where-Object { $_.State -eq "Ready" }
-}
-
-function bh_scheduledtask_list_enabled() {
-  Get-ScheduledTask | Where-Object { $_.State -eq "Disabled" }
-}
-
 function bh_scheduledtask_disable() {
   foreach ($name in $args) {
     Invoke-Expression $bh_log_func" "$name
     Disable-ScheduledTask -TaskName $name | Out-null
   }
-}
-
-# ---------------------------------------
-# service
-# ---------------------------------------
-
-
-# ---------------------------------------
-# service
-# ---------------------------------------
-
-function bh_service_list_running() {
-  Get-Service | Where-Object { $_.Status -eq "Running" }
-}
-
-function bh_service_list_enabled() {
-  Get-Service | Where-Object { $_.StartType -eq "Automatic" }
-}
-
-function bh_service_list_disabled() {
-  Get-Service | Where-Object { $_.StartType -eq "Disabled" }
 }
 
 function bh_service_disable($name) {
@@ -91,13 +24,6 @@ function bh_service_disable($name) {
   }
 }
 
-# ---------------------------------------
-# winpackage
-# ---------------------------------------
-
-function bh_winpackage_list_enabled() {
-  Get-WindowsPackage -Online | Where-Object PackageState -like Installed | ForEach-Object { $_.PackageName }
-}
 
 function bh_winpackage_disable_like() {
   Invoke-Expression $bh_log_func
@@ -110,246 +36,14 @@ function bh_winpackage_disable_like() {
   }
 }
 
-# ---------------------------------------
-# feature
-# ---------------------------------------
-
-function bh_feature_enable($featurename) {
-  Invoke-Expression "$bh_log_func $featurename"
-  gsudo dism.exe /online /quiet /enable-feature /featurename:$featurename /all/norestart
-}
-
 function bh_feature_disable($featurename) {
   Invoke-Expression "$bh_log_func $featurename"
-  gsudo dism.exe /online /quiet /disable-feature /featurename:$featurename /norestart
+  dism.exe /online /quiet /disable-feature /featurename:$featurename /norestart
 }
-
-$MSYS_HOME = "C:\msys64"
-function bh_msys_add_to_path() {
-  bh_path_add "$MSYS_HOME\usr\bin"
-  bh_path_add "$MSYS_HOME\mingw64\bin"
-}
-
-
-# ---------------------------------------
-# wsl
-# ---------------------------------------
-
-function bh_wsl_get_default() {
-  [System.Text.Encoding]::Unicode.GetString([System.Text.Encoding]::UTF8.GetBytes((wsl -l))) -split '\s\s+' | ForEach-Object {
-    if ($_.Contains('(')) {
-      return $_.Split(' ')[0]
-    }
-  }
-}
-
-function bh_wsl_get_default_version() {
-  Foreach ($i in (wsl -l -v)) {
-    if ($i.Contains('*')) {
-      return $i.Split(' ')[-1]
-    }
-  }
-}
-
-function bh_wsl_terminate() {
-  wsl -t (bh_wsl_get_default)
-}
-
-function bh_wsl_set_version2() {
-  wsl --set-version (bh_wsl_get_default) 2
-}
-
-function bh_wsl_fix_home() {
-  Invoke-Expression $bh_log_func
-  # fix file metadata
-  # https://docs.microsoft.com/en-us/windows/wsl/wsl-config
-  # https://github.com/Microsoft/WSL/issues/3138
-  # https://devblogs.microsoft.com/commandline/chmod-chown-wsl-improvements/
-  wsl -u root bash -c 'echo "[automount]" > /etc/wsl.conf'
-  wsl -u root bash -c 'echo "enabled=true" >> /etc/wsl.conf'
-  wsl -u root bash -c 'echo "root=/mnt" >> /etc/wsl.conf'
-  wsl -u root bash -c 'echo "mountFsTab=false" >> /etc/wsl.conf'
-  wsl -u root bash -c 'echo "options=\"metadata,uid=1000,gid=1000,umask=0022,fmask=11\"" >> /etc/wsl.conf'
-  # useful links /Users and /c
-  wsl -u root bash -c 'if ! test -d /Users; then sudo ln -s /mnt/c/Users /Users; fi'
-  wsl -u root bash -c 'if ! test -d /c; then sudo ln -s /mnt/c/ /c; fi'
-
-  bh_wsl_terminate
-
-  # enable sudoer
-  wsl -u root usermod -aG sudo "$env:UserName"
-  wsl -u root usermod -aG root "$env:UserName"
-
-  # change default folder to /mnt/c/Users/
-  wsl -u root skill -KILL -u $env:UserName
-  wsl -u root usermod -d /mnt/c/Users/$env:UserName $env:UserName
-  
-  # delete the folder at /home/ and create a link to one at /mnt/c/Users/
-  wsl -u root rm -rf  /home/$env:UserName
-  wsl -u root ln -s /mnt/c/Users/$env:UserName /home/$env:UserName
-
-  # changing file permissions
-  bh_log "Changing file permissions "
-  wsl -u root chown $env:UserName:$env:UserName /mnt/c/Users/$env:UserName/*
-}
-
-# ---------------------------------------
-# msys
-# ---------------------------------------
-
-function bh_msys_sanity() {
-  Set-Alias -Name msysbash -Value C:\msys64\usr\bin\bash.exe # TODO: replace by $MSYS_BASH 
-  msysbash -c 'echo none / cygdrive binary,posix=0,noacl,user 0 0 > /etc/fstab'
-  # mount /Users to use in both windows and WSL
-  msysbash -c 'echo C:/Users/ /Users ntfs binary,noacl,auto 1 1 >>  /etc/fstab'
-  # mount /Users/user-name
-  msysbash -c 'echo C:/Users/$env:UserName /home/$env:UserName ntfs binary,noacl,auto 1 1 >> /etc/fstab'
-  # mount /mnt/c/ like in WSL
-  msysbash -c ' echo /c /mnt/c none bind >> /etc/fstab'
-  # set home as /mnt/c/Users/user-name
-  # msysbash -c "sed -i 's|db_home: cygwin desc|db_home: windows|g' /etc/nsswitch.conf"
-  msysbash -c ' echo db_home: windows >> /etc/nsswitch.conf'
-  bh_env_add "LANG" "en_US.UTF-8"
-}
-
-# ---------------------------------------
-# choco
-# ---------------------------------------
-
-function bh_choco_install() {
-  Invoke-Expression $bh_log_func
-  if (!(Get-Command 'gsudo.exe' -ea 0)) {
-    bh_install_gsudo
-  }
-  $pkgs_to_install = ""
-  $pkgs = $(choco list -l | ForEach-Object { $_.split(' ')[0] }) -join (" ")
-  foreach ($name in $args) {
-    if (-not ($pkgs.Contains("$name"))) {
-      $pkgs_to_install += "$name $pkgs_to_install"
-    }
-  }
-  if ($pkgs_to_install) {
-    bh_log "pkgs_to_install=$pkgs_to_install"
-    gsudo choco install -y --acceptlicense ($pkgs_to_install -join ";")
-  }
-}
-
-# ---------------------------------------
-# install
-# ---------------------------------------
-
-function bh_install_choco() {
-  if (!(Get-Command 'choco.exe' -ea 0)) {
-    Invoke-Expression $bh_log_func
-    if (!(bh_user_is_admin)) { bh_log "not admin."; return; }
-    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-    bh_path_add "%ALLUSERSPROFILE%\chocolatey\bin"
-    cmd /c 'setx ChocolateyToolsLocation C:\opt\'
-    $chocotools = [Environment]::GetEnvironmentVariable('ChocolateyToolsLocation')
-    bh_path_add $chocotools
-
-    choco feature disable -n checksumFiles
-    choco feature disable -n showDownloadProgress
-    choco feature disable -n showNonElevatedWarnings
-    choco feature disable -n logValidationResultsOnWarnings
-    choco feature disable -n logEnvironmentValues
-    choco feature disable -n exitOnRebootDetected
-    choco feature disable -n warnOnUpcomingLicenseExpiration
-    choco feature enable -n stopOnFirstPackageFailure
-    choco feature enable -n skipPackageUpgradesWhenNotInstalled
-    choco feature enable -n logWithoutColor
-    choco feature enable -n allowEmptyChecksumsSecure
-    choco feature enable -n allowGlobalConfirmation
-    choco feature enable -n failOnAutoUninstaller
-    choco feature enable -n removePackageInformationOnUninstall
-    choco feature enable -n useRememberedArgumentsForUpgrades
-    # enable use without restarting Powershell
-    refreshenv
-  }
-}
-
-function bh_install_texlive() {
-  if (-not (Test-Path "C:\texlive")) {
-    Invoke-Expression $bh_log_func
-    if (!(bh_user_is_admin)) { bh_log "not admin."; return; }
-    hf_choco_install texlive
-  }
-}
-
-function bh_install_msys() {
-  if (-not (Test-Path $MSYS_HOME)) {
-    Invoke-Expression $bh_log_func
-    if (!(bh_user_is_admin)) { bh_log "not admin."; return; }
-    winget install --scope=machine msys2.msys2
-    bh_msys_add_to_path
-  }
-}
-
-function bh_install_gsudo() {
-  if (!(Get-Command 'gsudo.exe' -ea 0)) {
-    Invoke-Expression $bh_log_func
-    if (!(bh_user_is_admin)) { bh_log "not admin."; return; }
-    winget install --scope=machine gsudo
-    bh_path_add 'C:\Program Files (x86)\gsudo'
-  }
-}
-
-function bh_install_wsl_ubuntu() {
-  # this helper automate the process describred in :
-  # - https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
-  # - https://ubuntu.com/wsl
-  Invoke-Expression $bh_log_func
-  if (!(bh_user_is_admin)) { bh_log "not admin."; return; }
-
-  # install winget
-  if (!(Get-Command "winget.exe" -ea 0)) {
-    bh_log "INFO: winget is not installed, installing..."
-    Get-AppxPackage Microsoft.DesktopAppInstaller | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
-  } 
-  # enable wsl feature (require restart)
-  if (!(Get-Command 'wsl.exe' -ea 0)) {
-    bh_log "INFO: Windows features for WSL not enabled, enabling..."
-    bh_feature_enable /featurename:VirtualMachinePlatform 
-    bh_feature_enable Microsoft-Windows-Subsystem-Linux
-    bh_log "INFO: restart windows and run bh_setup_ubuntu again"
-    return
-  }
-  # install ubuntu
-  if (!(Get-Command "ubuntu*.exe" -ea 0)) {
-    bh_log "INFO: Ubuntu is not installed, installing..."
-    winget install Canonical.Ubuntu
-  } 
-  # configure ubuntu distro
-  wsl -l | Out-null
-  if ($LastExitCode -eq -1) {
-    bh_log "INFO: Ubuntu is not configured, running it..."
-    bh_log "INFO: You should configure username and passwd, after that exit Ubuntu by invoke 'exit'."
-    Invoke-Expression (Get-Command "ubuntu*.exe").Source
-  }
-  # enable wsl 2
-  wsl -l -v | Out-null # -v is only avaliable in wsl 2
-  if ($LastExitCode -eq -1) {
-    bh_log "INFO: WSL 2 kernel update is not installed, installing..."
-    Invoke-WebRequest -Uri "https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi" -Outfile $env:TEMP\wsl_update_x64.msi
-    msiexec.exe /I "$env:TEMP\wsl_update_x64.msi"
-  }
-  # set to version 2
-  if ((bh_wsl_get_default_version) -eq 1) {
-    bh_log "INFO: Ubuntu distro is in wsl version 1, converting it to version 2..."
-    bh_wsl_set_version2 bh_wsl_get_default
-  }
-  # fix home user to \Users
-  if (!(wsl echo '$HOME').Contains("Users")) {
-    bh_log "INFO: Configuring to same home folder as windows..."
-    bh_wsl_fix_home
-  }
-}
-
-# ---------------------------------------
-# optmize
-# ---------------------------------------
 
 function bh_optimize_explorer() {
+  Invoke-Expression "$bh_log_func"
+
   # Remove * from This PC
   # ----------------------------------------
   bh_log "Remove user folders under This PC "
@@ -448,7 +142,6 @@ function bh_optimize_explorer() {
 
 function bh_optimize_windows() {
   Invoke-Expression $bh_log_func
-  if (!(bh_user_is_admin)) { bh_log "not admin."; return; }
 
   # Remove Lock screen
   bh_log "Remove Lockscreen "
@@ -568,7 +261,6 @@ function bh_optimize_windows() {
 }
 
 function bh_optimize_password_policy {
-  _disabled
   Invoke-Expression $bh_log_func
   $tmpfile = New-TemporaryFile
   secedit /export /cfg $tmpfile /quiet
@@ -577,12 +269,21 @@ function bh_optimize_password_policy {
   Remove-Item -Path $tmpfile
 }
 
-function bh_setup_win_admin() {
-  Invoke-Expression $bh_log_func
-  if (!(bh_user_is_admin)) { bh_log "not admin."; return; }
-  bh_install_choco
+# ---------------------------------------
+# setup_win_adm
+# ---------------------------------------
+
+bh_log "bh_setup_win_adm"
+# install winget
+if (!(Get-Command "winget.exe" -ea 0)) {
+  bh_log "INFO: winget is not installed, installing..."
+  bh_win_install_winget
+} 
+# install gsudo
+if (!(Get-Command "gsudo.exe" -ea 0)) {
+  bh_log "INFO: gsudo is not installed, installing..."
   bh_install_gsudo
-  bh_optimize_password_policy_disabled
-  bh_optimize_windows
-  bh_optimize_explorer
-}
+} 
+bh_optimize_password_policy_disabled
+bh_optimize_windows
+bh_optimize_explorer

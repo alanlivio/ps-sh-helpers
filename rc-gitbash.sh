@@ -19,32 +19,21 @@ alias reboot='gsudo shutdown \/r'
 alias ps_call="powershell -c"
 alias ps_call_admin="gsudo powershell -c"
 
-# ---------------------------------------
-# wrapper calls to libs-win/win.ps1
-# ---------------------------------------
-SETUP_PS=$(unixpath -w "$BH_DIR/lib-win/setup.ps1")
-SETUP_PS_ADMIN=$(unixpath -w "$BH_DIR/lib-win/setup.ps1")
-
-function bh_ps_call() {
-  powershell.exe -command "& { . $SETUP_PS; $* }"
+function ps_def_call_as_func() {
+  eval "function $1() { ps_call $*; }"
 }
 
-function bh_ps_def_func() {
-  eval "function $1() { bh_ps_call $*; }"
+function ps_call_script() {
+  powershell.exe -command "& { . $1}"
 }
 
-function bh_ps_call_admin() {
-  gsudo powershell.exe -command "& { . $SETUP_PS_ADMIN;  $* }"
-}
-
-function bh_ps_def_func_admin() {
-  eval "function $1()"'{ bh_ps_call_admin '"$1"' $*; }'
+function ps_def_script_as_func() {
+  eval "function $2() { . $1; }"
 }
 
 function bh_ps_test_command() {
   powershell -c '(Get-Command' "$1" '-ea 0) -ne $null'
 }
-
 # ---------------------------------------
 # load libs for specific commands
 # ---------------------------------------
@@ -59,10 +48,19 @@ source "$BH_DIR/lib-win/winget.sh"
 source "$BH_DIR/lib-win/explorer.sh"
 
 # ---------------------------------------
-# setup/update_clean helpers
+# load scripts as funcs
 # ---------------------------------------
 
-bh_ps_def_func bh_setup_win
+BH_INSTALL_CHOCO=$(unixpath -w "$BH_DIR/lib-win/install-choco.ps1")
+BH_INSTALL_MSYS=$(unixpath -w "$BH_DIR/lib-win/install-msys.ps1")
+BH_INSTALL_WSL=$(unixpath -w "$BH_DIR/lib-win/install-wsl.ps1")
+BH_SETUP_WIN=$(unixpath -w "$BH_DIR/lib-win/setup-win.ps1")
+BH_SETUP_WIN_ADM=$(unixpath -w "$BH_DIR/lib-win/setup-win.ps1")
+function bh_win_install_choco() { powershell.exe -command "& { . $BH_INSTALL_CHOCO}"; }
+function bh_win_install_wsl() { powershell.exe -command "& { . $BH_INSTALL_WSL}"; }
+function bh_win_install_msys() { powershell.exe -command "& { . $BH_INSTALL_MSYS}"; }
+function bh_setup_win() { powershell.exe -command "& { . $BH_SETUP_WIN}"; }
+function bh_setup_win_adm() { powershell.exe -command "& { . $BH_SETUP_WIN_ADM}"; }
 
 function bh_update_clean_win() {
   # windows
@@ -89,12 +87,29 @@ function bh_update_clean_win() {
 # ---------------------------------------
 
 function bh_win_path() {
-  powershell -c "[Environment]::GetEnvironmentVariable('path', 'Machine')"
+  powershell -c "[Environment]::GetEnvironmentVariable('path', 'user')"
+}
+
+function bh_env_add() {
+  ps_call "[System.Environment]::SetEnvironmentVariable($1, $2, 'user')"
 }
 
 function bh_win_path_add() {
   local dir=$(winpath $1)
-  bh_ps_call "bh_path_add $dir"
+  ps_call ' 
+    function bh_win_path_add($addPath) {
+      if (Test-Path $addPath) {
+        $currentpath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
+        $regexAddPath = [regex]::Escape($addPath)
+        $arrPath = $currentpath -split ";" | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
+        $newpath = ($arrPath + $addPath) -join ";"
+        [System.Environment]::SetEnvironmentVariable("PATH", $newpath, "user")
+        refreshenv | Out-null
+      }
+      else {
+        Throw "$addPath is not a valid path."
+      }
+    }; bh_win_path_add '" $dir"
 }
 
 # ---------------------------------------
@@ -107,18 +122,11 @@ function bh_home_hide_dotfiles() {
 }
 
 # ---------------------------------------
-# env helpers
-# ---------------------------------------
-
-bh_ps_def_func bh_env_add
-
-# ---------------------------------------
 # wt helpers
 # ---------------------------------------
 BH_WT_STGS="$HOME/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json"
 
 function bh_wt_settings() {
-  bh_ps_def_func bh_wt_settings
   code $BH_WT_STGS
 }
 
@@ -127,9 +135,6 @@ function bh_wt_settings() {
 # ---------------------------------------
 
 if [ "$(bh_win_user_check_admin)" == "True" ]; then
-
-  bh_ps_def_func_admin bh_win_install_wsl_ubuntu
-  bh_ps_def_func_admin bh_win_install_msys
 
   function bh_win_install_docker() {
     bh_log_func
@@ -142,7 +147,7 @@ if [ "$(bh_win_user_check_admin)" == "True" ]; then
     bh_log_func
     if type tesseract.exe &>/dev/null; then
       bh_win_get_install tesseract
-      bh_path_add 'C:\Program Files\Tesseract-OCR'
+      bh_win_path_add 'C:\Program Files\Tesseract-OCR'
     fi
   }
 
@@ -155,14 +160,6 @@ if [ "$(bh_win_user_check_admin)" == "True" ]; then
     fi
   }
 
-  function bh_win_install_msys() {
-    bh_log_func
-    if test -d '/c/msys64/'; then
-      bh_win_get_install msys2.msys2
-      bh_ps_call_admin "bh_msys_sanity"
-    fi
-  }
-
   function bh_win_install_battle_steam() {
     bh_log_func
     bh_win_get_install Blizzard.BattleNet Valve.Steam
@@ -172,11 +169,6 @@ fi
 # ---------------------------------------
 # install non-admin
 # ---------------------------------------
-
-function bh_setup_win_chrome_vlc_7zip() {
-  bh_log_func
-  bh_win_get_install Google.Chrome VideoLAN.VLC 7zip.7zip
-}
 
 BH_FLUTTER_VER="2.2.3"
 BH_ANDROID_CMD_VER="7583922"
@@ -195,14 +187,14 @@ function bh_win_install_androidcmd_flutter() {
   if ! test -d $android_cmd_dir; then
     bh_decompress_from_url $android_cmd_url $android_sdk_dir
     if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
-    bh_ps_call_admin "bh_path_add $(winpath $android_cmd_dir/bin)"
+    bh_win_path_add $(winpath $android_cmd_dir/bin)
   fi
   if ! test -d $android_sdk_dir/platforms; then
     $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --install 'platform-tools' 'platforms;android-29'
     yes | $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --licenses
-    bh_ps_call_admin "bh_env_add ANDROID_HOME $(winpath $android_sdk_dir)"
-    bh_ps_call_admin "bh_env_add ANDROID_SDK_ROOT $(winpath $android_sdk_dir)"
-    bh_ps_call_admin "bh_path_add $(winpath $android_sdk_dir/platform-tools)"
+    bh_win_env_add ANDROID_HOME $(winpath $android_sdk_dir)
+    bh_win_env_add ANDROID_SDK_ROOT $(winpath $android_sdk_dir)
+    bh_win_path_add $(winpath $android_sdk_dir/platform-tools)
   fi
 
   # flutter
@@ -212,7 +204,7 @@ function bh_win_install_androidcmd_flutter() {
     # opt_dst beacuase zip extract the flutter dir
     bh_decompress_from_url $flutter_sdk_url $opt_dst
     if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
-    bh_ps_call_admin "bh_path_add $(winpath $flutter_sdk_dir/bin)"
+    bh_win_path_add $(winpath $flutter_sdk_dir/bin)
   fi
 }
 

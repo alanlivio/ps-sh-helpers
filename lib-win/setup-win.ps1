@@ -1,37 +1,25 @@
-# ---------------------------------------
-# utils
-# ---------------------------------------
 $bh_log_func = 'Write-Host -ForegroundColor DarkYellow "--" $MyInvocation.MyCommand.ToString()'
-
 function bh_log() {
   Write-Host -ForegroundColor DarkYellow "--" ($args -join " ")
 }
 
-# ---------------------------------------
-# env
-# ---------------------------------------
-
-function bh_env_add($name, $value) {
+function bh_win_env_add($name, $value) {
   [System.Environment]::SetEnvironmentVariable("$name", "$value", 'user')
 }
 
-function bh_path_add($addPath) {
+function bh_win_path_add($addPath) {
   if (Test-Path $addPath) {
     $currentpath = [System.Environment]::GetEnvironmentVariable('PATH', 'user')
     $regexAddPath = [regex]::Escape($addPath)
     $arrPath = $currentpath -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
     $newpath = ($arrPath + $addPath) -join ';'
-    bh_env_add 'PATH' $newpath
+    bh_win_env_add 'PATH' $newpath
     refreshenv | Out-null
   }
   else {
     Throw "$addPath' is not a valid path."
   }
 }
-
-# ---------------------------------------
-# appx
-# ---------------------------------------
 
 function bh_appx_install() {
   Invoke-Expression $bh_log_func
@@ -57,10 +45,6 @@ function bh_appx_uninstall() {
     }
   }
 }
-
-# ---------------------------------------
-# win_get
-# ---------------------------------------
 
 function bh_win_get_installed() {
   $tmpfile = New-TemporaryFile
@@ -107,10 +91,6 @@ function bh_win_get_uninstall() {
   }
 }
 
-# ---------------------------------------
-# install
-# ---------------------------------------
-
 function bh_win_install_winget() {
   if (!(Get-Command 'winget.exe' -ea 0)) {
     Invoke-Expression $bh_log_func
@@ -127,12 +107,12 @@ function bh_win_install_python() {
   }
   # Remove windows alias. See https://superuser.com/questions/1437590/typing-python-on-windows-10-version-1903-command-prompt-opens-microsoft-stor
   Remove-Item $env:USERPROFILE\AppData\Local\Microsoft\WindowsApps\python*.exe
-  if (Test-Path $py_exe_1) { bh_path_add $(Split-Path $py_exe_1) }
-  elseif (Test-Path $py_exe_2) { bh_path_add $(Split-Path $py_exe_2) }
+  if (Test-Path $py_exe_1) { bh_win_path_add $(Split-Path $py_exe_1) }
+  elseif (Test-Path $py_exe_2) { bh_win_path_add $(Split-Path $py_exe_2) }
 }
 
 # ---------------------------------------
-# setup
+# setup_win
 # ---------------------------------------
 
 function bh_setup_start_menu_sanity() {
@@ -238,19 +218,17 @@ function bh_setup_explorer_sanity() {
   Stop-Process -ProcessName explorer -ea 0 | Out-Null
 }
 
-function bh_setup_win() {
-  Invoke-Expression $bh_log_func
-  # install winget
-  bh_win_install_winget
-  # install python
-  bh_win_install_python
-  # install wt, vscode
-  if (!(Get-Command 'wt' -ea 0)) {
-    bh_win_get_install Microsoft.WindowsTerminal
-  }
-  if (!(Get-Command 'code' -ea 0)) {
-    bh_win_get_install Microsoft.VisualStudioCode
-  }
-  bh_setup_explorer_sanity
-  bh_setup_start_menu_sanity
+bh_log "bh_setup_win"
+# install winget
+bh_win_install_winget
+# install python
+bh_win_install_python
+# install wt, vscode
+if (!(Get-Command 'wt' -ea 0)) {
+  bh_win_get_install Microsoft.WindowsTerminal
 }
+if (!(Get-Command 'code' -ea 0)) {
+  bh_win_get_install Microsoft.VisualStudioCode
+}
+bh_setup_explorer_sanity
+bh_setup_start_menu_sanity

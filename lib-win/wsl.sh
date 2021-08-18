@@ -13,6 +13,3 @@ function bh_wsl_list() {
 function bh_wsl_list_running() {
   wsl -l -v --running
 }
-
-bh_ps_def_func bh_wsl_get_default
-bh_ps_def_func bh_wsl_terminate
