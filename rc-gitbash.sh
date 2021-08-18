@@ -209,21 +209,22 @@ function bh_win_install_battle_steam() {
 }
 
 BH_FLUTTER_VER="2.2.3"
+BH_ANDROID_CMD_VER="7583922"
 
-function bh_win_install_windows_androidcmd_flutter() {
+function bh_win_install_androidcmd_flutter() {
   bh_log_func
 
   # create opt
-  local opt_dst="$BH_OPT_WIN/"
+  local opt_dst="$BH_OPT_WIN"
   bh_test_and_create_folder $opt_dst
 
   # android cmd and sdk
   local android_sdk_dir="$opt_dst/android"
   local android_cmd_dir="$android_sdk_dir/cmdline-tools"
-  local android_cmd_url="https://dl.google.com/android/repository/commandlinetools-win-6858069_latest.zip"
+  local android_cmd_url="https://dl.google.com/android/repository/commandlinetools-win-${BH_ANDROID_CMD_VER}_latest.zip"
   if ! test -d $android_cmd_dir; then
-    bh_wget_extract $android_cmd_url $android_sdk_dir
-    if test $? != 0; then bh_log_error "wget failed." && return 1; fi
+    bh_decompress_from_url $android_cmd_url $android_sdk_dir
+    if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
     bh_ps_lib_call_admin "bh_path_add $(winpath $android_cmd_dir/bin)"
   fi
   if ! test -d $android_sdk_dir/platforms; then
@@ -239,17 +240,17 @@ function bh_win_install_windows_androidcmd_flutter() {
   local flutter_sdk_url="https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_${BH_FLUTTER_VER}-stable.zip"
   if ! test -d $flutter_sdk_dir; then
     # opt_dst beacuase zip extract the flutter dir
-    bh_wget_extract $flutter_sdk_url $opt_dst
-    if test $? != 0; then bh_log_error "wget failed." && return 1; fi
+    bh_decompress_from_url $flutter_sdk_url $opt_dst
+    if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
     bh_ps_lib_call_admin "bh_path_add $(winpath $flutter_sdk_dir/bin)"
   fi
 }
 
-function bh_win_install_windows_latexindent() {
+function bh_win_install_latexindent() {
   bh_log_func
   if ! type latexindent.exe &>/dev/null; then
-    wget https://github.com/cmhughes/latexindent.pl/releases/download/V3.10/latexindent.exe -P /c/tools/
-    wget https://raw.githubusercontent.com/cmhughes/latexindent.pl/main/defaultSettings.yaml -P /c/tools/
+    bh_curl_fetch_to_dir https://github.com/cmhughes/latexindent.pl/releases/download/V3.10/latexindent.exe $BH_OPT_WIN/
+    bh_curl_fetch_to_dir https://raw.githubusercontent.com/cmhughes/latexindent.pl/main/defaultSettings.yaml $BH_OPT_WIN/
   fi
 }
 

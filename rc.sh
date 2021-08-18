@@ -36,26 +36,25 @@ Darwin)
 esac
 
 # ---------------------------------------
-# helpers vars
+# bh vars
 # ---------------------------------------
 
 BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BH_RC="$BH_DIR/rc.sh"
 BH_SKEL_VSCODE="$BH_DIR/skel/vscode"
 BH_PKGS_ESSENTIALS="vim diffutils curl wget "
-# BH_OPT
-if test -z "$BH_OPT_WIN"; then BH_OPT_WIN="/c/opt"; fi
-if test -z "$BH_OPT_LINUX"; then BH_OPT_LINUX="/opt"; fi
-# BH_DEV
-if test -z "$BH_DEV"; then BH_DEV="$HOME/dev"; fi
 
 # ---------------------------------------
-# load .bh-cfg.sh
+# bh vars from .bh-cfg.sh vars
 # ---------------------------------------
 
 # if not "$HOME/.bh-cfg.sh" copy skel
 if ! test -f "$HOME/.bh-cfg.sh"; then cp $BH_DIR/skel/.bh-cfg.sh $HOME/; fi
 source $HOME/.bh-cfg.sh
+# set some var if .bh-cfg do not.
+if test -z "$BH_OPT_WIN"; then BH_OPT_WIN="$HOME/AppData/Local/Programs"; fi
+if test -z "$BH_OPT_LINUX"; then BH_OPT_LINUX="$HOME/opt"; fi
+if test -z "$BH_DEV"; then BH_DEV="$HOME/dev"; fi
 
 # ---------------------------------------
 # log helpers
@@ -120,11 +119,15 @@ function bh_test_and_delete_remove() {
 # load libs for specific commands
 # ---------------------------------------
 
+source "$BH_DIR/lib/curl.sh"
+source "$BH_DIR/lib/decompress.sh" # uses tar, unzip, curl
+source "$BH_DIR/lib/rename.sh"
+source "$BH_DIR/lib/md5.sh"
+
 if type adb &>/dev/null; then source "$BH_DIR/lib/android.sh"; fi
 if type arp-scan &>/dev/null; then source "$BH_DIR/lib/arp-scan.sh"; fi
 if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.sh"; fi
 if type code &>/dev/null; then source "$BH_DIR/lib/vscode.sh"; fi
-if type curl &>/dev/null; then source "$BH_DIR/lib/curl.sh"; fi
 if type diff &>/dev/null; then source "$BH_DIR/lib/diff.sh"; fi
 if type docker &>/dev/null; then source "$BH_DIR/lib/docker.sh"; fi
 if type du &>/dev/null; then source "$BH_DIR/lib/folder-size.sh"; fi
@@ -149,13 +152,11 @@ if type ssh &>/dev/null; then source "$BH_DIR/lib/ssh.sh"; fi
 if type tesseract &>/dev/null; then source "$BH_DIR/lib/tesseract.sh"; fi
 if type wget &>/dev/null; then source "$BH_DIR/lib/wget.sh"; fi
 if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/youtube-dl.sh"; fi
-if type zip tar &>/dev/null; then source "$BH_DIR/lib/compression.sh"; fi
-source "$BH_DIR/lib/rename.sh"
-source "$BH_DIR/lib/md5.sh"
+if type zip tar &>/dev/null; then source "$BH_DIR/lib/zip.sh"; fi
 
 # ---------------------------------------
 # load libs for specific OS
-# they define: 
+# they define:
 # - bh_setup_{ubuntu,msys,wsl,mac}
 # - bh_update_clean_{ubuntu,msys,wsl,mac}
 # ---------------------------------------
@@ -227,7 +228,7 @@ function bh_config_func() {
   for ((i = 0; i < ${#files_array[@]}; i = i + 2)); do
     bh_test_and_create_file ${files_array[$i]}
     bh_test_and_create_file ${files_array[$((i + 1))]}
-    if [ $1 = "backup" ]; then  
+    if [ $1 = "backup" ]; then
       cp ${files_array[$i]} ${files_array[$((i + 1))]}
     elif [ $1 = "install" ]; then
       cp ${files_array[$((i + 1))]} ${files_array[$i]}

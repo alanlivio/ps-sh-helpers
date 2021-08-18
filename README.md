@@ -1,6 +1,6 @@
 <h1 align="center">bash-helpers</h1>
 
-This project offers cross-plataform (linux, macOS, windows) bash helpers to: configure OS (e.g., disable unused services/features/apps, dark mode), install software (e.g., git, python, vscode) and utilities (e.g., install software, git, pdf, compression).
+This project offers cross-plataform (linux, macOS, windows) bash helpers to: configure OS (e.g., disable unused services/features/apps, dark mode), install software (e.g., git, python, vscode) and utilities (e.g., install software, git, pdf, compress).
 
 # How to install
 
@@ -26,7 +26,7 @@ Then, in `bash` (or `git bash`), you can clone and enable bash-helpers by extend
 
 ### setup Gnome-based Ubuntu  
 
-  1. at bash, run `bh_setup_ubuntu`: configure Gnome (e.g., disable unused services/features/apps, dark mode) and install essential software (e.g., git, wget, curl, python, vscode).
+  1. at bash, run `bh_setup_ubuntu`: configure Gnome (e.g., disable unused services/features/apps, dark mode) and install essential software (e.g., git, python, vscode).
   2. at bash, run `bh_update_clean_ubuntu` (run routinely): configure/upgrade packges using variables (PKGS_APT, PKGS_PYTHON, PKGS_SNAP, PKGS_SNAP_CLASSIC, PKGS_REMOVE_APT) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 
 ### setup macOS  
@@ -46,20 +46,20 @@ Then, in `bash` (or `git bash`), you can clone and enable bash-helpers by extend
     1.2. It aso require run Ubuntu app and configure your username/password.  
     1.1. Then run it again.
 
-  2. at wsl bash, run `bh_setup_wsl`: install essential software (e.g., git, wget, curl, python).
+  2. at wsl bash, run `bh_setup_wsl`: install essential software (e.g., git, python).
   3. at wsl bash, run `bh_update_clean_wsl` (run routinely): configure/upgrade packges using variables (e.g., PKGS_APT, PKGS_PYTHON, PKGS_REMOVE_APT) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 
 ### setup Windows msys2 (after setup Windows)
 
   1. at git bash, run `bh_win_install_msys`: install msys (Cygwin-based) with bash to build GNU-based win32 applications
-  2. at msys bash, run `bh_setup_msys`: install essential software (e.g., wget, curl, python).
+  2. at msys bash, run `bh_setup_msys`: install essential software (e.g., python).
   3. at msys bash, run `bh_update_clean_msys` (run routinely): configure/upgrade packges using variables (e.g., PKGS_MSYS, PKGS_PYTHON_MSYS) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
   
 
 # helpers for commands
 * android helpers: see `bh_android_*` at [lib/android.sh](lib/android.sh).
 * cmake helpers: see `bh_cmake_*` at [lib/cmake.sh](lib/cmake.sh).
-* compression helpers: see `bh_compress_*` at [lib/compression.sh](lib/compression.sh), etc.
+* compress helpers: see `bh_compress_*` at [lib/compress.sh](lib/compress.sh), etc.
 * curl helpers: see `bh_curl_*` at [lib/curl.sh](lib/curl.sh).
 * diff helpers: see `bh_diff_*` at [lib/diff.sh](lib/diff.sh).
 * docker helpers: see `bh_docker_*` at [lib/docker.sh](lib/docker.sh).

@@ -132,9 +132,8 @@ function bh_apt_fetch_install() {
   : ${1?"Usage: ${FUNCNAME[0]} <URL>"}
   local apt_name=$(basename $1)
   if test ! -f /tmp/$apt_name; then
-    wget --continue $1 -P /tmp/
-    if test $? != 0; then bh_log_error "wget failed." && return 1; fi
-
+    bh_decompress_from_url $1 /tmp/
+    if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
   fi
   sudo dpkg -i /tmp/$apt_name
 }

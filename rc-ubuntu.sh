@@ -88,7 +88,7 @@ if $IS_GNOME; then
     bh_log_func
     if ! type FoxitReader &>/dev/null; then
       local url=https://cdn01.foxitsoftware.com/pub/foxit/reader/desktop/linux/2.x/2.4/en_us/FoxitReader.enu.setup.2.4.4.0911.x64.run.tar.gz
-      bh_wget_extract $url /tmp/
+      bh_decompress_from_url $url /tmp/
       sudo /tmp/FoxitReader.enu.setup.2.4.4.0911\(r057d814\).x64.run
     fi
     if ! test -d $HELPERS_OPT/foxitsoftware; then
@@ -101,9 +101,9 @@ if $IS_GNOME; then
     bh_log_func
     if ! test -d $HELPERS_OPT/tor; then
       local url=https://dist.torproject.org/torbrowser/9.5/tor-browser-linux64-9.5_en-US.tar.xz
-      bh_wget_extract $url $HELPERS_OPT/
+      bh_decompress_from_url $url $HELPERS_OPT/
     fi
-    if test $? != 0; then bh_log_error "wget failed." && return 1; fi
+    if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
     mv $HELPERS_OPT/tor-browser_en-US $HELPERS_OPT/tor/
     sed -i "s|^Exec=.*|Exec=${HOME}/opt/tor/Browser/start-tor-browser|g" $HELPERS_OPT/tor/start-tor-browser.desktop
     sudo desktop-file-install "$HELPERS_OPT/tor/start-tor-browser.desktop"
@@ -113,7 +113,7 @@ if $IS_GNOME; then
     bh_log_func
     if ! test -d $HELPERS_OPT/zotero; then
       local url=https://download.zotero.org/client/release/5.0.82/Zotero-5.0.82_linux-x86_64.tar.bz2
-      bh_wget_extract $url /tmp/
+      bh_decompress_from_url $url /tmp/
       mv /tmp/Zotero_linux-x86_64 $HELPERS_OPT/zotero
     fi
     {
@@ -215,8 +215,8 @@ function bh_ubuntu_install_androidcmd_flutter() {
   local android_cmd_url="https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip"
   if ! test -d $android_cmd_dir; then
     bh_test_and_create_folder $android_cmd_dir
-    bh_wget_extract $android_cmd_url $android_sdk_dir
-    if test $? != 0; then bh_log_error "wget failed." && return 1; fi
+    bh_decompress_from_url $android_cmd_url $android_sdk_dir
+    if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
     bh_path_add $android_cmd_dir/bin/
   fi
   if ! test -d $android_sdk_dir/platforms; then
@@ -232,8 +232,8 @@ function bh_ubuntu_install_androidcmd_flutter() {
   local flutter_sdk_url="https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_${BH_FLUTTER_VER}-stable.tar.xz"
   if ! test -d $flutter_sdk_dir; then
     # opt_dst beacuase zip extract the flutter dir
-    bh_wget_extract $flutter_sdk_url $opt_dst
-    if test $? != 0; then bh_log_error "wget failed." && return 1; fi
+    bh_decompress_from_url $flutter_sdk_url $opt_dst
+    if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
     bh_path_add $flutter_sdk_dir/bin
   fi
 }

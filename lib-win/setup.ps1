@@ -373,17 +373,6 @@ function bh_win_install_python() {
   elseif (Test-Path $py_exe_2) { bh_path_add $(Split-Path $py_exe_2) }
 }
 
-function bh_win_install_wget() {
-  $wget_path = "C:\Program Files (x86)\GnuWin32\bin\"
-  if (!(Test-Path $wget_path)) {
-    Invoke-Expression $bh_log_func
-    if (!(bh_user_is_admin)) { bh_log "not admin."; return; }
-    bh_win_install_winget
-    bh_win_get_install GnuWin32.Wget
-    bh_path_add "$wget_path"
-  }
-}
-
 function bh_win_install_wsl_ubuntu() {
   # this helper automate the process describred in :
   # - https://docs.microsoft.com/en-us/windows/wsl/wsl2-install

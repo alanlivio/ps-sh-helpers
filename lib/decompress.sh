@@ -1,29 +1,18 @@
 # ---------------------------------------
-# helpers helpers
+# decompress helpers
 # ---------------------------------------
-function bh_compression_zip_files() {
-  : ${2?"Usage: ${FUNCNAME[0]} <zip-name> <files... >"}
-  zipname=$1
-  shift
-  zip "$zipname" -r "$@"
-}
 
-function bh_compression_zip_folder() {
-  : ${1?"Usage: ${FUNCNAME[0]} <folder-name>"}
-  zip "$(basename $1).zip" -r $1
-}
-
-function bh_compression_zip_extract() {
+function bh_decompress_zip() {
   : ${1?"Usage: ${FUNCNAME[0]} <zip-name>"}
   unzip $1 -d "${1%%.zip}"
 }
 
-function bh_compression_zip_list() {
+function bh_decompress_zip_list() {
   : ${1?"Usage: ${FUNCNAME[0]} <zip-name>"}
   unzip -l $1
 }
 
-function bh_compression_extract() {
+function bh_decompress() {
   : ${1?"Usage: ${FUNCNAME[0]} <zip-name> [folder-name]"}
   local EXT=${1##*.}
   local DST
@@ -49,11 +38,19 @@ function bh_compression_extract() {
   xz)
     tar -xJf $1 -C $DST
     ;;
-  rar)
-    unrar x $1 -C $DST
-    ;;
   *)
-    bh_log_error "$EXT is not supported compression." && exit
+    bh_log_error "$EXT is not supported compress." && exit
     ;;
   esac
+}
+
+function bh_decompress_from_url() {
+  : ${2?"Usage: ${FUNCNAME[0]} <URL> <folder>"}
+  local file_name="/tmp/$(basename $1)"
+
+  if test ! -f $file_name; then
+    bh_curl_fetch_to_dir $1 /tmp/
+  fi
+  echo "extracting $file_name to $2"
+  bh_decompress $file_name $2
 }
