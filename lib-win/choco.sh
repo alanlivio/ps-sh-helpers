@@ -2,8 +2,11 @@
 # choco helpers
 # ---------------------------------------
 
-bh_ps_def_func_admin bh_choco_install
-bh_ps_def_func_admin bh_choco_list_installed
+function bh_choco_install() {
+  bh_log_func
+  local pkgs_to_install=$(echo $@ | tr ' ' ';')
+  sudo choco install -y --acceptlicense $pkgs_to_install
+}
 
 function bh_choco_uninstall() {
   bh_log_func
