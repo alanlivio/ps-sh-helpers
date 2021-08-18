@@ -1,19 +1,22 @@
 # ---------------------------------------
 # sysupdate helpers
 # ---------------------------------------
+if [ "$(bh_win_user_check_admin)" == "True" ]; then
 
-function bh_win_sysupdate() {
-  bh_log_func
-  ps_call_admin '$(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
+  function bh_win_sysupdate() {
+    bh_log_func
+    ps_call_admin '$(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
     if ($_ -is [string]) {
       $_.Split("", [System.StringSplitOptions]::RemoveEmptyEntries) 
     } 
   }'
-}
-function bh_win_sysupdate_list() {
-  ps_call_admin 'Get-WindowsUpdate'
-}
+  }
+  function bh_win_sysupdate_list() {
+    ps_call_admin 'Get-WindowsUpdate'
+  }
 
-function bh_win_sysupdate_list_last_installed() {
-  ps_call_admin 'Get-WUHistory -Last 10 | Select-Object Date, Title, Result'
-}
+  function bh_win_sysupdate_list_last_installed() {
+    ps_call_admin 'Get-WUHistory -Last 10 | Select-Object Date, Title, Result'
+  }
+
+fi
