@@ -21,31 +21,6 @@ function bh_win_path_add($addPath) {
   }
 }
 
-function bh_appx_install() {
-  Invoke-Expression $bh_log_func
-  $pkgs_to_install = ""
-  foreach ($name in $args) {
-    if ( !(Get-AppxPackage -Name $name)) {
-      $pkgs_to_install += "$name $pkgs_to_install"
-    }
-  }
-  if ($pkgs_to_install) {
-    bh_log "pkgs_to_install=$pkgs_to_install"
-    foreach ($pkg in $pkgs_to_install) {
-      Get-AppxPackage $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
-    }
-  }
-}
-
-function bh_appx_uninstall() {
-  foreach ($name in $args) {
-    if (Get-AppxPackage -Name $name) {
-      Invoke-Expression "$bh_log_func $name"
-      Get-AppxPackage $name | Remove-AppxPackage
-    }
-  }
-}
-
 function bh_win_get_installed() {
   $tmpfile = New-TemporaryFile
   winget export $tmpfile | Out-null
@@ -94,7 +69,7 @@ function bh_win_get_uninstall() {
 function bh_win_install_winget() {
   if (!(Get-Command 'winget.exe' -ea 0)) {
     Invoke-Expression $bh_log_func
-    bh_appx_install Microsoft.DesktopAppInstaller
+    Get-AppxPackage Microsoft.DesktopAppInstaller | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
   }
 }
 

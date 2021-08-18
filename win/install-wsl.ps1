@@ -61,7 +61,7 @@ function bh_win_install_gsudo() {
 function bh_win_install_winget() {
   if (!(Get-Command 'winget.exe' -ea 0)) {
     Invoke-Expression $bh_log_func
-    bh_appx_install Microsoft.DesktopAppInstaller
+    Get-AppxPackage Microsoft.DesktopAppInstaller | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
   }
 }
 

@@ -41,7 +41,6 @@ function bh_ps_test_command() {
 source "$BH_DIR/win/user.sh" # bh_win_user_check_admin
 if type tlshell.exe &>/dev/null; then source "$BH_DIR/win/texlive.sh"; fi
 if type wsl.exe &>/dev/null; then source "$BH_DIR/win/wsl.sh"; fi
-source "$BH_DIR/win/appx.sh"
 source "$BH_DIR/win/choco.sh"
 source "$BH_DIR/win/sysupdate.sh"
 source "$BH_DIR/win/winget.sh"
@@ -67,7 +66,6 @@ function bh_update_clean_win() {
   if [ "$(bh_win_user_check_admin)" == "True" ]; then
     bh_win_sysupdate
     bh_win_get_install "$PKGS_WINGET"
-    bh_appx_install "$PKGS_APPX"
     bh_choco_install "$PKGS_CHOCO"
     bh_choco_upgrade
     bh_choco_clean
@@ -102,7 +100,7 @@ function bh_win_path_add() {
         $currentpath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
         $regexAddPath = [regex]::Escape($addPath)
         $arrPath = $currentpath -split ";" | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
-        $newpath = ($arrPath + $addPath) -join ";"
+        $newpath = ($arrPath + $addPath) -join ";" + ";"
         [System.Environment]::SetEnvironmentVariable("PATH", $newpath, "user")
         refreshenv | Out-null
       }
