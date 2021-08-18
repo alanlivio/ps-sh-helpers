@@ -1,10 +1,10 @@
 <h1 align="center">bash-helpers</h1>
 
-This project offers cross-plataform (linux, macOS, windows) bash helpers to: configure OS (e.g., disable unused services/features/apps, dark mode), install software (e.g., git, python, vscode) and utilities (e.g., install software, git, pdf, compress).
+This project offers cross-plataform (linux, macOS, windows) bash helpers to: configure OS (e.g., dark mode, sanity desktop inteface ), install software (e.g., git, python, vscode) and utilities (e.g., install software, git, pdf, compress).
 
 # How to install
 
-The bash-helpers has two requeriments: a `bash shell` and `git`.  
+The bash-helpers has two requeriments: a `bash shell` and `git` .  
 You can install `git` in any OS following steps from [here](https://git-scm.com/download).  
 
 Linux and macOS support bash by default.  
@@ -26,22 +26,22 @@ Then, in `bash` (or `git bash`), you can clone and enable bash-helpers by extend
 
 ### setup Gnome-based Ubuntu  
 
-  1. at bash, run `bh_setup_ubuntu`: configure Gnome (e.g., disable unused services/features/apps, dark mode) and install essential software (e.g., git, python, vscode).
+  1. at bash, run `bh_setup_ubuntu`: configure Gnome (e.g., dark mode, sanity desktop inteface ) and install essential software (e.g., git, python, vscode).
   2. at bash, run `bh_update_clean_ubuntu` (run routinely): configure/upgrade packges using variables (PKGS_APT, PKGS_PYTHON, PKGS_SNAP, PKGS_SNAP_CLASSIC, PKGS_REMOVE_APT) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 
 ### setup macOS  
 
-  1. at bash, run `bh_setup_mac`: install essential software (brew, bash last version, python, vscode)
+  1. at bash, run `bh_setup_mac`: install essential software (brew, bash last version, git, vim, python, vscode)
   2. at bash, run `bh_update_clean_mac` (run routinely): configure/upgrade packges using variables (PKGS_BREW) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 
 ### setup Windows
 
-  1. at git bash, run `bh_setup_win`: configure Windows (e.g., disable unused services/features/apps, dark mode) and install essential software (e.g., choco, gsudo, winget, python, WindowsTerminal, vscode).
-  2. `bh_update_clean_win` (run routinely): configure/upgrade packges using variables (e.g. PKGS_PYTHON) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
+  1. at git bash, run `bh_setup_win`: configure Windows (e.g., dark mode, sanity desktop inteface ) and install essential software (e.g., choco, gsudo, winget, python, WindowsTerminal, vscode).
+  2. at git bash, run `bh_update_clean_win` (run routinely): configure/upgrade packges using variables (e.g. PKGS_PYTHON) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 
-### setup WSL (after setup Windows)
+### setup WSL
 
-  1. at admin git bash, run `bh_win_install_wsl_ubuntu`: install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install)  
+  1. at powershell, run `. $HOME\.bh\win\install-wsl.ps1`: install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install)  
     1.1. After run, it requeres restart windows and run it again.  
     1.2. It aso require run Ubuntu app and configure your username/password.  
     1.1. Then run it again.
@@ -49,10 +49,11 @@ Then, in `bash` (or `git bash`), you can clone and enable bash-helpers by extend
   2. at wsl bash, run `bh_setup_wsl`: install essential software (e.g., git, python).
   3. at wsl bash, run `bh_update_clean_wsl` (run routinely): configure/upgrade packges using variables (e.g., PKGS_APT, PKGS_PYTHON, PKGS_REMOVE_APT) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 
-### setup Windows msys2 (after setup Windows)
+### setup Windows msys2
 
-  1. at admin git bash, run `bh_win_install_msys`: install msys (Cygwin-based) with bash to build GNU-based win32 applications
-  2. at msys bash, run `bh_setup_msys`: install essential software (e.g., python).
+  1. at powershell, run `. $HOME\.bh\win\install-msys.ps1`: install msys (Cygwin-based) with bash to build GNU-based win32 applications
+  
+  2. at msys bash, run `bh_setup_msys`: install essential software (e.g., python, curl, vim).
   3. at msys bash, run `bh_update_clean_msys` (run routinely): configure/upgrade packges using variables (e.g., PKGS_MSYS, PKGS_PYTHON_MSYS) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
   
 
