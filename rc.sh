@@ -57,65 +57,6 @@ if test -z "$BH_OPT_LINUX"; then BH_OPT_LINUX="$HOME/opt"; fi
 if test -z "$BH_DEV"; then BH_DEV="$HOME/dev"; fi
 
 # ---------------------------------------
-# log helpers
-# ---------------------------------------
-
-alias bh_log_func='bh_log_msg "${FUNCNAME[0]}"'
-alias bh_log_not_implemented_return="bh_log_error 'Not implemented'; return;"
-
-function bh_log_wrap() {
-  echo -e "$1" | fold -w100 -s
-}
-
-function bh_log_error() {
-  bh_log_wrap "\033[00;31m-- $* \033[00m"
-}
-
-function bh_log_msg() {
-  bh_log_wrap "\033[00;33m-- $* \033[00m"
-}
-
-function bh_log_msg_2nd() {
-  bh_log_wrap "\033[00;33m-- > $* \033[00m"
-}
-
-function bh_log_done() {
-  bh_log_wrap "\033[00;32m-- done\033[00m"
-}
-
-function bh_log_ok() {
-  bh_log_wrap "\033[00;32m-- ok\033[00m"
-}
-
-function bh_log_try() {
-  "$@"
-  if $? -ne 0; then bh_log_error "$1" && exit 1; fi
-}
-
-# ---------------------------------------
-# test helpers
-# ---------------------------------------
-
-function bh_test_and_create_folder() {
-  if test ! -d $1; then
-    bh_log_msg "creating $1"
-    mkdir -p $1
-  fi
-}
-
-function bh_test_and_create_file() {
-  : ${1?"Usage: ${FUNCNAME[0]} [file]"}
-  if ! test -f "$1"; then
-    bh_test_and_create_folder $(dirname $1)
-    touch "$1"
-  fi
-}
-
-function bh_test_and_delete_remove() {
-  if test -d $1; then rm -rf $1; fi
-}
-
-# ---------------------------------------
 # load libs for specific commands
 # ---------------------------------------
 
@@ -123,6 +64,7 @@ source "$BH_DIR/lib/curl.sh"
 source "$BH_DIR/lib/decompress.sh" # uses tar, unzip, curl
 source "$BH_DIR/lib/rename.sh"
 source "$BH_DIR/lib/md5.sh"
+source "$BH_DIR/lib/log-test.sh"
 
 if type adb &>/dev/null; then source "$BH_DIR/lib/android.sh"; fi
 if type arp-scan &>/dev/null; then source "$BH_DIR/lib/arp-scan.sh"; fi
@@ -191,16 +133,16 @@ function bh_profile_reload() {
 }
 
 # ---------------------------------------
-# config helpers
+# home helpers
 # ---------------------------------------
 
-function bh_config_func() {
+function bh_home_config_func() {
   : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
   bh_log_func
   declare -a files_array
-  files_array=($BKP_FILES)
+  files_array=($BH_CONFIG_BKPS)
   if [ ${#files_array[@]} -eq 0 ]; then
-    bh_log_error "BKP_FILES empty"
+    bh_log_error "BH_CONFIG_BKPS empty"
   fi
   for ((i = 0; i < ${#files_array[@]}; i = i + 2)); do
     bh_test_and_create_file ${files_array[$i]}
@@ -218,13 +160,9 @@ function bh_config_func() {
     fi
   done
 }
-alias bh_config_install="bh_config_func install"
-alias bh_config_backup="bh_config_func backup"
-alias bh_config_diff="bh_config_func diff"
-
-# ---------------------------------------
-# home helpers
-# ---------------------------------------
+alias bh_home_config_install="bh_home_config_func install"
+alias bh_home_config_backup="bh_home_config_func backup"
+alias bh_home_config_diff="bh_home_config_func diff"
 
 BH_HOME_CLEAN_UNUSED+=(
   'Images'
