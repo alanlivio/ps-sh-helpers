@@ -57,10 +57,25 @@ if test -z "$BH_OPT_LINUX"; then BH_OPT_LINUX="$HOME/opt"; fi
 if test -z "$BH_DEV"; then BH_DEV="$HOME/dev"; fi
 
 # ---------------------------------------
+# bashrc helpers
+# ---------------------------------------
+
+function bh_bashrc_install() {
+  bh_log_func
+  echo -e "\nsource $BH_RC" >>$HOME/.bashrc
+}
+
+function bh_bashrc_reload() {
+  bh_log_func
+  if $IS_WINDOWS_WSL; then source $HOME/.profile; else source $HOME/.bashrc; fi
+}
+
+# ---------------------------------------
 # load libs for specific commands
 # ---------------------------------------
 
 source "$BH_DIR/lib/curl.sh"
+source "$BH_DIR/lib/home.sh"
 source "$BH_DIR/lib/decompress.sh" # uses tar, unzip, curl
 source "$BH_DIR/lib/rename.sh"
 source "$BH_DIR/lib/md5.sh"
@@ -112,22 +127,3 @@ elif $IS_WINDOWS_GITBASH; then
 elif $IS_MAC; then
   source "$BH_DIR/lib/rc-mac.sh"
 fi
-
-# ---------------------------------------
-# bashrc helpers
-# ---------------------------------------
-
-function bh_bashrc_install() {
-  bh_log_func
-  echo -e "\nsource $BH_RC" >>$HOME/.bashrc
-}
-
-function bh_bashrc_reload() {
-  bh_log_func
-  if $IS_WINDOWS_WSL; then
-    # for WSL
-    source $HOME/.profile
-  else
-    source $HOME/.bashrc
-  fi
-}

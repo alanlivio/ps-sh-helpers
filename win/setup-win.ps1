@@ -129,6 +129,7 @@ function bh_setup_start_menu_sanity() {
     'Microsoft.Office.Sway'
     'Microsoft.OneConnect'
     'Microsoft.Print3D'
+    'Microsoft.People'
     'Microsoft.StorePurchaseApp'
     'Microsoft.Wallet'
     'Microsoft.WindowsAlarms'
