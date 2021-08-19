@@ -43,8 +43,11 @@ function bh_python_install() {
 
 if $IS_LINUX; then
   function bh_python_set_python3_default() {
-    update-alternatives --install /usr/bin/python python /usr/bin/python3 1
-    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+    if [[ $(ptyhon -V) == "Python 3" ]]; then
+      bh_log_func
+      update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+      update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+    fi
   }
 fi
 
