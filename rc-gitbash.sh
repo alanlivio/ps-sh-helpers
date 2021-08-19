@@ -102,7 +102,6 @@ function bh_win_path_add() {
         $arrPath = $currentpath -split ";" | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
         $newpath = ($arrPath + $addPath) -join ";" + ";"
         [System.Environment]::SetEnvironmentVariable("PATH", $newpath, "user")
-        refreshenv | Out-null
       }
       else {
         Throw "$addPath is not a valid path."

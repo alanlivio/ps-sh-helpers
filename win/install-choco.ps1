@@ -24,5 +24,4 @@ if (!(Get-Command 'choco.exe' -ea 0)) {
   choco feature enable -n removePackageInformationOnUninstall
   choco feature enable -n useRememberedArgumentsForUpgrades
   # enable use without restarting Powershell
-  refreshenv
 }

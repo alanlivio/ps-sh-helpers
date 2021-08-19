@@ -14,7 +14,6 @@ function bh_win_path_add($addPath) {
     $arrPath = $currentpath -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
     $newpath = ($arrPath + $addPath) -join ';'
     bh_win_env_add 'PATH' $newpath
-    refreshenv | Out-null
   }
   else {
     Throw "$addPath' is not a valid path."
