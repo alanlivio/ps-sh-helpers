@@ -42,22 +42,14 @@ Then, in `bash` (or `git bash`), you can clone and enable bash-helpers by extend
 
 ### setup WSL
 
-  1. at git bash, run `bh_win_install_wsl`: install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install)  
-    1.1. After run, it requeres restart windows and run it again.  
-    1.2. It aso require run Ubuntu app and configure your username/password.  
-    1.1. Then run it again.
-
-  2. at wsl bash, run `bh_setup_wsl`: install essential software (e.g., git, python).
-  3. at wsl bash, run `bh_update_clean_wsl` (run routinely): configure/upgrade packges using variables (e.g., PKGS_APT, PKGS_PYTHON, PKGS_REMOVE_APT) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
+  1. at git bash, run `bh_setup_wsl`: install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After run, it requeres restart windows and run it again. When Ubuntu app started, you need configure your username/password.  
+  2. at wsl bash, run `bh_update_clean_wsl` (run routinely): configure/upgrade packges using variables (e.g., PKGS_APT, PKGS_PYTHON, PKGS_REMOVE_APT) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 
 ### setup Windows msys2
 
-  1. at git bash, run `bh_win_install_msys`: install msys (Cygwin-based) with bash to build GNU-based win32 applications
+  1. at git bash, run `bh_setup_msys`: install msys (Cygwin-based) with bash to build GNU-based win32 applications
+  2. at msys bash, run `bh_update_clean_msys` (run routinely): configure/upgrade packges using variables (e.g., PKGS_MSYS, PKGS_PYTHON_MSYS) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
   
-  2. at msys bash, run `bh_setup_msys`: install essential software (e.g., python, curl, vim).
-  3. at msys bash, run `bh_update_clean_msys` (run routinely): configure/upgrade packges using variables (e.g., PKGS_MSYS, PKGS_PYTHON_MSYS) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
-  
-
 # helpers for commands
 * android helpers: see `bh_android_*` at [lib/android.sh](lib/android.sh).
 * cmake helpers: see `bh_cmake_*` at [lib/cmake.sh](lib/cmake.sh).

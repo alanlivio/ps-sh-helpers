@@ -4,7 +4,6 @@
 
 function bh_setup_mac() {
   bh_log_func
-  bh_user_permissions_sudo_nopasswd
   bh_mac_install_brew
   bh_brew_upgrade
   # essentials

@@ -25,12 +25,10 @@ if type lxc &>/dev/null; then source "$BH_DIR/ubuntu/lxc.sh"; fi
 if type lsof &>/dev/null; then source "$BH_DIR/ubuntu/ports.sh"; fi
 
 # ---------------------------------------
-# setup/update_clean helpers
+# update_clean helper
 # ---------------------------------------
 
-function bh_setup_wsl() {
-  # sudo nopasswd
-  bh_user_permissions_sudo_nopasswd
+function bh_update_clean_wsl() {
   # essentials
   local pkgs="git deborphan apt-file $BH_PKGS_ESSENTIALS "
   # python
@@ -38,9 +36,6 @@ function bh_setup_wsl() {
   bh_apt_install $pkgs
   # set python3 as default
   bh_python_set_python3_default
-}
-
-function bh_update_clean_wsl() {
   # apt
   bh_apt_install $PKGS_APT
   bh_apt_remove_pkgs $PKGS_REMOVE_APT

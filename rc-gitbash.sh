@@ -51,15 +51,13 @@ source "$BH_DIR/win/explorer.sh"
 # ---------------------------------------
 
 BH_INSTALL_CHOCO=$(unixpath -w "$BH_DIR/win/install-choco.ps1")
-BH_INSTALL_MSYS=$(unixpath -w "$BH_DIR/win/install-msys.ps1")
-BH_INSTALL_WSL=$(unixpath -w "$BH_DIR/win/install-wsl.ps1")
+BH_SETUP_MSYS=$(unixpath -w "$BH_DIR/win/setup-msys.ps1")
+BH_SETUP_WSL=$(unixpath -w "$BH_DIR/win/setup-wsl.ps1")
 BH_SETUP_WIN=$(unixpath -w "$BH_DIR/win/setup-win.ps1")
-BH_SETUP_WIN_ADM=$(unixpath -w "$BH_DIR/win/setup-win.ps1")
 function bh_win_install_choco() { powershell.exe -command "& { . $BH_INSTALL_CHOCO}"; }
-function bh_win_install_wsl() { powershell.exe -command "& { . $BH_INSTALL_WSL}"; }
-function bh_win_install_msys() { powershell.exe -command "& { . $BH_INSTALL_MSYS}"; }
+function bh_setup_wsl() { powershell.exe -command "& { . $BH_SETUP_WSL}"; }
+function bh_setup_msys() { powershell.exe -command "& { . $BH_SETUP_MSYS}"; }
 function bh_setup_win() { powershell.exe -command "& { . $BH_SETUP_WIN}"; }
-function bh_setup_win_adm() { powershell.exe -command "& { . $BH_SETUP_WIN_ADM}"; }
 
 function bh_update_clean_win() {
   # windows

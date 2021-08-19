@@ -58,7 +58,7 @@ function bh_win_install_winget() {
 # ---------------------------------------
 # setup_msys
 # ---------------------------------------
-bh_log "bh_win_install_msys"
+bh_log "bh_setup_msys"
 $MSYS_HOME = "C:\msys64"
 
 # install winget
