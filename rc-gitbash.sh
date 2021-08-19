@@ -41,8 +41,7 @@ function bh_ps_test_command() {
 source "$BH_DIR/win/user.sh" # bh_win_user_check_admin
 if type tlshell.exe &>/dev/null; then source "$BH_DIR/win/texlive.sh"; fi
 if type wsl.exe &>/dev/null; then source "$BH_DIR/win/wsl.sh"; fi
-source "$BH_DIR/win/choco.sh"
-source "$BH_DIR/win/sysupdate.sh"
+if type gsudo &>/dev/null; then source "$BH_DIR/win/admin.sh"; fi
 source "$BH_DIR/win/winget.sh"
 source "$BH_DIR/win/explorer.sh"
 
@@ -61,7 +60,7 @@ function bh_setup_win() { powershell.exe -command "& { . $BH_SETUP_WIN}"; }
 
 function bh_update_clean_win() {
   # windows
-  if [ "$(bh_win_user_check_admin)" == "True" ]; then
+  if type gsudo &>/dev/null; then
     bh_win_sysupdate
     bh_win_get_install "$PKGS_WINGET"
     bh_choco_install "$PKGS_CHOCO"
@@ -124,43 +123,6 @@ BH_WT_STGS="$HOME/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe
 function bh_wt_settings() {
   code $BH_WT_STGS
 }
-
-# ---------------------------------------
-# install admin
-# ---------------------------------------
-
-if [ "$(bh_win_user_check_admin)" == "True" ]; then
-
-  function bh_win_install_docker() {
-    bh_log_func
-    ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
-    ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
-    bh_win_get_install Docker.DockerDesktop
-  }
-
-  function bh_win_install_tesseract() {
-    bh_log_func
-    if type tesseract.exe &>/dev/null; then
-      bh_win_get_install tesseract
-      bh_win_path_add 'C:\Program Files\Tesseract-OCR'
-    fi
-  }
-
-  function bh_win_install_java() {
-    bh_log_func
-    if type java.exe &>/dev/null; then
-      bh_win_get_install ojdkbuild.ojdkbuild
-      local javahome=$(ps_call '$(get-command java).Source.replace("\bin\java.exe", "")')
-      bh_env_add "JAVA_HOME" "$javahome"
-    fi
-  }
-
-  function bh_win_install_battle_steam() {
-    bh_log_func
-    bh_win_get_install Blizzard.BattleNet Valve.Steam
-  }
-fi
-
 # ---------------------------------------
 # install non-admin
 # ---------------------------------------
