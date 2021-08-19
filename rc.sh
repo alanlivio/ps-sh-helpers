@@ -153,12 +153,10 @@ if type tesseract &>/dev/null; then source "$BH_DIR/lib/tesseract.sh"; fi
 if type wget &>/dev/null; then source "$BH_DIR/lib/wget.sh"; fi
 if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/youtube-dl.sh"; fi
 if type zip tar &>/dev/null; then source "$BH_DIR/lib/zip.sh"; fi
+if test -d /etc/sudoers.d/; then source "$BH_DIR/lib/user.sh"; fi
 
 # ---------------------------------------
 # load libs for specific OS
-# they define:
-# - bh_setup_{ubuntu,msys,wsl,mac}
-# - bh_update_clean_{ubuntu,msys,wsl,mac}
 # ---------------------------------------
 
 if $IS_LINUX_UBUNTU; then
@@ -190,27 +188,6 @@ function bh_profile_reload() {
   else
     source $HOME/.bashrc
   fi
-}
-
-# ---------------------------------------
-# user helpers
-# ---------------------------------------
-
-function bh_user_sudo_nopasswd() {
-  if ! test -d /etc/sudoers.d/; then bh_test_and_create_folder /etc/sudoers.d/; fi
-  SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
-}
-
-function bh_user_passwd_disable_len_restriction() {
-  sudo sed -i 's/sha512/minlen=1 sha512/g' /etc/pam.d/common-password
-}
-
-function bh_user_permissions_opt() {
-  bh_log_func
-  sudo chown -R root:root /opt
-  sudo chmod -R 775 /opt/
-  grep root /etc/group | grep $USER >/dev/null
-  newgrp root
 }
 
 # ---------------------------------------
