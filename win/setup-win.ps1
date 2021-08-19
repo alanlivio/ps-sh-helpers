@@ -78,12 +78,21 @@ function bh_win_install_python() {
   $py_exe_1 = "${env:UserProfile}\AppData\Local\Programs\Python\Python39\python.exe"
   $py_exe_2 = "C:\Program Files\Python39\python.exe"
   if (!(Test-Path $py_exe_1) -and !(Test-Path $py_exe_2)) {
-    winget install Python.Python.3
+    winget install Python.Python.3 --scope=user -i
   }
   # Remove windows alias. See https://superuser.com/questions/1437590/typing-python-on-windows-10-version-1903-command-prompt-opens-microsoft-stor
   Remove-Item $env:USERPROFILE\AppData\Local\Microsoft\WindowsApps\python*.exe
   if (Test-Path $py_exe_1) { bh_win_path_add $(Split-Path $py_exe_1) }
   elseif (Test-Path $py_exe_2) { bh_win_path_add $(Split-Path $py_exe_2) }
+}
+
+function bh_appx_uninstall() {
+  foreach ($name in $args) {
+    if (Get-AppxPackage -Name $name) {
+      Invoke-Expression "$bh_log_func $name"
+      Get-AppxPackage $name | Remove-AppxPackage
+    }
+  }
 }
 
 # ---------------------------------------
@@ -97,9 +106,11 @@ function bh_setup_start_menu_sanity() {
     'Microsoft.3DBuilder'
     'Microsoft.Appconnector'
     'Microsoft.BingNews'
+    'Microsoft.MSPaint'
     'Microsoft.BingSports'
     'Microsoft.BingWeather'
     'Microsoft.CommsPhone'
+    'Microsoft.SkypeApp'
     'Microsoft.ConnectivityStore'
     'Microsoft.Getstarted'
     'Microsoft.Microsoft3DViewer'
