@@ -89,8 +89,14 @@ function bh_win_install_python() {
   }
   # Remove windows alias. See https://superuser.com/questions/1437590/typing-python-on-windows-10-version-1903-command-prompt-opens-microsoft-stor
   Remove-Item $env:USERPROFILE\AppData\Local\Microsoft\WindowsApps\python*.exe
-  if (Test-Path $py_exe_1) { bh_win_path_add $(Split-Path $py_exe_1) }
-  elseif (Test-Path $py_exe_2) { bh_win_path_add $(Split-Path $py_exe_2) }
+  if (Test-Path $py_exe_1) { 
+    bh_win_path_add "$(Split-Path $py_exe_1)"
+    bh_win_path_add "$(Split-Path $py_exe_1)\Scripts"
+  }
+  elseif (Test-Path $py_exe_2) {
+    bh_win_path_add "$(Split-Path $py_exe_2)" 
+    bh_win_path_add "$(Split-Path $py_exe_2)\Scripts"
+  }
 }
 
 function bh_appx_uninstall() {

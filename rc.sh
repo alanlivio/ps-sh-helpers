@@ -57,8 +57,15 @@ if test -z "$BH_OPT_LINUX"; then BH_OPT_LINUX="$HOME/opt"; fi
 if test -z "$BH_DEV"; then BH_DEV="$HOME/dev"; fi
 
 # ---------------------------------------
-# bashrc helpers
+# essential helpers
 # ---------------------------------------
+
+source "$BH_DIR/lib/log-test.sh"
+source "$BH_DIR/lib/curl.sh"
+source "$BH_DIR/lib/home.sh"
+source "$BH_DIR/lib/decompress.sh" # uses tar, unzip, curl
+source "$BH_DIR/lib/rename.sh"
+source "$BH_DIR/lib/md5.sh"
 
 function bh_bashrc_install() {
   bh_log_func
@@ -71,15 +78,8 @@ function bh_bashrc_reload() {
 }
 
 # ---------------------------------------
-# load libs for specific commands
+# load helpers for specific commands
 # ---------------------------------------
-
-source "$BH_DIR/lib/curl.sh"
-source "$BH_DIR/lib/home.sh"
-source "$BH_DIR/lib/decompress.sh" # uses tar, unzip, curl
-source "$BH_DIR/lib/rename.sh"
-source "$BH_DIR/lib/md5.sh"
-source "$BH_DIR/lib/log-test.sh"
 
 if type adb &>/dev/null; then source "$BH_DIR/lib/android.sh"; fi
 if type arp-scan &>/dev/null; then source "$BH_DIR/lib/arp-scan.sh"; fi
