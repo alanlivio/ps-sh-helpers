@@ -5,16 +5,17 @@ This project offers cross-plataform (linux, macOS, windows) bash helpers to: con
 # How to install
 
 The bash-helpers has two requeriments: a `bash shell` and `git` .  
-You can install `git` in any OS following steps from [here](https://git-scm.com/download).  
-
+You can install `git` in any OS following steps from [here](https://git-scm.com/download).
 Linux and macOS support bash by default.  
-In Windows, the [Git Installer](https://git-scm.com/download/win) also install a bash called `git bash` (when installer, enable WindowsTerminal config and use unix like ending lines). However, `git bash` do not use your home folder by default, to fix that run in powershell:
+
+
+In Windows, the [Git Installer](https://git-scm.com/download/win) also install a bash called `git bash`, however, it do not use your home folder by default. To fix it, run in powershell:
 
 ```powershell
   [Environment]::SetEnvironmentVariable("HOME", "${env:UserProfile}")
 ```
 
-Then, in `bash` (or `git bash`), you can clone and enable bash-helpers by extending your [Bash Startup File](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html). To do that, run in bash:
+Then, in `bash` (or `git bash`), you can clone and enable bash-helpers by extending your [Bash Startup File](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html). To do that, run:
 
 ```bash
   git clone https://github.com/alanlivio/bash-helpers.git ~/.bh
@@ -41,7 +42,7 @@ Then, in `bash` (or `git bash`), you can clone and enable bash-helpers by extend
 
 ### setup WSL
 
-  1. at powershell, run `. $HOME\.bh\win\install-wsl.ps1`: install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install)  
+  1. at git bash, run `bh_win_install_wsl`: install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install)  
     1.1. After run, it requeres restart windows and run it again.  
     1.2. It aso require run Ubuntu app and configure your username/password.  
     1.1. Then run it again.
@@ -51,7 +52,7 @@ Then, in `bash` (or `git bash`), you can clone and enable bash-helpers by extend
 
 ### setup Windows msys2
 
-  1. at powershell, run `. $HOME\.bh\win\install-msys.ps1`: install msys (Cygwin-based) with bash to build GNU-based win32 applications
+  1. at git bash, run `bh_win_install_msys`: install msys (Cygwin-based) with bash to build GNU-based win32 applications
   
   2. at msys bash, run `bh_setup_msys`: install essential software (e.g., python, curl, vim).
   3. at msys bash, run `bh_update_clean_msys` (run routinely): configure/upgrade packges using variables (e.g., PKGS_MSYS, PKGS_PYTHON_MSYS) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
