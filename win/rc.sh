@@ -74,45 +74,7 @@ function bh_update_clean_win() {
   bh_vscode_install $PKGS_VSCODE
   # cleanup
   bh_home_clean_unused
-  bh_home_hide_dotfiles
-}
-
-# ---------------------------------------
-# path helpers
-# ---------------------------------------
-
-function bh_win_path() {
-  powershell -c "[Environment]::GetEnvironmentVariable('path', 'user')"
-}
-
-function bh_env_add() {
-  ps_call "[System.Environment]::SetEnvironmentVariable($1, $2, 'user')"
-}
-
-function bh_win_path_add() {
-  local dir=$(winpath $1)
-  ps_call ' 
-    function bh_win_path_add($addPath) {
-      if (Test-Path $addPath) {
-        $currentpath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
-        $regexAddPath = [regex]::Escape($addPath)
-        $arrPath = $currentpath -split ";" | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
-        $newpath = ($arrPath + $addPath) -join ";" + ";"
-        [System.Environment]::SetEnvironmentVariable("PATH", $newpath, "user")
-      }
-      else {
-        Throw "$addPath is not a valid path."
-      }
-    }; bh_win_path_add '" $dir"
-}
-
-# ---------------------------------------
-# home helpers
-# ---------------------------------------
-
-function bh_home_hide_dotfiles() {
-  bh_log_func
-  powershell -c 'Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
+  bh_explorer_hide_home_dotfiles
 }
 
 # ---------------------------------------
