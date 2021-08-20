@@ -67,7 +67,12 @@ source "$BH_DIR/lib/decompress.sh" # uses tar, unzip, curl
 source "$BH_DIR/lib/rename.sh"
 source "$BH_DIR/lib/md5.sh"
 
-function bh_bashrc_install() {
+function bh_bh_update_from_github() {
+  bh_log_func
+  cd $BH_DIR && git pull
+}
+
+function bh_bh_install() {
   bh_log_func
   echo -e "\nsource $BH_RC" >>$HOME/.bashrc
 }
