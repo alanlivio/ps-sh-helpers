@@ -74,7 +74,10 @@ function bh_bh_update_from_github() {
 
 function bh_bh_install() {
   bh_log_func
-  echo -e "\nsource $BH_RC" >>$HOME/.bashrc
+  local line='source $HOME/.bh/rc.sh'
+  if ! grep -Fxq "$line" $HOME/.bashrc; then
+    echo -e "$line\n" >>$HOME/.bashrc
+  fi
 }
 
 function bh_bashrc_reload() {

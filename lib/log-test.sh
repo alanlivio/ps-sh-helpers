@@ -1,4 +1,3 @@
-
 # ---------------------------------------
 # log helpers
 # ---------------------------------------
@@ -54,6 +53,6 @@ function bh_test_and_create_file() {
   fi
 }
 
-function bh_test_and_delete_remove() {
+function bh_test_and_delete_dir() {
   if test -d $1; then rm -rf $1; fi
 }
