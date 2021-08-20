@@ -11,12 +11,12 @@ function bh_win_user_check_admin() {
 # path helpers
 # ---------------------------------------
 
-function bh_win_path() {
-  powershell -c "[Environment]::GetEnvironmentVariable('path', 'user')"
+function bh_win_path_show() {
+  powershell -c '[Environment]::GetEnvironmentVariable("path", "user")'
 }
 
-function bh_env_add() {
-  ps_call "[System.Environment]::SetEnvironmentVariable($1, $2, 'user')"
+function bh_win_env_add() {
+  ps_call "[System.Environment]::SetEnvironmentVariable('$1', '$2', 'user')"
 }
 
 function bh_win_path_add() {
