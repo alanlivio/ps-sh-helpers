@@ -54,7 +54,7 @@ fi
 function bh_python_venv_create() {
   deactivate
   if test -d ./venv/bin/; then rm -r ./venv; fi
-  python3 -m venv venv
+  python -m venv venv
   if test requirements.txt; then pip install -r requirements.txt; fi
 }
 
@@ -65,5 +65,5 @@ function bh_python_venv_load() {
 }
 
 function bh_folder_host_http() {
-  python3 -m http.server 80
+  python -m http.server 80
 }
