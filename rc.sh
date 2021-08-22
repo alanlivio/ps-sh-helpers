@@ -125,13 +125,13 @@ if test -d /etc/sudoers.d/; then source "$BH_DIR/lib/user.sh"; fi
 # ---------------------------------------
 
 if $IS_LINUX_UBUNTU; then
-  source "$BH_DIR/ubuntu/rc.sh"
+  source "$BH_DIR/rc-ubuntu.sh"
 elif $IS_WINDOWS_MSYS; then
-  source "$BH_DIR/win/rc-msys.sh"
+  source "$BH_DIR/rc-msys.sh"
 elif $IS_WINDOWS_WSL; then
-  source "$BH_DIR/win/rc-wsl.sh"
+  source "$BH_DIR/rc-wsl.sh"
 elif $IS_WINDOWS_GITBASH; then
-  source "$BH_DIR/win/rc.sh"
+  source "$BH_DIR/rc-gitbash.sh"
 elif $IS_MAC; then
-  source "$BH_DIR/lib/rc-mac.sh"
+  source "$BH_DIR/rc-mac.sh"
 fi

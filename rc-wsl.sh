@@ -20,18 +20,7 @@ source "$BH_DIR/win/explorer.sh"
 # ---------------------------------------
 # load commands for ubuntu
 # ---------------------------------------
-
-IS_GNOME=false
-HAS_SNAP=false
-if type gnome-shell &>/dev/null; then IS_GNOME=true; fi
-if type snap &>/dev/null; then HAS_SNAP=true; fi
-if $IS_GNOME; then source "$BH_DIR/ubuntu/gnome.sh"; fi
-if $HAS_SNAP; then source "$BH_DIR/ubuntu/snap.sh"; fi
-if type apt tar &>/dev/null; then source "$BH_DIR/ubuntu/apt.sh"; fi
-if type systemctl tar &>/dev/null; then source "$BH_DIR/ubuntu/systemd.sh"; fi
-if type service tar &>/dev/null; then source "$BH_DIR/ubuntu/initd.sh"; fi
-if type lxc &>/dev/null; then source "$BH_DIR/ubuntu/lxc.sh"; fi
-if type lsof &>/dev/null; then source "$BH_DIR/ubuntu/ports.sh"; fi
+source "$BH_DIR/rc-ubuntu.sh"
 
 # ---------------------------------------
 # update_clean helper
