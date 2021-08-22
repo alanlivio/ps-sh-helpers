@@ -74,5 +74,4 @@ if (!(Get-Command "gsudo.exe" -ea 0)) {
 if (-not (Test-Path $MSYS_HOME)) {
   Invoke-Expression $bh_log_func
   winget install --scope=machine msys2.msys2
-  bh_msys_add_to_path
 }
