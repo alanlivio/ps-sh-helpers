@@ -1,5 +1,5 @@
 # ---------------------------------------
-# cmake helpers
+# cmake
 # ---------------------------------------
 
 CMAKE_DIR="_build-Debug-$WSL_DISTRO_NAME$OS"

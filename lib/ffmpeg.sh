@@ -1,5 +1,5 @@
 # ---------------------------------------
-# ffmpeg helpers
+# ffmpeg
 # ---------------------------------------
 function bh_ffmpeg_show_motion_vectors() {
   : ${1?"Usage: ${FUNCNAME[0]} <video>"}

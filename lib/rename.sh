@@ -1,5 +1,5 @@
 # ---------------------------------------
-# rename helpers
+# rename
 # ---------------------------------------
 
 function bh_rename_to_lowercase_with_underscore() {

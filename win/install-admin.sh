@@ -49,7 +49,7 @@ function bh_install_choco() {
 }
 
 # ---------------------------------------
-# choco helpers
+# choco
 # ---------------------------------------
 
 if type gsudo &>/dev/null; then
@@ -87,7 +87,7 @@ if type gsudo &>/dev/null; then
 fi
 
 # ---------------------------------------
-# sysupdate helpers
+# sysupdate
 # ---------------------------------------
 
 function bh_win_sysupdate() {

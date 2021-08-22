@@ -76,7 +76,7 @@ function bh_update_clean_win() {
 }
 
 # ---------------------------------------
-# wt helpers
+# wt
 # ---------------------------------------
 BH_WT_STGS="$HOME/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json"
 

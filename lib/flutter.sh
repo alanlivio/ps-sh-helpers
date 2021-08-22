@@ -1,5 +1,5 @@
 # ---------------------------------------
-# flutter helpers
+# flutter
 # ---------------------------------------
 
 function bh_flutter_pkgs_get() {

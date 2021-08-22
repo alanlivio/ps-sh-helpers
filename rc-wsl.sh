@@ -23,7 +23,7 @@ source "$BH_DIR/win/explorer.sh"
 source "$BH_DIR/rc-ubuntu.sh"
 
 # ---------------------------------------
-# update_clean helper
+# update_clean
 # ---------------------------------------
 
 function bh_update_clean_wsl() {
@@ -47,7 +47,7 @@ function bh_update_clean_wsl() {
 }
 
 # ---------------------------------------
-# wsl_install helpers
+# wsl_install
 # ---------------------------------------
 
 function bh_install_wsl_lxc() {
@@ -81,7 +81,7 @@ function bh_install_wsl_ssh() {
 }
 
 # ---------------------------------------
-# xpulseaudio helpers
+# xpulseaudio
 # ---------------------------------------
 
 if [ "$(bh_win_user_check_admin)" == "True" ]; then

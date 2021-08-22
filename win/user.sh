@@ -8,7 +8,7 @@ function bh_win_user_check_admin() {
 }
 
 # ---------------------------------------
-# path helpers
+# path
 # ---------------------------------------
 
 function bh_win_path_show() {

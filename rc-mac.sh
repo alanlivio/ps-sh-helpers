@@ -1,5 +1,5 @@
 # ---------------------------------------
-# setup/update_clean functions
+# setup/update_clean
 # ---------------------------------------
 
 function bh_setup_mac() {
@@ -28,7 +28,7 @@ function bh_update_clean_mac() {
 }
 
 # ---------------------------------------
-# brew functions
+# brew
 # ---------------------------------------
 
 function bh_install_mac_brew() {

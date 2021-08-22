@@ -1,5 +1,5 @@
 # ---------------------------------------
-# markdown helpers
+# markdown
 # ---------------------------------------
 
 function bh_markdown_convert_to() {

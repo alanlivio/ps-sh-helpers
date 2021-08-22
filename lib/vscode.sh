@@ -1,5 +1,5 @@
 # ---------------------------------------
-# vscode helpers
+# vscode
 # ---------------------------------------
 
 function bh_vscode_install_config_files() {

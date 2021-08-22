@@ -1,5 +1,5 @@
 # ---------------------------------------
-# log helpers
+# log
 # ---------------------------------------
 
 alias bh_log_func='bh_log_msg "${FUNCNAME[0]}"'
@@ -35,7 +35,7 @@ function bh_log_try() {
 }
 
 # ---------------------------------------
-# test helpers
+# test
 # ---------------------------------------
 
 function bh_test_and_create_folder() {

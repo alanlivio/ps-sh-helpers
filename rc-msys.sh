@@ -1,5 +1,5 @@
 # ---------------------------------------
-# update_clean helper
+# update_clean
 # ---------------------------------------
 
 function bh_update_clean_msys() {

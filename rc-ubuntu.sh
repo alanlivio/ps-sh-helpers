@@ -64,7 +64,7 @@ function bh_update_clean_ubuntu() {
 }
 
 # ---------------------------------------
-# ubuntu_server helpers
+# ubuntu_server
 # ---------------------------------------
 
 function bh_server_tty1_autologing() {

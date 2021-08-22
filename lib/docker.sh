@@ -1,5 +1,5 @@
 # ---------------------------------------
-# docker helpers
+# docker
 # ---------------------------------------
 
 function bh_docker_service_start() {

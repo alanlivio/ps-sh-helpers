@@ -1,5 +1,5 @@
 # ---------------------------------------
-# pdftk helpers
+# pdftk
 # ---------------------------------------
 
 function bh_pdf_concat() {
@@ -30,7 +30,7 @@ function bh_pdf_compress_hard2() {
 }
 
 # ---------------------------------------
-# others pdf helpers
+# others pdf
 # ---------------------------------------
 
 function bh_pdf_count_words() {

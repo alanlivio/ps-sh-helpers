@@ -1,5 +1,5 @@
 # ---------------------------------------
-# folder helpers
+# folder
 # ---------------------------------------
 
 function bh_folder_sorted_by_size() {

@@ -1,5 +1,5 @@
 # ---------------------------------------
-# android helpers
+# android
 # ---------------------------------------
 
 function bh_android_start_activity() {

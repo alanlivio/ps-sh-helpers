@@ -1,5 +1,5 @@
 # ---------------------------------------
-# winget helpers
+# winget
 # ---------------------------------------
 
 function bh_win_get_list_installed() {

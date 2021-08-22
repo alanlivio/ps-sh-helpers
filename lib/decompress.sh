@@ -1,5 +1,5 @@
 # ---------------------------------------
-# decompress helpers
+# decompress
 # ---------------------------------------
 
 function bh_decompress_zip() {

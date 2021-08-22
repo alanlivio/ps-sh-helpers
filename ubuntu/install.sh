@@ -41,7 +41,7 @@ function bh_install_ubuntu_androidcmd_flutter() {
 }
 
 # ---------------------------------------
-# deb helpers
+# deb
 # ---------------------------------------
 
 if type deb tar &>/dev/null; then

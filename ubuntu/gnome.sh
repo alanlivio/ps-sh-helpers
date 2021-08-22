@@ -1,5 +1,5 @@
 # ---------------------------------------
-# gnome helpers
+# gnome
 # ---------------------------------------
 
 function bh_gnome_execute_desktop_file() {
@@ -148,7 +148,7 @@ function bh_gnome_settings_diff_actual_and_file() {
 }
 
 # ---------------------------------------
-# install helpers
+# install
 # ---------------------------------------
 
 function bh_install_foxit() {

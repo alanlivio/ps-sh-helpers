@@ -1,5 +1,5 @@
 # ---------------------------------------
-# texlive helpers
+# texlive
 # ---------------------------------------
 
 function bh_texlive_install() {

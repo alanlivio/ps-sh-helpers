@@ -1,5 +1,5 @@
 # ---------------------------------------
-# tesseract helpers
+# tesseract
 # ---------------------------------------
 
 function bh_tesseract_reconize_text_en() {
