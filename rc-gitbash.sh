@@ -16,8 +16,8 @@ alias choco='/c/ProgramData/chocolatey/bin/choco.exe'
 alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
 alias whereis='where'
 alias reboot='gsudo shutdown \/r'
-alias ps_call="powershell -c"
-alias ps_call_admin="gsudo powershell -c"
+alias ps_call="powershell.exe -c"
+alias ps_call_admin="gsudo powershell.exe -c"
 
 function ps_def_call_as_func() {
   eval "function $1() { ps_call $*; }"
@@ -32,7 +32,7 @@ function ps_def_script_as_func() {
 }
 
 function bh_ps_test_command() {
-  powershell -c '(Get-Command' "$1" '-ea 0) -ne $null'
+  powershell.exe -c '(Get-Command' "$1" '-ea 0) -ne $null'
 }
 # ---------------------------------------
 # load commands

@@ -23,5 +23,5 @@ function bh_explorer_restore_desktop() {
 
 function bh_explorer_hide_home_dotfiles() {
   bh_log_func
-  powershell -c 'Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
+  powershell.exe -c 'Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
 }

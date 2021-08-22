@@ -4,7 +4,7 @@
 
 # usage if [ "$(bh_win_user_check_admin)" == "True" ]; then <commands>; fi
 function bh_win_user_check_admin() {
-  powershell -c '(New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)' | tr -d '\rn'
+  powershell.exe -c '(New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)' | tr -d '\rn'
 }
 
 # ---------------------------------------
@@ -12,7 +12,7 @@ function bh_win_user_check_admin() {
 # ---------------------------------------
 
 function bh_win_path_show() {
-  powershell -c '[Environment]::GetEnvironmentVariable("path", "user")'
+  powershell.exe -c '[Environment]::GetEnvironmentVariable("path", "user")'
 }
 
 function bh_win_env_add() {
