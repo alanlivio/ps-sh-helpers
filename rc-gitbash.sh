@@ -45,6 +45,7 @@ source "$BH_DIR/win/explorer.sh"
 if type tlshell.exe &>/dev/null; then source "$BH_DIR/win/texlive.sh"; fi
 
 if [ "$(bh_user_win_check_admin)" == "True" ]; then
+  source "$BH_DIR/win/install-admin.sh"
   function bh_win_optmize() {
     powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/win-optmize.ps1)}"
   }

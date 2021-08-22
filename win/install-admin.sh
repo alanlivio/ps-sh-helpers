@@ -1,34 +1,36 @@
 # ---------------------------------------
-# install
+# install admin
 # ---------------------------------------
 
-function bh_install_docker() {
-  bh_log_func
-  ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
-  ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
-  bh_winget_install Docker.DockerDesktop
-}
+if [ "$(bh_user_win_check_admin)" == "True" ]; then
 
-function bh_install_tesseract() {
-  bh_log_func
-  if type tesseract.exe &>/dev/null; then
-    bh_winget_install tesseract
-    bh_path_win_add 'C:\Program Files\Tesseract-OCR'
-  fi
-}
+  function bh_install_tesseract() {
+    bh_log_func
+    if type tesseract.exe &>/dev/null; then
+      bh_winget_install tesseract
+      bh_path_win_add 'C:\Program Files\Tesseract-OCR'
+    fi
+  }
 
-function bh_install_java() {
-  bh_log_func
-  if type java.exe &>/dev/null; then
-    bh_winget_install ojdkbuild.ojdkbuild
-    local javahome=$(ps_call '$(get-command java).Source.replace("\bin\java.exe", "")')
-    bh_env_add "JAVA_HOME" "$javahome"
-  fi
-}
+  function bh_install_java() {
+    bh_log_func
+    if type java.exe &>/dev/null; then
+      bh_winget_install ojdkbuild.ojdkbuild
+      local javahome=$(ps_call '$(get-command java).Source.replace("\bin\java.exe", "")')
+      bh_env_add "JAVA_HOME" "$javahome"
+    fi
+  }
 
-function bh_install_choco() {
-  bh_log_func
-  ps_call_admin '
+  function bh_install_docker() {
+    bh_log_func
+    ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
+    ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
+    bh_winget_install Docker.DockerDesktop
+  }
+
+  function bh_install_choco() {
+    bh_log_func
+    ps_call_admin '
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
     choco feature disable -n checksumFiles
     choco feature disable -n showDownloadProgress
@@ -46,13 +48,11 @@ function bh_install_choco() {
     choco feature enable -n removePackageInformationOnUninstall
     choco feature enable -n useRememberedArgumentsForUpgrades
     '
-}
+  }
 
-# ---------------------------------------
-# choco
-# ---------------------------------------
-
-if type gsudo &>/dev/null; then
+  # ---------------------------------------
+  # choco
+  # ---------------------------------------
 
   function bh_choco_install() {
     bh_log_func
@@ -79,29 +79,30 @@ if type gsudo &>/dev/null; then
 
   function bh_choco_clean() {
     bh_log_func
-    if type choco-cleaner.exe &>/dev/null; then
-      gsudo choco install choco-cleaner
+    if ! type choco-cleaner.exe &>/dev/null; then
+      bh_choco_install choco-cleaner 
     fi
     ps_call 'Invoke-Expression "$env:ChocolateyToolsLocation\BCURRAN3\choco-cleaner.ps1" | Out-Null'
   }
-fi
 
-# ---------------------------------------
-# syswin
-# ---------------------------------------
+  # ---------------------------------------
+  # syswin
+  # ---------------------------------------
 
-function bh_syswin_update_win() {
-  bh_log_func
-  ps_call_admin '$(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
+  function bh_syswin_update_win() {
+    bh_log_func
+    ps_call_admin '$(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
     if ($_ -is [string]) {
       $_.Split("", [System.StringSplitOptions]::RemoveEmptyEntries) 
     } 
   }'
-}
-function bh_syswin_update_win_list() {
-  ps_call_admin 'Get-WindowsUpdate'
-}
+  }
+  function bh_syswin_update_win_list() {
+    ps_call_admin 'Get-WindowsUpdate'
+  }
 
-function bh_syswin_update_win_list_last_installed() {
-  ps_call_admin 'Get-WUHistory -Last 10 | Select-Object Date, Title, Result'
-}
+  function bh_syswin_update_win_list_last_installed() {
+    ps_call_admin 'Get-WUHistory -Last 10 | Select-Object Date, Title, Result'
+  }
+
+fi
