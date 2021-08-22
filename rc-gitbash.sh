@@ -53,8 +53,11 @@ if [ "$(bh_user_win_check_admin)" == "True" ]; then
   function bh_setup_msys() { powershell.exe -command "& { . $BH_SETUP_MSYS}"; }
 fi
 
-BH_SETUP_WIN=$(unixpath -w "$BH_DIR/win/setup-win.ps1")
-function bh_setup_win() { powershell.exe -command "& { . $BH_SETUP_WIN}"; }
+function bh_install_python() {
+  if type python &>/dev/null; then
+    powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/install-python.ps1) }"
+  fi
+}
 
 function bh_update_clean_win() {
   # windows
@@ -66,6 +69,7 @@ function bh_update_clean_win() {
     bh_choco_clean
   fi
   # python
+  bh_install_python
   bh_python_upgrade
   bh_python_install $BH_PKGS_PYTHON
   # vscode
