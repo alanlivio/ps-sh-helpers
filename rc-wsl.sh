@@ -50,7 +50,7 @@ function bh_update_clean_wsl() {
 # wsl_install helpers
 # ---------------------------------------
 
-function bh_wsl_install_lxc() {
+function bh_install_wsl_lxc() {
   # https://www.youtube.com/watch?v=SLDrvGUksv0
   sudo apt install lxd snap
   sudo apt-get install -yqq daemonize dbus-user-session fontconfig
@@ -59,7 +59,7 @@ function bh_wsl_install_lxc() {
   sudo snap install lxd
 }
 
-function bh_wsl_install_ssh() {
+function bh_install_wsl_ssh() {
   sudo apt install -y openssh-server
   # https://github.com/JetBrains/clion-wsl/blob/master/ubuntu_setup_env.sh
   local sshd_listen_address=127.0.0.1

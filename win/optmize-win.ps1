@@ -277,7 +277,7 @@ bh_log "bh_setup_win_adm"
 # install winget
 if (!(Get-Command "winget.exe" -ea 0)) {
   bh_log "INFO: winget is not installed, installing..."
-  bh_win_install_winget
+  bh_install_win_winget
 } 
 # install gsudo
 if (!(Get-Command "gsudo.exe" -ea 0)) {

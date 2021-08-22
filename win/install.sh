@@ -3,7 +3,7 @@
 # ---------------------------------------
 
 BH_NODE_VER="14.17.5"
-function bh_win_install_node() {
+function bh_install_win_node() {
   local nvm_url="https://nodejs.org/dist/v${BH_NODE_VER}/node-v${BH_NODE_VER}-win-x64.zip"
   local nodejs_dir="$BH_OPT_WIN/nodejs"
   if ! test -d $nodejs_dir; then
@@ -17,7 +17,7 @@ function bh_win_install_node() {
 
 BH_FLUTTER_VER="2.2.3"
 BH_ANDROID_CMD_VER="7583922"
-function bh_win_install_androidcmd_flutter() {
+function bh_install_win_androidcmd_flutter() {
   bh_log_func
 
   # create opt
@@ -52,7 +52,7 @@ function bh_win_install_androidcmd_flutter() {
   fi
 }
 
-function bh_win_install_latexindent() {
+function bh_install_win_latexindent() {
   bh_log_func
   if ! type latexindent.exe &>/dev/null; then
     bh_curl_fetch_to_dir https://github.com/cmhughes/latexindent.pl/releases/download/V3.10/latexindent.exe $BH_OPT_WIN/

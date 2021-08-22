@@ -48,7 +48,7 @@ if [ "$(bh_win_user_check_admin)" == "True" ]; then
   source "$BH_DIR/win/install-admin.sh"
   BH_SETUP_MSYS=$(unixpath -w "$BH_DIR/win/setup-msys.ps1")
   BH_SETUP_WSL=$(unixpath -w "$BH_DIR/win/setup-wsl.ps1")
-  function bh_win_install_choco() { powershell.exe -command "& { . $BH_INSTALL_CHOCO}"; }
+  function bh_install_win_choco() { powershell.exe -command "& { . $BH_INSTALL_CHOCO}"; }
   function bh_setup_wsl() { powershell.exe -command "& { . $BH_SETUP_WSL}"; }
   function bh_setup_msys() { powershell.exe -command "& { . $BH_SETUP_MSYS}"; }
 fi

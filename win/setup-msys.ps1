@@ -40,7 +40,7 @@ function bh_msys_add_to_path() {
   bh_win_path_add "$MSYS_HOME\mingw64\bin"
 }
 
-function bh_win_install_gsudo() {
+function bh_install_win_gsudo() {
   if (!(Get-Command 'gsudo.exe' -ea 0)) {
     Invoke-Expression $bh_log_func
     winget install --scope=machine gsudo
@@ -48,7 +48,7 @@ function bh_win_install_gsudo() {
   }
 }
 
-function bh_win_install_winget() {
+function bh_install_win_winget() {
   if (!(Get-Command 'winget.exe' -ea 0)) {
     Invoke-Expression $bh_log_func
     Get-AppxPackage Microsoft.DesktopAppInstaller | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
@@ -64,12 +64,12 @@ $MSYS_HOME = "C:\msys64"
 # install winget
 if (!(Get-Command "winget.exe" -ea 0)) {
   bh_log "INFO: winget is not installed, installing..."
-  bh_win_install_winget
+  bh_install_win_winget
 } 
 # install gsudo
 if (!(Get-Command "gsudo.exe" -ea 0)) {
   bh_log "INFO: gsudo is not installed, installing..."
-  bh_win_install_gsudo
+  bh_install_win_gsudo
 } 
 if (-not (Test-Path $MSYS_HOME)) {
   Invoke-Expression $bh_log_func

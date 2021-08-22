@@ -49,7 +49,7 @@ function bh_wsl_set_version2() {
   wsl --set-version (bh_wsl_get_default) 2
 }
 
-function bh_win_install_gsudo() {
+function bh_install_win_gsudo() {
   if (!(Get-Command 'gsudo.exe' -ea 0)) {
     Invoke-Expression $bh_log_func
     winget install --scope=machine gsudo
@@ -57,7 +57,7 @@ function bh_win_install_gsudo() {
   }
 }
 
-function bh_win_install_winget() {
+function bh_install_win_winget() {
   if (!(Get-Command 'winget.exe' -ea 0)) {
     Invoke-Expression $bh_log_func
     Get-AppxPackage Microsoft.DesktopAppInstaller | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
@@ -110,12 +110,12 @@ bh_log "bh_setup_wsl"
 # install winget
 if (!(Get-Command "winget.exe" -ea 0)) {
   bh_log "INFO: winget is not installed, installing..."
-  bh_win_install_winget
+  bh_install_win_winget
 } 
 # install gsudo
 if (!(Get-Command "gsudo.exe" -ea 0)) {
   bh_log "INFO: gsudo is not installed, installing..."
-  bh_win_install_gsudo
+  bh_install_win_gsudo
 } 
 # enable wsl feature (require restart)
 if (!(Get-Command 'wsl.exe' -ea 0)) {

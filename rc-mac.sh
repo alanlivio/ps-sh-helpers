@@ -4,7 +4,7 @@
 
 function bh_setup_mac() {
   bh_log_func
-  bh_mac_install_brew
+  bh_install_mac_brew
   bh_brew_upgrade
   # essentials
   local pkgs="git bash $BH_PKGS_ESSENTIALS "
@@ -31,7 +31,7 @@ function bh_update_clean_mac() {
 # brew functions
 # ---------------------------------------
 
-function bh_mac_install_brew() {
+function bh_install_mac_brew() {
   bh_log_func
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 }
