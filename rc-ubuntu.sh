@@ -14,32 +14,18 @@ if type lsof &>/dev/null; then source "$BH_DIR/ubuntu/ports.sh"; fi
 if $HAS_SNAP; then source "$BH_DIR/ubuntu/snap.sh"; fi
 if type systemctl tar &>/dev/null; then source "$BH_DIR/ubuntu/systemd.sh"; fi
 
-# ---------------------------------------
-# setup/update_clean
-# ---------------------------------------
-
-function bh_setup_ubuntu() {
-  bh_log_func
-  # gnome configure
-  if $IS_GNOME; then
+if $IS_GNOME; then
+  function bh_gnome_sanity() {
     bh_gnome_dark
     bh_gnome_sanity
     bh_gnome_disable_unused_apps_in_search
     bh_gnome_disable_super_workspace_change
-  fi
-  # essentials
-  local pkgs="git deborphan apt-file vim diffutils curl "
-  # python
-  pkgs+="python3 python3-pip "
-  bh_apt_install $pkgs
-  # set python3 as default
-  bh_python_set_python3_default
-  # install vscode
-  bh_install_vscode
-  bh_vscode_install_config_files
-  # cleanup
-  bh_home_clean_unused
-}
+  }
+fi
+
+# ---------------------------------------
+# update_clean
+# ---------------------------------------
 
 function bh_update_clean_ubuntu() {
   if $HAS_SNAP; then
@@ -47,15 +33,23 @@ function bh_update_clean_ubuntu() {
     bh_snap_install $BH_PKGS_SNAP
     bh_snap_install_classic $BH_PKGS_SNAP_CLASSIC
     bh_snap_upgrade
-    bh_apt_upgrade
   fi
+  local pkgs="git deborphan apt-file vim diffutils curl "
+  # python
+  pkgs+="python3 python3-pip "
+  bh_apt_install $pkgs
+  # set python3 as default
+  bh_python_set_python3_default
   # apt
   bh_apt_install $BH_PKGS_APT_UBUNTU
   bh_apt_remove_pkgs $BH_PKGS_APT_REMOVE_UBUNTU
   bh_apt_autoremove
+  bh_apt_upgrade
   # python
   bh_python_upgrade
   bh_python_install $BH_PKGS_PYTHON
+  # install vscode
+  bh_install_vscode
   # vscode
   bh_vscode_install $BH_PKGS_VSCODE
   # cleanup
