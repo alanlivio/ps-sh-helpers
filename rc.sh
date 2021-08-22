@@ -15,10 +15,10 @@ IS_WINDOWS_GITBASH=false
 case "$(uname -s)" in
 CYGWIN* | MINGW* | MSYS*)
   IS_WINDOWS=true
-  if type pacman &>/dev/null; then
-    IS_WINDOWS_MSYS=true
-  else
+  if test -f /etc/profile.d/git-prompt.sh; then
     IS_WINDOWS_GITBASH=true
+  else
+    IS_WINDOWS_MSYS=true
   fi
   ;;
 Linux)
@@ -125,13 +125,14 @@ if test -d /etc/sudoers.d/; then source "$BH_DIR/lib/user.sh"; fi
 # ---------------------------------------
 
 if $IS_LINUX_UBUNTU; then
-  source "$BH_DIR/rc-ubuntu.sh"
+  source "$BH_DIR/ubuntu/rc-ubuntu.sh"
 elif $IS_WINDOWS_MSYS; then
-  source "$BH_DIR/rc-msys.sh"
+  source "$BH_DIR/win/rc-msys.sh"
 elif $IS_WINDOWS_WSL; then
-  source "$BH_DIR/rc-wsl.sh"
+  source "$BH_DIR/ubuntu/rc-ubuntu.sh"
+  source "$BH_DIR/win/rc-wsl.sh"
 elif $IS_WINDOWS_GITBASH; then
-  source "$BH_DIR/rc-gitbash.sh"
+  source "$BH_DIR/win/rc-gitbash.sh"
 elif $IS_MAC; then
-  source "$BH_DIR/rc-mac.sh"
+  source "$BH_DIR/mac/rc-mac.sh"
 fi
