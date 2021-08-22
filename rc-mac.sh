@@ -18,11 +18,11 @@ function bh_setup_mac() {
 function bh_update_clean_mac() {
   # brew
   bh_brew_upgrade
-  bh_brew_install $PKGS_BREW
+  bh_brew_install $BH_PKGS_BREW
   # python
-  bh_python_install $PKGS_PYTHON
+  bh_python_install $BH_PKGS_PYTHON
   # vscode
-  bh_vscode_install $PKGS_VSCODE
+  bh_vscode_install $BH_PKGS_VSCODE
   # cleanup
   bh_home_clean_unused
 }

@@ -42,7 +42,7 @@ esac
 BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BH_RC="$BH_DIR/rc.sh"
 BH_SKEL_VSCODE="$BH_DIR/skel/vscode"
-BH_PKGS_ESSENTIALS="vim diffutils curl wget "
+BH_BH_PKGS_ESSENTIALS="vim diffutils curl wget "
 
 # ---------------------------------------
 # bh vars from .bh-cfg.sh vars
@@ -125,14 +125,14 @@ if test -d /etc/sudoers.d/; then source "$BH_DIR/lib/user.sh"; fi
 # ---------------------------------------
 
 if $IS_LINUX_UBUNTU; then
-  source "$BH_DIR/ubuntu/rc-ubuntu.sh"
+  source "$BH_DIR/rc-ubuntu.sh"
 elif $IS_WINDOWS_MSYS; then
   source "$BH_DIR/win/rc-msys.sh"
 elif $IS_WINDOWS_WSL; then
-  source "$BH_DIR/ubuntu/rc-ubuntu.sh"
-  source "$BH_DIR/win/rc-wsl.sh"
+  source "$BH_DIR/rc-ubuntu.sh"
+  source "$BH_DIR/rc-wsl.sh"
 elif $IS_WINDOWS_GITBASH; then
-  source "$BH_DIR/win/rc-gitbash.sh"
+  source "$BH_DIR/rc-gitbash.sh"
 elif $IS_MAC; then
-  source "$BH_DIR/mac/rc-mac.sh"
+  source "$BH_DIR/rc-mac.sh"
 fi

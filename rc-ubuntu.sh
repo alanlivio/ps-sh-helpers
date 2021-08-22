@@ -44,20 +44,20 @@ function bh_setup_ubuntu() {
 function bh_update_clean_ubuntu() {
   if $HAS_SNAP; then
     # snap
-    bh_snap_install $PKGS_SNAP
-    bh_snap_install_classic $PKGS_SNAP_CLASSIC
+    bh_snap_install $BH_PKGS_SNAP
+    bh_snap_install_classic $BH_PKGS_SNAP_CLASSIC
     bh_snap_upgrade
     bh_apt_upgrade
   fi
   # apt
-  bh_apt_install $PKGS_APT
-  bh_apt_remove_pkgs $PKGS_REMOVE_APT
+  bh_apt_install $BH_PKGS_APT
+  bh_apt_remove_pkgs $BH_PKGS_REMOVE_APT
   bh_apt_autoremove
   # python
   bh_python_upgrade
-  bh_python_install $PKGS_PYTHON
+  bh_python_install $BH_PKGS_PYTHON
   # vscode
-  bh_vscode_install $PKGS_VSCODE
+  bh_vscode_install $BH_PKGS_VSCODE
   # cleanup
   bh_home_clean_unused
 }
