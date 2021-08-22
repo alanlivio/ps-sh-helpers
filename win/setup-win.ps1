@@ -72,14 +72,6 @@ function bh_install_win_winget() {
   }
 }
 
-function bh_install_win_gitbash() {
-  if (!(Get-Command 'git.exe' -ea 0)) {
-    winget install Git.Git --scope=user 
-    # gitbash do not use your home folder by default, to fix that run in powershell:
-    [Environment]::SetEnvironmentVariable("HOME", "${env:UserProfile}")
-  }
-}
-
 function bh_install_win_python() {
   # path depends if your winget settings uses "scope": "user" or "m }hine"
   $py_exe_1 = "${env:UserProfile}\AppData\Local\Programs\Python\Python39\python.exe"
@@ -221,12 +213,11 @@ function bh_setup_explorer_sanity() {
 bh_log "bh_setup_win"
 # install winget
 bh_install_win_winget
-# install git
-bh_install_win_gitbash
-# install wt, vscode
+# install wt
 if (!(Get-Command 'wt' -ea 0)) {
   bh_winget_install Microsoft.WindowsTerminal
 }
+# install vscode
 if (!(Get-Command 'code' -ea 0)) {
   bh_winget_install Microsoft.VisualStudioCode
 }

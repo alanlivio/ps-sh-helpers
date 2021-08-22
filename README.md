@@ -4,40 +4,41 @@ This project offers cross-plataform (linux, macOS, windows) bash helpers to: con
 
 # How to install
 
-The bash-helpers has two requeriments: a `bash shell` and `git` .  
-You can install `git` in any OS following steps from [here](https://git-scm.com/download).
-Linux and macOS support bash by default.  
+The bash-helpers has two requeriments: a `bash shell` and `git` . To fast way to install them are run:
 
-
-In Windows, the [Git Installer](https://git-scm.com/download/win) also install a bash called `git bash`, however, it do not use your home folder by default. To fix it, run in powershell:
-
-```powershell
-  [Environment]::SetEnvironmentVariable("HOME", "${env:UserProfile}")
-```
-
-Then, in `bash` (or `git bash`), you can clone and enable bash-helpers by extending your [Bash Startup File](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html). To do that, run:
+in mac use [install/bh-for-mac.sh](install/bh-for-mac.sh):
 
 ```bash
-  git clone https://github.com/alanlivio/bash-helpers.git ~/.bh
-    echo "source ~/.bh/rc.sh" >> ~/.bashrc &&\
-    source ~/.bashrc
-  ```
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-for-mac.sh)"
+```
+
+in ubuntu [install/bh-for-ubuntu.sh](install/bh-for-ubuntu.sh):
+
+```bash
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-for-ubuntu.sh)"
+```
+
+in windows [install/bh-for-win.sh](install/bh-for-win.sh):
+
+```powershell
+  Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-for-win.sh'))
+```
 
 # helpers for setup
 
 ### setup Gnome-based Ubuntu  
 
-  1. at bash, run `bh_setup_ubuntu`: configure Gnome (e.g., dark mode, sanity desktop inteface ) and install essential software (e.g., git, python, vscode).
+  1. at bash, run `bh_setup_ubuntu`: configure Gnome (e.g., dark mode, sanity desktop inteface ) and install essential software (e.g., python, vscode).
   2. at bash, run `bh_update_clean_ubuntu` (run routinely): configure/upgrade packges using variables (BH_PKGS_APT_UBUNTU, BH_PKGS_PYTHON, BH_PKGS_SNAP, BH_PKGS_SNAP_CLASSIC, BH_PKGS_APT_REMOVE_UBUNTU) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 
 ### setup macOS  
 
-  1. at bash, run `bh_setup_mac`: install essential software (brew, bash last version, git, vim, python, vscode)
+  1. at bash, run `bh_setup_mac`: install essential software (bash last version, python, vscode)
   2. at bash, run `bh_update_clean_mac` (run routinely): configure/upgrade packges using variables (BH_PKGS_BREW) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 
 ### setup Windows
 
-  1. at git bash, run `bh_setup_win`: configure Windows (e.g., dark mode, sanity desktop inteface ) and install essential software (e.g., choco, gsudo, winget, python, WindowsTerminal, vscode).
+  1. at git bash, run `bh_setup_win`: configure Windows (e.g., dark mode, sanity desktop inteface ) and install essential software (e.g., python, vscode).
   2. at git bash, run `bh_update_clean_win` (run routinely): configure/upgrade packges using variables (e.g. BH_PKGS_PYTHON) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 
 ### setup WSL
@@ -50,6 +51,7 @@ Then, in `bash` (or `git bash`), you can clone and enable bash-helpers by extend
   1. at git bash, run `bh_setup_msys`: install msys (Cygwin-based) with bash to build GNU-based win32 applications
   2. at msys bash, run `bh_update_clean_msys` (run routinely): configure/upgrade packges using variables (e.g., BH_PKGS_MSYS, BH_PKGS_PYTHON_MSYS) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
   
+
 # helpers for commands
 * android helpers: see `bh_android_*` at [lib/android.sh](lib/android.sh).
 * cmake helpers: see `bh_cmake_*` at [lib/cmake.sh](lib/cmake.sh).
