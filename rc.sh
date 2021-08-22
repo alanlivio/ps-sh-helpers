@@ -42,7 +42,6 @@ esac
 BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BH_RC="$BH_DIR/rc.sh"
 BH_SKEL_VSCODE="$BH_DIR/skel/vscode"
-BH_BH_PKGS_ESSENTIALS="vim diffutils curl wget "
 
 # ---------------------------------------
 # bh vars from .bh-cfg.sh vars

@@ -28,19 +28,19 @@ source "$BH_DIR/rc-ubuntu.sh"
 
 function bh_update_clean_wsl() {
   # essentials
-  local pkgs="git deborphan apt-file $BH_PKGS_ESSENTIALS "
+  local pkgs="git deborphan apt-file vim diffutils curl "
   # python
   pkgs+="python3-pip "
   bh_apt_install $pkgs
   # set python3 as default
   bh_python_set_python3_default
   # apt
-  bh_apt_install $BH_PKGS_APT
-  bh_apt_remove_pkgs $BH_PKGS_REMOVE_APT
+  bh_apt_install $BH_PKGS_APT_WSL
+  bh_apt_remove_pkgs $BH_PKGS_APT_REMOVE_WSL
   bh_apt_autoremove
   # python
   bh_python_upgrade
-  bh_python_install $BH_PKGS_PYTHON
+  bh_python_install $BH_PKGS_PYTHON_WSL
   # cleanup
   bh_home_clean_unused
 }

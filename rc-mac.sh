@@ -7,7 +7,7 @@ function bh_setup_mac() {
   bh_install_mac_brew
   bh_brew_upgrade
   # essentials
-  local pkgs="git bash $BH_PKGS_ESSENTIALS "
+  local pkgs="git bash vim diffutils curl "
   # python
   pkgs+="python python-pip "
   bh_brew_install $pkgs

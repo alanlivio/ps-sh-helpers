@@ -28,7 +28,7 @@ function bh_setup_ubuntu() {
     bh_gnome_disable_super_workspace_change
   fi
   # essentials
-  local pkgs="git deborphan apt-file $BH_PKGS_ESSENTIALS "
+  local pkgs="git deborphan apt-file vim diffutils curl "
   # python
   pkgs+="python3 python3-pip "
   bh_apt_install $pkgs
@@ -50,8 +50,8 @@ function bh_update_clean_ubuntu() {
     bh_apt_upgrade
   fi
   # apt
-  bh_apt_install $BH_PKGS_APT
-  bh_apt_remove_pkgs $BH_PKGS_REMOVE_APT
+  bh_apt_install $BH_PKGS_APT_UBUNTU
+  bh_apt_remove_pkgs $BH_PKGS_APT_REMOVE_UBUNTU
   bh_apt_autoremove
   # python
   bh_python_upgrade

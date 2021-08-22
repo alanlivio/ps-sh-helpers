@@ -28,7 +28,7 @@ Then, in `bash` (or `git bash`), you can clone and enable bash-helpers by extend
 ### setup Gnome-based Ubuntu  
 
   1. at bash, run `bh_setup_ubuntu`: configure Gnome (e.g., dark mode, sanity desktop inteface ) and install essential software (e.g., git, python, vscode).
-  2. at bash, run `bh_update_clean_ubuntu` (run routinely): configure/upgrade packges using variables (BH_PKGS_APT, BH_PKGS_PYTHON, BH_PKGS_SNAP, BH_PKGS_SNAP_CLASSIC, BH_PKGS_REMOVE_APT) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
+  2. at bash, run `bh_update_clean_ubuntu` (run routinely): configure/upgrade packges using variables (BH_PKGS_APT_UBUNTU, BH_PKGS_PYTHON, BH_PKGS_SNAP, BH_PKGS_SNAP_CLASSIC, BH_PKGS_APT_REMOVE_UBUNTU) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 
 ### setup macOS  
 
@@ -43,7 +43,7 @@ Then, in `bash` (or `git bash`), you can clone and enable bash-helpers by extend
 ### setup WSL
 
   1. at git bash, run `bh_setup_wsl`: install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After run, it requeres restart windows and run it again. When Ubuntu app started, you need configure your username/password.  
-  2. at wsl bash, run `bh_update_clean_wsl` (run routinely): configure/upgrade packges using variables (e.g., BH_PKGS_APT, BH_PKGS_PYTHON, BH_PKGS_REMOVE_APT) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
+  2. at wsl bash, run `bh_update_clean_wsl` (run routinely): configure/upgrade packges using variables (e.g., BH_PKGS_APT_WSL, BH_PKGS_PYTHON_WSL, BH_PKGS_APT_REMOVE_WSL) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
 
 ### setup Windows msys2
 
