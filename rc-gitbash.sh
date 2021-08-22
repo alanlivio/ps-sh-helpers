@@ -12,7 +12,6 @@ unset tmp
 # hide windows user files when ls home
 alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
 alias start="cmd.exe /c start"
-alias choco='/c/ProgramData/chocolatey/bin/choco.exe'
 alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
 alias whereis='where'
 alias reboot='gsudo shutdown \/r'
@@ -69,12 +68,11 @@ function bh_install_python() {
 
 function bh_update_clean_win() {
   # windows
-  if type gsudo &>/dev/null; then
+  if [ "$(bh_user_win_check_admin)" == "True" ]; then
     bh_syswin_update_win
     bh_winget_install "$BH_PKGS_WINGET"
     bh_choco_install "$BH_PKGS_CHOCO"
     bh_choco_upgrade
-    bh_choco_clean
   fi
   # python
   bh_install_python

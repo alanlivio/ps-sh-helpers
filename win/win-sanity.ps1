@@ -3,32 +3,6 @@ function bh_log() {
   Write-Host -ForegroundColor DarkYellow "--" ($args -join " ")
 }
 
-function bh_winget_installed() {
-  $tmpfile = New-TemporaryFile
-  winget export $tmpfile | Out-null
-  $pkgs = ((Get-Content $tmpfile | ConvertFrom-Json).Sources.Packages | ForEach-Object { $_.PackageIdentifier }) -join " "
-  return $pkgs
-}
-
-function bh_winget_uninstall() {
-  Invoke-Expression $bh_log_func
-  $pkgs_to_uninstall = ""
-  # get installed pkgs
-  $pkgs = $(bh_winget_installed)
-  # select to uninstall
-  foreach ($name in $args) {
-    if (-not ([string]::IsNullOrEmpty("$name")) -and ($pkgs.Contains("$name") )) {
-      $pkgs_to_uninstall = "$pkgs_to_uninstall $name"
-    }
-  }
-  if ($pkgs_to_uninstall) {
-    bh_log "pkgs_to_uninstall=$pkgs_to_uninstall"
-    foreach ($pkg in $pkgs_to_uninstall) {
-      Invoke-Expression "winget uninstall --silent $pkg"
-    }
-  }
-}
-
 function bh_appx_uninstall() {
   foreach ($name in $args) {
     if (Get-AppxPackage -Name $name) {
