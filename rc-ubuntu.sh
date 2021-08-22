@@ -10,7 +10,6 @@ source "$BH_DIR/ubuntu/install.sh"
 if $IS_GNOME; then source "$BH_DIR/ubuntu/gnome.sh"; fi
 if type service tar &>/dev/null; then source "$BH_DIR/ubuntu/initd.sh"; fi
 if type lxc &>/dev/null; then source "$BH_DIR/ubuntu/lxc.sh"; fi
-if test -z "$(sudo dmidecode | grep 'Apple')"; then "$BH_DIR/ubuntu/on_mac.sh"; fi
 if type lsof &>/dev/null; then source "$BH_DIR/ubuntu/ports.sh"; fi
 if $HAS_SNAP; then source "$BH_DIR/ubuntu/snap.sh"; fi
 if type systemctl tar &>/dev/null; then source "$BH_DIR/ubuntu/systemd.sh"; fi
