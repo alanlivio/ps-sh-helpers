@@ -1,58 +1,58 @@
 <h1 align="center">bash-helpers</h1>
 
-This project offers cross-plataform (linux, macOS, windows) bash helpers to: configure OS (e.g., dark mode, sanity desktop inteface ), install software (e.g., git, python, vscode) and utilities (e.g., install software, git, pdf, compress).
+This project offers cross-plataform (linux, macOS, windows) bash helpers to: configure OS (e.g., dark mode, disable animations ), install software (e.g., git, python, vscode) and utilities (e.g., install software, git, pdf, compress).
 
 # How to install
 
 The bash-helpers has two requeriments: a `bash shell` and `git` . To fast way to install them are run:
 
-in mac use [install/bh-for-mac.sh](install/bh-for-mac.sh):
+in macOS use [install/bh-for-mac.sh](install/bh-for-mac.sh), by run in bash:
 
 ```bash
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-for-mac.sh)"
 ```
 
-in ubuntu [install/bh-for-ubuntu.sh](install/bh-for-ubuntu.sh):
+in ubuntu use [install/bh-for-ubuntu.sh](install/bh-for-ubuntu.sh), by run in bash:
 
 ```bash
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-for-ubuntu.sh)"
 ```
 
-in windows [install/bh-for-win.sh](install/bh-for-win.sh):
+in windows use [install/bh-for-win.ps1](install/bh-for-win.ps1), by run in powershell:
 
 ```powershell
-  Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-for-win.sh'))
+  Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-for-win.ps1'))
 ```
 
-# helpers for setup
+# helpers
 
-### setup Gnome-based Ubuntu  
+### helpers for Desktop Shell sanity
 
-  1. at bash, run `bh_setup_ubuntu`: configure Gnome (e.g., dark mode, sanity desktop inteface ) and install essential software (e.g., python, vscode).
-  2. at bash, run `bh_update_clean_ubuntu` (run routinely): configure/upgrade packges using variables (BH_PKGS_APT_UBUNTU, BH_PKGS_PYTHON, BH_PKGS_SNAP, BH_PKGS_SNAP_CLASSIC, BH_PKGS_APT_REMOVE_UBUNTU) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
+* `bh_gnome_sanity` (at ubuntu bash): to configure Gnome Shell
+* `bh_win_sanity` (at gitbash, run): to configure windows Shell
 
-### setup macOS  
+### helpers to install windows MSYS
 
-  1. at bash, run `bh_setup_mac`: install essential software (bash last version, python, vscode)
-  2. at bash, run `bh_update_clean_mac` (run routinely): configure/upgrade packges using variables (BH_PKGS_BREW) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
+* `bh_install_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
 
-### setup Windows
+### helpers to install windows WSL
 
-  1. at git bash, run `bh_setup_win`: configure Windows (e.g., dark mode, sanity desktop inteface ) and install essential software (e.g., python, vscode).
-  2. at git bash, run `bh_update_clean_win` (run routinely): configure/upgrade packges using variables (e.g. BH_PKGS_PYTHON) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
+* `bh_install_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After run, it requeres restart windows and run it again. When Ubuntu app started, you need configure your username/password.
 
-### setup WSL
+### helpers to update/clean
 
-  1. at git bash, run `bh_setup_wsl`: install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After run, it requeres restart windows and run it again. When Ubuntu app started, you need configure your username/password.  
-  2. at wsl bash, run `bh_update_clean_wsl` (run routinely): configure/upgrade packges using variables (e.g., BH_PKGS_APT_WSL, BH_PKGS_PYTHON_WSL, BH_PKGS_APT_REMOVE_WSL) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
+The helpers bellow can be run routinely from differnt bashs. They install python/vscode if not installed. Then use variables defined in ~/.bashrc or ~/.bh-cfg.sh to configure/upgrade packges and cleanup unused files/folders. Please see the variables in the [skel/.bh-cfg.sh](skel/.bh-cfg.sh).
 
-### setup Windows msys2
+* `bh_update_clean_ubuntu` (at ubuntu bash)
+* `bh_update_clean_mac` (at mac bash)
+* `bh_update_clean_wsl` (at WSL bash)
+* `bh_update_clean_win` (at GitBash)
+* `bh_update_clean_msys` (at msys bash)
 
-  1. at git bash, run `bh_setup_msys`: install msys (Cygwin-based) with bash to build GNU-based win32 applications
-  2. at msys bash, run `bh_update_clean_msys` (run routinely): configure/upgrade packges using variables (e.g., BH_PKGS_MSYS, BH_PKGS_PYTHON_MSYS) in ~/.bashrc or ~/.bh-cfg.sh, and cleanup.
-  
+### helpers for commands
 
-# helpers for commands
+The helpers bellow used for specifc commands. For the full list, see [libs folder](lib/).
+
 * android helpers: see `bh_android_*` at [lib/android.sh](lib/android.sh).
 * cmake helpers: see `bh_cmake_*` at [lib/cmake.sh](lib/cmake.sh).
 * compress helpers: see `bh_compress_*` at [lib/compress.sh](lib/compress.sh), etc.
@@ -72,9 +72,8 @@ in windows [install/bh-for-win.sh](install/bh-for-win.sh):
 * vscode helpers: see `bh_vscode_*` at [lib/vscode.sh](lib/vscode.sh).
 * wget helpers: see `bh_wget_*` at [lib/wget.sh](lib/wget.sh).
 * wget helpers: see `bh_youtubedl_*` at [lib/youtubedl.sh](lib/youtubedl.sh).
-* other helpers: There are other herpers related with install software, please see the [libs folder](lib/).
 
-## References
+# References
 
 Other github projects were used as reference:
 
@@ -85,11 +84,11 @@ Other github projects were used as reference:
 * https://github.com/donnemartin/dev-setup
 * https://github.com/aspiers/shell-env
 
-And, particulary, references for helpers on Windows:
+And, particulary, references for helpers on windows:
 
-* https://github.com/adolfintel/Windows10-Privacy
+* https://github.com/adolfintel/windows10-Privacy
 * https://gist.github.com/alirobe/7f3b34ad89a159e6daa1
 * https://github.com/RanzigeButter/fyWin10/blob/master/fyWin10.ps1
 * https://github.com/madbomb122/Win10Script/blob/master/Win10-Menu.ps1
-* https://github.com/Sycnex/Windows10Debloater/blob/master/Windows10Debloater.ps1
-* https://github.com/W4RH4WK/Debloat-Windows-10/tree/master/scripts
+* https://github.com/Sycnex/windows10Debloater/blob/master/windows10Debloater.ps1
+* https://github.com/W4RH4WK/Debloat-windows-10/tree/master/scripts

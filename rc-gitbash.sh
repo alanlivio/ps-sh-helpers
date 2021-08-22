@@ -45,13 +45,20 @@ source "$BH_DIR/win/explorer.sh"
 if type tlshell.exe &>/dev/null; then source "$BH_DIR/win/texlive.sh"; fi
 
 if [ "$(bh_user_win_check_admin)" == "True" ]; then
-  source "$BH_DIR/win/install-admin.sh"
-  BH_SETUP_MSYS=$(unixpath -w "$BH_DIR/win/setup-msys.ps1")
-  BH_SETUP_WSL=$(unixpath -w "$BH_DIR/win/setup-wsl.ps1")
-  function bh_install_win_choco() { powershell.exe -command "& { . $BH_INSTALL_CHOCO}"; }
-  function bh_setup_wsl() { powershell.exe -command "& { . $BH_SETUP_WSL}"; }
-  function bh_setup_msys() { powershell.exe -command "& { . $BH_SETUP_MSYS}"; }
+  function bh_win_optmize() {
+    powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/win-optmize.ps1)}"
+  }
+  function bh_install_wsl() {
+    powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/install-msys.ps1)}"
+  }
+  function bh_install_msys() {
+    powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/install-wsl.ps1)}"
+  }
 fi
+
+function bh_win_sanity() {
+  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/win-sanity.ps1) }"
+}
 
 function bh_install_python() {
   if type python &>/dev/null; then

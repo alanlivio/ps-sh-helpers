@@ -98,14 +98,10 @@ function bh_wsl_fix_home() {
   wsl -u root chown $env:UserName:$env:UserName /mnt/c/Users/$env:UserName/*
 }
 
-# ---------------------------------------
-# setup_wsl
-# ---------------------------------------
-
 # this helper automate the process describred in :
 # - https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
 # - https://ubuntu.com/wsl
-bh_log "bh_setup_wsl"
+bh_log "bh_win_install_wsl"
 
 # install winget
 if (!(Get-Command "winget.exe" -ea 0)) {

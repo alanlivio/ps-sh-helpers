@@ -3,47 +3,11 @@ function bh_log() {
   Write-Host -ForegroundColor DarkYellow "--" ($args -join " ")
 }
 
-function bh_env_win_add($name, $value) {
-  [System.Environment]::SetEnvironmentVariable("$name", "$value", 'user')
-}
-
-function bh_path_win_add($addPath) {
-  if (Test-Path $addPath) {
-    $currentpath = [System.Environment]::GetEnvironmentVariable('PATH', 'user')
-    $regexAddPath = [regex]::Escape($addPath)
-    $arrPath = $currentpath -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
-    $newpath = ($arrPath + $addPath) -join ';'
-    bh_env_win_add 'PATH' $newpath
-  }
-  else {
-    Throw "$addPath' is not a valid path."
-  }
-}
-
 function bh_winget_installed() {
   $tmpfile = New-TemporaryFile
   winget export $tmpfile | Out-null
   $pkgs = ((Get-Content $tmpfile | ConvertFrom-Json).Sources.Packages | ForEach-Object { $_.PackageIdentifier }) -join " "
   return $pkgs
-}
-
-function bh_winget_install() {
-  Invoke-Expression $bh_log_func
-  $pkgs_to_install = ""
-  # get installed pkgs
-  $pkgs = $(bh_winget_installed)
-  # select to install
-  foreach ($name in $args) {
-    if (-not ([string]::IsNullOrEmpty("$name")) -and (-not $pkgs.Contains("$name") )) {
-      $pkgs_to_install = "$pkgs_to_install $name"
-    }
-  }
-  if ($pkgs_to_install) {
-    bh_log "pkgs_to_install=$pkgs_to_install"
-    foreach ($pkg in $pkgs_to_install) {
-      Invoke-Expression "gsudo winget install --silent $pkg"
-    }
-  }
 }
 
 function bh_winget_uninstall() {
@@ -65,32 +29,6 @@ function bh_winget_uninstall() {
   }
 }
 
-function bh_install_win_winget() {
-  if (!(Get-Command 'winget.exe' -ea 0)) {
-    Invoke-Expression $bh_log_func
-    Get-AppxPackage Microsoft.DesktopAppInstaller | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
-  }
-}
-
-function bh_install_win_python() {
-  # path depends if your winget settings uses "scope": "user" or "m }hine"
-  $py_exe_1 = "${env:UserProfile}\AppData\Local\Programs\Python\Python39\python.exe"
-  $py_exe_2 = "C:\Program Files\Python39\python.exe"
-  if (!(Test-Path $py_exe_1) -and !(Test-Path $py_exe_2)) {
-    winget install Python.Python.3 --scope=user -i
-  }
-  # Remove windows alias. See https://superuser.com/questions/1437590/typing-python-on-windows-10-version-1903-command-prompt-opens-microsoft-stor
-  Remove-Item $env:USERPROFILE\AppData\Local\Microsoft\WindowsApps\python*.exe
-  if (Test-Path $py_exe_1) { 
-    bh_path_win_add "$(Split-Path $py_exe_1)"
-    bh_path_win_add "$(Split-Path $py_exe_1)\Scripts"
-  }
-  elseif (Test-Path $py_exe_2) {
-    bh_path_win_add "$(Split-Path $py_exe_2)" 
-    bh_path_win_add "$(Split-Path $py_exe_2)\Scripts"
-  }
-}
-
 function bh_appx_uninstall() {
   foreach ($name in $args) {
     if (Get-AppxPackage -Name $name) {
@@ -104,7 +42,7 @@ function bh_appx_uninstall() {
 # setup_win
 # ---------------------------------------
 
-function bh_setup_start_menu_sanity() {
+function bh_sanity_start_menu() {
   Invoke-Expression $bh_log_func
   # microsoft
   $pkgs = @(
@@ -156,7 +94,7 @@ function bh_setup_start_menu_sanity() {
   bh_appx_uninstall @pkgs
 }
 
-function bh_setup_explorer_sanity() {
+function bh_sanity_explorer() {
   Invoke-Expression $bh_log_func
 
   # Use small icons
@@ -210,16 +148,6 @@ function bh_setup_explorer_sanity() {
   Stop-Process -ProcessName explorer -ea 0 | Out-Null
 }
 
-bh_log "bh_setup_win"
-# install winget
-bh_install_win_winget
-# install wt
-if (!(Get-Command 'wt' -ea 0)) {
-  bh_winget_install Microsoft.WindowsTerminal
-}
-# install vscode
-if (!(Get-Command 'code' -ea 0)) {
-  bh_winget_install Microsoft.VisualStudioCode
-}
-bh_setup_explorer_sanity
-bh_setup_start_menu_sanity
+bh_log "bh_win_sanity"
+bh_sanity_explorer
+bh_sanity_start_menu
