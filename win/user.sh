@@ -4,6 +4,14 @@
 
 # usage if [ "$(bh_user_win_check_admin)" == "True" ]; then <commands>; fi
 function bh_user_win_check_admin() {
+  powershell.exe -c '
+    $user = "$env:COMPUTERNAME\$env:USERNAME"
+    $group = "Administrators"
+    (Get-LocalGroupMember $group).Name -contains $user
+  '
+}
+
+function bh_user_win_check_eleveated_shell() {
   powershell.exe -c '(New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)' | tr -d '\rn'
 }
 
@@ -36,6 +44,6 @@ function bh_path_win_add() {
     }; bh_path_win_add '" $dir"
 }
 
-function bh_path_win_settings(){
+function bh_path_win_settings() {
   rundll32 sysdm.cpl,EditEnvironmentVariables
 }
