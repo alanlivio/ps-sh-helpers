@@ -53,7 +53,6 @@ function bh_update_clean_ubuntu() {
   bh_apt_install $PKGS_APT
   bh_apt_remove_pkgs $PKGS_REMOVE_APT
   bh_apt_autoremove
-  bh_apt_remove_orphan_pkgs $PKGS_APT_ORPHAN_EXPECTIONS
   # python
   bh_python_upgrade
   bh_python_install $PKGS_PYTHON
