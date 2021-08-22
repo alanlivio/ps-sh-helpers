@@ -126,7 +126,7 @@ if test -d /etc/sudoers.d/; then source "$BH_DIR/lib/user.sh"; fi
 if $IS_LINUX_UBUNTU; then
   source "$BH_DIR/rc-ubuntu.sh"
 elif $IS_WINDOWS_MSYS; then
-  source "$BH_DIR/win/rc-msys.sh"
+  source "$BH_DIR/rc-msys.sh"
 elif $IS_WINDOWS_WSL; then
   source "$BH_DIR/rc-ubuntu.sh"
   source "$BH_DIR/rc-wsl.sh"
