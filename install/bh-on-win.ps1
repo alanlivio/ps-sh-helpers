@@ -24,7 +24,7 @@ function bh_install_win_gitbash() {
   }
 }
 
-bh_log "bh_for_win"
+bh_log "bh-on-win"
 # install winget
 bh_install_win_winget
 # install wt

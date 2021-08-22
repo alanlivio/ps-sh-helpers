@@ -6,22 +6,22 @@ This project offers cross-plataform (linux, macOS, windows) bash helpers to: con
 
 The bash-helpers has two requeriments: a `bash shell` and `git` . You may easy install them by run:
 
-MacOS already has a bash shell. Run in a bash shell the file [install/bh-for-mac.sh](install/bh-for-mac.sh) to install git/bash-helpers:
+MacOS already has a bash shell. Run in a bash shell the file [install/bh-on-mac.sh](install/bh-on-mac.sh) to install git/bash-helpers:
 
 ```bash
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-for-mac.sh)"
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-on-mac.sh)"
 ```
 
-Ubuntu already has a bash. Run in a bash shell the file [install/bh-for-ubuntu.sh](install/bh-for-ubuntu.sh), to install git/bash-helpers:
+Ubuntu already has a bash. Run in a bash shell the file [install/bh-on-ubuntu.sh](install/bh-on-ubuntu.sh), to install git/bash-helpers:
 
 ```bash
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-for-ubuntu.sh)"
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-on-ubuntu.sh)"
 ```
 
-In windows, run in a powershell shell the file [install/bh-for-win.ps1](install/bh-for-win.ps1) to install git/GitBash/bash-helpers:
+In windows, run in a powershell shell the file [install/bh-on-win.ps1](install/bh-on-win.ps1) to install git/GitBash/bash-helpers:
 
 ```powershell
-  Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-for-win.ps1'))
+  Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-on-win.ps1'))
 ```
 
 # helpers
