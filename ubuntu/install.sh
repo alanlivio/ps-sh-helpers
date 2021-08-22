@@ -114,9 +114,7 @@ if type apt &>/dev/null; then
       fi
     done
     if test ! -z "$pkgs_to_install"; then
-      echo "pkgs_to_install=$pkgs_to_install"
-    fi
-    if test -n "$pkgs_to_install"; then
+      bh_log_msg "pkgs_to_install=$pkgs_to_install"
       sudo apt install -y $pkgs_to_install
     fi
   }
