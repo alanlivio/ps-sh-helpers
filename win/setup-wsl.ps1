@@ -3,22 +3,22 @@ function bh_log() {
   Write-Host -ForegroundColor DarkYellow "--" ($args -join " ")
 }
 
-function bh_win_feature_enable($featurename) {
+function bh_syswin_feature_enable($featurename) {
   Invoke-Expression "$bh_log_func $featurename"
   gsudo dism.exe /online /quiet /enable-feature /featurename:$featurename /all/norestart
 }
 
-function bh_win_env_add($name, $value) {
+function bh_env_win_add($name, $value) {
   [System.Environment]::SetEnvironmentVariable("$name", "$value", 'user')
 }
 
-function bh_win_path_add($addPath) {
+function bh_path_win_add($addPath) {
   if (Test-Path $addPath) {
     $currentpath = [System.Environment]::GetEnvironmentVariable('PATH', 'user')
     $regexAddPath = [regex]::Escape($addPath)
     $arrPath = $currentpath -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
     $newpath = ($arrPath + $addPath) -join ';'
-    bh_win_env_add 'PATH' $newpath
+    bh_env_win_add 'PATH' $newpath
   }
   else {
     Throw "$addPath' is not a valid path."
@@ -53,7 +53,7 @@ function bh_install_win_gsudo() {
   if (!(Get-Command 'gsudo.exe' -ea 0)) {
     Invoke-Expression $bh_log_func
     winget install --scope=machine gsudo
-    bh_win_path_add 'C:\Program Files (x86)\gsudo'
+    bh_path_win_add 'C:\Program Files (x86)\gsudo'
   }
 }
 
@@ -120,8 +120,8 @@ if (!(Get-Command "gsudo.exe" -ea 0)) {
 # enable wsl feature (require restart)
 if (!(Get-Command 'wsl.exe' -ea 0)) {
   bh_log "INFO: Windows features for WSL not enabled, enabling..."
-  bh_win_feature_enable /featurename:VirtualMachinePlatform 
-  bh_win_feature_enable Microsoft-Windows-Subsystem-Linux
+  bh_syswin_feature_enable /featurename:VirtualMachinePlatform 
+  bh_syswin_feature_enable Microsoft-Windows-Subsystem-Linux
   bh_log "INFO: restart windows and run bh_setup_ubuntu again"
   return
 }

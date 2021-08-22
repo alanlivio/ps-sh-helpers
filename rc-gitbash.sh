@@ -38,13 +38,13 @@ function bh_ps_test_command() {
 # load commands
 # ---------------------------------------
 
-source "$BH_DIR/win/user.sh" # bh_win_user_check_admin
+source "$BH_DIR/win/user.sh" # bh_user_win_check_admin
 source "$BH_DIR/win/install.sh"
 source "$BH_DIR/win/winget.sh"
 source "$BH_DIR/win/explorer.sh"
 if type tlshell.exe &>/dev/null; then source "$BH_DIR/win/texlive.sh"; fi
 
-if [ "$(bh_win_user_check_admin)" == "True" ]; then
+if [ "$(bh_user_win_check_admin)" == "True" ]; then
   source "$BH_DIR/win/install-admin.sh"
   BH_SETUP_MSYS=$(unixpath -w "$BH_DIR/win/setup-msys.ps1")
   BH_SETUP_WSL=$(unixpath -w "$BH_DIR/win/setup-wsl.ps1")
@@ -59,8 +59,8 @@ function bh_setup_win() { powershell.exe -command "& { . $BH_SETUP_WIN}"; }
 function bh_update_clean_win() {
   # windows
   if type gsudo &>/dev/null; then
-    bh_win_sysupdate
-    bh_win_get_install "$BH_PKGS_WINGET"
+    bh_syswin_update_win
+    bh_winget_install "$BH_PKGS_WINGET"
     bh_choco_install "$BH_PKGS_CHOCO"
     bh_choco_upgrade
     bh_choco_clean

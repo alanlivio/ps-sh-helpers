@@ -2,8 +2,8 @@
 # user
 # ---------------------------------------
 
-# usage if [ "$(bh_win_user_check_admin)" == "True" ]; then <commands>; fi
-function bh_win_user_check_admin() {
+# usage if [ "$(bh_user_win_check_admin)" == "True" ]; then <commands>; fi
+function bh_user_win_check_admin() {
   powershell.exe -c '(New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)' | tr -d '\rn'
 }
 
@@ -11,18 +11,18 @@ function bh_win_user_check_admin() {
 # path
 # ---------------------------------------
 
-function bh_win_path_show() {
+function bh_path_win_show() {
   powershell.exe -c '[Environment]::GetEnvironmentVariable("path", "user")'
 }
 
-function bh_win_env_add() {
+function bh_env_win_add() {
   ps_call "[System.Environment]::SetEnvironmentVariable('$1', '$2', 'user')"
 }
 
-function bh_win_path_add() {
+function bh_path_win_add() {
   local dir=$(winpath $1)
   ps_call ' 
-    function bh_win_path_add($addPath) {
+    function bh_path_win_add($addPath) {
       if (Test-Path $addPath) {
         $currentpath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
         $regexAddPath = [regex]::Escape($addPath)
@@ -33,9 +33,9 @@ function bh_win_path_add() {
       else {
         Throw "$addPath is not a valid path."
       }
-    }; bh_win_path_add '" $dir"
+    }; bh_path_win_add '" $dir"
 }
 
-function bh_win_path_settings(){
+function bh_path_win_settings(){
   rundll32 sysdm.cpl,EditEnvironmentVariables
 }

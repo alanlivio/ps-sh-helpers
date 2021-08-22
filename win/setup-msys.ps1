@@ -3,17 +3,17 @@ function bh_log() {
   Write-Host -ForegroundColor DarkYellow "--" ($args -join " ")
 }
 
-function bh_win_env_add($name, $value) {
+function bh_env_win_add($name, $value) {
   [System.Environment]::SetEnvironmentVariable("$name", "$value", 'user')
 }
 
-function bh_win_path_add($addPath) {
+function bh_path_win_add($addPath) {
   if (Test-Path $addPath) {
     $currentpath = [System.Environment]::GetEnvironmentVariable('PATH', 'user')
     $regexAddPath = [regex]::Escape($addPath)
     $arrPath = $currentpath -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
     $newpath = ($arrPath + $addPath) -join ';'
-    bh_win_env_add 'PATH' $newpath
+    bh_env_win_add 'PATH' $newpath
   }
   else {
     Throw "$addPath' is not a valid path."
@@ -36,15 +36,15 @@ function bh_msys_sanity() {
 
 $MSYS_HOME = "C:\msys64"
 function bh_msys_add_to_path() {
-  bh_win_path_add "$MSYS_HOME\usr\bin"
-  bh_win_path_add "$MSYS_HOME\mingw64\bin"
+  bh_path_win_add "$MSYS_HOME\usr\bin"
+  bh_path_win_add "$MSYS_HOME\mingw64\bin"
 }
 
 function bh_install_win_gsudo() {
   if (!(Get-Command 'gsudo.exe' -ea 0)) {
     Invoke-Expression $bh_log_func
     winget install --scope=machine gsudo
-    bh_win_path_add 'C:\Program Files (x86)\gsudo'
+    bh_path_win_add 'C:\Program Files (x86)\gsudo'
   }
 }
 

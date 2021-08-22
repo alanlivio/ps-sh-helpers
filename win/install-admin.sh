@@ -6,21 +6,21 @@ function bh_install_docker() {
   bh_log_func
   ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
   ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
-  bh_win_get_install Docker.DockerDesktop
+  bh_winget_install Docker.DockerDesktop
 }
 
 function bh_install_tesseract() {
   bh_log_func
   if type tesseract.exe &>/dev/null; then
-    bh_win_get_install tesseract
-    bh_win_path_add 'C:\Program Files\Tesseract-OCR'
+    bh_winget_install tesseract
+    bh_path_win_add 'C:\Program Files\Tesseract-OCR'
   fi
 }
 
 function bh_install_java() {
   bh_log_func
   if type java.exe &>/dev/null; then
-    bh_win_get_install ojdkbuild.ojdkbuild
+    bh_winget_install ojdkbuild.ojdkbuild
     local javahome=$(ps_call '$(get-command java).Source.replace("\bin\java.exe", "")')
     bh_env_add "JAVA_HOME" "$javahome"
   fi
@@ -87,10 +87,10 @@ if type gsudo &>/dev/null; then
 fi
 
 # ---------------------------------------
-# sysupdate
+# syswin
 # ---------------------------------------
 
-function bh_win_sysupdate() {
+function bh_syswin_update_win() {
   bh_log_func
   ps_call_admin '$(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
     if ($_ -is [string]) {
@@ -98,10 +98,10 @@ function bh_win_sysupdate() {
     } 
   }'
 }
-function bh_win_sysupdate_list() {
+function bh_syswin_update_win_list() {
   ps_call_admin 'Get-WindowsUpdate'
 }
 
-function bh_win_sysupdate_list_last_installed() {
+function bh_syswin_update_win_list_last_installed() {
   ps_call_admin 'Get-WUHistory -Last 10 | Select-Object Date, Title, Result'
 }

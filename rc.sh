@@ -56,7 +56,7 @@ if test -z "$BH_OPT_LINUX"; then BH_OPT_LINUX="$HOME/opt"; fi
 if test -z "$BH_DEV"; then BH_DEV="$HOME/dev"; fi
 
 # ---------------------------------------
-# essential
+# essentials
 # ---------------------------------------
 
 source "$BH_DIR/lib/log-test.sh"

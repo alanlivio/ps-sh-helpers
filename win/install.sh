@@ -10,8 +10,8 @@ function bh_install_win_node() {
     bh_test_and_create_folder $nodejs_dir
     bh_decompress_from_url $nvm_url $nodejs_dir
     if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
-    bh_win_env_add 'NODEJS_HOME' $(winpath $nodejs_dir)
-    bh_win_path_add $(winpath $nodejs_dir)
+    bh_env_win_add 'NODEJS_HOME' $(winpath $nodejs_dir)
+    bh_path_win_add $(winpath $nodejs_dir)
   fi
 }
 
@@ -31,14 +31,14 @@ function bh_install_win_androidcmd_flutter() {
   if ! test -d $android_cmd_dir; then
     bh_decompress_from_url $android_cmd_url $android_sdk_dir
     if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
-    bh_win_path_add $(winpath $android_cmd_dir/bin)
+    bh_path_win_add $(winpath $android_cmd_dir/bin)
   fi
   if ! test -d $android_sdk_dir/platforms; then
     $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --install 'platform-tools' 'platforms;android-29'
     yes | $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --licenses
-    bh_win_env_add ANDROID_HOME $(winpath $android_sdk_dir)
-    bh_win_env_add ANDROID_SDK_ROOT $(winpath $android_sdk_dir)
-    bh_win_path_add $(winpath $android_sdk_dir/platform-tools)
+    bh_env_win_add ANDROID_HOME $(winpath $android_sdk_dir)
+    bh_env_win_add ANDROID_SDK_ROOT $(winpath $android_sdk_dir)
+    bh_path_win_add $(winpath $android_sdk_dir/platform-tools)
   fi
 
   # flutter
@@ -48,7 +48,7 @@ function bh_install_win_androidcmd_flutter() {
     # opt_dst beacuase zip extract the flutter dir
     bh_decompress_from_url $flutter_sdk_url $opt_dst
     if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
-    bh_win_path_add $(winpath $flutter_sdk_dir/bin)
+    bh_path_win_add $(winpath $flutter_sdk_dir/bin)
   fi
 }
 

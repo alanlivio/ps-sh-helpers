@@ -3,35 +3,35 @@ function bh_log() {
   Write-Host -ForegroundColor DarkYellow "--" ($args -join " ")
 }
 
-function bh_win_env_add($name, $value) {
+function bh_env_win_add($name, $value) {
   [System.Environment]::SetEnvironmentVariable("$name", "$value", 'user')
 }
 
-function bh_win_path_add($addPath) {
+function bh_path_win_add($addPath) {
   if (Test-Path $addPath) {
     $currentpath = [System.Environment]::GetEnvironmentVariable('PATH', 'user')
     $regexAddPath = [regex]::Escape($addPath)
     $arrPath = $currentpath -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
     $newpath = ($arrPath + $addPath) -join ';'
-    bh_win_env_add 'PATH' $newpath
+    bh_env_win_add 'PATH' $newpath
   }
   else {
     Throw "$addPath' is not a valid path."
   }
 }
 
-function bh_win_get_installed() {
+function bh_winget_installed() {
   $tmpfile = New-TemporaryFile
   winget export $tmpfile | Out-null
   $pkgs = ((Get-Content $tmpfile | ConvertFrom-Json).Sources.Packages | ForEach-Object { $_.PackageIdentifier }) -join " "
   return $pkgs
 }
 
-function bh_win_get_install() {
+function bh_winget_install() {
   Invoke-Expression $bh_log_func
   $pkgs_to_install = ""
   # get installed pkgs
-  $pkgs = $(bh_win_get_installed)
+  $pkgs = $(bh_winget_installed)
   # select to install
   foreach ($name in $args) {
     if (-not ([string]::IsNullOrEmpty("$name")) -and (-not $pkgs.Contains("$name") )) {
@@ -46,11 +46,11 @@ function bh_win_get_install() {
   }
 }
 
-function bh_win_get_uninstall() {
+function bh_winget_uninstall() {
   Invoke-Expression $bh_log_func
   $pkgs_to_uninstall = ""
   # get installed pkgs
-  $pkgs = $(bh_win_get_installed)
+  $pkgs = $(bh_winget_installed)
   # select to uninstall
   foreach ($name in $args) {
     if (-not ([string]::IsNullOrEmpty("$name")) -and ($pkgs.Contains("$name") )) {
@@ -90,12 +90,12 @@ function bh_install_win_python() {
   # Remove windows alias. See https://superuser.com/questions/1437590/typing-python-on-windows-10-version-1903-command-prompt-opens-microsoft-stor
   Remove-Item $env:USERPROFILE\AppData\Local\Microsoft\WindowsApps\python*.exe
   if (Test-Path $py_exe_1) { 
-    bh_win_path_add "$(Split-Path $py_exe_1)"
-    bh_win_path_add "$(Split-Path $py_exe_1)\Scripts"
+    bh_path_win_add "$(Split-Path $py_exe_1)"
+    bh_path_win_add "$(Split-Path $py_exe_1)\Scripts"
   }
   elseif (Test-Path $py_exe_2) {
-    bh_win_path_add "$(Split-Path $py_exe_2)" 
-    bh_win_path_add "$(Split-Path $py_exe_2)\Scripts"
+    bh_path_win_add "$(Split-Path $py_exe_2)" 
+    bh_path_win_add "$(Split-Path $py_exe_2)\Scripts"
   }
 }
 
@@ -225,10 +225,10 @@ bh_install_win_winget
 bh_install_win_gitbash
 # install wt, vscode
 if (!(Get-Command 'wt' -ea 0)) {
-  bh_win_get_install Microsoft.WindowsTerminal
+  bh_winget_install Microsoft.WindowsTerminal
 }
 if (!(Get-Command 'code' -ea 0)) {
-  bh_win_get_install Microsoft.VisualStudioCode
+  bh_winget_install Microsoft.VisualStudioCode
 }
 bh_setup_explorer_sanity
 bh_setup_start_menu_sanity

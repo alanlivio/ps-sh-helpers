@@ -12,7 +12,7 @@ fi
 # load commands for windows
 # ---------------------------------------
 
-source "$BH_DIR/win/user.sh" # bh_win_user_check_admin
+source "$BH_DIR/win/user.sh" # bh_user_win_check_admin
 source "$BH_DIR/win/install.sh"
 source "$BH_DIR/win/winget.sh"
 source "$BH_DIR/win/explorer.sh"
@@ -83,7 +83,7 @@ function bh_install_wsl_ssh() {
 # xpulseaudio
 # ---------------------------------------
 
-if [ "$(bh_win_user_check_admin)" == "True" ]; then
+if [ "$(bh_user_win_check_admin)" == "True" ]; then
 
   function bh_wsl_xpulseaudio_enable() {
     bh_choco_install "pulseaudio vcxsrv"
