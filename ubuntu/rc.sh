@@ -1,19 +1,19 @@
 # ---------------------------------------
-# load libs for specific commands
+# load commands
 # ---------------------------------------
 
 IS_GNOME=false
 HAS_SNAP=false
 if type gnome-shell &>/dev/null; then IS_GNOME=true; fi
 if type snap &>/dev/null; then HAS_SNAP=true; fi
+source "$BH_DIR/ubuntu/install.sh"
 if $IS_GNOME; then source "$BH_DIR/ubuntu/gnome.sh"; fi
-if $HAS_SNAP; then source "$BH_DIR/ubuntu/snap.sh"; fi
-if type apt tar &>/dev/null; then source "$BH_DIR/ubuntu/apt.sh"; fi
-if type systemctl tar &>/dev/null; then source "$BH_DIR/ubuntu/systemd.sh"; fi
 if type service tar &>/dev/null; then source "$BH_DIR/ubuntu/initd.sh"; fi
 if type lxc &>/dev/null; then source "$BH_DIR/ubuntu/lxc.sh"; fi
-if type lsof &>/dev/null; then source "$BH_DIR/ubuntu/ports.sh"; fi
 if test -z "$(sudo dmidecode | grep 'Apple')"; then "$BH_DIR/ubuntu/on_mac.sh"; fi
+if type lsof &>/dev/null; then source "$BH_DIR/ubuntu/ports.sh"; fi
+if $HAS_SNAP; then source "$BH_DIR/ubuntu/snap.sh"; fi
+if type systemctl tar &>/dev/null; then source "$BH_DIR/ubuntu/systemd.sh"; fi
 
 # ---------------------------------------
 # setup/update_clean
@@ -62,62 +62,6 @@ function bh_update_clean_ubuntu() {
   bh_vscode_install $PKGS_VSCODE
   # cleanup
   bh_home_clean_unused
-}
-
-# ---------------------------------------
-# distro
-# ---------------------------------------
-
-function bh_distro_upgrade() {
-  sudo sed -i 's/Prompt=lts/Prompt=normal/g' /etc/update-manager/release-upgrades
-  sudo apt update && sudo apt dist-upgrade
-  do-release-upgrade
-}
-
-function bh_distro_ver() {
-  lsb_release -a
-}
-
-# ---------------------------------------
-# install
-# ---------------------------------------
-
-BH_FLUTTER_VER="2.2.3"
-
-function bh_install_androidcmd_flutter() {
-  bh_log_func
-
-  # create opt
-  local opt_dst="$BH_OPT_LINUX"
-  bh_test_and_create_folder $opt_dst
-
-  # android cmd and sdk
-  local android_sdk_dir="$opt_dst/android"
-  local android_cmd_dir="$android_sdk_dir/cmdline-tools"
-  local android_cmd_url="https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip"
-  if ! test -d $android_cmd_dir; then
-    bh_test_and_create_folder $android_cmd_dir
-    bh_decompress_from_url $android_cmd_url $android_sdk_dir
-    if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
-    bh_path_add $android_cmd_dir/bin/
-  fi
-  if ! test -d $android_sdk_dir/platforms; then
-    $android_cmd_dir/bin/sdkmanager --sdk_root="$android_sdk_dir" --install 'platform-tools' 'platforms;android-29'
-    yes | $android_cmd_dir/bin/sdkmanager --sdk_root="$android_sdk_dir" --licenses
-    bh_env_add ANDROID_HOME $android_sdk_dir
-    bh_env_add ANDROID_SDK_ROOT $android_sdk_dir
-    bh_path_add $android_sdk_dir/platform-tools
-  fi
-
-  # flutter
-  local flutter_sdk_dir="$opt_dst/flutter"
-  local flutter_sdk_url="https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_${BH_FLUTTER_VER}-stable.tar.xz"
-  if ! test -d $flutter_sdk_dir; then
-    # opt_dst beacuase zip extract the flutter dir
-    bh_decompress_from_url $flutter_sdk_url $opt_dst
-    if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
-    bh_path_add $flutter_sdk_dir/bin
-  fi
 }
 
 # ---------------------------------------

@@ -9,7 +9,16 @@ if [[ "$(umask)" = "0000" ]]; then
 fi
 
 # ---------------------------------------
-# load libs for specific commands
+# load commands for windows
+# ---------------------------------------
+
+source "$BH_DIR/win/user.sh" # bh_win_user_check_admin
+source "$BH_DIR/win/install.sh"
+source "$BH_DIR/win/winget.sh"
+source "$BH_DIR/win/explorer.sh"
+
+# ---------------------------------------
+# load commands for ubuntu
 # ---------------------------------------
 
 IS_GNOME=false
@@ -81,3 +90,37 @@ function bh_wsl_install_ssh() {
   echo "%sudo ALL=(ALL) NOPASSWD: /usr/sbin/service ssh --full-restart" | sudo tee -a $sudoers_file
   sudo service ssh --full-restart
 }
+
+# ---------------------------------------
+# xpulseaudio helpers
+# ---------------------------------------
+
+if [ "$(bh_win_user_check_admin)" == "True" ]; then
+
+  function bh_wsl_xpulseaudio_enable() {
+    bh_choco_install "pulseaudio vcxsrv"
+
+    # https://wiki.ubuntu.com/WSL#Running_Graphical_Applications
+    sudo apt-get install pulseaudio
+    echo -e "load-module module-native-protocol-tcp auth-anonymous=1" | sudo "sudo tee -a $(unixpath C:\\ProgramData\\chocolatey\\lib\\pulseaudio\\tools\\etc\\pulse\\default.pa)"
+    echo -e "exit-idle-time = -1" | sudo "sudo tee -a $(unixpath C:\\ProgramData\\chocolatey\\lib\\pulseaudio\\tools\\etc\\pulse\\daemon.conf)"
+
+    # configure .profile
+    if ! grep -q "PULSE_SERVER" $HOME/.profile; then
+      echo -e "\nexport DISPLAY=\"$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0\"" | tee -a $HOME/.profile
+      echo "export PULSE_SERVER=\"$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0\"" | tee -a $HOME/.profile
+      echo "export LIBGL_ALWAYS_INDIRECT=1" | tee -a $HOME/.profile
+    fi
+  }
+
+  function bh_wsl_xpulseaudio_start() {
+    bh_wsl_xpulseaudio_stop
+    $(unixpath C:\\ProgramData\\chocolatey\\bin\\pulseaudio.exe) &
+    "$(unixpath 'C:\Program Files\VcXsrv\vcxsrv.exe')" :0 -multiwindow -clipboard -wgl -ac -silent-dup-error &
+  }
+
+  function bh_wsl_xpulseaudio_stop() {
+    cmd.exe /c "taskkill /IM pulseaudio.exe /F"
+    cmd.exe /c "taskkill /IM vcxsrv.exe /F"
+  }
+fi
