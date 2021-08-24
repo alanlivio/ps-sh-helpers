@@ -8,6 +8,12 @@ function bh_install_python() {
   fi
 }
 
+function bh_install_vscode() {
+  if ! type python &>/dev/null; then
+    hf_winget_install vscode
+  fi
+}
+
 BH_NODE_VER="14.17.5"
 function bh_install_win_node() {
   local nvm_url="https://nodejs.org/dist/v${BH_NODE_VER}/node-v${BH_NODE_VER}-win-x64.zip"
