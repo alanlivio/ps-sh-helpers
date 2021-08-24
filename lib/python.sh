@@ -1,3 +1,7 @@
+# ---------------------------------------
+# python
+# ---------------------------------------
+
 function bh_python_clean() {
   find . -name .ipynb_checkpoints -o -name __pycache__ | xargs -r rm -r
 }

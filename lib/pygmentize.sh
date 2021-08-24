@@ -1,6 +1,7 @@
 # ---------------------------------------
 # pygmentize
 # ---------------------------------------
+
 function bh_pygmentize_folder_xml_files_by_extensions_to_jpeg() {
   : ${1?"Usage: ${FUNCNAME[0]} <folder>"}
   find . -maxdepth 1 -name "*.xml" | while read -r i; do
