@@ -59,12 +59,12 @@ if test -z "$BH_DEV"; then BH_DEV="$HOME/dev"; fi
 # essentials
 # ---------------------------------------
 
-source "$BH_DIR/lib/log-test.sh"
-source "$BH_DIR/lib/curl.sh"
-source "$BH_DIR/lib/home.sh"
+source "$BH_DIR/lib/log-test.sh" # uses echo, test, md5
+source "$BH_DIR/lib/curl.sh" # uses curl
+source "$BH_DIR/lib/home.sh" # uses cp
 source "$BH_DIR/lib/decompress.sh" # uses tar, unzip, curl
-source "$BH_DIR/lib/rename.sh"
-source "$BH_DIR/lib/folder.sh"
+source "$BH_DIR/lib/rename.sh" # uses rename
+source "$BH_DIR/lib/folder.sh" # uses du, find
 
 function bh_bh_update_from_github() {
   bh_log_func
@@ -94,9 +94,7 @@ if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.sh"; fi
 if type code &>/dev/null; then source "$BH_DIR/lib/vscode.sh"; fi
 if type diff &>/dev/null; then source "$BH_DIR/lib/diff.sh"; fi
 if type docker &>/dev/null; then source "$BH_DIR/lib/docker.sh"; fi
-if type du &>/dev/null; then source "$BH_DIR/lib/folder-size.sh"; fi
 if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/ffmpeg.sh"; fi
-if type find &>/dev/null; then source "$BH_DIR/lib/find.sh"; fi
 if type flutter &>/dev/null; then source "$BH_DIR/lib/flutter.sh"; fi
 if type gcc &>/dev/null; then source "$BH_DIR/lib/gcc.sh"; fi
 if type git &>/dev/null; then source "$BH_DIR/lib/git.sh"; fi

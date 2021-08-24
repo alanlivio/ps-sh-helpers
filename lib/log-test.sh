@@ -56,3 +56,8 @@ function bh_test_and_create_file() {
 function bh_test_and_delete_dir() {
   if test -d $1; then rm -rf $1; fi
 }
+
+function bh_test_md5_compare() {
+  : ${2?"Usage: ${FUNCNAME[0]} [file1] [file2]"}
+  if [ $(md5sum $1 | awk '{print $1;exit}') == $(md5sum $2 | awk '{print $1;exit}') ]; then echo "same"; else echo "different"; fi
+}
