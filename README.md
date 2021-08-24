@@ -4,21 +4,24 @@ This project offers cross-plataform (linux, macOS, windows) bash helpers to: con
 
 # How to install bash-helpers
 
-The bash-helpers has two requeriments: a `bash shell` and `git` . You may easy install them by run:
+The bash-helpers has two requeriments: a `bash shell` and `git` . You may easy install using the scripts bellow.
 
-MacOS already has a bash shell. Run in a bash shell the file [install/bh-on-mac.sh](install/bh-on-mac.sh) to install git/bash-helpers:
+MacOS already has a bash shell.  
+Run in a bash shell the script [install/bh-on-mac.sh](install/bh-on-mac.sh) to install git and bash-helpers:
 
 ```bash
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-on-mac.sh)"
 ```
 
-Ubuntu already has a bash. Run in a bash shell the file [install/bh-on-ubuntu.sh](install/bh-on-ubuntu.sh), to install git/bash-helpers:
+Ubuntu already has a bash.  
+Run in a bash shell the script [install/bh-on-ubuntu.sh](install/bh-on-ubuntu.sh), to install git and bash-helpers:
 
 ```bash
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-on-ubuntu.sh)"
 ```
 
-In windows, run in a powershell shell the file [install/bh-on-win.ps1](install/bh-on-win.ps1) to install git/GitBash/bash-helpers:
+Windows do not has `bash shell` nor `git` .
+Run in a powershell shell the script [install/bh-on-win.ps1](install/bh-on-win.ps1) to install git, GitBash, and bash-helpers:
 
 ```powershell
   Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-on-win.ps1'))
@@ -60,9 +63,9 @@ The helpers bellow used for specifc commands. For the full list, see [libs folde
 * diff helpers: see `bh_diff_*` at [lib/diff.sh](lib/diff.sh).
 * docker helpers: see `bh_docker_*` at [lib/docker.sh](lib/docker.sh).
 * ffmpeg helpers: see `bh_ffmpeg_*` at [lib/ffmpeg.sh](lib/ffmpeg.sh).
-* find helpers: see `bh_find_*` at [lib/find.sh](lib/find.sh).
-* git helpers: see `bh_git_*` at [lib/git.sh](lib/git.sh).
 * gcc helpers: see `bh_gcc_*` at [lib/gcc.sh](lib/gcc.sh).
+* git helpers: see `bh_git_*` at [lib/git.sh](lib/git.sh).
+* home helpers: see `bh_home_*` at [lib/home.sh](lib/home.sh).
 * meson helpers: see `bh_meson_*` at [lib/meson.sh](lib/meson.sh).
 * mount helpers: see `bh_mount_*` at [lib/mount.sh](lib/mount.sh).
 * npm helpers: see `bh_npm_*` at [lib/npm.sh](lib/mount.sh).
@@ -72,6 +75,8 @@ The helpers bellow used for specifc commands. For the full list, see [libs folde
 * vscode helpers: see `bh_vscode_*` at [lib/vscode.sh](lib/vscode.sh).
 * wget helpers: see `bh_wget_*` at [lib/wget.sh](lib/wget.sh).
 * youtube-dl helpers: see `bh_youtubedl_*` at [lib/youtubedl.sh](lib/youtubedl.sh).
+* zip helpers: see `bh_zip_*` at [lib/zip.sh](lib/zip.sh).  
+
 # References
 
 Other github projects were used as reference:
