@@ -33,6 +33,7 @@ function ps_def_script_as_func() {
 function bh_ps_test_command() {
   powershell.exe -c '(Get-Command' "$1" '-ea 0) -ne $null'
 }
+
 # ---------------------------------------
 # load commands
 # ---------------------------------------
@@ -44,26 +45,11 @@ source "$BH_DIR/win/explorer.sh"
 if type tlshell.exe &>/dev/null; then source "$BH_DIR/win/texlive.sh"; fi
 
 if [ "$(bh_user_win_check_admin)" == "True" ]; then
-  source "$BH_DIR/win/install-admin.sh"
-  function bh_win_optmize() {
-    powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/win-optmize.ps1)}"
-  }
-  function bh_install_wsl() {
-    powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/install-msys.ps1)}"
-  }
-  function bh_install_msys() {
-    powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/install-wsl.ps1)}"
-  }
+  source "$BH_DIR/win/admin.sh"
 fi
 
 function bh_win_sanity() {
   powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/win-sanity.ps1) }"
-}
-
-function bh_install_python() {
-  if type python &>/dev/null; then
-    powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/install-python.ps1) }"
-  fi
 }
 
 function bh_update_clean_win() {

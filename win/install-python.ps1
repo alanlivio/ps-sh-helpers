@@ -20,7 +20,7 @@ function bh_path_win_add($addPath) {
   }
 }
 
-function bh_install_win_python() {
+function bh_install_python() {
   Invoke-Expression $bh_log_func
   # path depends if your winget settings uses "scope": "user" or "m }hine"
   $py_exe_1 = "${env:UserProfile}\AppData\Local\Programs\Python\Python39\python.exe"
@@ -39,4 +39,4 @@ function bh_install_win_python() {
     bh_path_win_add "$(Split-Path $py_exe_2)\Scripts"
   }
 }
-bh_install_win_python
+bh_install_python
