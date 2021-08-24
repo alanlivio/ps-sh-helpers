@@ -24,4 +24,4 @@ BH_HOME_CLEAN_UNUSED=(
   'Templates'
   'Tracing'
 )
-BH_CONFIG_BKPS=""
+BH_HOME_BKPS="$HOME/.bashrc $HOME/OneDrive/dotfiles/.bashrc"
