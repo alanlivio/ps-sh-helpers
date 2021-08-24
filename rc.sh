@@ -64,7 +64,7 @@ source "$BH_DIR/lib/curl.sh"
 source "$BH_DIR/lib/home.sh"
 source "$BH_DIR/lib/decompress.sh" # uses tar, unzip, curl
 source "$BH_DIR/lib/rename.sh"
-source "$BH_DIR/lib/md5.sh"
+source "$BH_DIR/lib/folder.sh"
 
 function bh_bh_update_from_github() {
   bh_log_func
