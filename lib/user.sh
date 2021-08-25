@@ -18,3 +18,11 @@ function bh_user_permissions_opt() {
   grep root /etc/group | grep $USER >/dev/null
   newgrp root
 }
+
+function bh_user_lang_set_en() {
+  local line='export LANG="en_US.UTF-8"'
+  if ! grep -Fxq "$line" $HOME/.bashrc; then
+    echo -e 'export LANG="en_US.UTF-8"' >>$HOME/.bashrc
+    echo -e 'export LC_ALL="en_US.UTF-8"' >>$HOME/.bashrc
+  fi
+}
