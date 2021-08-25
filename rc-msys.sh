@@ -4,6 +4,11 @@
 
 function bh_update_clean_msys() {
   bh_log_func
+  # windows
+  if [ "$(bh_user_win_check_admin)" == "True" ]; then
+    bh_syswin_update_win
+    bh_winget_install "$BH_PKGS_WINGET"
+  fi
   # essentials
   local pkgs="pacman pacman-mirrors msys2-runtime vim diffutils curl $BH_PKGS_MSYS"
   # python

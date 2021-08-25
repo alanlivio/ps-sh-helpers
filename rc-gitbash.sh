@@ -57,8 +57,6 @@ function bh_update_clean_win() {
   if [ "$(bh_user_win_check_admin)" == "True" ]; then
     bh_syswin_update_win
     bh_winget_install "$BH_PKGS_WINGET"
-    bh_choco_install "$BH_PKGS_CHOCO"
-    bh_choco_upgrade
   fi
   # python
   bh_install_python

@@ -27,6 +27,11 @@ source "$BH_DIR/rc-ubuntu.sh"
 # ---------------------------------------
 
 function bh_update_clean_wsl() {
+  # windows
+  if [ "$(bh_user_win_check_admin)" == "True" ]; then
+    bh_syswin_update_win
+    bh_winget_install "$BH_PKGS_WINGET"
+  fi
   # essentials
   local pkgs="git deborphan apt-file vim diffutils curl "
   # python
@@ -36,7 +41,6 @@ function bh_update_clean_wsl() {
   bh_python_set_python3_default
   # apt
   bh_apt_install $BH_PKGS_APT_WSL
-  bh_apt_remove_pkgs $BH_PKGS_APT_REMOVE_WSL
   bh_apt_autoremove
   # python
   bh_python_upgrade
