@@ -2,8 +2,12 @@
 # optmize admin
 # ---------------------------------------
 
-function bh_win_optmize() {
-  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/win-optmize.ps1)}"
+function bh_win_disable_services() {
+  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/admin-disable-services.ps1)}"
+}
+
+function bh_win_disable_pwd_policy() {
+  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/admin-disable-pwd-policy.ps1)}"
 }
 
 # ---------------------------------------
