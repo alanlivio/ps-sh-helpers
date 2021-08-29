@@ -59,16 +59,22 @@ if test -z "$BH_DEV"; then BH_DEV="$HOME/dev"; fi
 # essentials
 # ---------------------------------------
 
-source "$BH_DIR/lib/log-test.sh" # uses echo, test, md5
-source "$BH_DIR/lib/curl.sh" # uses curl
-source "$BH_DIR/lib/home.sh" # uses cp
+source "$BH_DIR/lib/log-test.sh"   # uses echo, test, md5
+source "$BH_DIR/lib/curl.sh"       # uses curl
+source "$BH_DIR/lib/home.sh"       # uses cp
 source "$BH_DIR/lib/decompress.sh" # uses tar, unzip, curl
-source "$BH_DIR/lib/rename.sh" # uses rename
-source "$BH_DIR/lib/folder.sh" # uses du, find
+source "$BH_DIR/lib/rename.sh"     # uses rename
+source "$BH_DIR/lib/folder.sh"     # uses du, find
 
-function bh_bh_update_from_github() {
+function bh_bashrc_reload() {
   bh_log_func
-  cd $BH_DIR && git pull
+  if $IS_WINDOWS_WSL; then source $HOME/.profile; else source $HOME/.bashrc; fi
+}
+
+function bh_bh_update_from_github_and_reload() {
+  bh_log_func
+  cd $BH_DIR && git pull && cd $OLDPWD
+  bh_bashrc_reload
 }
 
 function bh_bh_install() {
@@ -77,11 +83,6 @@ function bh_bh_install() {
   if ! grep -Fxq "$line" $HOME/.bashrc; then
     echo -e "$line\n" >>$HOME/.bashrc
   fi
-}
-
-function bh_bashrc_reload() {
-  bh_log_func
-  if $IS_WINDOWS_WSL; then source $HOME/.profile; else source $HOME/.bashrc; fi
 }
 
 # ---------------------------------------
