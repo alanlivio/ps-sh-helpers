@@ -1,25 +1,25 @@
 # ---------------------------------------
-# optmize admin
+# admin/ ps1 scripts
 # ---------------------------------------
 
 function bh_win_disable_services() {
-  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/admin-disable-services.ps1)}"
+  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/admin/disable-services.ps1)}"
 }
 
 function bh_win_disable_pwd_policy() {
-  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/admin-disable-pwd-policy.ps1)}"
+  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/admin/disable-pwd-policy.ps1)}"
+}
+
+function bh_install_wsl() {
+  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/admin/install-msys.ps1)}"
+}
+function bh_install_msys() {
+  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/admin/install-wsl.ps1)}"
 }
 
 # ---------------------------------------
 # install admin
 # ---------------------------------------
-
-function bh_install_wsl() {
-  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/install-msys.ps1)}"
-}
-function bh_install_msys() {
-  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/install-wsl.ps1)}"
-}
 
 function bh_install_tesseract() {
   bh_log_func
