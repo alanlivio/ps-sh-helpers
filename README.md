@@ -42,7 +42,7 @@ Run in a powershell shell the script [install/bh-on-win.ps1](install/bh-on-win.p
 
 * `bh_install_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After run, it requeres restart windows and run it again. When Ubuntu app started, you need configure your username/password.
 
-### helpers to update/clean
+### helpers for update/clean
 
 The helpers bellow can be run routinely from differnt bashs. They install python/vscode if not installed. Then use variables defined in ~/.bashrc or ~/.bh-cfg.sh to configure/upgrade packges and cleanup unused files/folders. Please see the variables in the [skel/.bh-cfg.sh](skel/.bh-cfg.sh).
 
@@ -52,32 +52,38 @@ The helpers bellow can be run routinely from differnt bashs. They install python
 * `bh_update_clean_win` (at GitBash)
 * `bh_update_clean_msys` (at msys bash)
 
-### helpers for commands
+### helpers for home managment
+
+* `bh_home_backup_save`: backup files/dirs defined in BH_HOME_BKPS
+* `bh_home_backup_diff`: show diff files/dirs defined in BH_HOME_BKPS
+* `bh_home_backup_restore`: restore files/dirs defined in BH_HOME_BKPS
+* `bh_home_clean_unused`: clean files/dirs defined in array BH_HOME_CLEAN_UNUSED
+
+### others helpers
 
 The helpers bellow used for specifc commands. For the full list, see [libs folder](lib/).
 
-* `bh_android_*`: for android helpers. See full list at [lib/android.sh](lib/android.sh).
-* `bh_cmake_*`: for cmake helpers. See full list at [lib/cmake.sh](lib/cmake.sh).
-* `bh_compress_*`: for compress helpers. See full list at [lib/compress.sh](lib/compress.sh), etc.
-* `bh_curl_*`: for curl helpers. See full list at [lib/curl.sh](lib/curl.sh).
-* `bh_cmake_*`: for cmake helpers. See full list at [lib/cmake.sh](lib/cmake.sh).
-* `bh_diff_*`: for diff helpers. See full list at [lib/diff.sh](lib/diff.sh).
-* `bh_docker_*`: for docker helpers. See full list at [lib/docker.sh](lib/docker.sh).
-* `bh_ffmpeg_*`: for ffmpeg helpers. See full list at [lib/ffmpeg.sh](lib/ffmpeg.sh).
-* `bh_flutter_*`: for flutter helpers. See full list at [lib/flutter.sh](lib/flutter.sh).
-* `bh_gcc_*`: for gcc helpers. See full list at [lib/gcc.sh](lib/gcc.sh).
-* `bh_git_*`: for git helpers. See full list at [lib/git.sh](lib/git.sh).
-* `bh_home_*`: for home helpers. See full list at [lib/home.sh](lib/home.sh).
-* `bh_meson_*`: for meson helpers. See full list at [lib/meson.sh](lib/meson.sh).
-* `bh_mount_*`: for mount helpers. See full list at [lib/mount.sh](lib/mount.sh).
-* `bh_npm_*`: for npm helpers. See full list at [lib/npm.sh](lib/mount.sh).
-* `bh_pandoc_*`: for pandoc helpers. See full list at [lib/pandoc.sh](lib/pandoc.sh).
-* `bh_pdf_*`: for pdf helpers. See full list at [lib/pdf.sh](lib/pdf.sh).
-* `bh_python_*`: for python helpers. See full list at [lib/python.sh](lib/python.sh).
-* `bh_vscode_*`: for vscode helpers. See full list at [lib/vscode.sh](lib/vscode.sh).
-* `bh_wget_*`: for wget helpers. See full list at [lib/wget.sh](lib/wget.sh).
-* `bh_youtubedl_*`: for youtube-dl helpers. See full list at [lib/youtubedl.sh](lib/youtubedl.sh).
-* `bh_zip_*`: for zip helpers. See full list at [lib/zip.sh](lib/zip.sh).  
+* `bh_android_*`: android helpers. See full list at [lib/android.sh](lib/android.sh).
+* `bh_cmake_*`: cmake helpers. See full list at [lib/cmake.sh](lib/cmake.sh).
+* `bh_compress_*`: compress helpers. See full list at [lib/compress.sh](lib/compress.sh), etc.
+* `bh_curl_*`: curl helpers. See full list at [lib/curl.sh](lib/curl.sh).
+* `bh_cmake_*`: cmake helpers. See full list at [lib/cmake.sh](lib/cmake.sh).
+* `bh_diff_*`: diff helpers. See full list at [lib/diff.sh](lib/diff.sh).
+* `bh_docker_*`: docker helpers. See full list at [lib/docker.sh](lib/docker.sh).
+* `bh_ffmpeg_*`: ffmpeg helpers. See full list at [lib/ffmpeg.sh](lib/ffmpeg.sh).
+* `bh_flutter_*`: flutter helpers. See full list at [lib/flutter.sh](lib/flutter.sh).
+* `bh_gcc_*`: gcc helpers. See full list at [lib/gcc.sh](lib/gcc.sh).
+* `bh_git_*`: git helpers. See full list at [lib/git.sh](lib/git.sh).
+* `bh_meson_*`: meson helpers. See full list at [lib/meson.sh](lib/meson.sh).
+* `bh_mount_*`: mount helpers. See full list at [lib/mount.sh](lib/mount.sh).
+* `bh_npm_*`: npm helpers. See full list at [lib/npm.sh](lib/mount.sh).
+* `bh_pandoc_*`: pandoc helpers. See full list at [lib/pandoc.sh](lib/pandoc.sh).
+* `bh_pdf_*`: pdf helpers. See full list at [lib/pdf.sh](lib/pdf.sh).
+* `bh_python_*`: python helpers. See full list at [lib/python.sh](lib/python.sh).
+* `bh_vscode_*`: vscode helpers. See full list at [lib/vscode.sh](lib/vscode.sh).
+* `bh_wget_*`: wget helpers. See full list at [lib/wget.sh](lib/wget.sh).
+* `bh_youtubedl_*`: youtube-dl helpers. See full list at [lib/youtubedl.sh](lib/youtubedl.sh).
+* `bh_zip_*`: zip helpers. See full list at [lib/zip.sh](lib/zip.sh).  
 
 
 # References

@@ -19,8 +19,40 @@ BH_PKGS_NPM=""
 BH_PKGS_PYTHON=""
 # clean folder
 BH_HOME_CLEAN_UNUSED=(
+  'Images'
+  'Movies'
   'Public'
   'Templates'
   'Tracing'
+  'Videos'
+  'Music'
+  'Pictures'
 )
+if $IS_LINUX_UBUNTU; then
+  BH_HOME_CLEAN_UNUSED+=(
+    'Documents' # sensible data in Windows
+  )
+elif $IS_WINDOWS; then
+  BH_HOME_CLEAN_UNUSED+=(
+    'Application Data'
+    'Cookies'
+    'OpenVPN'
+    'Local Settings'
+    'Start Menu'
+    '3D Objects'
+    'Contacts'
+    'Favorites'
+    'Intel'
+    'IntelGraphicsProfiles'
+    'Links'
+    'MicrosoftEdgeBackups'
+    'My Documents'
+    'NetHood'
+    'PrintHood'
+    'Recent'
+    'Saved Games'
+    'Searches'
+    'SendTo'
+  )
+fi
 BH_HOME_BKPS="$HOME/.bashrc $HOME/OneDrive/dotfiles/.bashrc"

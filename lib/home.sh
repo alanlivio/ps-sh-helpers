@@ -30,45 +30,6 @@ alias bh_home_backup_restore="bh_home_backup_func restore"
 alias bh_home_backup_save="bh_home_backup_func save"
 alias bh_home_backup_diff="bh_home_backup_func diff"
 
-BH_HOME_CLEAN_UNUSED+=(
-  'Images'
-  'Movies'
-  'Public'
-  'Templates'
-  'Tracing'
-  'Videos'
-  'Music'
-  'Pictures'
-)
-
-if $IS_LINUX_UBUNTU; then
-  BH_HOME_CLEAN_UNUSED+=(
-    'Documents' # sensible data in Windows
-  )
-elif $IS_WINDOWS; then
-  BH_HOME_CLEAN_UNUSED+=(
-    'Application Data'
-    'Cookies'
-    'OpenVPN'
-    'Local Settings'
-    'Start Menu'
-    '3D Objects'
-    'Contacts'
-    'Favorites'
-    'Intel'
-    'IntelGraphicsProfiles'
-    'Links'
-    'MicrosoftEdgeBackups'
-    'My Documents' # symlink
-    'NetHood'
-    'PrintHood'
-    'Recent'
-    'Saved Games'
-    'Searches'
-    'SendTo'
-  )
-fi
-
 function bh_home_clean_unused() {
   bh_log_func
   for i in "${BH_HOME_CLEAN_UNUSED[@]}"; do
