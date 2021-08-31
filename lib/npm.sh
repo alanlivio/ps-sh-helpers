@@ -8,7 +8,7 @@ function bh_npm_install() {
   local pkgs_to_install=""
   local pkgs_installed=$(npm ls -g --depth 0 2>/dev/null | grep -v UNMET | cut -d' ' -f2 -s | cut -d'@' -f1 | tr '\n' ' ')
   for i in "$@"; do
-    if [[ $i != "" && $pkgs_installed =~ $i ]]; then
+    if [[ ! $pkgs_installed =~ $i ]]; then
       pkgs_to_install="$i $pkgs_to_install"
     fi
   done

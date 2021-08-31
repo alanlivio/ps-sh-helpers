@@ -20,14 +20,14 @@ function bh_winget_install() {
   local pkgs_to_install=""
   local pkgs_installed=$(bh_winget_list_installed_str)
   for i in "$@"; do
-    if [[ $i != "" && $pkgs_installed =~ $i ]]; then
+    if [[ ! $pkgs_installed =~ $i ]]; then
       pkgs_to_install="$i $pkgs_to_install"
     fi
   done
   if test ! -z "$pkgs_to_install"; then
     echo "pkgs_to_install=$pkgs_to_install"
     for pkg in $pkgs_to_install; do
-      winget install $pkg &>/dev/null
+      winget install $pkg
     done
   fi
 }

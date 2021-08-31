@@ -87,7 +87,7 @@ function bh_choco_install() {
   local pkgs_to_install=""
   local pkgs_installed=$(bh_choco_list_installed_str)
   for i in "$@"; do
-    if [[ $i != "" && $pkgs_installed =~ $i ]]; then
+    if [[ ! $pkgs_installed =~ $i ]]; then
       pkgs_to_install="$i $pkgs_to_install"
     fi
   done

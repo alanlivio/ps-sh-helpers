@@ -27,7 +27,7 @@ function bh_snap_install_classic() {
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""
   for i in "$@"; do
-    if [[ $i != "" && $pkgs_installed =~ $i ]]; then
+    if [[ ! $pkgs_installed =~ $i ]]; then
       pkgs_to_install="$i $pkgs_to_install"
     fi
   done
@@ -45,7 +45,7 @@ function bh_snap_install_edge() {
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""
   for i in "$@"; do
-    if [[ $i != "" && $pkgs_installed =~ $i ]]; then
+    if [[ ! $pkgs_installed =~ $i ]]; then
       pkgs_to_install="$i $pkgs_to_install"
     fi
   done

@@ -56,7 +56,7 @@ function bh_update_clean_win() {
   # windows
   if [ "$(bh_user_win_check_admin)" == "True" ]; then
     bh_syswin_update_win
-    bh_winget_install "$BH_PKGS_WINGET"
+    bh_winget_install $BH_PKGS_WINGET
   fi
   # python
   bh_install_python

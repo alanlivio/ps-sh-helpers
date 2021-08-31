@@ -29,15 +29,14 @@ function bh_python_install() {
   local pkgs_to_install=""
   local pkgs_installed=$(pip list --format=columns | cut -d' ' -f1 | grep -v Package | sed '1d' | tr '\n' ' ')
   for i in "$@"; do
-    if [[ $i != "" && $pkgs_installed =~ $i ]]; then
+    if [[ ! $pkgs_installed =~ $i ]]; then
       pkgs_to_install="$i $pkgs_to_install"
     fi
   done
   if test ! -z "$pkgs_to_install"; then
     bh_log_msg "pkgs_to_install=$pkgs_to_install"
-    pip install --no-cache-dir --disable-pip-version-check $pkgs_to_install
+    pip install --user --no-cache-dir --disable-pip-version-check $pkgs_to_install
   fi
-  pip install -U "$@" &>/dev/null
 }
 
 if $IS_LINUX; then
