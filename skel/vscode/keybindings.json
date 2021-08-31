@@ -74,10 +74,6 @@
     "command": "workbench.action.openSettingsJson"
   },
   {
-    "key": "ctrl+oem_comma",
-    "command": "-workbench.action.openSettings"
-  },
-  {
     "key": "ctrl+k ctrl+alt+s",
     "command": "-git.stageSelectedRanges",
     "when": "isInDiffEditor"
@@ -88,11 +84,27 @@
     "when": "isInDiffEditor"
   },
   {
-    "key": "ctrl+shift+w",
+    "key": "ctrl+shift+q",
     "command": "workbench.action.closeAllEditors"
   },
   {
-    "key": "ctrl+k ctrl+w",
-    "command": "-workbench.action.closeAllEditors"
+    "key": "ctrl+shift+c",
+    "command": "-workbench.action.terminal.openNativeConsole",
+    "when": "!terminalFocus"
+  },
+  {
+    "key": "ctrl+shift+w",
+    "command": "workbench.action.terminal.kill",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "shift+alt+d",
+    "command": "workbench.action.terminal.split",
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "ctrl+shift+5",
+    "command": "-workbench.action.terminal.split",
+    "when": "terminalFocus && terminalProcessSupported"
   }
 ]

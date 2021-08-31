@@ -1,136 +1,100 @@
 {
-  // ---------------------------------------
-  // intergrated terminal
-  // ---------------------------------------
-  // "terminal.integrated.automationShell.windows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-  // "terminal.integrated.shell.windows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-  "terminal.integrated.shell.windows": "C:\\tools\\msys64\\msys2_shell.cmd",
-  "terminal.integrated.shellArgs.windows": [
-    "-defterm",
-    "-mingw64",
-    "-no-start",
-    "-use-full-path",
-    "-here"
-  ],
-  "terminal.external.windowsExec": "wt.exe",
-  // "terminal.integrated.shell.windows": "C:\\Windows\\System32\\bash.exe",
-  // "terminal.integrated.shellArgs.windows": [
-  //   "--login",
-  //   "-i"
-  // ],
-  // ---------------------------------------
-  // editing
-  // ---------------------------------------
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.acceptSuggestionOnEnter": "on",
+  "editor.detectIndentation": true,
+  "editor.fontFamily": "Consolas",
+  "editor.fontSize": 14,
   "editor.formatOnPaste": false,
   "editor.formatOnType": false,
+  "editor.gotoLocation.multipleDefinitions": "gotoAndPeek",
   "editor.insertSpaces": true,
+  "editor.minimap.enabled": false,
+  "editor.quickSuggestions": false,
+  "editor.quickSuggestionsDelay": 30,
+  "editor.renderControlCharacters": true,
+  "editor.renderWhitespace": "all",
+  "editor.suggestFontSize": 14,
   "editor.suggestOnTriggerCharacters": false,
   "editor.suggestSelection": "first",
   "editor.tabSize": 2,
   "editor.trimAutoWhitespace": false,
-  "editor.acceptSuggestionOnEnter": "on",
-  "editor.quickSuggestionsDelay": 30,
-  "files.autoSave": "afterDelay",
   "editor.wordBasedSuggestions": false,
   "editor.wordWrap": "wordWrapColumn",
-  "editor.wordWrapColumn": 90,
-  "editor.quickSuggestions": false,
-  "files.eol": "\n",
-  "files.trimFinalNewlines": true,
-  "files.trimTrailingWhitespace": false,
-  "diffEditor.ignoreTrimWhitespace": false,
-  "editor.detectIndentation": true,
-  // ---------------------------------------
-  // font and text
-  // ---------------------------------------
-  "editor.fontFamily": "Consolas",
-  "editor.fontSize": 14,
-  "editor.renderControlCharacters": true,
-  "editor.renderWhitespace": "all",
-  "editor.suggestFontSize": 14,
-  "markdown.preview.fontSize": 14,
-  "terminal.integrated.fontFamily": "Consolas",
-  "terminal.integrated.fontSize": 14,
-  // ---------------------------------------
-  // explorer/outline/problems/workbench
-  // ---------------------------------------
-  "window.zoomLevel": 0,
-  "editor.minimap.enabled": false,
+  "editor.wordWrapColumn": 110,
   "explorer.autoReveal": false,
-  "workbench.colorTheme": "Visual Studio Dark",
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
   "explorer.decorations.badges": false,
   "explorer.decorations.colors": false,
   "explorer.openEditors.visible": 0,
+  "extensions.autoUpdate": false,
+  "extensions.ignoreRecommendations": true,
+  "files.autoSave": "afterDelay",
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": false,
+  "git.autofetch": false,
+  "git.autoRepositoryDetection": "subFolders",
+  "git.confirmSync": false,
+  "git.countBadge": "off",
+  "git.decorations.enabled": false,
+  "git.detectSubmodules": false,
+  "git.enabled": true,
+  "git.enableSmartCommit": true,
+  "git.enableStatusBarSync": false,
+  "git.fetchOnPull": false,
+  "git.ignoreMissingGitWarning": true,
+  "github.gitAuthentication": true,
+  "markdown.preview.fontSize": 14,
   "outline.icons": false,
   "outline.problems.badges": false,
   "outline.problems.colors": false,
   "outline.problems.enabled": false,
+  "problems.autoReveal": false,
+  "problems.decorations.enabled": false,
   "problems.showCurrentInStatus": true,
+  "scm.autoReveal": false,
+  "scm.countBadge": "off",
+  "scm.diffDecorations": "none",
+  "scm.providerCountBadge": "hidden",
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.git": true,
+    "**/bin/": true
+  },
+  "search.useIgnoreFiles": true,
+  "security.workspace.trust.untrustedFiles": "open",
+  "task.problemMatchers.neverPrompt": true,
+  "telemetry.enableCrashReporter": false,
+  "telemetry.enableTelemetry": false,
+  "terminal.integrated.fontFamily": "Consolas",
+  "terminal.integrated.fontSize": 14,
+  "update.mode": "start",
   "window.closeWhenEmpty": false,
+  "window.customMenuBarAltFocus": false,
   "window.menuBarVisibility": "hidden",
   "window.newWindowDimensions": "maximized",
   "window.openFilesInNewWindow": "off",
   "window.openWithoutArgumentsInNewWindow": "on",
   "window.restoreWindows": "all",
-  "window.title": "${rootName}",
   "window.titleBarStyle": "native",
+  "workbench.activityBar.iconClickBehavior": "focus",
   "workbench.activityBar.visible": true,
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#303030",
+  },
+  "workbench.colorTheme": "Visual Studio Dark",
   "workbench.editor.centeredLayoutAutoResize": true,
   "workbench.editor.closeOnFileDelete": true,
   "workbench.editor.enablePreview": false,
   "workbench.editor.labelFormat": "short",
+  "workbench.editor.openPositioning": "last",
   "workbench.editor.showTabs": false,
   "workbench.editor.tabSizing": "shrink",
-  "workbench.editor.openPositioning": "last",
+  "workbench.editor.untitled.experimentalLanguageDetection": true,
+  "workbench.editor.untitled.hint": "hidden",
   "workbench.enableExperiments": false,
   "workbench.iconTheme": "vs-minimal",
   "workbench.panel.defaultLocation": "bottom",
   "workbench.sideBar.location": "left",
-  "workbench.startupEditor": "none",
-  // ---------------------------------------
-  // statusBar
-  // ---------------------------------------
-  "workbench.statusBar.visible": true,
-  "workbench.colorCustomizations": {
-    "statusBar.background": "#303030",
-    "statusBar.noFolderBackground": "#222225",
-    "statusBar.debuggingBackground": "#511f1f"
-  },
-  // ---------------------------------------
-  // debug
-  // ---------------------------------------
-  "debug.focusWindowOnBreak": true,
-  "debug.openExplorerOnEnd": true,
-  "debug.console.wordWrap": true,
-  // ---------------------------------------
-  // update, telemetry and extensions
-  // ---------------------------------------
-  "extensions.autoUpdate": true,
-  "extensions.ignoreRecommendations": true,
-  "telemetry.enableCrashReporter": false,
-  "telemetry.enableTelemetry": false,
-  "update.mode": "none",
-  // ---------------------------------------
-  // search
-  // ---------------------------------------
-  "search.useIgnoreFiles": true,
-  "search.exclude": {
-    "**/node_modules": true,
-    "**/bower_components": true,
-    "**/.git": true
-  },
-  // ---------------------------------------
-  // git
-  // ---------------------------------------
-  "scm.diffDecorations": "none",
-  "git.ignoreMissingGitWarning": true,
-  "git.decorations.enabled": false,
-  "git.enableSmartCommit": true,
-  "git.confirmSync": false,
-  "git.countBadge": "off",
-  "git.autofetch": false,
-  "git.fetchOnPull": false,
-  "git.enabled": true,
+  "workbench.startupEditor": "none"
 }
