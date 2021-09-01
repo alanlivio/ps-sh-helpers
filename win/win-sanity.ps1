@@ -3,6 +3,10 @@ function bh_log() {
   Write-Host -ForegroundColor DarkYellow "--" ($args -join " ")
 }
 
+function bh_log_2nd() {
+  Write-Host -ForegroundColor DarkYellow "-- >" ($args -join " ")
+}
+
 function bh_appx_uninstall() {
   foreach ($name in $args) {
     if (Get-AppxPackage -Name $name) {
@@ -71,19 +75,19 @@ function bh_sanity_start_menu() {
 function bh_sanity_explorer() {
   Invoke-Expression $bh_log_func
 
-  # Use small icons
+  bh_log_2nd "set explorer use small icons"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarSmallIcons -Value 1
 
-  # Hide search button
+  bh_log_2nd "hide search button"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name SearchboxTaskbarMode -Value 0
 
-  # Hide task view button
+  bh_log_2nd "hide task view button"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name ShowTaskViewButton -Value 0
 
-  # Hide taskbar people icon
+  bh_log_2nd "hide taskbar people icon"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Name "PeopleBand" -Value 0
 
-  # Visual to performace
+  bh_log_2nd "set windows visual to performace"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name 'VisualFXSetting' -Value 2
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name 'EnableTransparency' -Value 0
   Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "DragFullWindows" -Value 0
@@ -96,48 +100,44 @@ function bh_sanity_explorer() {
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarAnimations" -Value 0
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\DWM" -Name "EnableAeroPeek" -Value 0
 
-  # Enable dark mode
+  bh_log_2nd "enable dark mode"
   reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "AppsUseLightTheme" /t REG_DWORD /d 00000000 /f | Out-Null
 
-  # Disable system sounds
+  bh_log_2nd "disable system sounds"
   Set-ItemProperty -Path HKCU:\AppEvents\Schemes -Name "(Default)" -Value ".None"
 
-  # Disable AutoRotation Hotkeys
+  bh_log_2nd "disable AutoRotation Hotkeys"
   reg add "HKCU\Software\INTEL\DISPLAY\IGFXCUI\HotKeys" /v "Enable" /t REG_DWORD /d 0 /f | Out-Null
   
-  # Hide icons in desktop
+  bh_log_2nd "hide icons in desktop"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideIcons" -Value 1
 
-  # Hide recently explorer shortcut
+  bh_log_2nd "hide recently explorer shortcut"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "ShowRecent" -Value 0
 
-  # Disable Bing
-  bh_log "Disable Bing search "
+  bh_log_2nd "disable Bing search "
   reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BingSearchEnabled /d "0" /t REG_DWORD /f  | Out-null
   reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v AllowSearchToUseLocation /d "0" /t REG_DWORD /f | Out-null
   reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v CortanaConsent /d "0" /t REG_DWORD /f | Out-null
   
-  # Set explorer to open to 'This PC'
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name LaunchTo -Value 1
   
-  # Disable drives Autoplay
-  bh_log "Disable new drives Autoplay"
+  bh_log_2nd "disable new drives Autoplay"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers" -Name "DisableAutoplay" -Value 1
 
-  # 'Disable Accessibility Keys Prompts
-  bh_log 'Disable Accessibility Keys Prompts '
-  $path = 'HKCU:\Control Panel\Accessibility\'
-  Set-ItemProperty -Path "$path\StickyKeys" -Name 'Flags' -Type String -Value '506'
-  Set-ItemProperty -Path "$path\ToggleKeys" -Name 'Flags' -Type String -Value '58'
-  Set-ItemProperty -Path "$path\Keyboard Response" -Name 'Flags' -Type String -Value '122'
+  bh_log_2nd "disable Accessibility Keys Prompts"
+  New-Item -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Force | Out-Null
+  Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Name 'Flags' -Type String -Value '506'
+  New-Item -Path "HKCU:\Control Panel\Accessibility\ToggleKeys" -Force | Out-Null
+  Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\ToggleKeys" -Name 'Flags' -Type String -Value '58'
+  New-Item -Path "HKCU:\Control Panel\Accessibility\Keyboard Response" -Force | Out-Null
+  Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\Keyboard Response" -Name 'Flags' -Type String -Value '122'
 
-  # disable shortcut lang
+  bh_log_2nd "disable isable shortcut lang"
   Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name HotKey -Value 3
   Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "Language Hotkey" -Value 3
   
-  # Remove * from This PC
-  # ----------------------------------------
-  bh_log "Remove user folders under This PC "
+  bh_log_2nd "remove user folders under This PC "
   # Remove Desktop from This PC
   Remove-Item "HKLM:\Software\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}" -ea 0
   Remove-Item "HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}" -ea 0
@@ -170,48 +170,44 @@ function bh_sanity_explorer() {
   Remove-Item "HKLM:\Software\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}" -ea 0
   Remove-Item "HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}" -ea 0
   
-  # Set explorer how file extensions
-  bh_log "Set explorer show file extensions"
+  bh_log_2nd "set explorer show file extensions"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name HideFileExt -Value 0
 
-  # 'Share with'
-  # ----------------------------------------
-  bh_log "Share with"
+  bh_log_2nd "disable submenu share with"
   Remove-Item -LiteralPath "HKCR:\*\shellex\ContextMenuHandlers\Sharing" -ea 0
   Remove-Item -Path "HKCR:\Directory\Background\shellex\ContextMenuHandlers\Sharing" -ea 0
   Remove-Item -Path "HKCR:\Directory\shellex\ContextMenuHandlers\Sharing" -ea 0
   Remove-Item -Path "HKCR:\Drive\shellex\ContextMenuHandlers\Sharing" -ea 0
-  # for gitg
-  bh_log "gitg"
+  bh_log_2nd "disable submenu gitg"
   Remove-Item "HKCR:\Directory\shell\gitg" -Recurse -ea 0
-  # for add/play with vlc
-  bh_log "Add/play with vlc"
+  
+  bh_log_2nd "disable submenu Add/play with vlc"
   Remove-Item "HKCR:\Directory\shell\AddToPlaylistVLC" -Recurse -ea 0
   Remove-Item "HKCR:\Directory\shell\PlayWithVLC" -Recurse -ea 0
-  # for git bash
-  bh_log "Git bash"
+  
+  bh_log_2nd "disable submenu Git bash"
   Remove-Item "HKCR:\Directory\shell\git_gui" -Recurse -ea 0
   Remove-Item "HKCR:\Directory\shell\git_shell" -Recurse -ea 0
-  # "Open With"
-  bh_log "Open With "
+  
+  bh_log_2nd "disable submenu Open With "
   Remove-Item -LiteralPath 'HKCR:\*\shellex\OpenWithList' -ea 0
-  # Pin To Start
-  bh_log "Pin To Start "
+  
+  bh_log_2nd "disable submenu Pin To Start "
   Remove-Item -LiteralPath 'HKCR:\*\shellex\ContextMenuHandlers\{90AA3A4E-1CBA-4233-B8BB-535773D48449}' -ea 0
   Remove-Item -LiteralPath 'HKCR:\*\shellex\ContextMenuHandlers\{a2a9545d-a0c2-42b4-9708-a0b2badd77c8}' -ea 0
   Remove-Item 'HKCR:\Folder\shellex\ContextMenuHandlers\PintoStartScreen' -ea 0
-  # 'Include in library'
-  bh_log "Include in library"
+  
+  bh_log_2nd "disable submenu Include in library"
   Remove-Item "HKCR:\Folder\ShellEx\ContextMenuHandlers\Library Location" -ea 0
   Remove-Item "HKCR:\Folder\ShellEx\ContextMenuHandlers\Library Location" -ea 0
-  # 'Send to'
-  bh_log "Send to"
+  
+  bh_log_2nd "disable submenu Send to"
   Remove-Item -Path "HKCR:\AllFilesystemObjects\shellex\ContextMenuHandlers\SendTo" -Recurse -ea 0
   
-  # restart explorer
+  bh_log_2nd "restart explorer"
   Stop-Process -ProcessName explorer -ea 0 | Out-Null
 }
 
 bh_log "bh_win_sanity"
-bh_sanity_explorer
 bh_sanity_start_menu
+bh_sanity_explorer
