@@ -36,6 +36,9 @@ BH_PKGS_VSCODE+="ms-python.python "
 #  home
 # ----------------------------------------
 BH_DEV="$HOME/dev"
+BH_DEV_REPOS="parent/folder/name1/in/BH_DEV <REPO_URL_1>"
+BH_DEV_REPOS="parent/folder/name1/in/BH_DEV <REPO_URL_2>"
+BH_DEV_REPOS="parent/folder/name2/in/BH_DEV <REPO_URL_3>"
 BH_HOME_CLEAN_UNUSED=(
   'Images'
   'Movies'

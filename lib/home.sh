@@ -49,3 +49,35 @@ function bh_home_clean_unused() {
     fi
   done
 }
+
+function bh_home_dev_folder_git_repos() {
+  bh_log_func
+
+  # create dev dir
+  bh_test_and_create_folder $BH_DEV
+  local cwd=$(pwd)
+
+  declare -a repos_array
+  repos_array=($BH_DEV_REPOS)
+  for ((i = 0; i < ${#repos_array[@]}; i = i + 2)); do
+    local parent=$BH_DEV/${repos_array[$i]}
+    local repo=${repos_array[$((i + 1))]}
+    # create parent
+    if ! test -d $parent; then
+      bh_test_and_create_folder $parent
+    fi
+    # clone/pull repo
+    local repo_basename="$(basename -s .git $repo)"
+    local dst_folder="$parent/$repo_basename"
+    if ! test -d "$dst_folder"; then
+      bh_log_msg_2nd "clone $dst_folder"
+      cd $parent
+      git clone $repo
+    else
+      cd $dst_folder
+      bh_log_msg_2nd "pull $dst_folder"
+      git pull
+    fi
+  done
+  cd $cwd
+}

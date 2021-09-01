@@ -58,6 +58,7 @@ The helpers bellow can be run routinely from differnt bashs. They install python
 * `bh_home_backup_diff`: show diff files/dirs defined in BH_HOME_BKPS
 * `bh_home_backup_restore`: restore files/dirs defined in BH_HOME_BKPS
 * `bh_home_clean_unused`: clean files/dirs defined in array BH_HOME_CLEAN_UNUSED
+* `bh_home_dev_folder_git_repos`: clone/update git repos defined in BH_DEV_REPOS
 
 ### others helpers
 
