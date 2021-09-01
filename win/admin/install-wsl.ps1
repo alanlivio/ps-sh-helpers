@@ -98,55 +98,60 @@ function bh_wsl_fix_home() {
   wsl -u root chown $env:UserName:$env:UserName /mnt/c/Users/$env:UserName/*
 }
 
-# this helper automate the process describred in :
-# - https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
-# - https://ubuntu.com/wsl
-bh_log "bh_win_install_wsl"
 
-# install winget
-if (!(Get-Command "winget.exe" -ea 0)) {
-  bh_log "INFO: winget is not installed, installing..."
-  bh_install_win_winget
-} 
-# install gsudo
-if (!(Get-Command "gsudo.exe" -ea 0)) {
-  bh_log "INFO: gsudo is not installed, installing..."
-  bh_install_win_gsudo
-} 
-# enable wsl feature (require restart)
-if (!(Get-Command 'wsl.exe' -ea 0)) {
-  bh_log "INFO: Windows features for WSL not enabled, enabling..."
-  bh_syswin_feature_enable /featurename:VirtualMachinePlatform 
-  bh_syswin_feature_enable Microsoft-Windows-Subsystem-Linux
-  bh_log "INFO: restart windows and run bh_setup_ubuntu again"
-  return
+function bh_install_wsl() {
+  # this helper automate the process describred in :
+  # - https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
+  # - https://ubuntu.com/wsl
+  Invoke-Expression $bh_log_func
+
+  # install winget
+  if (!(Get-Command "winget.exe" -ea 0)) {
+    bh_log "INFO: winget is not installed, installing..."
+    bh_install_win_winget
+  } 
+  # install gsudo
+  if (!(Get-Command "gsudo.exe" -ea 0)) {
+    bh_log "INFO: gsudo is not installed, installing..."
+    bh_install_win_gsudo
+  } 
+  # enable wsl feature (require restart)
+  if (!(Get-Command 'wsl.exe' -ea 0)) {
+    bh_log "INFO: Windows features for WSL not enabled, enabling..."
+    bh_syswin_feature_enable /featurename:VirtualMachinePlatform 
+    bh_syswin_feature_enable Microsoft-Windows-Subsystem-Linux
+    bh_log "INFO: restart windows and run bh_setup_ubuntu again"
+    return
+  }
+  # install ubuntu
+  if (!(Get-Command "ubuntu*.exe" -ea 0)) {
+    bh_log "INFO: Ubuntu is not installed, installing..."
+    winget install Canonical.Ubuntu
+  } 
+  # configure ubuntu distro
+  wsl -l | Out-null
+  if ($LastExitCode -eq -1) {
+    bh_log "INFO: Ubuntu is not configured, running it..."
+    bh_log "INFO: You should configure username and passwd, after that exit Ubuntu by invoke 'exit'."
+    Invoke-Expression (Get-Command "ubuntu*.exe").Source
+  }
+  # enable wsl 2
+  wsl -l -v | Out-null # -v is only avaliable in wsl 2
+  if ($LastExitCode -eq -1) {
+    bh_log "INFO: WSL 2 kernel update is not installed, installing..."
+    Invoke-WebRequest -Uri "https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi" -Outfile $env:TEMP\wsl_update_x64.msi
+    msiexec.exe /I "$env:TEMP\wsl_update_x64.msi"
+  }
+  # set to version 2
+  if ((bh_wsl_get_default_version) -eq 1) {
+    bh_log "INFO: Ubuntu distro is in wsl version 1, converting it to version 2..."
+    bh_wsl_set_version2 bh_wsl_get_default
+  }
+  # fix home user to \Users
+  if (!(wsl echo '$HOME').Contains("Users")) {
+    bh_log "INFO: Configuring to same home folder as windows..."
+    bh_wsl_fix_home
+  }
 }
-# install ubuntu
-if (!(Get-Command "ubuntu*.exe" -ea 0)) {
-  bh_log "INFO: Ubuntu is not installed, installing..."
-  winget install Canonical.Ubuntu
-} 
-# configure ubuntu distro
-wsl -l | Out-null
-if ($LastExitCode -eq -1) {
-  bh_log "INFO: Ubuntu is not configured, running it..."
-  bh_log "INFO: You should configure username and passwd, after that exit Ubuntu by invoke 'exit'."
-  Invoke-Expression (Get-Command "ubuntu*.exe").Source
-}
-# enable wsl 2
-wsl -l -v | Out-null # -v is only avaliable in wsl 2
-if ($LastExitCode -eq -1) {
-  bh_log "INFO: WSL 2 kernel update is not installed, installing..."
-  Invoke-WebRequest -Uri "https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi" -Outfile $env:TEMP\wsl_update_x64.msi
-  msiexec.exe /I "$env:TEMP\wsl_update_x64.msi"
-}
-# set to version 2
-if ((bh_wsl_get_default_version) -eq 1) {
-  bh_log "INFO: Ubuntu distro is in wsl version 1, converting it to version 2..."
-  bh_wsl_set_version2 bh_wsl_get_default
-}
-# fix home user to \Users
-if (!(wsl echo '$HOME').Contains("Users")) {
-  bh_log "INFO: Configuring to same home folder as windows..."
-  bh_wsl_fix_home
-}
+
+bh_install_wsl

@@ -34,12 +34,6 @@ function bh_msys_sanity() {
   msysbash -c ' echo db_home: windows >> /etc/nsswitch.conf'
 }
 
-$MSYS_HOME = "C:\msys64"
-function bh_msys_add_to_path() {
-  bh_path_win_add "$MSYS_HOME\usr\bin"
-  bh_path_win_add "$MSYS_HOME\mingw64\bin"
-}
-
 function bh_install_win_gsudo() {
   if (!(Get-Command 'gsudo.exe' -ea 0)) {
     Invoke-Expression $bh_log_func
@@ -55,21 +49,29 @@ function bh_install_win_winget() {
   }
 }
 
-bh_log "bh_win_install_msys"
 $MSYS_HOME = "C:\msys64"
 
-# install winget
-if (!(Get-Command "winget.exe" -ea 0)) {
-  bh_log "INFO: winget is not installed, installing..."
-  bh_install_win_winget
-} 
-# install gsudo
-if (!(Get-Command "gsudo.exe" -ea 0)) {
-  bh_log "INFO: gsudo is not installed, installing..."
-  bh_install_win_gsudo
-} 
-if (-not (Test-Path $MSYS_HOME)) {
-  Invoke-Expression $bh_log_func
-  winget install --scope=machine msys2.msys2
+function bh_msys_add_to_path() {
+  bh_path_win_add "$MSYS_HOME\usr\bin"
+  bh_path_win_add "$MSYS_HOME\mingw64\bin"
 }
-bh_msys_sanity
+
+function bh_install_msys() {
+  Invoke-Expression $bh_log_func
+  $MSYS_HOME = "C:\msys64"
+  # install winget
+  if (!(Get-Command "winget.exe" -ea 0)) {
+    bh_log "INFO: winget is not installed, installing..."
+    bh_install_win_winget
+  } 
+  # install gsudo
+  if (!(Get-Command "gsudo.exe" -ea 0)) {
+    bh_log "INFO: gsudo is not installed, installing..."
+    bh_install_win_gsudo
+  } 
+  if (-not (Test-Path $MSYS_HOME)) {
+    winget install --scope=machine msys2.msys2
+  }
+}
+
+bh_install_msys
