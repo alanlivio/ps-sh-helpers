@@ -26,7 +26,9 @@ function bh_win_disable_unused_services_features() {
   ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/disable-unused-services-features.ps1)
 }
 
-function bh_win_disable_password_policy() {
+function bh_win_feature_enable_ssh_server_pwsh() {
+  ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/enable-ssh-server-pwsh.ps1)
+}
   ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/disable-password-policy.ps1)
 }
 
