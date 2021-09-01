@@ -1,9 +1,29 @@
 # ---------------------------------------
+# syswin
+# ---------------------------------------
+
+function bh_syswin_update_win() {
+  bh_log_func
+  ps_call_admin '$(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
+    if ($_ -is [string]) {
+      $_.Split("", [System.StringSplitOptions]::RemoveEmptyEntries) 
+    } 
+  }'
+}
+function bh_syswin_update_win_list() {
+  ps_call_admin 'Get-WindowsUpdate'
+}
+
+function bh_syswin_update_win_list_last_installed() {
+  ps_call_admin 'Get-WUHistory -Last 10 | Select-Object Date, Title, Result'
+}
+
+# ---------------------------------------
 # admin/ ps1 scripts
 # ---------------------------------------
 
-function bh_win_disable_services() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/disable-services.ps1)
+function bh_win_disable_unused_services_features() {
+  ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/disable-unused-services-features.ps1)
 }
 
 function bh_win_disable_password_policy() {
@@ -18,6 +38,24 @@ function bh_install_msys() {
   ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/install-msys.ps1)
 }
 
+# ---------------------------------------
+# services
+# ---------------------------------------
+
+function bh_win_services_list_running() {
+  ps_call_admin 'Get-Service | Where-Object {$_.Status -eq "Running"}'
+}
+
+# ---------------------------------------
+# features
+# ---------------------------------------
+
+function bh_win_features_list_enabled() {
+  ps_call_admin 'Get-WindowsOptionalFeature -Online | Where-Object {$_.State -eq "Enabled"}'
+}
+
+function bh_win_features_list_disabled() {
+  ps_call_admin 'Get-WindowsOptionalFeature -Online | Where-Object {$_.State -eq "Disabled"}'
 }
 
 # ---------------------------------------
@@ -121,24 +159,4 @@ function bh_choco_clean() {
     bh_choco_install choco-cleaner
   fi
   ps_call_admin 'Invoke-Expression "$env:ChocolateyToolsLocation\BCURRAN3\choco-cleaner.ps1" | Out-Null'
-}
-
-# ---------------------------------------
-# syswin
-# ---------------------------------------
-
-function bh_syswin_update_win() {
-  bh_log_func
-  ps_call_admin '$(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
-    if ($_ -is [string]) {
-      $_.Split("", [System.StringSplitOptions]::RemoveEmptyEntries) 
-    } 
-  }'
-}
-function bh_syswin_update_win_list() {
-  ps_call_admin 'Get-WindowsUpdate'
-}
-
-function bh_syswin_update_win_list_last_installed() {
-  ps_call_admin 'Get-WUHistory -Last 10 | Select-Object Date, Title, Result'
 }

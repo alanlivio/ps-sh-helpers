@@ -8,7 +8,5 @@ function bh_win_disable_password_policy {
   secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
   Remove-Item -Path $tmpfile
 }
-# ---------------------------------------
-# bh_win_disable_password_policy
-# ---------------------------------------
+
 bh_win_disable_password_policy

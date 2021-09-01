@@ -39,4 +39,5 @@ function bh_install_python() {
     bh_path_win_add "$(Split-Path $py_exe_2)\Scripts"
   }
 }
+
 bh_install_python
