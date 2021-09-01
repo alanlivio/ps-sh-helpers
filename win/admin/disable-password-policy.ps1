@@ -1,3 +1,4 @@
+$bh_log_func = 'Write-Host -ForegroundColor DarkYellow "--" $MyInvocation.MyCommand.ToString()'
 
 function bh_win_disable_password_policy {
   Invoke-Expression $bh_log_func

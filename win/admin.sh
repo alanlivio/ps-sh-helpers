@@ -3,18 +3,21 @@
 # ---------------------------------------
 
 function bh_win_disable_services() {
-  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/admin/disable-services.ps1)}"
+  ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/disable-services.ps1)
 }
 
-function bh_win_disable_pwd_policy() {
-  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/admin/disable-pwd-policy.ps1)}"
+function bh_win_disable_password_policy() {
+  ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/disable-password-policy.ps1)
 }
 
 function bh_install_wsl() {
-  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/admin/install-msys.ps1)}"
+  ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/install-wsl.ps1)
 }
+
 function bh_install_msys() {
-  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/admin/install-wsl.ps1)}"
+  ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/install-msys.ps1)
+}
+
 }
 
 # ---------------------------------------

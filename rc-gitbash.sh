@@ -18,20 +18,12 @@ alias reboot='gsudo shutdown \/r'
 alias ps_call="powershell.exe -c"
 alias ps_call_admin="gsudo powershell.exe -c"
 
-function ps_def_call_as_func() {
-  eval "function $1() { ps_call $*; }"
-}
-
 function ps_call_script() {
   powershell.exe -command "& { . $1}"
 }
 
-function ps_def_script_as_func() {
-  eval "function $2() { . $1; }"
-}
-
-function bh_ps_test_command() {
-  powershell.exe -c '(Get-Command' "$1" '-ea 0) -ne $null'
+function ps_call_script_admin() {
+  gsudo powershell.exe -command "& { . $1}"
 }
 
 # ---------------------------------------
