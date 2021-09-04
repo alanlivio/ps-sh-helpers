@@ -80,7 +80,7 @@ function bh_install_msys() {
   ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/install-msys.ps1)
 }
 
-function bh_install_tesseract() {
+function bh_install_win_tesseract() {
   bh_log_func
   if type tesseract.exe &>/dev/null; then
     bh_winget_install tesseract
@@ -88,7 +88,7 @@ function bh_install_tesseract() {
   fi
 }
 
-function bh_install_java() {
+function bh_install_win_java() {
   bh_log_func
   if type java.exe &>/dev/null; then
     bh_winget_install ojdkbuild.ojdkbuild
@@ -97,14 +97,14 @@ function bh_install_java() {
   fi
 }
 
-function bh_install_docker() {
+function bh_install_win_docker() {
   bh_log_func
   ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
   ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
   bh_winget_install Docker.DockerDesktop
 }
 
-function bh_install_choco() {
+function bh_install_win_choco() {
   bh_log_func
   ps_call_admin '
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))

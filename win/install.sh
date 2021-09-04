@@ -2,13 +2,13 @@
 # install non-admin
 # ---------------------------------------
 
-function bh_install_python() {
+function bh_install_win_python() {
   if ! type python &>/dev/null; then
     powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/install-python.ps1) }"
   fi
 }
 
-function bh_install_vscode() {
+function bh_install_win_vscode() {
   if ! type python &>/dev/null; then
     hf_winget_install vscode
   fi
@@ -17,10 +17,10 @@ function bh_install_vscode() {
 BH_NODE_VER="14.17.5"
 function bh_install_win_node() {
   local nvm_url="https://nodejs.org/dist/v${BH_NODE_VER}/node-v${BH_NODE_VER}-win-x64.zip"
-  local nodejs_dir="$BH_OPT_WIN/nodejs"
+  local nodejs_dir="$BH_OPT_WIN/node-v${BH_NODE_VER}-win-x64"
   if ! test -d $nodejs_dir; then
     bh_test_and_create_folder $nodejs_dir
-    bh_decompress_from_url $nvm_url $nodejs_dir
+    bh_decompress_from_url $nvm_url $BH_OPT_WIN
     if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
     bh_env_win_add 'NODEJS_HOME' $(winpath $nodejs_dir)
     bh_path_win_add $(winpath $nodejs_dir)
