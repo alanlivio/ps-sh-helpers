@@ -1,4 +1,12 @@
 # ---------------------------------------
+# user
+# ---------------------------------------
+
+function bh_win_user_disable_password_policy() {
+  ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/disable-password-policy.ps1)
+}
+
+# ---------------------------------------
 # syswin
 # ---------------------------------------
 
@@ -10,6 +18,7 @@ function bh_syswin_update_win() {
     } 
   }'
 }
+
 function bh_syswin_update_win_list() {
   ps_call_admin 'Get-WindowsUpdate'
 }
@@ -28,10 +37,6 @@ function bh_win_feature_disable_unused_services_features() {
 
 function bh_win_feature_enable_ssh_server_pwsh() {
   ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/enable-ssh-server-pwsh.ps1)
-}
-
-function bh_win_feature_disable_password_policy() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/disable-password-policy.ps1)
 }
 
 function bh_win_feature_enable_ssh_server_gitbash() {
