@@ -23,6 +23,11 @@ function bh_path_win_show() {
   powershell.exe -c '[Environment]::GetEnvironmentVariable("path", "user")'
 }
 
+function bh_path_win_show_as_list() {
+  IFS=';' read -ra ADDR <<< $(bh_path_win_show)
+  for i in "${!ADDR[@]}"; do echo ${ADDR[$i]}; done
+}
+
 function bh_env_win_add() {
   ps_call "[System.Environment]::SetEnvironmentVariable('$1', '$2', 'user')"
 }
@@ -34,8 +39,8 @@ function bh_path_win_add() {
       if (Test-Path $addPath) {
         $currentpath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
         $regexAddPath = [regex]::Escape($addPath)
-        $arrPath = $currentpath -split ";" | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
-        $newpath = ($arrPath + $addPath) -join ";" + ";"
+        $arrPath = $currentpath -split ";" | Sort-Object -Unique | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
+        $newpath = ($arrPath + $addPath) -join ";"
         [System.Environment]::SetEnvironmentVariable("PATH", $newpath, "user")
       }
       else {
