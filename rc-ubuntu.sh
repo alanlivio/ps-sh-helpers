@@ -27,7 +27,7 @@ fi
 # update_clean
 # ---------------------------------------
 
-function bh_update_clean_ubuntu() {
+function bh_update_cleanup_ubuntu() {
   if $HAS_SNAP; then
     # snap
     bh_snap_install $BH_PKGS_SNAP

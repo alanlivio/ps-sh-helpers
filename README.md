@@ -42,15 +42,15 @@ Run in a powershell shell the script [install/bh-on-win.ps1](install/bh-on-win.p
 
 * `bh_install_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After run, it requeres restart windows and run it again. When Ubuntu app started, you need configure your username/password.
 
-### helpers for update/clean
+### helpers for update/cleanup
 
-The helpers bellow can be run routinely from differnt bashs. They install python/vscode if not installed. Then use variables defined in ~/.bashrc or ~/.bh-cfg.sh to configure/upgrade packges and cleanup unused files/folders. Please see the variables in the [skel/.bh-cfg.sh](skel/.bh-cfg.sh).
+The helpers bellow can be run routinely. They install packages defined in `BH_PKGS_*` vars from ~/.bashrc or ~/.bh-cfg.sh, and also clean unused files/folders defined in `BH_HOME_CLEAN_UNUSED` var. Please see the vars examples in [skel/.bh-cfg.sh](skel/.bh-cfg.sh).
 
-* `bh_update_clean_ubuntu` (at ubuntu bash)
-* `bh_update_clean_mac` (at mac bash)
-* `bh_update_clean_wsl` (at WSL bash)
-* `bh_update_clean_win` (at GitBash)
-* `bh_update_clean_msys` (at msys bash)
+* `bh_update_cleanup_mac` (at mac bash): BH_PKGS_BREW, BH_PKGS_PYTHON, BH_PKGS_VSCODE
+* `bh_update_cleanup_ubuntu` (at ubuntu bash): BH_PKGS_APT_UBUNTU, BH_PKGS_PYTHON, BH_PKGS_VSCODE, plus BH_PKGS_SNAP, BH_PKGS_SNAP_CLASSIC
+* `bh_update_cleanup_win` (at GitBash): BH_PKGS_WINGET, BH_PKGS_PYTHON, BH_PKGS_VSCODE
+* `bh_update_cleanup_wsl` (at WSL bash): BH_PKGS_APT_WSL, BH_PKGS_PYTHON_WSL
+* `bh_update_cleanup_msys` (at msys bash): BH_PKGS_MSYS, BH_PKGS_PYTHON_MSYS
 
 ### helpers for home managment
 

@@ -2,7 +2,7 @@
 # setup/update_clean
 # ---------------------------------------
 
-function bh_update_clean_mac() {
+function bh_update_cleanup_mac() {
   # essentials
   bh_install_mac_brew
   local pkgs="git bash vim diffutils curl "

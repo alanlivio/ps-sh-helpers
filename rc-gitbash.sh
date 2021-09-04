@@ -44,7 +44,7 @@ function bh_win_sanity() {
   powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/win-sanity.ps1) }"
 }
 
-function bh_update_clean_win() {
+function bh_update_cleanup_win() {
   # windows
   if [ "$(bh_user_win_check_admin)" == "True" ]; then
     bh_syswin_update_win
@@ -52,7 +52,7 @@ function bh_update_clean_win() {
   # winget (it uses --scope=user)
   bh_winget_install $BH_PKGS_WINGET
   # python
-  bh_install_python
+  bh_install_win_python
   bh_python_upgrade
   bh_python_install $BH_PKGS_PYTHON
   # vscode

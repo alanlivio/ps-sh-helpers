@@ -26,13 +26,11 @@ source "$BH_DIR/rc-ubuntu.sh"
 # update_clean
 # ---------------------------------------
 
-function bh_update_clean_wsl() {
+function bh_update_cleanup_wsl() {
   # windows
   if [ "$(bh_user_win_check_admin)" == "True" ]; then
     bh_syswin_update_win
   fi
-  # winget (it uses --scope=user)
-  bh_winget_install $BH_PKGS_WINGET
   # essentials
   local pkgs="git deborphan apt-file vim diffutils curl "
   # python
