@@ -1,5 +1,5 @@
 (module.exports = {
-  title: 'bash-helerps',
+  title: 'bash-helpers',
   tagline: 'Dinosaurs are cool',
   url: 'https://alanlivio.github.io',
   baseUrl: '/bash-helpers/',
@@ -29,9 +29,9 @@
         disableSwitch: true,
       },
       navbar: {
-        title: 'bash-helerps',
+        title: 'bash-helpers',
         logo: {
-          alt: 'bash-helerps Logo',
+          alt: 'bash-helpers Logo',
           src: 'logo.svg',
         },
         items: [
