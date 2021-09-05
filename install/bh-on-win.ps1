@@ -39,6 +39,10 @@ if ((Test-Path $git_exe_1)) { $git_exe = $git_exe_1 }
 elseif ((Test-Path $git_exe_2)) { $git_exe = $git_exe_2 }
 
 if (!(Test-Path $("${env:userprofile}\.bh"))) {
+  # clone bh
   & "$git_exe" clone https://github.com/alanlivio/bash-helpers.git $("${env:userprofile}\.bh")
+  # load bh in gitbash console
   Write-Output 'source $HOME/.bh/rc.sh' | Out-File -FilePath "${env:userprofile}/.bashrc" -Append
+  # hide MSYSM in gitbash console
+  & "${env:userprofile}\AppData\Local\Programs\Git\bin\bash" -c "sed '/show\sMSYSTEM/d' -i /etc/profile.d/git-prompt.sh"
 }
