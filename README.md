@@ -61,31 +61,44 @@ The helpers bellow can be run routinely. They install packages defined in `BH_PK
 * `bh_home_clean_unused`: clean files/dirs defined in array BH_HOME_CLEAN_UNUSED
 * `bh_home_dev_folder_git_repos`: clone/update git repos defined in BH_DEV_REPOS
 
+### helpers for curl
+
+* `bh_curl_get`: GET request to URL
+* `bh_curl_post`: POST request to URL
+* `bh_curl_post_json`: POST request to URL using JSON
+* `bh_curl_fetch_to_dir`: get URL to parent dir
+
+### helpers for folder
+
+* `bh_folder_sorted_by_size`: list folder sorted by items size
+* `bh_folder_info`: list number of folder and files per extension
+* `bh_folder_find_duplicated_pdf`: list duplicated pdf files in folder recursively
+
 ### others helpers
 
 The helpers bellow used for specifc commands. For the full list, see lib/ folder.
 
-* `bh_android_*`: android helpers. See full list at lib/android.
-* `bh_cmake_*`: cmake helpers. See full list at lib/cmake.
-* `bh_compress_*`: compress helpers. See full list at lib/compress, etc.
-* `bh_curl_*`: curl helpers. See full list at lib/curl.
-* `bh_cmake_*`: cmake helpers. See full list at lib/cmake.
-* `bh_diff_*`: diff helpers. See full list at lib/diff.
-* `bh_docker_*`: docker helpers. See full list at lib/docker.
-* `bh_ffmpeg_*`: ffmpeg helpers. See full list at lib/ffmpeg.
-* `bh_flutter_*`: flutter helpers. See full list at lib/flutter.
-* `bh_gcc_*`: gcc helpers. See full list at lib/gcc.
-* `bh_git_*`: git helpers. See full list at lib/git.
-* `bh_meson_*`: meson helpers. See full list at lib/meson.
-* `bh_mount_*`: mount helpers. See full list at lib/mount.
-* `bh_npm_*`: npm helpers. See full list at lib/npm.
-* `bh_pandoc_*`: pandoc helpers. See full list at lib/pandoc.
-* `bh_pdf_*`: pdf helpers. See full list at lib/pdf.
-* `bh_python_*`: python helpers. See full list at lib/python.
-* `bh_vscode_*`: vscode helpers. See full list at lib/vscode.
-* `bh_wget_*`: wget helpers. See full list at lib/wget.
-* `bh_youtubedl_*`: youtube-dl helpers. See full list at lib/youtubedl.
-* `bh_zip_*`: zip helpers. See full list at lib/zip.  
+* `bh_android_*`: android helpers. See full list at lib/android.sh
+* `bh_cmake_*`: cmake helpers. See full list at lib/cmake.sh
+* `bh_compress_*`: compress helpers. See full list at lib/compress.sh
+* `bh_cmake_*`: cmake helpers. See full list at lib/cmake.sh
+* `bh_diff_*`: diff helpers. See full list at lib/diff.sh
+* `bh_docker_*`: docker helpers. See full list at lib/docker.sh
+* `bh_ffmpeg_*`: ffmpeg helpers. See full list at lib/ffmpeg.sh
+* `bh_flutter_*`: flutter helpers. See full list at lib/flutter.sh
+* `bh_gcc_*`: gcc helpers. See full list at lib/gcc.sh
+* `bh_git_*`: git helpers. See full list at lib/git.sh
+* `bh_meson_*`: meson helpers. See full list at lib/meson.sh
+* `bh_mount_*`: mount helpers. See full list at lib/mount.sh
+* `bh_npm_*`: npm helpers. See full list at lib/npm.sh
+* `bh_pandoc_*`: pandoc helpers. See full list at lib/pandoc.sh
+* `bh_pdf_*`: pdf helpers. See full list at lib/pdf.sh
+* `bh_python_*`: python helpers. See full list at lib/python.sh
+* `bh_vscode_*`: vscode helpers. See full list at lib/vscode.sh
+* `bh_rename_*`: rename helpers. See full list at lib/rename.sh
+* `bh_wget_*`: wget helpers. See full list at lib/wget.sh
+* `bh_youtubedl_*`: youtube-dl helpers. See full list at lib/youtubedl.sh
+* `bh_zip_*`: zip helpers. See full list at lib/zip.sh
 
 # References
 
