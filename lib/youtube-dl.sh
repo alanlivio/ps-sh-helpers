@@ -1,5 +1,5 @@
 # ---------------------------------------
-# zotero
+# youtube-dl
 # ---------------------------------------
 
 YOUTUBEDL_PARAMS="--download-archive .downloaded.txt --no-warnings --no-post-overwrites --ignore-errors"
