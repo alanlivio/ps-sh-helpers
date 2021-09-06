@@ -2,28 +2,32 @@
 # explorer
 # ---------------------------------------
 
+function bh_explorer_open() {
+  ps_call 'Start-Process explorer .'
+}
+
 function bh_explorer_open_trash() {
   ps_call 'Start-Process explorer shell:recyclebinfolder'
 }
 
 function bh_explorer_open_appdata_local_programns() {
-  ps_call 'Start-Process explorer "$env:localappdata\Programs"'
+  ps_call 'Start-Process explorer "${env:localappdata{\Programs"'
 }
 
 function bh_explorer_open_appdata() {
-  ps_call 'Start-Process explorer "$env:appdata"'
+  ps_call 'Start-Process explorer "${env:appdata}"'
 }
 
 function bh_explorer_open_tmp() {
-  ps_call 'Start-Process explorer "$env:localappdata\temp"'
+  ps_call 'Start-Process explorer "${env:localappdata{\temp"'
 }
 
 function bh_explorer_open_start_menu_folder() {
-  ps_call 'Start-Process explorer "$env:appdata\Microsoft\Windows\Start Menu\Programs"'
+  ps_call 'Start-Process explorer "${env:appdata}\Microsoft\Windows\Start Menu\Programs"'
 }
 
 function bh_explorer_open_start_menu_folder_allusers() {
-  ps_call 'Start-Process explorer "$env:allusersprofile\Microsoft\Windows\Start Menu\Programs"'
+  ps_call 'Start-Process explorer "${env:allusersprofile}\Microsoft\Windows\Start Menu\Programs"'
 }
 
 function bh_explorer_restart() {
