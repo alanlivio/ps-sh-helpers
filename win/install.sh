@@ -14,16 +14,27 @@ function bh_install_win_vscode() {
   fi
 }
 
+function bh_install_win_make() {
+  local url="https://jztkft.dl.sourceforge.net/project/ezwinports/make-4.3-without-guile-w32-bin.zip"
+  local dir="$BH_OPT_WIN/make-4.3-without-guile-w32-bin"
+  if ! test -d $dir; then
+    bh_test_and_create_folder $dir
+    bh_decompress_from_url $url $dir # no root folder
+    if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
+    bh_path_win_add $(winpath $dir/bin)
+  fi
+}
+
 BH_NODE_VER="14.17.5"
 function bh_install_win_node() {
-  local nvm_url="https://nodejs.org/dist/v${BH_NODE_VER}/node-v${BH_NODE_VER}-win-x64.zip"
-  local nodejs_dir="$BH_OPT_WIN/node-v${BH_NODE_VER}-win-x64"
-  if ! test -d $nodejs_dir; then
-    bh_test_and_create_folder $nodejs_dir
-    bh_decompress_from_url $nvm_url $BH_OPT_WIN
+  local url="https://nodejs.org/dist/v${BH_NODE_VER}/node-v${BH_NODE_VER}-win-x64.zip"
+  local dir="$BH_OPT_WIN/node-v${BH_NODE_VER}-win-x64"
+  if ! test -d $dir; then
+    bh_test_and_create_folder $dir
+    bh_decompress_from_url $url $BH_OPT_WIN
     if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
-    bh_env_win_add 'NODEJS_HOME' $(winpath $nodejs_dir)
-    bh_path_win_add $(winpath $nodejs_dir)
+    bh_env_win_add 'NODEJS_HOME' $(winpath $dir)
+    bh_path_win_add $(winpath $dir)
   fi
 }
 
