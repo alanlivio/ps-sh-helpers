@@ -14,6 +14,12 @@ function bh_install_win_vscode() {
   fi
 }
 
+function bh_install_win_miktex() {
+  if ! type miktex-pdflatex.exe &>/dev/null; then
+    hf_winget_install MiKTeX
+  fi
+}
+
 function bh_install_win_make() {
   local url="https://jztkft.dl.sourceforge.net/project/ezwinports/make-4.3-without-guile-w32-bin.zip"
   local dir="$BH_OPT_WIN/make-4.3-without-guile-w32-bin"
@@ -78,7 +84,8 @@ function bh_install_win_androidcmd_flutter() {
 function bh_install_win_latexindent() {
   bh_log_func
   if ! type latexindent.exe &>/dev/null; then
-    bh_curl_fetch_to_dir https://github.com/cmhughes/latexindent.pl/releases/download/V3.10/latexindent.exe $BH_OPT_WIN/
-    bh_curl_fetch_to_dir https://raw.githubusercontent.com/cmhughes/latexindent.pl/main/defaultSettings.yaml $BH_OPT_WIN/
+    bh_curl_fetch_to_dir https://github.com/cmhughes/latexindent.pl/releases/download/V3.10/latexindent.exe $BH_OPT_WIN
+    bh_curl_fetch_to_dir https://raw.githubusercontent.com/cmhughes/latexindent.pl/main/defaultSettings.yaml $BH_OPT_WIN
+    bh_path_win_add $BH_OPT_WIN
   fi
 }
