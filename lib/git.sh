@@ -321,13 +321,37 @@ function bh_git_subfolders_reset_clean() {
   cd $cwd
 }
 
-# others
+# tag
+
+function bh_git_tag_list() {
+  git tag -l
+}
+
+function bh_git_tag_move_to_corrent() {
+  git tag -d $1
+  git tag $1
+  git push --force --tags 
+}
+
+function bh_git_tag_1dot0_move_to_corrent() {
+  bh_git_tag_move_to_corrent 1.0
+}
+
+function bh_git_tag_remove_local_and_remote() {
+  : ${1?"Usage: ${FUNCNAME[0]} <tagname>"}
+  git tag -d $1
+  git push origin :refs/tags/$1
+}
+
+# ammend
 
 function bh_git_ammend_all() {
   git commit -a --amend --no-edit
 }
 
-function bh_git_gitg() {
+# open
+
+function bh_git_open_gitg() {
   if ! test -d .git; then
     bh_log_error "There is no git repo in current folder"
     return
@@ -335,9 +359,13 @@ function bh_git_gitg() {
   gitg 2>/dev/null &
 }
 
+# open
+
 function bh_git_log_history_file() {
   git log --follow -p --all --first-parent --remotes --reflog --author-date-order -- $1
 }
+
+# large_files
 
 function bh_git_large_files_list() {
   git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -3
