@@ -56,6 +56,7 @@ BH_HOME_CLEAN_UNUSED=(
   'Videos'
   'Music'
   'Pictures'
+  '.cache'
 )
 if $IS_LINUX_UBUNTU; then
   BH_HOME_CLEAN_UNUSED+=(
