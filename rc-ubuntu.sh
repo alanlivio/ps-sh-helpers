@@ -14,15 +14,6 @@ if type lsof &>/dev/null; then source "$BH_DIR/ubuntu/ports.sh"; fi
 if $HAS_SNAP; then source "$BH_DIR/ubuntu/snap.sh"; fi
 if type systemctl tar &>/dev/null; then source "$BH_DIR/ubuntu/systemd.sh"; fi
 
-if $IS_GNOME; then
-  function bh_gnome_sanity() {
-    bh_gnome_dark
-    bh_gnome_sanity
-    bh_gnome_disable_unused_apps_in_search
-    bh_gnome_disable_super_workspace_change
-  }
-fi
-
 # ---------------------------------------
 # update_clean
 # ---------------------------------------
@@ -53,12 +44,6 @@ function bh_update_cleanup_ubuntu() {
   bh_vscode_install $BH_PKGS_VSCODE
   # cleanup
   bh_home_clean_unused
-}
-
-function bh_uninstall_ubuntu_desktop_unused() {
-  # clean
-  local pkgs_apt_remove_ubuntu+="libreoffice-* mpv yad ubuntu-report ubuntu-web-launchers mercurial nano zathura simple-scan xterm devhelp thunderbird remmina zeitgeist plymouth evolution-plugins evolution-common fwupd gnome-todo aisleriot gnome-user-guide gnome-mahjongg gnome-weather gnome-mines gnome-sudoku cheese gnome-calendar rhythmbox deja-dup evolution empathy gnome-music gnome-maps gnome-photos totem gnome-orca gnome-getting-started-docs gnome-logs gnome-color-manager gucharmap seahorse gnome-accessibility-themes brasero transmission-gtk "
-  bh_apt_remove_pkgs $pkgs_apt_remove_ubuntu
 }
 
 # ---------------------------------------

@@ -2,6 +2,18 @@
 # gnome
 # ---------------------------------------
 
+function bh_gnome_sanity() {
+  bh_gnome_dark
+  bh_gnome_sanity
+  bh_gnome_disable_unused_apps_in_search
+  bh_gnome_disable_super_workspace_change
+}
+
+function bh_gnome_uninstall_desktop_unused() {
+  local pkgs_apt_remove_ubuntu+="libreoffice-* mpv yad ubuntu-report ubuntu-web-launchers mercurial nano zathura simple-scan xterm devhelp thunderbird remmina zeitgeist plymouth evolution-plugins evolution-common fwupd gnome-todo aisleriot gnome-user-guide gnome-mahjongg gnome-weather gnome-mines gnome-sudoku cheese gnome-calendar rhythmbox deja-dup evolution empathy gnome-music gnome-maps gnome-photos totem gnome-orca gnome-getting-started-docs gnome-logs gnome-color-manager gucharmap seahorse gnome-accessibility-themes brasero transmission-gtk "
+  bh_apt_remove_pkgs $pkgs_apt_remove_ubuntu
+}
+
 function bh_gnome_execute_desktop_file() {
   awk '/^Exec=/ {sub("^Exec=", ""); gsub(" ?%[cDdFfikmNnUuv]", ""); exit system($0)}' $1
 }
