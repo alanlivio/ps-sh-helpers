@@ -32,17 +32,11 @@ bh_install_win_wt
 # install git
 bh_install_win_gitbash
 
-$git_exe_1 = "${env:userprofile}\AppData\Local\Programs\Git\cmd\git.exe"
-$git_exe_2 = "C:\Program Files\Git\Git\cmd\git.exe"
-$git_exe = ""
-if ((Test-Path $git_exe_1)) { $git_exe = $git_exe_1 }
-elseif ((Test-Path $git_exe_2)) { $git_exe = $git_exe_2 }
-
 if (!(Test-Path $("${env:userprofile}\.bh"))) {
   # clone bh
-  & "$git_exe" clone https://github.com/alanlivio/bash-helpers.git $("${env:userprofile}\.bh")
+  git clone https://github.com/alanlivio/bash-helpers.git $("${env:userprofile}\.bh")
   # load bh in gitbash console
-  Write-Output 'source $HOME/.bh/rc.sh' | Out-File -FilePath "${env:userprofile}/.bashrc" -Append
+  Write-Output 'source $HOME/.bh/rc.sh' | Out-File -FilePath "${env:userprofile}\.bashrc" -Append -Encoding ascii
   # hide MSYSM in gitbash console
-  & "${env:userprofile}\AppData\Local\Programs\Git\bin\bash" -c "sed '/show\sMSYSTEM/d' -i /etc/profile.d/git-prompt.sh"
+  & "$(Split-Path  (Get-Command "git.exe").Source)\..\bin\bash.exe"  -c "sed '/show\sMSYSTEM/d' -i /etc/profile.d/git-prompt.sh"
 }

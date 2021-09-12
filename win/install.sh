@@ -3,13 +3,13 @@
 # ---------------------------------------
 
 function bh_install_win_python() {
-  if ! type python &>/dev/null; then
-    powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/install-python.ps1) }"
+  if ! type pip &>/dev/null; then
+    powershell.exe -c "& { . $(unixpath -w $BH_DIR/win/admin/install-python.ps1) }"
   fi
 }
 
 function bh_install_win_vscode() {
-  if ! type python &>/dev/null; then
+  if ! type code &>/dev/null; then
     hf_winget_install vscode
   fi
 }
