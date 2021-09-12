@@ -1,5 +1,14 @@
 # ---------------------------------------
-# setup/update_clean
+# mac aliases
+# ---------------------------------------
+
+function bh_open {
+  local node="${1:-.}" # . is default value
+  open $node
+}
+
+# ---------------------------------------
+# update_clean
 # ---------------------------------------
 
 function bh_update_cleanup_mac() {

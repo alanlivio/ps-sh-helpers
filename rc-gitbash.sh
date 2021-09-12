@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ---------------------------------------
-# var/alias
+# gitbash aliases
 # ---------------------------------------
 
 alias unixpath='cygpath'
@@ -11,12 +11,21 @@ unset temp
 unset tmp
 # hide windows user files when ls home
 alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
-alias start="cmd.exe /c start"
 alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
 alias whereis='where'
 alias reboot='gsudo shutdown \/r'
 alias ps_call="powershell.exe -c"
 alias ps_call_admin="gsudo powershell.exe -c"
+
+function bh_open {
+  local node="${1:-.}" # . is default value
+  ps_call "Start-Process $node"
+}
+
+function bh_open_wt_settings() {
+  bh_wt_stgs="$HOME/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json"
+  code $bh_wt_stgs
+}
 
 function ps_call_script() {
   powershell.exe -command "& { . $1}"
@@ -43,6 +52,10 @@ function bh_win_sanity() {
   powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/win-sanity.ps1) }"
 }
 
+# ---------------------------------------
+# update_clean
+# ---------------------------------------
+
 function bh_update_cleanup_win() {
   # windows
   if [ "$(bh_user_win_check_admin)" == "True" ]; then
@@ -60,13 +73,4 @@ function bh_update_cleanup_win() {
   # cleanup
   bh_home_clean_unused
   bh_explorer_hide_home_dotfiles
-}
-
-# ---------------------------------------
-# wt
-# ---------------------------------------
-BH_WT_STGS="$HOME/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json"
-
-function bh_wt_settings() {
-  code $BH_WT_STGS
 }
