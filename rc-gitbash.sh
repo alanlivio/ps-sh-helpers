@@ -28,11 +28,11 @@ function bh_open_wt_settings() {
 }
 
 function ps_call_script() {
-  powershell.exe -command "& { . $1}"
+  powershell.exe -c "& { . $1}"
 }
 
 function ps_call_script_admin() {
-  gsudo powershell.exe -command "& { . $1}"
+  gsudo powershell.exe -c "& { . $1}"
 }
 
 # ---------------------------------------

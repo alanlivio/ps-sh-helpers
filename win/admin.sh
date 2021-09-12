@@ -6,6 +6,14 @@ function bh_win_user_disable_password_policy() {
   ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/disable-password-policy.ps1)
 }
 
+function bh_user_win_adminstrator_enable() {
+  ps_call_admin 'net user administrator /active:yes'
+}
+
+function bh_user_win_adminstrator_disable() {
+  ps_call_admin 'net user administrator /active:no'
+}
+
 # ---------------------------------------
 # syswin
 # ---------------------------------------

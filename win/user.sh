@@ -4,7 +4,7 @@
 
 # usage if [ "$(bh_user_win_check_admin)" == "True" ]; then <commands>; fi
 function bh_user_win_check_admin() {
-  powershell.exe -c '
+   powershell.exe -c '
     $user = "$env:COMPUTERNAME\$env:USERNAME"
     $group = "Administrators"
     (Get-LocalGroupMember $group).Name -contains $user
@@ -12,7 +12,7 @@ function bh_user_win_check_admin() {
 }
 
 function bh_user_win_check_eleveated_shell() {
-  powershell.exe -c '(New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)' | tr -d '\rn'
+  ps_call '(New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)' | tr -d '\rn'
 }
 
 # ---------------------------------------
@@ -20,11 +20,11 @@ function bh_user_win_check_eleveated_shell() {
 # ---------------------------------------
 
 function bh_path_win_show() {
-  powershell.exe -c '[Environment]::GetEnvironmentVariable("path", "user")'
+  ps_call '[Environment]::GetEnvironmentVariable("path", "user")'
 }
 
 function bh_path_win_show_as_list() {
-  IFS=';' read -ra ADDR <<< $(bh_path_win_show)
+  IFS=';' read -ra ADDR <<<$(bh_path_win_show)
   for i in "${!ADDR[@]}"; do echo ${ADDR[$i]}; done
 }
 
