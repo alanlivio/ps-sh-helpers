@@ -37,11 +37,11 @@ Run in a powershell shell the script install/bh-on-win.ps1) to install git, GitB
 
 ### helpers to install windows MSYS
 
-* `bh_install_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
+* `bh_install_win_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
 
 ### helpers to install windows WSL
 
-* `bh_install_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After run, it requeres restart windows and run it again. When Ubuntu app started, you need configure your username/password.
+* `bh_install_win_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After run, it requeres restart windows and run it again. When Ubuntu app started, you need configure your username/password.
 
 ### helpers for update/cleanup
 

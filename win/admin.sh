@@ -77,11 +77,11 @@ function bh_win_services_list_running() {
 # install admin
 # ---------------------------------------
 
-function bh_install_wsl() {
+function bh_install_win_wsl() {
   ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/install-wsl.ps1)
 }
 
-function bh_install_msys() {
+function bh_install_win_msys() {
   ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/install-msys.ps1)
 }
 

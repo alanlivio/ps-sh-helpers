@@ -99,7 +99,7 @@ function bh_wsl_fix_home() {
 }
 
 
-function bh_install_wsl() {
+function bh_install_win_wsl() {
   # this helper automate the process describred in :
   # - https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
   # - https://ubuntu.com/wsl
@@ -154,4 +154,4 @@ function bh_install_wsl() {
   }
 }
 
-bh_install_wsl
+bh_install_win_wsl

@@ -56,7 +56,7 @@ function bh_msys_add_to_path() {
   bh_path_win_add "$MSYS_HOME\mingw64\bin"
 }
 
-function bh_install_msys() {
+function bh_install_win_msys() {
   Invoke-Expression $bh_log_func
   $MSYS_HOME = "C:\msys64"
   # install winget
@@ -74,4 +74,4 @@ function bh_install_msys() {
   }
 }
 
-bh_install_msys
+bh_install_win_msys
