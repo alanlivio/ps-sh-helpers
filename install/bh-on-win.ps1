@@ -1,6 +1,9 @@
+$bh_log_func = 'Write-Host -ForegroundColor DarkYellow "--" $MyInvocation.MyCommand.ToString()'
+
 function bh_log() {
   Write-Host -ForegroundColor DarkYellow "--" ($args -join " ")
 }
+
 function bh_install_win_winget() {
   if (!(Get-Command 'winget.exe' -ea 0)) {
     Invoke-Expression $bh_log_func
@@ -40,3 +43,5 @@ if (!(Test-Path $("${env:userprofile}\.bh"))) {
   # hide MSYSM in gitbash console
   & "$(Split-Path  (Get-Command "git.exe").Source)\..\bin\bash.exe"  -c "sed '/show\sMSYSTEM/d' -i /etc/profile.d/git-prompt.sh"
 }
+# enable run scripts
+Set-ExecutionPolicy remotesigned 
