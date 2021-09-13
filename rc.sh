@@ -11,6 +11,10 @@ IS_WINDOWS=false
 IS_WINDOWS_WSL=false
 IS_WINDOWS_MSYS=false
 IS_WINDOWS_GITBASH=false
+HAS_GNOME=false
+HAS_SNAP=false
+HAS_VSCODE=false
+HAS_PYTHON=false
 
 case "$(uname -s)" in
 CYGWIN* | MINGW* | MSYS*)
@@ -68,7 +72,11 @@ source "$BH_DIR/lib/folder.sh"     # uses du, find
 
 function bh_bashrc_reload() {
   bh_log_func
-  if $IS_WINDOWS_WSL; then source $HOME/.profile; else source $HOME/.bashrc; fi
+  if $IS_WINDOWS_WSL; then
+    source $HOME/.profile
+  else
+    source $HOME/.bashrc
+  fi
 }
 
 function bh_bh_update_from_github_and_reload() {
@@ -88,11 +96,18 @@ function bh_bh_install() {
 # ---------------------------------------
 # load helpers for specific commands
 # ---------------------------------------
+if type code &>/dev/null; then
+  HAS_VSCODE=true
+  source "$BH_DIR/lib/vscode.sh"
+fi
+if type pip &>/dev/null; then
+  HAS_PYTHON=true
+  source "$BH_DIR/lib/python.sh"
+fi
 
 if type adb &>/dev/null; then source "$BH_DIR/lib/android.sh"; fi
 if type arp-scan &>/dev/null; then source "$BH_DIR/lib/arp-scan.sh"; fi
 if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.sh"; fi
-if type code &>/dev/null; then source "$BH_DIR/lib/vscode.sh"; fi
 if type diff &>/dev/null; then source "$BH_DIR/lib/diff.sh"; fi
 if type docker &>/dev/null; then source "$BH_DIR/lib/docker.sh"; fi
 if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/ffmpeg.sh"; fi
@@ -109,7 +124,6 @@ if type pdftk ghostscript &>/dev/null; then source "$BH_DIR/lib/pdf.sh"; fi
 if type pkg-config &>/dev/null; then source "$BH_DIR/lib/pkg-config.sh"; fi
 if type pngquant jpegoptim &>/dev/null; then source "$BH_DIR/lib/image.sh"; fi
 if type pygmentize &>/dev/null; then source "$BH_DIR/lib/pygmentize.sh"; fi
-if type python &>/dev/null; then source "$BH_DIR/lib/python.sh"; fi
 if type ruby &>/dev/null; then source "$BH_DIR/lib/ruby.sh"; fi
 if type ssh &>/dev/null; then source "$BH_DIR/lib/ssh.sh"; fi
 if type tesseract &>/dev/null; then source "$BH_DIR/lib/tesseract.sh"; fi

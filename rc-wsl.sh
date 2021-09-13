@@ -42,8 +42,7 @@ function bh_update_cleanup_wsl() {
   bh_apt_install $BH_PKGS_APT_WSL
   bh_apt_autoremove
   # python
-  bh_python_upgrade
-  bh_python_install $BH_PKGS_PYTHON_WSL
+  $HAS_PYTHON && bh_python_install $BH_PKGS_PYTHON
   # cleanup
   bh_home_clean_unused
 }

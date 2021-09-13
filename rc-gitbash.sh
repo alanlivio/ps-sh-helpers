@@ -64,12 +64,9 @@ function bh_update_cleanup_win() {
   # winget (it uses --scope=user)
   bh_winget_install $BH_PKGS_WINGET
   # python
-  bh_install_win_python
-  bh_python_upgrade
-  bh_python_install $BH_PKGS_PYTHON
+  $HAS_PYTHON && bh_python_install $BH_PKGS_PYTHON
   # vscode
-  bh_install_win_vscode
-  bh_vscode_install $BH_PKGS_VSCODE
+  $HAS_VSCODE && bh_vscode_install $BH_PKGS_VSCODE
   # cleanup
   bh_home_clean_unused
   bh_explorer_hide_home_dotfiles

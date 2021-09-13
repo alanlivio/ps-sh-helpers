@@ -3,15 +3,11 @@
 # ---------------------------------------
 
 function bh_install_win_python() {
-  if ! type pip &>/dev/null; then
-    powershell.exe -c "& { . $(unixpath -w $BH_DIR/win/admin/install-python.ps1) }"
-  fi
+  powershell.exe -c "& { . $(unixpath -w $BH_DIR/win/admin/install-python.ps1) }"
 }
 
 function bh_install_win_vscode() {
-  if ! type code &>/dev/null; then
-    hf_winget_install vscode
-  fi
+  hf_winget_install vscode
 }
 
 function bh_install_win_miktex() {

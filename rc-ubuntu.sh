@@ -11,17 +11,20 @@ function bh_open {
 # load commands
 # ---------------------------------------
 
-IS_GNOME=false
-HAS_SNAP=false
-if type gnome-shell &>/dev/null; then IS_GNOME=true; fi
-if type snap &>/dev/null; then HAS_SNAP=true; fi
 source "$BH_DIR/ubuntu/install.sh"
-if $IS_GNOME; then source "$BH_DIR/ubuntu/gnome.sh"; fi
-if type service tar &>/dev/null; then source "$BH_DIR/ubuntu/initd.sh"; fi
+
+if type gnome-shell &>/dev/null; then
+  HAS_GNOME=true
+  source "$BH_DIR/ubuntu/gnome.sh"
+fi
+if type snap &>/dev/null; then
+  HAS_SNAP=true
+  source "$BH_DIR/ubuntu/snap.sh"
+fi
+if type service &>/dev/null; then source "$BH_DIR/ubuntu/initd.sh"; fi
 if type lxc &>/dev/null; then source "$BH_DIR/ubuntu/lxc.sh"; fi
 if type lsof &>/dev/null; then source "$BH_DIR/ubuntu/ports.sh"; fi
-if $HAS_SNAP; then source "$BH_DIR/ubuntu/snap.sh"; fi
-if type systemctl tar &>/dev/null; then source "$BH_DIR/ubuntu/systemd.sh"; fi
+if type systemctl &>/dev/null; then source "$BH_DIR/ubuntu/systemd.sh"; fi
 
 # ---------------------------------------
 # update_clean
@@ -45,12 +48,9 @@ function bh_update_cleanup_ubuntu() {
   bh_apt_autoremove
   bh_apt_upgrade
   # python
-  bh_python_upgrade
-  bh_python_install $BH_PKGS_PYTHON
-  # install vscode
-  bh_install_vscode
+  $HAS_PYTHON && bh_python_install $BH_PKGS_PYTHON
   # vscode
-  bh_vscode_install $BH_PKGS_VSCODE
+  $HAS_VSCODE && bh_vscode_install $BH_PKGS_VSCODE
   # cleanup
   bh_home_clean_unused
 }

@@ -48,7 +48,7 @@ Run in a powershell shell the script install/bh-on-win.ps1) to install git, GitB
 The helpers bellow can be run routinely. They install packages defined in `BH_PKGS_*` vars from ~/.bashrc or ~/.bh-cfg.sh, and also clean unused files/folders defined in `BH_HOME_CLEAN_UNUSED` var. Please see the vars examples in skel/.bh-cfg.sh.
 
 * `bh_update_cleanup_mac` (at mac bash): BH_PKGS_BREW, BH_PKGS_PYTHON, BH_PKGS_VSCODE
-* `bh_update_cleanup_ubuntu` (at ubuntu bash): BH_PKGS_APT_UBUNTU, BH_PKGS_PYTHON, BH_PKGS_VSCODE, plus BH_PKGS_SNAP, BH_PKGS_SNAP_CLASSIC
+* `bh_update_cleanup_ubuntu` (at ubuntu bash): BH_PKGS_APT_UBUNTU, BH_PKGS_PYTHON, BH_PKGS_VSCODE, BH_PKGS_SNAP, BH_PKGS_SNAP_CLASSIC
 * `bh_update_cleanup_win` (at GitBash): BH_PKGS_WINGET, BH_PKGS_PYTHON, BH_PKGS_VSCODE
 * `bh_update_cleanup_wsl` (at WSL bash): BH_PKGS_APT_WSL, BH_PKGS_PYTHON_WSL
 * `bh_update_cleanup_msys` (at msys bash): BH_PKGS_MSYS, BH_PKGS_PYTHON_MSYS
