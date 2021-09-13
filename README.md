@@ -1,6 +1,6 @@
 <h1 align="center"><img src="website/static/logo.svg" width="250"/></h1>
 
-This project offers cross-plataform (linux, macOS, windows) bash helpers to: configure OS Desktop Shell (e.g., dark mode, disable animations), install software (e.g., python, vscode, docker, others bashs) and utilities (e.g., git, npm, compress, pdf, vscode, curl).
+Cross-platform (linux, macOS, windows) bash helpers to: configure OS (e.g., dark mode, disable animations), install software (e.g., python, vscode, docker) and useful utilities (e.g., git, npm, compress, pdf, vscode, curl).
 The project logo is a reference to the synthetic chemical element Bohrium, which also has the initials bh.
 
 # How to install bash-helpers
