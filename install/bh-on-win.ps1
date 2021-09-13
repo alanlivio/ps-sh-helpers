@@ -7,7 +7,10 @@ function bh_log() {
 function bh_install_win_winget() {
   if (!(Get-Command 'winget.exe' -ea 0)) {
     Invoke-Expression $bh_log_func
-    Get-AppxPackage Microsoft.DesktopAppInstaller | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
+    $filename="Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
+    $url="https://github.com/microsoft/winget-cli/releases/download/v1.0.11692/$filename"
+    Invoke-WebRequest $url -OutFile "${env:tmp}\$filename"
+    Add-AppPackage -path "${env:tmp}\$filename"
   }
 }
 
