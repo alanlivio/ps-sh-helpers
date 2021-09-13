@@ -20,7 +20,9 @@ function bh_user_win_adminstrator_disable() {
 
 function bh_syswin_update_win() {
   bh_log_func
-  ps_call_admin '$(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
+  ps_call_admin '
+    Install-Module -Name PSWindowsUpdate -Force
+    $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
     if ($_ -is [string]) {
       $_.Split("", [System.StringSplitOptions]::RemoveEmptyEntries) 
     } 
