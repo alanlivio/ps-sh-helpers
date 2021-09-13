@@ -28,7 +28,7 @@ function bh_vscode_install() {
       pkgs_to_install="$i $pkgs_to_install"
     fi
   done
-  if ! test -z $pkgs_to_install; then
+  if test ! -z "$pkgs_to_install"; then
     echo "pkgs_to_install=$pkgs_to_install"
     for i in $pkgs_to_install; do
       code --install-extension $i
