@@ -7,13 +7,15 @@ function bh_install_win_python() {
 }
 
 function bh_install_win_vscode() {
-  hf_winget_install vscode
+  bh_winget_install vscode
+}
+
+function bh_install_win_gsudo() {
+  bh_winget_install gsudo
 }
 
 function bh_install_win_miktex() {
-  if ! type miktex-pdflatex.exe &>/dev/null; then
-    hf_winget_install MiKTeX
-  fi
+  bh_winget_install MiKTeX
 }
 
 function bh_install_win_make() {
