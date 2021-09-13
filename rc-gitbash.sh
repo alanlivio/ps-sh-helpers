@@ -39,14 +39,11 @@ function ps_call_script_admin() {
 # load commands
 # ---------------------------------------
 
-source "$BH_DIR/win/user.sh" # bh_user_win_check_admin
+source "$BH_DIR/win/user.sh"
 source "$BH_DIR/win/install.sh"
 source "$BH_DIR/win/winget.sh"
 source "$BH_DIR/win/explorer.sh"
-
-if [ "$(bh_user_win_check_admin)" == "True" ]; then
-  source "$BH_DIR/win/admin.sh"
-fi
+if type gsudo &>/dev/null; then source "$BH_DIR/win/admin.sh"; fi
 
 function bh_win_sanity() {
   powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/win-sanity.ps1) }"
@@ -57,17 +54,15 @@ function bh_win_sanity() {
 # ---------------------------------------
 
 function bh_update_cleanup_win() {
-  # windows
-  if [ "$(bh_user_win_check_admin)" == "True" ]; then
-    bh_syswin_update_win
-  fi
-  # winget (it uses --scope=user)
-  bh_winget_install $BH_PKGS_WINGET
-  # python
-  $HAS_PYTHON && bh_python_install $BH_PKGS_PYTHON
-  # vscode
-  $HAS_VSCODE && bh_vscode_install $BH_PKGS_VSCODE
   # cleanup
   bh_home_clean_unused
   bh_explorer_hide_home_dotfiles
+  # winget (it uses --scope=user)
+  bh_winget_install $BH_PKGS_WINGET
+  # python
+  type pip &>/dev/null && bh_python_install $BH_PKGS_PYTHON
+  # vscode
+  type code &>/dev/null && bh_vscode_install $BH_PKGS_VSCODE
+  # windows
+  type gsudo &>/dev/null && bh_syswin_update_win
 }

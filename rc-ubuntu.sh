@@ -14,11 +14,9 @@ function bh_open {
 source "$BH_DIR/ubuntu/install.sh"
 
 if type gnome-shell &>/dev/null; then
-  HAS_GNOME=true
   source "$BH_DIR/ubuntu/gnome.sh"
 fi
 if type snap &>/dev/null; then
-  HAS_SNAP=true
   source "$BH_DIR/ubuntu/snap.sh"
 fi
 if type service &>/dev/null; then source "$BH_DIR/ubuntu/initd.sh"; fi
@@ -31,7 +29,7 @@ if type systemctl &>/dev/null; then source "$BH_DIR/ubuntu/systemd.sh"; fi
 # ---------------------------------------
 
 function bh_update_cleanup_ubuntu() {
-  if $HAS_SNAP; then
+  if type snap &>/dev/null; then
     # snap
     bh_snap_install $BH_PKGS_SNAP
     bh_snap_install_classic $BH_PKGS_SNAP_CLASSIC

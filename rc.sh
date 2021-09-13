@@ -11,10 +11,6 @@ IS_WINDOWS=false
 IS_WINDOWS_WSL=false
 IS_WINDOWS_MSYS=false
 IS_WINDOWS_GITBASH=false
-HAS_GNOME=false
-HAS_SNAP=false
-HAS_VSCODE=false
-HAS_PYTHON=false
 
 case "$(uname -s)" in
 CYGWIN* | MINGW* | MSYS*)
