@@ -27,6 +27,7 @@ function bh_sanity_start_menu() {
     'Microsoft.3DBuilder'
     'Microsoft.Appconnector'
     'Microsoft.BingNews'
+    'Microsoft.BingWeather'
     'Microsoft.MSPaint'
     'Microsoft.BingSports'
     'Microsoft.BingWeather'
@@ -38,6 +39,7 @@ function bh_sanity_start_menu() {
     'Microsoft.MicrosoftOfficeHub'
     'Microsoft.MicrosoftSolitaireCollection'
     'Microsoft.MicrosoftStickyNotes'
+    'Microsoft.windowscommunicationsapps'
     'Microsoft.MixedReality.Portal'
     'Microsoft.Office.Desktop'
     'Microsoft.Office.Sway'
@@ -54,6 +56,7 @@ function bh_sanity_start_menu() {
     'Microsoft.XboxGamingOverlay'
     'Microsoft.XboxIdentityProvider'
     'Microsoft.XboxSpeechToTextOverlay'
+    'Microsoft.ZuneMusic'
     # other
     '7EE7776C.LinkedInforWindows'
     '9E2F88E3.Twitter'
@@ -89,9 +92,6 @@ function bh_sanity_taskbar() {
 
   bh_log_2nd "disable task view button"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name ShowTaskViewButton -Value 0
-
-  bh_log_2nd "disable people button"
-  Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Name "PeopleBand" -Value 0
 }
 
 function bh_sanity_explorer() {
