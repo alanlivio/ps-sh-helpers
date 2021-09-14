@@ -5,6 +5,7 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": " docusaurus start",
+    "prebuild": "node src/index-from-readme.js",
     "prestart": "node src/index-from-readme.js",
     "prepare": "node src/index-from-readme.js",
     "build": "docusaurus build",
