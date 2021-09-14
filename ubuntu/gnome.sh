@@ -160,10 +160,10 @@ function bh_gnome_settings_diff_actual_and_file() {
 }
 
 # ---------------------------------------
-# install
+# install_ubuntu
 # ---------------------------------------
 
-function bh_install_foxit() {
+function bh_install_ubuntu_foxit() {
   bh_log_func
   if ! type FoxitReader &>/dev/null; then
     local url=https://cdn01.foxitsoftware.com/pub/foxit/reader/desktop/linux/2.x/2.4/en_us/FoxitReader.enu.setup.2.4.4.0911.x64.run.tar.gz
@@ -176,7 +176,7 @@ function bh_install_foxit() {
   fi
 }
 
-function bh_install_tor() {
+function bh_install_ubuntu_tor() {
   bh_log_func
   if ! test -d $HELPERS_OPT/tor; then
     local url=https://dist.torproject.org/torbrowser/9.5/tor-browser-linux64-9.5_en-US.tar.xz
@@ -188,7 +188,7 @@ function bh_install_tor() {
   sudo desktop-file-install "$HELPERS_OPT/tor/start-tor-browser.desktop"
 }
 
-function bh_install_zotero() {
+function bh_install_ubuntu_zotero() {
   bh_log_func
   if ! test -d $HELPERS_OPT/zotero; then
     local url=https://download.zotero.org/client/release/5.0.82/Zotero-5.0.82_linux-x86_64.tar.bz2
@@ -206,12 +206,12 @@ function bh_install_zotero() {
   sudo desktop-file-install $HELPERS_OPT/zotero/zotero.desktop
 }
 
-function bh_install_texlive() {
+function bh_install_ubuntu_texlive() {
   local pkgs_to_install+="texlive-base texlive-latex-recommended texlive-latex-extra texlive-bibtex-extra texlive-extra-utils texlive-fonts-extra texlive-xetex texlive-lang-english"
   bh_apt_install $pkgs_to_install
 }
 
-function bh_install_simplescreenrercoder_apt() {
+function bh_install_ubuntu_simplescreenrercoder_apt() {
   bh_log_func
   if ! type simplescreenrecorder &>/dev/null; then
     sudo rm /etc/apt/sources.list.d/maarten-baert-ubuntu-simplescreenrecorder*
@@ -221,7 +221,7 @@ function bh_install_simplescreenrercoder_apt() {
   fi
 }
 
-function bh_install_vscode() {
+function bh_install_ubuntu_vscode() {
   bh_log_func
   if ! type code &>/dev/null; then
     sudo rm /etc/apt/sources.list.d/vscode*
@@ -233,7 +233,7 @@ function bh_install_vscode() {
   fi
 }
 
-function bh_install_insync() {
+function bh_install_ubuntu_insync() {
   bh_log_func
   dpkg --status insync &>/dev/null
   if test $? != 0; then
@@ -244,7 +244,7 @@ function bh_install_insync() {
   fi
 }
 
-function bh_install_vidcutter() {
+function bh_install_ubuntu_vidcutter() {
   bh_log_func
   dpkg --status vidcutter &>/dev/null
   if test $? != 0; then
@@ -255,7 +255,7 @@ function bh_install_vidcutter() {
   fi
 }
 
-function bh_install_peek() {
+function bh_install_ubuntu_peek() {
   bh_log_func
   dpkg --status peek &>/dev/null
   if test $? != 0; then

@@ -27,7 +27,6 @@ function bh_sanity_start_menu() {
     'Microsoft.3DBuilder'
     'Microsoft.Appconnector'
     'Microsoft.BingNews'
-    'Microsoft.BingWeather'
     'Microsoft.MSPaint'
     'Microsoft.BingSports'
     'Microsoft.BingWeather'

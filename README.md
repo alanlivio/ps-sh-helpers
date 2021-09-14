@@ -1,6 +1,6 @@
 <h1 align="center"><img src="website/static/logo.svg" width="250"/></h1>
 
-Cross-platform (linux, macOS, windows) bash helpers to: configure OS (e.g., dark mode, disable animations), install software (e.g., python, vscode, docker) and useful utilities (e.g., git, npm, compress, pdf, vscode, curl).
+Cross-platform bash helpers for supporting configure OS interface, install software, update/cleanup, and utilities.
 The project logo is a reference to the synthetic chemical element Bohrium, which also has the initials bh.
 
 # How to install bash-helpers
@@ -30,20 +30,20 @@ Run in a powershell shell the script install/bh-on-win.ps1) to install git, GitB
 
 # helpers
 
-### helpers for Desktop Shell sanity
+### configure OS interface
 
-* `bh_gnome_sanity` (at ubuntu bash): to configure Gnome Shell
-* `bh_win_sanity` (at gitbash, run): to configure windows Shell
+* `bh_gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean task bar (e.g. small icons, no search), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
+* `bh_win_sanity` (at gitbash): enable dark mode, disable animations, clean dock (e.g. small icons)
+* `bh_macos_sanity` (at bash): TODO
 
-### helpers to install windows MSYS
+### install software
 
 * `bh_install_win_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
-
-### helpers to install windows WSL
-
 * `bh_install_win_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After run, it requeres restart windows and run it again. When Ubuntu app started, you need configure your username/password.
+* See full list of `bh_install_win*` at lib/win/install.sh
+* See full list of `bh_install_ubuntu_*` at lib/ubuntu/gnome.sh
 
-### helpers for update/cleanup
+### update/cleanup
 
 The helpers bellow can be run routinely. They install packages defined in `BH_PKGS_*` vars from ~/.bashrc or ~/.bh-cfg.sh, and also clean unused files/folders defined in `BH_HOME_CLEAN_UNUSED` var. Please see the vars examples in skel/.bh-cfg.sh.
 
@@ -53,7 +53,7 @@ The helpers bellow can be run routinely. They install packages defined in `BH_PK
 * `bh_update_cleanup_wsl` (at WSL bash): BH_PKGS_APT_WSL, BH_PKGS_PYTHON_WSL
 * `bh_update_cleanup_msys` (at msys bash): BH_PKGS_MSYS, BH_PKGS_PYTHON_MSYS
 
-### helpers for dotfiles/home managment
+### dotfiles/home managment
 
 * `bh_dotfiles_backup`: backup files/dirs defined in BH_DOTFILES_BKPS
 * `bh_dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES_BKPS
@@ -76,7 +76,7 @@ The helpers bellow can be run routinely. They install packages defined in `BH_PK
 
 ### others helpers
 
-The helpers bellow used for specifc commands. For the full list, see lib/ folder.
+The helpers bellow are used for specifc commands. For the full list, see lib/ folder.
 
 * `bh_android_*`: android helpers. See full list at lib/android.sh
 * `bh_cmake_*`: cmake helpers. See full list at lib/cmake.sh
@@ -102,7 +102,7 @@ The helpers bellow used for specifc commands. For the full list, see lib/ folder
 
 # References
 
-Other github projects were used as reference:
+The projects bellow used as reference:
 
 * https://github.com/wd5gnr/bashrc
 * https://github.com/martinburger/bash-common-helpers
@@ -111,7 +111,7 @@ Other github projects were used as reference:
 * https://github.com/donnemartin/dev-setup
 * https://github.com/aspiers/shell-env
 
-And, particulary, references for helpers on windows:
+And, particulary, these were reference for helpers on windows:
 
 * https://github.com/adolfintel/windows10-Privacy
 * https://gist.github.com/alirobe/7f3b34ad89a159e6daa1
