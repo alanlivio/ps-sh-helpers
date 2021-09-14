@@ -1,21 +1,21 @@
 # ---------------------------------------
-# home
+# dotfiles
 # ---------------------------------------
 
-function bh_home_backup_func() {
-  : ${1?"Usage: ${FUNCNAME[0]} save|restore|diff"}
+function bh_dotfiles_func() {
+  : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
   bh_log_func
   declare -a files_array
-  files_array=($BH_HOME_BKPS)
+  files_array=($BH_DOTFILES_BKPS)
   if [ ${#files_array[@]} -eq 0 ]; then
-    bh_log_error "BH_HOME_BKPS empty"
+    bh_log_error "BH_DOTFILES_BKPS empty"
   fi
   for ((i = 0; i < ${#files_array[@]}; i = i + 2)); do
     bh_test_and_create_file ${files_array[$i]}
     bh_test_and_create_file ${files_array[$((i + 1))]}
-    if [ $1 = "save" ]; then
+    if [ $1 = "backup" ]; then
       cp ${files_array[$i]} ${files_array[$((i + 1))]}
-    elif [ $1 = "restore" ]; then
+    elif [ $1 = "install" ]; then
       cp ${files_array[$((i + 1))]} ${files_array[$i]}
     elif [ $1 = "diff" ]; then
       ret=$(diff ${files_array[$i]} ${files_array[$((i + 1))]})
@@ -26,9 +26,13 @@ function bh_home_backup_func() {
     fi
   done
 }
-alias bh_home_backup_restore="bh_home_backup_func restore"
-alias bh_home_backup_save="bh_home_backup_func save"
-alias bh_home_backup_diff="bh_home_backup_func diff"
+alias bh_dotfiles_install="bh_dotfiles_func install"
+alias bh_dotfiles_backup="bh_dotfiles_func backup"
+alias bh_dotfiles_diff="bh_dotfiles_func diff"
+
+# ---------------------------------------
+# home
+# ---------------------------------------
 
 function bh_home_clean_unused() {
   bh_log_func
