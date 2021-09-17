@@ -5,8 +5,8 @@
 function bh_update_cleanup_msys() {
   bh_log_func
   # windows
-  if [ "$(bh_user_win_check_admin)" == "True" ]; then
-    bh_syswin_update_win
+  if [ "$(bh_win_user_check_admin)" == "True" ]; then
+    bh_win_sysupdate_win
   fi
   # essentials
   local pkgs="pacman pacman-mirrors msys2-runtime vim diffutils curl $BH_PKGS_MSYS"

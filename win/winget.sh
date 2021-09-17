@@ -2,11 +2,11 @@
 # winget
 # ---------------------------------------
 
-function bh_winget_list_installed() {
+function bh_win_get_list_installed() {
   winget list
 }
 
-function bh_winget_list_installed_str() {
+function bh_win_get_list_installed_str() {
   powershell -c '
     $tmpfile = New-TemporaryFile
     winget export $tmpfile | Out-null
@@ -15,10 +15,10 @@ function bh_winget_list_installed_str() {
   '
 }
 
-function bh_winget_install() {
+function bh_win_get_install() {
   bh_log_func
   local pkgs_to_install=""
-  local pkgs_installed=$(bh_winget_list_installed_str)
+  local pkgs_installed=$(bh_win_get_list_installed_str)
   for i in "$@"; do
     if [[ ! $pkgs_installed =~ $i ]]; then
       pkgs_to_install="$i $pkgs_to_install"
@@ -32,10 +32,10 @@ function bh_winget_install() {
   fi
 }
 
-function bh_winget_settings() {
+function bh_win_get_settings() {
   winget settings
 }
 
-function bh_winget_upgrade() {
+function bh_win_get_upgrade() {
   winget upgrade --all --silent
 }

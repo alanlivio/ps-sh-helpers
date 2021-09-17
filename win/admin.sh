@@ -10,19 +10,19 @@ function bh_win_disable_ctx_menu_unused() {
   ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/disable-cxt-menu-unused.ps1)
 }
 
-function bh_user_win_adminstrator_enable() {
+function bh_win_user_adminstrator_enable() {
   ps_call_admin 'net user administrator /active:yes'
 }
 
-function bh_user_win_adminstrator_disable() {
+function bh_win_user_adminstrator_disable() {
   ps_call_admin 'net user administrator /active:no'
 }
 
 # ---------------------------------------
-# syswin
+# sysupdate
 # ---------------------------------------
 
-function bh_syswin_update_win() {
+function bh_win_sysupdate_win() {
   bh_log_func
   ps_call_admin '
     Install-Module -Name PSWindowsUpdate -Force
@@ -33,11 +33,11 @@ function bh_syswin_update_win() {
   }'
 }
 
-function bh_syswin_update_win_list() {
+function bh_win_sysupdate_win_list() {
   ps_call_admin 'Get-WindowsUpdate'
 }
 
-function bh_syswin_update_win_list_last_installed() {
+function bh_win_sysupdate_win_list_last_installed() {
   ps_call_admin 'Get-WUHistory -Last 10 | Select-Object Date, Title, Result'
 }
 
@@ -102,7 +102,7 @@ function bh_install_win_msys() {
 function bh_install_win_tesseract() {
   bh_log_func
   if type tesseract.exe &>/dev/null; then
-    bh_winget_install tesseract
+    bh_win_get_install tesseract
     bh_path_win_add 'C:\Program Files\Tesseract-OCR'
   fi
 }
@@ -110,7 +110,7 @@ function bh_install_win_tesseract() {
 function bh_install_win_java() {
   bh_log_func
   if type java.exe &>/dev/null; then
-    bh_winget_install ojdkbuild.ojdkbuild
+    bh_win_get_install ojdkbuild.ojdkbuild
     local javahome=$(ps_call '$(get-command java).Source.replace("\bin\java.exe", "")')
     bh_env_add "JAVA_HOME" "$javahome"
   fi
@@ -120,7 +120,7 @@ function bh_install_win_docker() {
   bh_log_func
   ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
   ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
-  bh_winget_install Docker.DockerDesktop
+  bh_win_get_install Docker.DockerDesktop
 }
 
 function bh_install_win_choco() {

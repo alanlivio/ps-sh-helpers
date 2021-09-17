@@ -7,15 +7,15 @@ function bh_install_win_python() {
 }
 
 function bh_install_win_vscode() {
-  bh_winget_install vscode
+  bh_win_get_install vscode
 }
 
 function bh_install_win_gsudo() {
-  bh_winget_install gsudo
+  bh_win_get_install gsudo
 }
 
 function bh_install_win_miktex() {
-  bh_winget_install MiKTeX
+  bh_win_get_install MiKTeX
 }
 
 function bh_install_win_make() {

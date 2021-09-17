@@ -31,7 +31,7 @@ function bh_explorer_restart() {
   ps_call 'Start-Process explorer.exe'
 }
 
-function bh_explorer_restore_desktop() {
+function bh_explorer_home_restore_desktop() {
   ps_call '
     if (Test-Path "${env:userprofile}\Desktop") { return}
     mkdir "${env:userprofile}\Desktop"

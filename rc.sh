@@ -75,6 +75,10 @@ function bh_bashrc_reload() {
   fi
 }
 
+# ---------------------------------------
+# bh
+# ---------------------------------------
+
 function bh_bh_update_from_github_and_reload() {
   bh_log_func
   cd $BH_DIR && git pull && cd $OLDPWD
@@ -92,6 +96,7 @@ function bh_bh_install() {
 # ---------------------------------------
 # load helpers for specific commands
 # ---------------------------------------
+
 if type code &>/dev/null; then
   HAS_VSCODE=true
   source "$BH_DIR/lib/vscode.sh"
