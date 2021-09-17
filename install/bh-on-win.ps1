@@ -47,4 +47,4 @@ if (!(Test-Path $("${env:userprofile}\.bh"))) {
   & "$(Split-Path  (Get-Command "git.exe").Source)\..\bin\bash.exe"  -c "sed '/show\sMSYSTEM/d' -i /etc/profile.d/git-prompt.sh"
 }
 # enable run scripts
-Set-ExecutionPolicy remotesigned 
+Set-ExecutionPolicy Unrestricted -Scope CurrentUser

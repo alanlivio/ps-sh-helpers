@@ -6,6 +6,10 @@ function bh_win_user_disable_password_policy() {
   ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/disable-password-policy.ps1)
 }
 
+function bh_win_disable_ctx_menu_unused() {
+  ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/disable-cxt-menu-unused.ps1)
+}
+
 function bh_user_win_adminstrator_enable() {
   ps_call_admin 'net user administrator /active:yes'
 }
