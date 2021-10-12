@@ -91,6 +91,10 @@ function bh_win_services_list_running() {
 # install admin
 # ---------------------------------------
 
+function bh_install_win_gsudo() {
+  bh_win_get_install gsudo
+}
+
 function bh_install_win_wsl() {
   ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/install-wsl.ps1)
 }

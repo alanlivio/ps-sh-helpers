@@ -3,19 +3,19 @@
 # ---------------------------------------
 
 function bh_install_win_python() {
-  powershell.exe -c "& { . $(unixpath -w $BH_DIR/win/admin/install-python.ps1) }"
+  winget install -i Python.Python.3
+}
+
+function bh_install_win_zotero() {
+  winget install -i Zotero.Zotero
 }
 
 function bh_install_win_vscode() {
-  bh_win_get_install vscode
-}
-
-function bh_install_win_gsudo() {
-  bh_win_get_install gsudo
+  winget install -i Microsoft.VisualStudioCode
 }
 
 function bh_install_win_miktex() {
-  bh_win_get_install MiKTeX
+  winget install -i MiKTeX
 }
 
 function bh_install_win_make() {
@@ -35,7 +35,7 @@ function bh_install_win_ffmpeg() {
   local bin_dir="$BH_OPT_WIN/ffmpeg-${BH_FFMPEG_VER}-essentials_build/bin/"
   if ! test -d $bin_dir; then
     bh_decompress_from_url $url $BH_OPT_WIN/ # has root folder
-    if [[ $? != 0 || ! -d $bin_dir ]] ; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
+    if [[ $? != 0 || ! -d $bin_dir ]]; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
     bh_path_win_add $(winpath $bin_dir)
   fi
 }
