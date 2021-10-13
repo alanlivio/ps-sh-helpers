@@ -9,7 +9,7 @@ function bh_win_get_list_installed() {
 function bh_win_get_list_installed_str() {
   powershell -c '
     $tmpfile = New-TemporaryFile
-    winget export $tmpfile | Out-null
+    winget export $tmpfile | Select-String -Pattern "\n|Installed package is not available" -NotMatch
     $pkgs = ((Get-Content $tmpfile | ConvertFrom-Json).Sources.Packages | ForEach-Object { $_.PackageIdentifier }) -join " "
     echo $pkgs
   '
@@ -30,7 +30,7 @@ function bh_win_get_install() {
       winget install $pkg
         if $? -ne 0; then 
           bh_log "INFO: winget install failed, trying winget install -i ..."
-          inget install -i $pkg
+          winget install -i $pkg
         fi
     done
   fi
