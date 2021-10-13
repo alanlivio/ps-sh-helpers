@@ -3,7 +3,7 @@
 # ---------------------------------------
 
 function bh_install_win_python() {
-  winget install -i Python.Python.3
+  winget install -i Python.Python.3 --version 3.9.7150.0 --source winget
 }
 
 function bh_install_win_zotero() {
