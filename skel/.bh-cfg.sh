@@ -29,8 +29,6 @@ BH_PKGS_VSCODE+="mkaufman.HTMLHint "
 # python DS
 BH_PKGS_PYTHON+="wheel ipykernel numpy pandas scikit-learn mathplot matplotlib "
 BH_PKGS_PYTHON+="nbdime " # jypter diff
-# python tools
-BH_PKGS_PYTHON+="youtube-dl "
 # python vscode
 BH_PKGS_PYTHON+="autopep8 pylama pylint "
 BH_PKGS_VSCODE+="ms-python.python "

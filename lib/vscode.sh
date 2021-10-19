@@ -2,13 +2,6 @@
 # vscode
 # ---------------------------------------
 
-function bh_vscode_install_config_files() {
-  if test -d $BH_SKEL_VSCODE; then
-    cp $BH_SKEL_VSCODE/settings.json $HOME/.config/Code/User
-    cp $BH_SKEL_VSCODE/keybindings.json $HOME/.config/Code/User
-  fi
-}
-
 function bh_vscode_diff() {
   : ${1?"Usage: ${FUNCNAME[0]} <old_file> <new_file>"}
   diff "$1" "$2" &>/dev/null

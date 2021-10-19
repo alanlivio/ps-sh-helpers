@@ -41,7 +41,6 @@ esac
 
 BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BH_RC="$BH_DIR/rc.sh"
-BH_SKEL_VSCODE="$BH_DIR/skel/vscode"
 
 # ---------------------------------------
 # bh vars from .bh-cfg.sh vars
@@ -56,27 +55,13 @@ if test -z "$BH_OPT_LINUX"; then BH_OPT_LINUX="$HOME/opt"; fi
 if test -z "$BH_DEV"; then BH_DEV="$HOME/dev"; fi
 
 # ---------------------------------------
-# essentials
+# essentials helpers
 # ---------------------------------------
 
-source "$BH_DIR/lib/log-test.sh"   # uses echo, test, md5
-source "$BH_DIR/lib/curl.sh"       # uses curl
-source "$BH_DIR/lib/home.sh"       # uses cp
-source "$BH_DIR/lib/decompress.sh" # uses tar, unzip, curl
-source "$BH_DIR/lib/rename.sh"     # uses rename
-source "$BH_DIR/lib/folder.sh"     # uses du, find
-
-function bh_bashrc_reload() {
-  bh_log_func
-  if $IS_WINDOWS_WSL; then
-    source $HOME/.profile
-  else
-    source $HOME/.bashrc
-  fi
-}
+source "$BH_DIR/lib/essentials.sh" # uses echo, test, md5, curl, tar, unzip, curl, renamedu, find
 
 # ---------------------------------------
-# bh
+# bh helpers
 # ---------------------------------------
 
 function bh_bh_update_from_github_and_reload() {
@@ -94,7 +79,7 @@ function bh_bh_install() {
 }
 
 # ---------------------------------------
-# load helpers for specific commands
+# specifc-commands helpers
 # ---------------------------------------
 
 if type code &>/dev/null; then
@@ -107,18 +92,13 @@ if type pip &>/dev/null; then
 fi
 
 if type adb &>/dev/null; then source "$BH_DIR/lib/android.sh"; fi
-if type arp-scan &>/dev/null; then source "$BH_DIR/lib/arp-scan.sh"; fi
 if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.sh"; fi
-if type diff &>/dev/null; then source "$BH_DIR/lib/diff.sh"; fi
 if type docker &>/dev/null; then source "$BH_DIR/lib/docker.sh"; fi
 if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/ffmpeg.sh"; fi
 if type flutter &>/dev/null; then source "$BH_DIR/lib/flutter.sh"; fi
 if type gcc &>/dev/null; then source "$BH_DIR/lib/gcc.sh"; fi
 if type git &>/dev/null; then source "$BH_DIR/lib/git.sh"; fi
-if type gst &>/dev/null; then source "$BH_DIR/lib/gst.sh"; fi
 if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/lib/gst.sh"; fi
-if type jupyter &>/dev/null; then source "$BH_DIR/lib/jupyter.sh"; fi
-if type mount &>/dev/null; then source "$BH_DIR/lib/mount.sh"; fi
 if type pandoc &>/dev/null; then source "$BH_DIR/lib/pandoc.sh"; fi
 if type pdflatex &>/dev/null; then source "$BH_DIR/lib/pdflatex.sh"; fi
 if type pdftk ghostscript &>/dev/null; then source "$BH_DIR/lib/pdf.sh"; fi
@@ -134,7 +114,7 @@ if type zip tar &>/dev/null; then source "$BH_DIR/lib/zip.sh"; fi
 if test -d /etc/sudoers.d/; then source "$BH_DIR/lib/user.sh"; fi
 
 # ---------------------------------------
-# load libs for specific OS
+# specific-OS helpers
 # ---------------------------------------
 
 if $IS_LINUX_UBUNTU; then

@@ -65,3 +65,15 @@ function bh_python_venv_load() {
 function bh_folder_host_http() {
   python -m http.server 80
 }
+
+# ---------------------------------------
+# jupyter
+# ---------------------------------------
+
+function bh_jupyter_notebook() {
+  jupyter notebook
+}
+
+function bh_jupyter_remove_output() {
+  jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace $@
+}
