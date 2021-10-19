@@ -30,20 +30,20 @@ Run in a powershell shell the script install/bh-on-win.ps1) to install git, GitB
 
 # helpers
 
-### configure OS interface
+### configure OS interface helpers
 
 * `bh_gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean task bar (e.g. small icons, no search), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
 * `bh_win_sanity` (at gitbash): enable dark mode, disable animations, clean dock (e.g. small icons)
 * `bh_macos_sanity` (at bash): TODO
 
-### install software
+### install software helpers
 
 * `bh_install_win_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
 * `bh_install_win_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After run, it requeres restart windows and run it again. When Ubuntu app started, you need configure your username/password.
 * See full list of `bh_install_win*` at lib/win/install.sh
 * See full list of `bh_install_ubuntu_*` at lib/ubuntu/gnome.sh
 
-### update/cleanup
+### update/cleanup helpers
 
 The helpers bellow can be run routinely. They install packages defined in `BH_PKGS_*` vars from ~/.bashrc or ~/.bh-cfg.sh, and also clean unused files/folders defined in `BH_HOME_CLEAN_UNUSED` var. Please see the vars examples in skel/.bh-cfg.sh.
 
@@ -53,7 +53,7 @@ The helpers bellow can be run routinely. They install packages defined in `BH_PK
 * `bh_update_cleanup_wsl` (at WSL bash): BH_PKGS_APT_WSL, BH_PKGS_PYTHON_WSL
 * `bh_update_cleanup_msys` (at msys bash): BH_PKGS_MSYS, BH_PKGS_PYTHON_MSYS
 
-### dotfiles/home managment
+### dotfiles/home managment helpers
 
 * `bh_dotfiles_backup`: backup files/dirs defined in BH_DOTFILES_BKPS
 * `bh_dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES_BKPS
@@ -61,14 +61,14 @@ The helpers bellow can be run routinely. They install packages defined in `BH_PK
 * `bh_home_clean_unused`: clean files/dirs defined in array BH_HOME_CLEAN_UNUSED
 * `bh_home_dev_folder_git_repos`: clone/update git repos defined in BH_DEV_REPOS
 
-### helpers for curl
+### curl helpers
 
 * `bh_curl_get`: GET request to URL
 * `bh_curl_post`: POST request to URL
 * `bh_curl_post_json`: POST request to URL using JSON
 * `bh_curl_fetch_to_dir`: get URL to parent dir
 
-### helpers for folder
+### forder helpers
 
 * `bh_folder_sorted_by_size`: list folder sorted by items size
 * `bh_folder_info`: list number of folder and files per extension
@@ -78,27 +78,27 @@ The helpers bellow can be run routinely. They install packages defined in `BH_PK
 
 The helpers bellow are used for specifc commands. For the full list, see lib/ folder.
 
-* `bh_android_*`: android helpers. See full list at lib/android.sh
-* `bh_cmake_*`: cmake helpers. See full list at lib/cmake.sh
-* `bh_compress_*`: compress helpers. See full list at lib/compress.sh
-* `bh_cmake_*`: cmake helpers. See full list at lib/cmake.sh
-* `bh_diff_*`: diff helpers. See full list at lib/diff.sh
-* `bh_docker_*`: docker helpers. See full list at lib/docker.sh
-* `bh_ffmpeg_*`: ffmpeg helpers. See full list at lib/ffmpeg.sh
-* `bh_flutter_*`: flutter helpers. See full list at lib/flutter.sh
-* `bh_gcc_*`: gcc helpers. See full list at lib/gcc.sh
-* `bh_git_*`: git helpers. See full list at lib/git.sh
-* `bh_meson_*`: meson helpers. See full list at lib/meson.sh
-* `bh_mount_*`: mount helpers. See full list at lib/mount.sh
-* `bh_npm_*`: npm helpers. See full list at lib/npm.sh
-* `bh_pandoc_*`: pandoc helpers. See full list at lib/pandoc.sh
-* `bh_pdf_*`: pdf helpers. See full list at lib/pdf.sh
-* `bh_python_*`: python helpers. See full list at lib/python.sh
-* `bh_vscode_*`: vscode helpers. See full list at lib/vscode.sh
-* `bh_rename_*`: rename helpers. See full list at lib/rename.sh
-* `bh_wget_*`: wget helpers. See full list at lib/wget.sh
-* `bh_youtubedl_*`: youtube-dl helpers. See full list at lib/youtubedl.sh
-* `bh_zip_*`: zip helpers. See full list at lib/zip.sh
+* `bh_android_*`: android helpers.
+* `bh_cmake_*`: cmake helpers.
+* `bh_compress_*`: compress helpers.
+* `bh_cmake_*`: cmake helpers.
+* `bh_diff_*`: diff helpers.
+* `bh_docker_*`: docker helpers.
+* `bh_ffmpeg_*`: ffmpeg helpers.
+* `bh_flutter_*`: flutter helpers.
+* `bh_gcc_*`: gcc helpers.
+* `bh_git_*`: git helpers.
+* `bh_meson_*`: meson helpers.
+* `bh_mount_*`: mount helpers.
+* `bh_npm_*`: npm helpers.
+* `bh_pandoc_*`: pandoc helpers.
+* `bh_pdf_*`: pdf helpers.
+* `bh_python_*`: python helpers.
+* `bh_vscode_*`: vscode helpers.
+* `bh_rename_*`: rename helpers.
+* `bh_wget_*`: wget helpers.
+* `bh_youtubedl_*`: youtube-dl helpers.
+* `bh_zip_*`: zip helpers.
 
 # References
 
