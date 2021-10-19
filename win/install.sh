@@ -4,6 +4,7 @@
 
 function bh_install_win_python() {
   winget install -i Python.Python.3 --version 3.9.7150.0 --source winget
+  bh_path_win_add $(winpath $HOME/AppData/Roaming/Python/Python39/Scripts/)
 }
 
 function bh_install_win_zotero() {
