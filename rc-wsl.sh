@@ -82,12 +82,12 @@ function bh_install_wsl_ssh() {
 }
 
 # ---------------------------------------
-# xpulseaudio
+# x_pulseaudio
 # ---------------------------------------
 
 if [ "$(bh_win_user_check_admin)" == "True" ]; then
 
-  function bh_wsl_xpulseaudio_enable() {
+  function bh_wsl_x_pulseaudio_enable() {
     bh_choco_install "pulseaudio vcxsrv"
 
     # https://wiki.ubuntu.com/WSL#Running_Graphical_Applications
@@ -103,13 +103,16 @@ if [ "$(bh_win_user_check_admin)" == "True" ]; then
     fi
   }
 
-  function bh_wsl_xpulseaudio_start() {
-    bh_wsl_xpulseaudio_stop
+  function bh_wsl_x_pulseaudio_start() {
+    bh_wsl_x_pulseaudio_stop
+    export DISPLAY="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0"
+    export PULSE_SERVER="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0"
+    export LIBGL_ALWAYS_INDIRECT=1
     $(unixpath C:\\ProgramData\\chocolatey\\bin\\pulseaudio.exe) &
     "$(unixpath 'C:\Program Files\VcXsrv\vcxsrv.exe')" :0 -multiwindow -clipboard -wgl -ac -silent-dup-error &
   }
 
-  function bh_wsl_xpulseaudio_stop() {
+  function bh_wsl_x_pulseaudio_stop() {
     cmd.exe /c "taskkill /IM pulseaudio.exe /F"
     cmd.exe /c "taskkill /IM vcxsrv.exe /F"
   }
