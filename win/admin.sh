@@ -95,6 +95,15 @@ function bh_install_win_gsudo() {
   bh_win_get_install gsudo
 }
 
+function bh_install_win_winget_from_github() {
+  ps_call_admin '
+    if (!(Get-Command 'winget.exe' -ea 0)) {
+      Invoke-WebRequest -URI https://github.com/microsoft/winget-cli/releases/download/v1.0.11692/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -UseBasicParsing -OutFile $env:TEMP\tmp.msixbundle
+      Add-AppxPackage -Path $env:TEMP\tmp.msixbundle
+    }
+  '
+}
+
 function bh_install_win_wsl() {
   ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/install-wsl.ps1)
 }

@@ -2,6 +2,16 @@
 # install non-admin
 # ---------------------------------------
 
+function bh_install_store_essentials() {
+  local pkgs='Microsoft.WindowsStore Microsoft.WindowsCalculator Microsoft.Windows.Photos Microsoft.WindowsFeedbackHub Microsoft.WindowsCamera Microsoft.WindowsSoundRecorder'
+  for pkg in $pkgs; do
+    ps_call "
+      Get-AppxPackage $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register \"\$(\$_.InstallLocation)\AppXManifest.xml\" } | Out-null
+    "
+  done
+
+}
+
 function bh_install_win_python() {
   winget install -i Python.Python.3 --version 3.9.7150.0 --source winget
   bh_path_win_add $(winpath $HOME/AppData/Roaming/Python/Python39/Scripts/)
