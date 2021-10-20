@@ -1,7 +1,6 @@
 <h1 align="center"><img src="website/static/logo.svg" width="250"/></h1>
 
-Cross-platform bash helpers for supporting configure OS interface, install software, update/cleanup, and utilities.
-The project logo is a reference to the synthetic chemical element Bohrium, which also has the initials bh.
+Cross-platform (linux, windows, macOS) bash helpers to configure OS (dark mode, disable animations), install/update software (python, vscode, docker, wsl, msys) and useful utilities (dotfiles, git, compress, curl).The project logo is a reference to the synthetic chemical element Bohrium, which also has the initials bh.
 
 # How to install bash-helpers
 
@@ -40,8 +39,8 @@ Run in a powershell shell the script install/bh-on-win.ps1) to install git, GitB
 
 * `bh_install_win_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
 * `bh_install_win_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After run, it requeres restart windows and run it again. When Ubuntu app started, you need configure your username/password.
-* See full list of `bh_install_win*` at lib/win/install.sh
-* See full list of `bh_install_ubuntu_*` at lib/ubuntu/gnome.sh
+* See others `bh_install_win*` at ./win/
+* See others `bh_install_ubuntu_*` at ./ubuntu/
 
 ### update/cleanup helpers
 
