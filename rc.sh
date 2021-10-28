@@ -104,7 +104,6 @@ if type pdflatex &>/dev/null; then source "$BH_DIR/lib/pdflatex.sh"; fi
 if type pdftk ghostscript &>/dev/null; then source "$BH_DIR/lib/pdf.sh"; fi
 if type pkg-config &>/dev/null; then source "$BH_DIR/lib/pkg-config.sh"; fi
 if type pngquant jpegoptim &>/dev/null; then source "$BH_DIR/lib/image.sh"; fi
-if type pygmentize &>/dev/null; then source "$BH_DIR/lib/pygmentize.sh"; fi
 if type ruby &>/dev/null; then source "$BH_DIR/lib/ruby.sh"; fi
 if type ssh &>/dev/null; then source "$BH_DIR/lib/ssh.sh"; fi
 if type tesseract &>/dev/null; then source "$BH_DIR/lib/tesseract.sh"; fi

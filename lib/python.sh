@@ -62,7 +62,7 @@ function bh_python_venv_load() {
   if test requirements.txt; then pip install -r requirements.txt; fi
 }
 
-function bh_folder_host_http() {
+function bh_python_http_host_folder() {
   python -m http.server 80
 }
 
@@ -70,10 +70,38 @@ function bh_folder_host_http() {
 # jupyter
 # ---------------------------------------
 
-function bh_jupyter_notebook() {
-  jupyter notebook
-}
+if type jupyter &>/dev/null; then
+  function bh_python_jupyter_notebook() {
+    jupyter notebook
+  }
 
-function bh_jupyter_remove_output() {
-  jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace $@
-}
+  function bh_python_jupyter_remove_output() {
+    jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace $@
+  }
+fi
+# ---------------------------------------
+# pygmentize
+# ---------------------------------------
+
+if type pygmentize &>/dev/null; then
+  function bh_python_pygmentize_folder_xml_files_by_extensions_to_jpeg() {
+    : ${1?"Usage: ${FUNCNAME[0]} <folder>"}
+    find . -maxdepth 1 -name "*.xml" | while read -r i; do
+      pygmentize -f jpeg -l xml -o $i.jpg $i
+    done
+  }
+  function bh_python_pygmentize_folder_xml_files_by_extensions_to_rtf() {
+    : ${1?"Usage: ${FUNCNAME[0]} <folder>"}
+
+    find . -maxdepth 1 -name "*.xml" | while read -r i; do
+      pygmentize -f jpeg -l xml -o $i.jpg $i
+      pygmentize -P fontsize=16 -P fontface=consolas -l xml -o $i.rtf $i
+    done
+  }
+  function bh_python_pygmentize_folder_xml_files_by_extensions_to_html() {
+    : ${1?"Usage: ${FUNCNAME[0]} ARGUMENT"}
+    find . -maxdepth 1 -name "*.xml" | while read -r i; do
+      pygmentize -O full,style=default -f html -l xml -o $i.html $i
+    done
+  }
+fi
