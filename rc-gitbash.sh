@@ -17,6 +17,10 @@ alias reboot='gsudo shutdown \/r'
 alias ps_call="powershell.exe -c"
 alias ps_call_admin="gsudo powershell.exe -c"
 
+function bh_win_gitbash_fix_prompt {
+  sed '/show\sMSYSTEM/d' -i /etc/profile.d/git-prompt.sh
+}
+
 function bh_open {
   local node="${1:-.}" # . is default value
   ps_call "Start-Process $node"

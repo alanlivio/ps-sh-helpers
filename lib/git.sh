@@ -175,7 +175,7 @@ function bh_git_upstream_pull() {
 
 # edit
 
-function bh_git_edit_name_email() {
+function bh_git_edit_tree_name_email() {
   git filter-branch -f --env-filter '
     NEW_NAME="$(git config user.name)"
     NEW_EMAIL="$(git config user.email)"
@@ -186,7 +186,7 @@ function bh_git_edit_name_email() {
   ' --tag-name-filter cat -- --branches --tags
 }
 
-function bh_git_edit_name_email_by_old_email() {
+function bh_git_edit_tree__name_email_by_old_email() {
   : ${3?"Usage: ${FUNCNAME[0]} <old-name> <new-name> <new-email>"}
   git filter-branch --commit-filter '
     OLD_EMAIL="$1"
@@ -205,7 +205,7 @@ function bh_git_edit_name_email_by_old_email() {
     ' --tag-name-filter cat -- --branches --tags
 }
 
-function bh_git_edit_remove_file_from_tree() {
+function bh_git_edit_tree_remove_file() {
   git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch $1' --prune-empty --tag-name-filter cat -- --all
 }
 
@@ -275,21 +275,6 @@ function bh_git_diff_last_commit() {
 
 # subfolders
 
-function bh_git_subfolders_push() {
-  local cwd=$(pwd)
-  local folder=$(pwd $0)
-  cd $folder
-  for i in $(find . -type d -iname .git | sed 's/\.git//g'); do
-    cd "$folder/$i"
-    if test -d .git; then
-      bh_log_msg "push on $i"
-      git push
-    fi
-    cd ..
-  done
-  cd $cwd
-}
-
 function bh_git_subfolders_pull() {
   local cwd=$(pwd)
   local folder=$(pwd $0)
@@ -345,7 +330,7 @@ function bh_git_tag_remove_local_and_remote() {
 
 # ammend
 
-function bh_git_ammend_all() {
+function bh_git_ammend_commit_all() {
   git commit -a --amend --no-edit
 }
 
