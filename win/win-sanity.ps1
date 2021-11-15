@@ -20,7 +20,7 @@ function bh_appx_uninstall() {
 # setup_win
 # ---------------------------------------
 
-function bh_sanity_start_menu() {
+function bh_win_sanity_start_menu() {
   Invoke-Expression $bh_log_func
   $pkgs = @(
     # microsoft
@@ -84,7 +84,7 @@ function bh_sanity_start_menu() {
   Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" -Name "ShowFrequent" -Type DWord -Value 0
 }
 
-function bh_sanity_taskbar() {
+function bh_win_sanity_taskbar() {
   Invoke-Expression $bh_log_func
 
   bh_log_2nd "enable small app icons"
@@ -97,7 +97,7 @@ function bh_sanity_taskbar() {
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name ShowTaskViewButton -Value 0
 }
 
-function bh_sanity_explorer() {
+function bh_win_sanity_explorer() {
   Invoke-Expression $bh_log_func
   
   bh_log_2nd "set visuals to performace"
@@ -139,7 +139,7 @@ function bh_sanity_explorer() {
   Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "LaunchTo" -Type DWord -Value 1
 }
 
-function bh_sanity_keyboard() {
+function bh_win_sanity_keyboard() {
   Invoke-Expression $bh_log_func
 
   bh_log_2nd "disable Accessibility Keys Prompts"
@@ -158,14 +158,14 @@ function bh_sanity_keyboard() {
   Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "Language Hotkey" -Value 3
 }
 
-function bh_explorer_restart() {
+function bh_win_explorer_restart() {
   Invoke-Expression $bh_log_func
   Stop-Process -ProcessName explorer -ea 0 | Out-Null
 }
 
 bh_log "bh_win_sanity"
-bh_sanity_start_menu
-bh_sanity_taskbar
-bh_sanity_explorer
-bh_sanity_keyboard
-bh_explorer_restart
+bh_win_sanity_start_menu
+bh_win_sanity_taskbar
+bh_win_sanity_explorer
+bh_win_sanity_keyboard
+bh_win_explorer_restart

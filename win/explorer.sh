@@ -2,36 +2,36 @@
 # explorer
 # ---------------------------------------
 
-function bh_open_trash() {
+function bh_win_open_trash() {
   ps_call 'Start-Process explorer shell:recyclebinfolder'
 }
 
-function bh_open_appdata_local_programns() {
+function bh_win_open_appdata_local_programns() {
   ps_call 'Start-Process explorer "${env:localappdata}\Programs"'
 }
 
-function bh_open_appdata() {
+function bh_win_open_appdata() {
   ps_call 'Start-Process explorer "${env:appdata}"'
 }
 
-function bh_open_tmp() {
+function bh_win_open_tmp() {
   ps_call 'Start-Process explorer "${env:localappdata}\temp"'
 }
 
-function bh_open_start_menu_folder() {
+function bh_win_open_start_menu_folder() {
   ps_call 'Start-Process explorer "${env:appdata}\Microsoft\Windows\Start Menu\Programs"'
 }
 
-function bh_open_start_menu_folder_allusers() {
+function bh_win_open_start_menu_folder_allusers() {
   ps_call 'Start-Process explorer "${env:allusersprofile}\Microsoft\Windows\Start Menu\Programs"'
 }
 
-function bh_explorer_restart() {
+function bh_win_explorer_restart() {
   ps_call 'taskkill /f /im explorer.exe | Out-Null'
   ps_call 'Start-Process explorer.exe'
 }
 
-function bh_explorer_home_restore_desktop() {
+function bh_win_explorer_home_restore_desktop() {
   ps_call '
     if (Test-Path "${env:userprofile}\Desktop") { return}
     mkdir "${env:userprofile}\Desktop"
@@ -41,7 +41,7 @@ function bh_explorer_home_restore_desktop() {
   '
 }
 
-function bh_explorer_hide_home_dotfiles() {
+function bh_win_explorer_hide_home_dotfiles() {
   bh_log_func
   powershell.exe -c 'Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
 }

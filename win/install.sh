@@ -12,24 +12,24 @@ function bh_install_store_essentials() {
 
 }
 
-function bh_install_win_python() {
+function bh_win_install_python() {
   winget install -i Python.Python.3 --version 3.9.7150.0 --source winget
   bh_path_win_add $(winpath $HOME/AppData/Roaming/Python/Python39/Scripts/)
 }
 
-function bh_install_win_zotero() {
+function bh_win_install_zotero() {
   winget install -i Zotero.Zotero
 }
 
-function bh_install_win_vscode() {
+function bh_win_install_vscode() {
   winget install -i Microsoft.VisualStudioCode
 }
 
-function bh_install_win_miktex() {
+function bh_win_install_miktex() {
   winget install -i MiKTeX
 }
 
-function bh_install_win_make() {
+function bh_win_install_make() {
   local url="https://jztkft.dl.sourceforge.net/project/ezwinports/make-4.3-without-guile-w32-bin.zip"
   local bin_dir="$BH_OPT_WIN/make-4.3-without-guile-w32-bin"
   if ! test -d $bin_dir; then
@@ -41,7 +41,7 @@ function bh_install_win_make() {
 }
 
 BH_FFMPEG_VER="4.4"
-function bh_install_win_ffmpeg() {
+function bh_win_install_ffmpeg() {
   local url="https://www.gyan.dev/ffmpeg/builds/packages/ffmpeg-${BH_FFMPEG_VER}-essentials_build.zip"
   local bin_dir="$BH_OPT_WIN/ffmpeg-${BH_FFMPEG_VER}-essentials_build/bin/"
   if ! test -d $bin_dir; then
@@ -52,21 +52,21 @@ function bh_install_win_ffmpeg() {
 }
 
 BH_NODE_VER="14.17.5"
-function bh_install_win_node() {
+function bh_win_install_node() {
   local url="https://nodejs.org/dist/v${BH_NODE_VER}/node-v${BH_NODE_VER}-win-x64.zip"
   local bin_dir="$BH_OPT_WIN/node-v${BH_NODE_VER}-win-x64"
   if ! test -d $bin_dir; then
     bh_test_and_create_folder $bin_dir # no root folder
     bh_decompress_from_url $url $BH_OPT_WIN
     if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
-    bh_env_win_add 'NODEJS_HOME' $(winpath $bin_dir)
+    bh_win_env_add 'NODEJS_HOME' $(winpath $bin_dir)
     bh_path_win_add $(winpath $bin_dir)
   fi
 }
 
 BH_FLUTTER_VER="2.2.3"
 BH_ANDROID_CMD_VER="7583922"
-function bh_install_win_androidcmd_flutter() {
+function bh_win_install_androidcmd_flutter() {
   bh_log_func
 
   # create opt
@@ -85,8 +85,8 @@ function bh_install_win_androidcmd_flutter() {
   if ! test -d $android_sdk_dir/platforms; then
     $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --install 'platform-tools' 'platforms;android-29'
     yes | $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --licenses
-    bh_env_win_add ANDROID_HOME $(winpath $android_sdk_dir)
-    bh_env_win_add ANDROID_SDK_ROOT $(winpath $android_sdk_dir)
+    bh_win_env_add ANDROID_HOME $(winpath $android_sdk_dir)
+    bh_win_env_add ANDROID_SDK_ROOT $(winpath $android_sdk_dir)
     bh_path_win_add $(winpath $android_sdk_dir/platform-tools)
   fi
 
@@ -101,7 +101,7 @@ function bh_install_win_androidcmd_flutter() {
   fi
 }
 
-function bh_install_win_latexindent() {
+function bh_win_install_latexindent() {
   bh_log_func
   if ! type latexindent.exe &>/dev/null; then
     bh_curl_fetch_to_dir https://github.com/cmhughes/latexindent.pl/releases/download/V3.10/latexindent.exe $BH_OPT_WIN

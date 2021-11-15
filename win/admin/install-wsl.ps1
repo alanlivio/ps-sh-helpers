@@ -8,7 +8,7 @@ function bh_syswin_feature_enable($featurename) {
   gsudo dism.exe /online /quiet /enable-feature /featurename:$featurename /all/norestart
 }
 
-function bh_env_win_add($name, $value) {
+function bh_win_env_add($name, $value) {
   [System.Environment]::SetEnvironmentVariable("$name", "$value", 'user')
 }
 
@@ -18,7 +18,7 @@ function bh_path_win_add($addPath) {
     $regexAddPath = [regex]::Escape($addPath)
     $arrPath = $currentpath -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
     $newpath = ($arrPath + $addPath) -join ';'
-    bh_env_win_add 'PATH' $newpath
+    bh_win_env_add 'PATH' $newpath
   }
   else {
     Throw "$addPath' is not a valid path."

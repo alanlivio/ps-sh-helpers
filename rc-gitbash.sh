@@ -60,7 +60,7 @@ function bh_win_sanity() {
 function bh_update_cleanup_win() {
   # cleanup
   bh_home_clean_unused
-  bh_explorer_hide_home_dotfiles
+  bh_win_explorer_hide_home_dotfiles
   # python
   type pip &>/dev/null && bh_python_install $BH_PKGS_PYTHON
   # vscode
