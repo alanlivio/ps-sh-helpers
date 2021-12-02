@@ -1,12 +1,12 @@
 <h1 align="center"><img src="website/static/logo.svg" width="250"/></h1>
 
-Cross-platform (linux, windows, macOS) bash helpers to configure OS (dark mode, disable animations), install/update software (python, vscode, docker, wsl, msys) and useful utilities (dotfiles, git, compress, curl).The project logo is a reference to the synthetic chemical element Bohrium, which also has the initials bh.
+Cross-platform (Linux, Windows, macOS) bash helpers to configure OS (dark mode, disable animations), install/update software (python, vscode, docker, wsl, msys) and useful utilities (dotfiles, git, compress, curl). The project logo references the synthetic chemical element Bohrium, which also has the initials bh.
 
 # How to install bash-helpers
 
-The bash-helpers has two requeriments: a `bash shell` and `git` . You may easy install using the scripts bellow.
+The bash-helpers has two requirements: a `bash shell` and `git`. You may easily install using the scripts below.
 
-MacOS already has a bash shell.  
+macOS already has a bash shell.  
 Run in a bash shell the script install/bh-on-mac.sh to install git and bash-helpers:
 
 ```bash
@@ -20,7 +20,7 @@ Run in a bash shell the script install/bh-on-ubuntu.shsh), to install git and ba
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-on-ubuntu.sh)"
 ```
 
-Windows do not has `bash shell` nor `git` .
+Windows do not have `bash shell` nor `git`.
 Run in a powershell shell the script install/bh-on-win.ps1) to install git, GitBash, and bash-helpers:
 
 ```powershell
@@ -31,14 +31,14 @@ Run in a powershell shell the script install/bh-on-win.ps1) to install git, GitB
 
 ### configure OS interface helpers
 
-* `bh_gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean task bar (e.g. small icons, no search), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
+* `bh_gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons, no search), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
 * `bh_win_sanity` (at gitbash): enable dark mode, disable animations, clean dock (e.g. small icons)
 * `bh_macos_sanity` (at bash): TODO
 
 ### install software helpers
 
 * `bh_install_win_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
-* `bh_install_win_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automate the process describred in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After run, it requeres restart windows and run it again. When Ubuntu app started, you need configure your username/password.
+* `bh_install_win_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automates the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password.
 * See others `bh_install_win*` at ./win/
 * See others `bh_install_ubuntu_*` at ./ubuntu/
 
@@ -75,7 +75,7 @@ The helpers bellow can be run routinely. They install packages defined in `BH_PK
 
 ### others helpers
 
-The helpers bellow are used for specifc commands. For the full list, see lib/ folder.
+The helpers below are for specific commands. For the full list, see lib/ folder.
 
 * `bh_android_*`: android helpers.
 * `bh_cmake_*`: cmake helpers.
@@ -118,3 +118,4 @@ And, particulary, these were reference for helpers on windows:
 * https://github.com/madbomb122/Win10Script/blob/master/Win10-Menu.ps1
 * https://github.com/Sycnex/windows10Debloater/blob/master/windows10Debloater.ps1
 * https://github.com/W4RH4WK/Debloat-windows-10/tree/master/scripts
+
