@@ -19,9 +19,11 @@ fi
 if type snap &>/dev/null; then
   source "$BH_DIR/lib/ubu/snap.sh"
 fi
-if type service &>/dev/null; then source "$BH_DIR/lib/ubu/initd.sh"; fi
-if type lxc &>/dev/null; then source "$BH_DIR/lib/ubu/lxc.sh"; fi
 if type lsof &>/dev/null; then source "$BH_DIR/lib/ubu/ports.sh"; fi
+if type lxc &>/dev/null; then source "$BH_DIR/lib/ubu/lxc.sh"; fi
+if type pdftk ghostscript &>/dev/null; then source "$BH_DIR/lib/cross/pdf.sh"; fi
+if type pngquant jpegoptim &>/dev/null; then source "$BH_DIR/lib/cross/image.sh"; fi
+if type service &>/dev/null; then source "$BH_DIR/lib/ubu/initd.sh"; fi
 if type systemctl &>/dev/null; then source "$BH_DIR/lib/ubu/systemd.sh"; fi
 
 # ---------------------------------------

@@ -101,9 +101,7 @@ if type git &>/dev/null; then source "$BH_DIR/lib/cross/git.sh"; fi
 if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/lib/cross/gst.sh"; fi
 if type pandoc &>/dev/null; then source "$BH_DIR/lib/cross/pandoc.sh"; fi
 if type pdflatex &>/dev/null; then source "$BH_DIR/lib/cross/pdflatex.sh"; fi
-if type pdftk ghostscript &>/dev/null; then source "$BH_DIR/lib/cross/pdf.sh"; fi
 if type pkg-config &>/dev/null; then source "$BH_DIR/lib/cross/pkg-config.sh"; fi
-if type pngquant jpegoptim &>/dev/null; then source "$BH_DIR/lib/cross/image.sh"; fi
 if type ruby &>/dev/null; then source "$BH_DIR/lib/cross/ruby.sh"; fi
 if type ssh &>/dev/null; then source "$BH_DIR/lib/cross/ssh.sh"; fi
 if type tesseract &>/dev/null; then source "$BH_DIR/lib/cross/tesseract.sh"; fi

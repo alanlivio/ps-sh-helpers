@@ -31,16 +31,16 @@ Run in a powershell shell the script install/bh-on-win.ps1) to install git, GitB
 
 ### configure OS interface helpers
 
-* `bh_gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons, no search), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
+* `bh_ubu_gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons, no search), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
 * `bh_win_sanity` (at gitbash): enable dark mode, disable animations, clean dock (e.g. small icons)
-* `bh_macos_sanity` (at bash): TODO
+* `bh_mac_sanity` (at bash): TODO
 
 ### install software helpers
 
-* `bh_install_win_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
-* `bh_install_win_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automates the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password.
-* See others `bh_install_win*` at ./win/
-* See others `bh_install_ubu_*` at ./ubuntu/
+* `bh_win_install_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
+* `bh_win_install_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automates the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password.
+* See others `bh_win_install*` at ./win/
+* See others `bh_ubu_install_*` at ./ubuntu/
 
 ### update/cleanup helpers
 
@@ -75,26 +75,25 @@ The helpers bellow can be run routinely. They install packages defined in `BH_PK
 
 ### others helpers
 
-The helpers below are for specific commands. For the full list, see lib/ folder.
+The helpers below are for cross plataform commands. For the full list, see lib/ folder.
 
 * `bh_android_*`: android helpers.
 * `bh_cmake_*`: cmake helpers.
-* `bh_compress_*`: compress helpers.
-* `bh_cmake_*`: cmake helpers.
-* `bh_diff_*`: diff helpers.
 * `bh_docker_*`: docker helpers.
 * `bh_ffmpeg_*`: ffmpeg helpers.
 * `bh_flutter_*`: flutter helpers.
 * `bh_gcc_*`: gcc helpers.
 * `bh_git_*`: git helpers.
 * `bh_meson_*`: meson helpers.
-* `bh_mount_*`: mount helpers.
 * `bh_npm_*`: npm helpers.
 * `bh_pandoc_*`: pandoc helpers.
-* `bh_pdf_*`: pdf helpers.
+* `bh_pdflatex_*`: pdflatex helpers.
+* `bh_pkg-config_*`: pkg-config helpers.
 * `bh_python_*`: python helpers.
+* `bh_ruby_*`: ruby helpers.
+* `bh_ssh_*`: ssh helpers.
+* `bh_tesseract_*`: tesseract helpers.
 * `bh_vscode_*`: vscode helpers.
-* `bh_rename_*`: rename helpers.
 * `bh_wget_*`: wget helpers.
 * `bh_youtubedl_*`: youtube-dl helpers.
 * `bh_zip_*`: zip helpers.
