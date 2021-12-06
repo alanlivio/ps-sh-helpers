@@ -91,11 +91,11 @@ function bh_win_services_list_running() {
 # install admin
 # ---------------------------------------
 
-function bh_install_win_gsudo() {
+function bh_win_install_gsudo() {
   bh_win_get_install gsudo
 }
 
-function bh_install_win_winget_from_github() {
+function bh_win_install_winget_from_github() {
   ps_call_admin '
     if (!(Get-Command 'winget.exe' -ea 0)) {
       Invoke-WebRequest -URI https://github.com/microsoft/winget-cli/releases/download/v1.0.11692/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -UseBasicParsing -OutFile $env:TEMP\tmp.msixbundle
@@ -104,39 +104,39 @@ function bh_install_win_winget_from_github() {
   '
 }
 
-function bh_install_win_wsl() {
+function bh_win_install_wsl() {
   ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/install-wsl.ps1)
 }
 
-function bh_install_win_msys() {
+function bh_win_install_msys() {
   ps_call_script_admin $(unixpath -w $BH_DIR/win/admin/install-msys.ps1)
 }
 
-function bh_install_win_tesseract() {
+function bh_win_install_tesseract() {
   bh_log_func
-  if type tesseract.exe &>/dev/null; then
+  if ! type tesseract.exe &>/dev/null; then
     bh_win_get_install tesseract
-    bh_path_win_add 'C:\Program Files\Tesseract-OCR'
+    bh_win_path_add 'C:\Program Files\Tesseract-OCR'
   fi
 }
 
-function bh_install_win_java() {
+function bh_win_install_java() {
   bh_log_func
-  if type java.exe &>/dev/null; then
+  if ! type java.exe &>/dev/null; then
     bh_win_get_install ojdkbuild.ojdkbuild
     local javahome=$(ps_call '$(get-command java).Source.replace("\bin\java.exe", "")')
     bh_env_add "JAVA_HOME" "$javahome"
   fi
 }
 
-function bh_install_win_docker() {
+function bh_win_install_docker() {
   bh_log_func
   ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
   ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
   bh_win_get_install Docker.DockerDesktop
 }
 
-function bh_install_win_choco() {
+function bh_win_install_choco() {
   bh_log_func
   ps_call_admin '
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))

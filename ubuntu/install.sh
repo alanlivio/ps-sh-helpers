@@ -24,8 +24,8 @@ function bh_install_ubuntu_androidcmd_flutter() {
   if ! test -d $android_sdk_dir/platforms; then
     $android_cmd_dir/bin/sdkmanager --sdk_root="$android_sdk_dir" --install 'platform-tools' 'platforms;android-29'
     yes | $android_cmd_dir/bin/sdkmanager --sdk_root="$android_sdk_dir" --licenses
-    bh_env_add ANDROID_HOME $android_sdk_dir
-    bh_env_add ANDROID_SDK_ROOT $android_sdk_dir
+    bh_win_env_add ANDROID_HOME $android_sdk_dir
+    bh_win_env_add ANDROID_SDK_ROOT $android_sdk_dir
     bh_path_add $android_sdk_dir/platform-tools
   fi
 
