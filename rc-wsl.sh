@@ -9,15 +9,6 @@ if [[ "$(umask)" = "0000" ]]; then
 fi
 
 # ---------------------------------------
-# load commands for windows
-# ---------------------------------------
-
-source "$BH_DIR/win/user.sh" # bh_win_user_check_admin
-source "$BH_DIR/win/install.sh"
-source "$BH_DIR/win/winget.sh"
-source "$BH_DIR/win/explorer.sh"
-
-# ---------------------------------------
 # load commands for ubuntu
 # ---------------------------------------
 source "$BH_DIR/rc-ubuntu.sh"
@@ -27,10 +18,6 @@ source "$BH_DIR/rc-ubuntu.sh"
 # ---------------------------------------
 
 function bh_update_cleanup_wsl() {
-  # windows
-  if [ "$(bh_win_user_check_admin)" == "True" ]; then
-    bh_win_sysupdate_win
-  fi
   # essentials
   local pkgs="git deborphan apt-file vim diffutils curl "
   # python
@@ -51,7 +38,7 @@ function bh_update_cleanup_wsl() {
 # wsl_install
 # ---------------------------------------
 
-function bh_install_wsl_lxc() {
+function bh_wsl_install_lxc() {
   # https://www.youtube.com/watch?v=SLDrvGUksv0
   sudo apt install lxd snap
   sudo apt-get install -yqq daemonize dbus-user-session fontconfig
@@ -60,7 +47,7 @@ function bh_install_wsl_lxc() {
   sudo snap install lxd
 }
 
-function bh_install_wsl_ssh() {
+function bh_wsl_install_ssh() {
   sudo apt install -y openssh-server
   # https://github.com/JetBrains/clion-wsl/blob/master/ubuntu_setup_env.sh
   local sshd_listen_address=127.0.0.1
