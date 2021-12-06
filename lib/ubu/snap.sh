@@ -2,7 +2,7 @@
 # snap
 # ---------------------------------------
 
-function bh_snap_install() {
+function bh_ubu_snap_install() {
   bh_log_func
 
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
@@ -21,7 +21,7 @@ function bh_snap_install() {
   fi
 }
 
-function bh_snap_install_classic() {
+function bh_ubu_snap_install_classic() {
   bh_log_func
 
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
@@ -39,7 +39,7 @@ function bh_snap_install_classic() {
   fi
 }
 
-function bh_snap_install_edge() {
+function bh_ubu_snap_install_edge() {
   bh_log_func
 
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
@@ -57,11 +57,11 @@ function bh_snap_install_edge() {
   fi
 }
 
-function bh_snap_upgrade() {
+function bh_ubu_snap_upgrade() {
   bh_log_func
   sudo snap refresh 2>/dev/null
 }
 
-function bh_snap_hide_home_folder() {
+function bh_ubu_snap_hide_home_folder() {
   echo snap >>$HOME/.hidden
 }

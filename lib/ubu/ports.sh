@@ -2,11 +2,11 @@
 # ports
 # ---------------------------------------
 
-function bh_ports_list() {
+function bh_ubu_ports_list() {
   lsof -i
 }
 
-function bh_ports_kill_using() {
+function bh_ubu_ports_kill_using() {
   : ${1?"Usage: ${FUNCNAME[0]} <port>"}
   local pid=$(sudo lsof -t -i:$1)
   if test -n "$pid"; then
@@ -14,7 +14,7 @@ function bh_ports_kill_using() {
   fi
 }
 
-function bh_ports_list_one() {
+function bh_ubu_ports_list_one() {
   : ${1?"Usage: ${FUNCNAME[0]} <port>"}
   sudo lsof -i:$1
 }

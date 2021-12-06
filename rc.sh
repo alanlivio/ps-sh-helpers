@@ -58,7 +58,7 @@ if test -z "$BH_DEV"; then BH_DEV="$HOME/dev"; fi
 # essentials helpers
 # ---------------------------------------
 
-source "$BH_DIR/lib/essentials.sh" # uses echo, test, md5, curl, tar, unzip, curl, renamedu, find
+source "$BH_DIR/lib/essentials.sh" # uses echo, test, md5, curl, tar, unzip, curl, rename, find
 
 # ---------------------------------------
 # bh helpers
@@ -84,47 +84,47 @@ function bh_bh_install() {
 
 if type code &>/dev/null; then
   HAS_VSCODE=true
-  source "$BH_DIR/lib/vscode.sh"
+  source "$BH_DIR/lib/cross/vscode.sh"
 fi
 if type pip &>/dev/null; then
   HAS_PYTHON=true
-  source "$BH_DIR/lib/python.sh"
+  source "$BH_DIR/lib/cross/python.sh"
 fi
 
-if type adb &>/dev/null; then source "$BH_DIR/lib/android.sh"; fi
-if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.sh"; fi
-if type docker &>/dev/null; then source "$BH_DIR/lib/docker.sh"; fi
-if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/ffmpeg.sh"; fi
-if type flutter &>/dev/null; then source "$BH_DIR/lib/flutter.sh"; fi
-if type gcc &>/dev/null; then source "$BH_DIR/lib/gcc.sh"; fi
-if type git &>/dev/null; then source "$BH_DIR/lib/git.sh"; fi
-if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/lib/gst.sh"; fi
-if type pandoc &>/dev/null; then source "$BH_DIR/lib/pandoc.sh"; fi
-if type pdflatex &>/dev/null; then source "$BH_DIR/lib/pdflatex.sh"; fi
-if type pdftk ghostscript &>/dev/null; then source "$BH_DIR/lib/pdf.sh"; fi
-if type pkg-config &>/dev/null; then source "$BH_DIR/lib/pkg-config.sh"; fi
-if type pngquant jpegoptim &>/dev/null; then source "$BH_DIR/lib/image.sh"; fi
-if type ruby &>/dev/null; then source "$BH_DIR/lib/ruby.sh"; fi
-if type ssh &>/dev/null; then source "$BH_DIR/lib/ssh.sh"; fi
-if type tesseract &>/dev/null; then source "$BH_DIR/lib/tesseract.sh"; fi
-if type wget &>/dev/null; then source "$BH_DIR/lib/wget.sh"; fi
-if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/youtube-dl.sh"; fi
-if type zip tar &>/dev/null; then source "$BH_DIR/lib/zip.sh"; fi
-if test -d /etc/sudoers.d/; then source "$BH_DIR/lib/user.sh"; fi
+if type adb &>/dev/null; then source "$BH_DIR/lib/cross/android.sh"; fi
+if type cmake &>/dev/null; then source "$BH_DIR/lib/cross/cmake.sh"; fi
+if type docker &>/dev/null; then source "$BH_DIR/lib/cross/docker.sh"; fi
+if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/cross/ffmpeg.sh"; fi
+if type flutter &>/dev/null; then source "$BH_DIR/lib/cross/flutter.sh"; fi
+if type gcc &>/dev/null; then source "$BH_DIR/lib/cross/gcc.sh"; fi
+if type git &>/dev/null; then source "$BH_DIR/lib/cross/git.sh"; fi
+if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/lib/cross/gst.sh"; fi
+if type pandoc &>/dev/null; then source "$BH_DIR/lib/cross/pandoc.sh"; fi
+if type pdflatex &>/dev/null; then source "$BH_DIR/lib/cross/pdflatex.sh"; fi
+if type pdftk ghostscript &>/dev/null; then source "$BH_DIR/lib/cross/pdf.sh"; fi
+if type pkg-config &>/dev/null; then source "$BH_DIR/lib/cross/pkg-config.sh"; fi
+if type pngquant jpegoptim &>/dev/null; then source "$BH_DIR/lib/cross/image.sh"; fi
+if type ruby &>/dev/null; then source "$BH_DIR/lib/cross/ruby.sh"; fi
+if type ssh &>/dev/null; then source "$BH_DIR/lib/cross/ssh.sh"; fi
+if type tesseract &>/dev/null; then source "$BH_DIR/lib/cross/tesseract.sh"; fi
+if type wget &>/dev/null; then source "$BH_DIR/lib/cross/wget.sh"; fi
+if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/cross/youtube-dl.sh"; fi
+if type zip tar &>/dev/null; then source "$BH_DIR/lib/cross/zip.sh"; fi
+if test -d /etc/sudoers.d/; then source "$BH_DIR/lib/cross/user.sh"; fi
 
 # ---------------------------------------
 # specific-OS helpers
 # ---------------------------------------
 
 if $IS_LINUX_UBUNTU; then
-  source "$BH_DIR/lib/ubu/rc-ubu.sh"
+  source "$BH_DIR/rc-ubu.sh"
 elif $IS_WINDOWS_MSYS; then
-  source "$BH_DIR/lib/win/rc-msys.sh"
+  source "$BH_DIR/rc-msys.sh"
 elif $IS_WINDOWS_WSL; then
-  source "$BH_DIR/lib/ubu/rc-ubu.sh"
-  source "$BH_DIR/lib/win/rc-wsl.sh"
+  source "$BH_DIR/rc-ubu.sh"
+  source "$BH_DIR/rc-wsl.sh"
 elif $IS_WINDOWS_GITBASH; then
-  source "$BH_DIR/lib/win/rc-gitbash.sh"
+  source "$BH_DIR/rc-gitbash.sh"
 elif $IS_MAC; then
-  source "$BH_DIR/lib/mac/rc-mac.sh"
+  source "$BH_DIR/rc-mac.sh"
 fi

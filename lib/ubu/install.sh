@@ -4,7 +4,7 @@
 
 BH_FLUTTER_VER="2.2.3"
 
-function bh_install_ubu_androidcmd_flutter() {
+function bh_ubu_install_androidcmd_flutter() {
   bh_log_func
 
   # create opt
@@ -45,22 +45,22 @@ function bh_install_ubu_androidcmd_flutter() {
 # ---------------------------------------
 
 if type deb tar &>/dev/null; then
-  function bh_deb_install() {
+  function bh_ubu_deb_install() {
     : ${1?"Usage: ${FUNCNAME[0]} <pkg_name>"}
     sudo dpkg -i $1
   }
 
-  function bh_deb_install_force_depends() {
+  function bh_ubu_deb_install_force_depends() {
     : ${1?"Usage: ${FUNCNAME[0]} <pkg_name>"}
     sudo dpkg -i --force-depends $1
   }
 
-  function bh_deb_info() {
+  function bh_ubu_deb_info() {
     : ${1?"Usage: ${FUNCNAME[0]} <pkg_name>"}
     dpkg-deb --info $1
   }
 
-  function bh_deb_contents() {
+  function bh_ubu_deb_contents() {
     : ${1?"Usage: ${FUNCNAME[0]} <pkg_name>"}
     dpkg-deb --show $1
   }
@@ -72,7 +72,7 @@ if type apt &>/dev/null; then
   # apt helpers
   # ---------------------------------------
 
-  function bh_apt_upgrade() {
+  function bh_ubu_apt_upgrade() {
     bh_log_func
     sudo apt -y update
     if [ "$(apt list --upgradable 2>/dev/null | wc -l)" -gt 1 ]; then
@@ -80,22 +80,22 @@ if type apt &>/dev/null; then
     fi
   }
 
-  function bh_apt_update() {
+  function bh_ubu_apt_update() {
     bh_log_func
     sudo apt -y update
   }
 
-  function bh_apt_ppa_remove() {
+  function bh_ubu_apt_ppa_remove() {
     bh_log_func
     sudo add-apt-repository --remove $1
   }
 
-  function bh_apt_ppa_list() {
+  function bh_ubu_apt_ppa_list() {
     bh_log_func
     apt policy
   }
 
-  function bh_apt_fixes() {
+  function bh_ubu_apt_fixes() {
     bh_log_func
     sudo dpkg --configure -a
     sudo apt install -f --fix-broken
@@ -103,7 +103,7 @@ if type apt &>/dev/null; then
     sudo apt dist-upgrade
   }
 
-  function bh_apt_install() {
+  function bh_ubu_apt_install() {
     bh_log_func
 
     local pkgs_to_install=""
@@ -119,7 +119,7 @@ if type apt &>/dev/null; then
     fi
   }
 
-  function bh_apt_lastest_pkgs() {
+  function bh_ubu_apt_lastest_pkgs() {
     local pkgs=""
     for i in "$@"; do
       pkgs+=$(apt search $i 2>/dev/null | grep -E -o "^$i([0-9.]+)/" | cut -d/ -f1)
@@ -128,14 +128,14 @@ if type apt &>/dev/null; then
     echo $pkgs
   }
 
-  function bh_apt_autoremove() {
+  function bh_ubu_apt_autoremove() {
     bh_log_func
     if [ "$(apt --dry-run autoremove 2>/dev/null | grep -c -Po 'Remv \K[^ ]+')" -gt 0 ]; then
       sudo apt -y autoremove
     fi
   }
 
-  function bh_apt_remove_pkgs() {
+  function bh_ubu_apt_remove_pkgs() {
     bh_log_func
     local pkgs_to_remove=""
     for i in "$@"; do
@@ -150,7 +150,7 @@ if type apt &>/dev/null; then
     fi
   }
 
-  function bh_apt_remove_orphan_pkgs() {
+  function bh_ubu_apt_remove_orphan_pkgs() {
     local pkgs_orphan_to_remove=""
     while [ "$(deborphan | wc -l)" -gt 0 ]; do
       for i in $(deborphan); do
@@ -172,7 +172,7 @@ if type apt &>/dev/null; then
     done
   }
 
-  function bh_apt_fetch_install() {
+  function bh_ubu_apt_fetch_install() {
     : ${1?"Usage: ${FUNCNAME[0]} <URL>"}
     local apt_name=$(basename $1)
     if test ! -f /tmp/$apt_name; then
@@ -186,7 +186,7 @@ if type apt &>/dev/null; then
   # distro
   # ---------------------------------------
 
-  function bh_apt_distro_upgrade() {
+  function bh_ubu_apt_distro_upgrade() {
     sudo sed -i 's/Prompt=lts/Prompt=normal/g' /etc/update-manager/release-upgrades
     sudo apt update && sudo apt dist-upgrade
     do-release-upgrade
@@ -196,7 +196,7 @@ if type apt &>/dev/null; then
   # install
   # ---------------------------------------
 
-  function bh_install_ubu_docker() {
+  function bh_ubu_install_docker() {
     bh_log_funch
     sudo apt-get install apt-transport-https ca-certificates curl gnupg lsb-release
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg

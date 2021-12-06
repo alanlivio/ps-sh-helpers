@@ -57,7 +57,7 @@ function bh_update_cleanup_ubu() {
 # ubuntu_server
 # ---------------------------------------
 
-function bh_server_tty1_autologing() {
+function bh_ubu_server_tty1_autologing() {
   local file="/etc/systemd/system/getty@tty1.service.d/override.conf"
   sudo mkdir -p $(dirname $file)
   sudo touch $file
