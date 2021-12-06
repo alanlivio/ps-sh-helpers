@@ -11,24 +11,24 @@ function bh_open {
 # load commands
 # ---------------------------------------
 
-source "$BH_DIR/ubuntu/install.sh"
+source "$BH_DIR/lib/ubu/install.sh"
 
 if type gnome-shell &>/dev/null; then
-  source "$BH_DIR/ubuntu/gnome.sh"
+  source "$BH_DIR/lib/ubu/gnome.sh"
 fi
 if type snap &>/dev/null; then
-  source "$BH_DIR/ubuntu/snap.sh"
+  source "$BH_DIR/lib/ubu/snap.sh"
 fi
-if type service &>/dev/null; then source "$BH_DIR/ubuntu/initd.sh"; fi
-if type lxc &>/dev/null; then source "$BH_DIR/ubuntu/lxc.sh"; fi
-if type lsof &>/dev/null; then source "$BH_DIR/ubuntu/ports.sh"; fi
-if type systemctl &>/dev/null; then source "$BH_DIR/ubuntu/systemd.sh"; fi
+if type service &>/dev/null; then source "$BH_DIR/lib/ubu/initd.sh"; fi
+if type lxc &>/dev/null; then source "$BH_DIR/lib/ubu/lxc.sh"; fi
+if type lsof &>/dev/null; then source "$BH_DIR/lib/ubu/ports.sh"; fi
+if type systemctl &>/dev/null; then source "$BH_DIR/lib/ubu/systemd.sh"; fi
 
 # ---------------------------------------
 # update_clean
 # ---------------------------------------
 
-function bh_update_cleanup_ubuntu() {
+function bh_update_cleanup_ubu() {
   if type snap &>/dev/null; then
     # snap
     bh_snap_install $BH_PKGS_SNAP

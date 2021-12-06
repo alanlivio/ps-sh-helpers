@@ -14,10 +14,10 @@ Run in a bash shell the script install/bh-on-mac.sh to install git and bash-help
 ```
 
 Ubuntu already has a bash.  
-Run in a bash shell the script install/bh-on-ubuntu.shsh), to install git and bash-helpers:
+Run in a bash shell the script install/bh-on-ubu.shsh), to install git and bash-helpers:
 
 ```bash
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-on-ubuntu.sh)"
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-on-ubu.sh)"
 ```
 
 Windows do not have `bash shell` nor `git`.
@@ -40,14 +40,14 @@ Run in a powershell shell the script install/bh-on-win.ps1) to install git, GitB
 * `bh_install_win_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
 * `bh_install_win_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automates the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password.
 * See others `bh_install_win*` at ./win/
-* See others `bh_install_ubuntu_*` at ./ubuntu/
+* See others `bh_install_ubu_*` at ./ubuntu/
 
 ### update/cleanup helpers
 
 The helpers bellow can be run routinely. They install packages defined in `BH_PKGS_*` vars from ~/.bashrc or ~/.bh-cfg.sh, and also clean unused files/folders defined in `BH_HOME_CLEAN_UNUSED` var. Please see the vars examples in skel/.bh-cfg.sh.
 
 * `bh_update_cleanup_mac` (at mac bash): BH_PKGS_BREW, BH_PKGS_PYTHON, BH_PKGS_VSCODE
-* `bh_update_cleanup_ubuntu` (at ubuntu bash): BH_PKGS_APT_UBUNTU, BH_PKGS_PYTHON, BH_PKGS_VSCODE, BH_PKGS_SNAP, BH_PKGS_SNAP_CLASSIC
+* `bh_update_cleanup_ubu` (at ubuntu bash): BH_PKGS_APT_UBUNTU, BH_PKGS_PYTHON, BH_PKGS_VSCODE, BH_PKGS_SNAP, BH_PKGS_SNAP_CLASSIC
 * `bh_update_cleanup_win` (at GitBash): BH_PKGS_WINGET, BH_PKGS_PYTHON, BH_PKGS_VSCODE
 * `bh_update_cleanup_wsl` (at WSL bash): BH_PKGS_APT_WSL, BH_PKGS_PYTHON_WSL
 * `bh_update_cleanup_msys` (at msys bash): BH_PKGS_MSYS, BH_PKGS_PYTHON_MSYS
@@ -118,4 +118,3 @@ And, particulary, these were reference for helpers on windows:
 * https://github.com/madbomb122/Win10Script/blob/master/Win10-Menu.ps1
 * https://github.com/Sycnex/windows10Debloater/blob/master/windows10Debloater.ps1
 * https://github.com/W4RH4WK/Debloat-windows-10/tree/master/scripts
-

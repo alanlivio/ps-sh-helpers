@@ -43,14 +43,14 @@ function ps_call_script_admin() {
 # load commands
 # ---------------------------------------
 
-source "$BH_DIR/win/user.sh"
-source "$BH_DIR/win/install.sh"
-source "$BH_DIR/win/winget.sh"
-source "$BH_DIR/win/explorer.sh"
-if type gsudo &>/dev/null; then source "$BH_DIR/win/admin.sh"; fi
+source "$BH_DIR/lib/win/user.sh"
+source "$BH_DIR/lib/win/install.sh"
+source "$BH_DIR/lib/win/winget.sh"
+source "$BH_DIR/lib/win/explorer.sh"
+if type gsudo &>/dev/null; then source "$BH_DIR/lib/win/admin.sh"; fi
 
 function bh_win_sanity() {
-  powershell.exe -command "& { . $(unixpath -w $BH_DIR/win/win-sanity.ps1) }"
+  powershell.exe -command "& { . $(unixpath -w $BH_DIR/lib/win/win-sanity.ps1) }"
 }
 
 # ---------------------------------------

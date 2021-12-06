@@ -120,7 +120,7 @@ function bh_install_win_wsl() {
     bh_log "INFO: Windows features for WSL not enabled, enabling..."
     bh_syswin_feature_enable /featurename:VirtualMachinePlatform 
     bh_syswin_feature_enable Microsoft-Windows-Subsystem-Linux
-    bh_log "INFO: restart windows and run bh_setup_ubuntu again"
+    bh_log "INFO: restart windows and run bh_setup_ubu again"
     return
   }
   # install ubuntu
