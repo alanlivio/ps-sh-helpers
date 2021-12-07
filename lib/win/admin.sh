@@ -162,21 +162,21 @@ function bh_win_install_choco() {
 # choco
 # ---------------------------------------
 
-function bh_choco_list_installed() {
+function bh_win_choco_list_installed() {
   choco list -l
 }
 
-function bh_choco_list_installed_str() {
+function bh_win_choco_list_installed_str() {
   powershell -c '
       $pkgs = $(choco list -l | ForEach-Object { $_.split(' ')[0] }) -join (" ")
       echo $pkgs
     '
 }
 
-function bh_choco_install() {
+function bh_win_choco_install() {
   bh_log_func
   local pkgs_to_install=""
-  local pkgs_installed=$(bh_choco_list_installed_str)
+  local pkgs_installed=$(bh_win_choco_list_installed_str)
   for i in "$@"; do
     if [[ ! $pkgs_installed =~ $i ]]; then
       pkgs_to_install="$i $pkgs_to_install"
@@ -190,23 +190,23 @@ function bh_choco_install() {
   fi
 }
 
-function bh_choco_uninstall() {
+function bh_win_choco_uninstall() {
   bh_log_func
   local pkgs_to_uninstall=$(echo $@ | tr ' ' ';')
   gsudo choco uninstall -y --acceptlicense $pkgs_to_uninstall
 }
 
-function bh_choco_upgrade() {
+function bh_win_choco_upgrade() {
   bh_log_func
   local outdated=false
   gsudo choco outdated | grep '0 package' >/dev/null || outdated=true
   if $outdated; then gsudo choco upgrade -y --acceptlicense all; fi
 }
 
-function bh_choco_clean() {
+function bh_win_choco_clean() {
   bh_log_func
   if ! type choco-cleaner.exe &>/dev/null; then
-    bh_choco_install choco-cleaner
+    bh_win_choco_install choco-cleaner
   fi
   ps_call_admin 'Invoke-Expression "$env:ChocolateyToolsLocation\BCURRAN3\choco-cleaner.ps1" | Out-Null'
 }

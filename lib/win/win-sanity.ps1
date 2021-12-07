@@ -7,7 +7,7 @@ function bh_log_2nd() {
   Write-Host -ForegroundColor DarkYellow "-- >" ($args -join " ")
 }
 
-function bh_appx_uninstall() {
+function bh_win_appx_uninstall() {
   foreach ($name in $args) {
     if (Get-AppxPackage -Name $name) {
       Invoke-Expression "$bh_log_func $name"
@@ -72,7 +72,7 @@ function bh_win_sanity_start_menu() {
     'NORDCURRENT.COOKINGFEVER'
     'SpotifyAB.SpotifyMusic'
   )
-  bh_appx_uninstall @pkgs
+  bh_win_appx_uninstall @pkgs
   
   bh_log_2nd "disable Bing search "
   reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BingSearchEnabled /d "0" /t REG_DWORD /f  | Out-null

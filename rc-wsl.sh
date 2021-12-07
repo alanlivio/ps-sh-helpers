@@ -70,7 +70,7 @@ function bh_wsl_install_ssh() {
 if [ "$(bh_win_user_check_admin)" == "True" ]; then
 
   function bh_wsl_x_pulseaudio_enable() {
-    bh_choco_install "pulseaudio vcxsrv"
+    bh_win_choco_install "pulseaudio vcxsrv"
 
     # https://wiki.ubuntu.com/WSL#Running_Graphical_Applications
     sudo apt-get install pulseaudio
