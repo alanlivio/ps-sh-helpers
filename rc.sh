@@ -91,7 +91,7 @@ if type pip &>/dev/null; then
   source "$BH_DIR/lib/cross/python.sh"
 fi
 
-if type adb &>/dev/null; then source "$BH_DIR/lib/cross/android.sh"; fi
+if type adb &>/dev/null; then source "$BH_DIR/lib/cross/adb.sh"; fi
 if type cmake &>/dev/null; then source "$BH_DIR/lib/cross/cmake.sh"; fi
 if type docker &>/dev/null; then source "$BH_DIR/lib/cross/docker.sh"; fi
 if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/cross/ffmpeg.sh"; fi
