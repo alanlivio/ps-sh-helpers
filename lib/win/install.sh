@@ -21,6 +21,11 @@ function bh_win_install_zotero() {
   winget install -i Zotero.Zotero
 }
 
+function bh_win_install_ghostscript() {
+  winget install -i ArtifexSoftware.GhostScript
+  bh_win_path_add $(winpath '/c/Program Files/gs/gs9.55.0/bin')
+}
+
 function bh_win_install_vscode() {
   winget install -i Microsoft.VisualStudioCode
 }

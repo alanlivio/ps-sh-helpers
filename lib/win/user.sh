@@ -33,7 +33,8 @@ function bh_win_env() {
 }
 
 function bh_win_path_add() {
-  local dir=$(winpath $1)
+  local dir=$(winpath $@)
+  echo $dir
   ps_call ' 
     function bh_win_path_add($addPath) {
       if (Test-Path $addPath) {
@@ -46,7 +47,7 @@ function bh_win_path_add() {
       else {
         Throw "$addPath is not a valid path."
       }
-    }; bh_win_path_add '" $dir"
+    }; bh_win_path_add ' \"$dir\"
 }
 
 function bh_win_path_settings() {
