@@ -259,6 +259,14 @@ function bh_home_dev_folder_git_repos() {
 # rename
 # ---------------------------------------
 
+function bh_rename_to_prefix() {
+  : ${2?"Usage: ${FUNCNAME[0]} <prefix> <files..>"}
+  echo $@
+  local prefix="$1"
+  shift
+  for i in "$@"; do mv $i $prefix$i; done
+}
+
 function bh_rename_to_lowercase_with_underscore() {
   : ${1?"Usage: ${FUNCNAME[0]} <file_name>"}
   echo "rename to lowercase with underscore"
