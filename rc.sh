@@ -79,6 +79,23 @@ function bh_bh_install() {
 }
 
 # ---------------------------------------
+# specific-OS helpers
+# ---------------------------------------
+
+if $IS_LINUX_UBUNTU; then
+  source "$BH_DIR/rc-ubu.sh"
+elif $IS_WINDOWS_MSYS; then
+  source "$BH_DIR/rc-msys.sh"
+elif $IS_WINDOWS_WSL; then
+  source "$BH_DIR/rc-ubu.sh"
+  source "$BH_DIR/rc-wsl.sh"
+elif $IS_WINDOWS_GITBASH; then
+  source "$BH_DIR/rc-gitbash.sh"
+elif $IS_MAC; then
+  source "$BH_DIR/rc-mac.sh"
+fi
+
+# ---------------------------------------
 # specifc-commands helpers
 # ---------------------------------------
 
@@ -100,6 +117,7 @@ if type gcc &>/dev/null; then source "$BH_DIR/lib/cross/gcc.sh"; fi
 if type git &>/dev/null; then source "$BH_DIR/lib/cross/git.sh"; fi
 if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/lib/cross/gst.sh"; fi
 if type pandoc &>/dev/null; then source "$BH_DIR/lib/cross/pandoc.sh"; fi
+if type ghostscript &>/dev/null; then source "$BH_DIR/lib/cross/ghostscript.sh"; fi
 if type pdflatex &>/dev/null; then source "$BH_DIR/lib/cross/pdflatex.sh"; fi
 if type pkg-config &>/dev/null; then source "$BH_DIR/lib/cross/pkg-config.sh"; fi
 if type ruby &>/dev/null; then source "$BH_DIR/lib/cross/ruby.sh"; fi
@@ -108,21 +126,3 @@ if type tesseract &>/dev/null; then source "$BH_DIR/lib/cross/tesseract.sh"; fi
 if type wget &>/dev/null; then source "$BH_DIR/lib/cross/wget.sh"; fi
 if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/cross/youtube-dl.sh"; fi
 if type zip tar &>/dev/null; then source "$BH_DIR/lib/cross/zip.sh"; fi
-if test -d /etc/sudoers.d/; then source "$BH_DIR/lib/cross/user.sh"; fi
-
-# ---------------------------------------
-# specific-OS helpers
-# ---------------------------------------
-
-if $IS_LINUX_UBUNTU; then
-  source "$BH_DIR/rc-ubu.sh"
-elif $IS_WINDOWS_MSYS; then
-  source "$BH_DIR/rc-msys.sh"
-elif $IS_WINDOWS_WSL; then
-  source "$BH_DIR/rc-ubu.sh"
-  source "$BH_DIR/rc-wsl.sh"
-elif $IS_WINDOWS_GITBASH; then
-  source "$BH_DIR/rc-gitbash.sh"
-elif $IS_MAC; then
-  source "$BH_DIR/rc-mac.sh"
-fi

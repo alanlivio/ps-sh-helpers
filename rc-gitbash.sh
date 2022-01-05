@@ -16,6 +16,7 @@ alias whereis='where'
 alias reboot='gsudo shutdown \/r'
 alias ps_call="powershell.exe -c"
 alias ps_call_admin="gsudo powershell.exe -c"
+alias ghostscript='gswin64c'
 
 function bh_win_gitbash_fix_prompt {
   sed '/show\sMSYSTEM/d' -i /etc/profile.d/git-prompt.sh
