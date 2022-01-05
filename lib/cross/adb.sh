@@ -17,11 +17,6 @@ function bh_adb_reinstall_providers() {
   adb shell pm install -r --user 0 /system/priv-app/ExternalStorageProvider/ExternalStorageProvider.apk
 }
 
-function bh_adb_uninstall_oem() {
-  adb shell pm uninstall -k --user 0 com.android.mediacenter
-  adb shell pm uninstall -k --user 0 com.android.calendar
-  adb shell pm uninstall -k --user 0 com.android.contacts
-}
 
 function bh_adb_get_ip() {
   adb shell netcfg
@@ -41,6 +36,10 @@ function bh_adb_get_printscreen() {
 
 function bh_adb_list_installed() {
   adb shell pm list packages
+}
+
+function bh_adb_list_running() {
+  adb shell ps | grep apps | awk '{print $9}'
 }
 
 function bh_adb_install() {
