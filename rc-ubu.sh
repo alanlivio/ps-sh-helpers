@@ -13,17 +13,10 @@ function bh_open {
 
 source "$BH_DIR/lib/ubu/install.sh"
 
-if type gnome-shell &>/dev/null; then
-  source "$BH_DIR/lib/ubu/gnome.sh"
-fi
-if type snap &>/dev/null; then
-  source "$BH_DIR/lib/ubu/snap.sh"
-fi
-if type lsof &>/dev/null; then source "$BH_DIR/lib/ubu/ports.sh"; fi
-if type lxc &>/dev/null; then source "$BH_DIR/lib/ubu/lxc.sh"; fi
+if type gnome-shell &>/dev/null; then source "$BH_DIR/lib/ubu/gnome.sh"; fi
 if type pngquant jpegoptim &>/dev/null; then source "$BH_DIR/lib/cross/image.sh"; fi
-if type service &>/dev/null; then source "$BH_DIR/lib/ubu/initd.sh"; fi
-if type systemctl &>/dev/null; then source "$BH_DIR/lib/ubu/systemd.sh"; fi
+if type lxc &>/dev/null; then source "$BH_DIR/lib/cross/lxc.sh"; fi
+if type snap &>/dev/null; then source "$BH_DIR/lib/cross/snap.sh"; fi
 
 # ---------------------------------------
 # update_clean
@@ -66,4 +59,44 @@ function bh_ubu_server_tty1_autologing() {
   echo 'ExecStart=' | sudo tee -a $file
   echo "ExecStart=-/sbin/agetty --noissue --autologin $USER %I $TERM" | sudo tee -a $file
   echo 'Type=idle' | sudo tee -a $file
+}
+
+# ---------------------------------------
+# systemd
+# ---------------------------------------
+
+function bh_ubu_systemd_list() {
+  systemctl --type=service
+}
+
+function bh_ubu_systemd_status_service() {
+  : ${1?"Usage: ${FUNCNAME[0]} <service_name>"}
+  systemctl status $1
+}
+
+function bh_ubu_systemd_add_script() {
+  : ${1?"Usage: ${FUNCNAME[0]} <service_file>"}
+  systemctl daemon-reload
+  systemctl enable $1
+}
+
+# ---------------------------------------
+# ports
+# ---------------------------------------
+
+function bh_ubu_ports_list() {
+  lsof -i
+}
+
+function bh_ubu_ports_kill_using() {
+  : ${1?"Usage: ${FUNCNAME[0]} <port>"}
+  local pid=$(sudo lsof -t -i:$1)
+  if test -n "$pid"; then
+    sudo kill -9 "$pid"
+  fi
+}
+
+function bh_ubu_ports_list_one() {
+  : ${1?"Usage: ${FUNCNAME[0]} <port>"}
+  sudo lsof -i:$1
 }
