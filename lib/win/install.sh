@@ -9,7 +9,6 @@ function bh_win_install_store_essentials() {
       Get-AppxPackage $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register \"\$(\$_.InstallLocation)\AppXManifest.xml\" } | Out-null
     "
   done
-
 }
 
 function bh_win_install_python() {
@@ -32,6 +31,10 @@ function bh_win_install_vscode() {
 
 function bh_win_install_miktex() {
   winget install -i MiKTeX
+}
+
+function bh_win_install_cmake() {
+  winget install cmake
 }
 
 function bh_win_install_make() {
@@ -127,6 +130,7 @@ function bh_win_install_flutter() {
     bh_win_path_add $(winpath $flutter_sdk_dir/bin)
   fi
 }
+
 function bh_win_install_latexindent() {
   bh_log_func
   if ! type latexindent.exe &>/dev/null; then

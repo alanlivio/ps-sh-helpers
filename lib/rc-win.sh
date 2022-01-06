@@ -58,20 +58,29 @@ function bh_win_user_check_eleveated_shell() {
 }
 
 # ---------------------------------------
+# env
+# ---------------------------------------
+
+function bh_win_env_show() {
+  ps_call 'Get-ChildItem Env:'
+}
+
+function bh_win_env_add() {
+  : ${2?"Usage: ${FUNCNAME[0]} <varname> <value>"}
+  ps_call "[System.Environment]::SetEnvironmentVariable('$1', '$2', 'user')"
+}
+
+# ---------------------------------------
 # path
 # ---------------------------------------
 
 function bh_win_path_show() {
-  ps_call 'Get-ChildItem Env:'
+  ps_call '(Get-ChildItem Env:Path).Value'
 }
 
 function bh_win_path_show_as_list() {
   IFS=';' read -ra ADDR <<<$(bh_win_path_show)
   for i in "${!ADDR[@]}"; do echo ${ADDR[$i]}; done
-}
-
-function bh_win_env() {
-  ps_call "[System.Environment]::SetEnvironmentVariable('$1', '$2', 'user')"
 }
 
 function bh_win_path_add() {
@@ -92,7 +101,7 @@ function bh_win_path_add() {
     }; bh_win_path_add ' \"$dir\"
 }
 
-function bh_win_path_settings() {
+function bh_win_path_open_settings() {
   rundll32 sysdm.cpl,EditEnvironmentVariables
 }
 
