@@ -90,7 +90,7 @@ elif $IS_WINDOWS_WSL; then
   source "$BH_DIR/lib/rc-ubu.sh"
   source "$BH_DIR/lib/rc-wsl.sh"
 elif $IS_WINDOWS_GITBASH; then
-  source "$BH_DIR/lib/rc-gitbash.sh"
+  source "$BH_DIR/lib/rc-win.sh"
 elif $IS_MAC; then
   source "$BH_DIR/lib/rc-mac.sh"
 fi
