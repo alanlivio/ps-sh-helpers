@@ -77,13 +77,14 @@ The helpers bellow can be run routinely. They install packages defined in `BH_PK
 
 The helpers below are for cross plataform commands. For the full list, see lib/ folder.
 
-* `bh_android_*`: android helpers.
+* `bh_adb_*`: adb helpers.
 * `bh_cmake_*`: cmake helpers.
 * `bh_docker_*`: docker helpers.
 * `bh_ffmpeg_*`: ffmpeg helpers.
 * `bh_flutter_*`: flutter helpers.
 * `bh_gcc_*`: gcc helpers.
 * `bh_git_*`: git helpers.
+* `bh_ghostscript_*`: ghostscript helpers (for pdf).
 * `bh_meson_*`: meson helpers.
 * `bh_npm_*`: npm helpers.
 * `bh_pandoc_*`: pandoc helpers.
