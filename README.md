@@ -102,6 +102,7 @@ The helpers below are for cross plataform commands. For the full list, see lib/ 
 
 The projects bellow used as reference:
 
+* https://github.com/milianw/shell-helpers
 * https://github.com/wd5gnr/bashrc
 * https://github.com/martinburger/bash-common-helpers
 * https://github.com/jonathantneal/git-bash-helpers
