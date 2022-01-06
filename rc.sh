@@ -83,16 +83,16 @@ function bh_bh_install() {
 # ---------------------------------------
 
 if $IS_LINUX_UBUNTU; then
-  source "$BH_DIR/rc-ubu.sh"
+  source "$BH_DIR/lib/rc-ubu.sh"
 elif $IS_WINDOWS_MSYS; then
-  source "$BH_DIR/rc-msys.sh"
+  source "$BH_DIR/lib/rc-msys.sh"
 elif $IS_WINDOWS_WSL; then
-  source "$BH_DIR/rc-ubu.sh"
-  source "$BH_DIR/rc-wsl.sh"
+  source "$BH_DIR/lib/rc-ubu.sh"
+  source "$BH_DIR/lib/rc-wsl.sh"
 elif $IS_WINDOWS_GITBASH; then
-  source "$BH_DIR/rc-gitbash.sh"
+  source "$BH_DIR/lib/rc-gitbash.sh"
 elif $IS_MAC; then
-  source "$BH_DIR/rc-mac.sh"
+  source "$BH_DIR/lib/rc-mac.sh"
 fi
 
 # ---------------------------------------
