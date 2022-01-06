@@ -6,7 +6,7 @@ function bh_win_get_list_installed() {
   winget list
 }
 
-function bh_win_get_list_installed_str() {
+function bh_win_get_list_installed_exported_str() {
   powershell -c '
     $tmpfile = New-TemporaryFile
     winget export $tmpfile | Select-String -Pattern "\n|Installed package is not available" -NotMatch
@@ -18,9 +18,8 @@ function bh_win_get_list_installed_str() {
 function bh_win_get_install() {
   bh_log_func
   local pkgs_to_install=""
-  local pkgs_installed=$(bh_win_get_list_installed_str)
   for i in "$@"; do
-    if [[ ! $pkgs_installed =~ $i ]]; then
+    if [[ $(winget list --id $i) =~ "No installed"* ]]; then
       pkgs_to_install="$i $pkgs_to_install"
     fi
   done
@@ -28,10 +27,10 @@ function bh_win_get_install() {
     echo "pkgs_to_install=$pkgs_to_install"
     for pkg in $pkgs_to_install; do
       winget install $pkg
-        if $? -ne 0; then 
-          bh_log "INFO: winget install failed, trying winget install -i ..."
-          winget install -i $pkg
-        fi
+      if [ $? -gt 0 ]; then
+        bh_log_msg "INFO: winget install failed, trying winget install -i ..."
+        winget install -i $pkg
+      fi
     done
   fi
 }
