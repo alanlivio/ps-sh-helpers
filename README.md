@@ -14,7 +14,7 @@ Run in a bash shell the script install/bh-on-mac.sh to install git and bash-help
 ```
 
 Ubuntu already has a bash.  
-Run in a bash shell the script install/bh-on-ubu.shsh), to install git and bash-helpers:
+Run in a bash shell the script install/bh-on-ubu.sh), to install git and bash-helpers:
 
 ```bash
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-on-ubu.sh)"

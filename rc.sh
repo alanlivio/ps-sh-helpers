@@ -6,28 +6,28 @@
 
 IS_MAC=false
 IS_LINUX=false
-IS_LINUX_UBUNTU=false
-IS_WINDOWS=false
-IS_WINDOWS_WSL=false
-IS_WINDOWS_MSYS=false
-IS_WINDOWS_GITBASH=false
+IS_LINUX_UBU=false
+IS_WIN=false
+IS_WIN_WSL=false
+IS_WIN_MSYS=false
+IS_WIN_GITBASH=false
 
 case "$(uname -s)" in
 CYGWIN* | MINGW* | MSYS*)
-  IS_WINDOWS=true
+  IS_WIN=true
   if test -f /etc/profile.d/git-prompt.sh; then
-    IS_WINDOWS_GITBASH=true
+    IS_WIN_GITBASH=true
   else
-    IS_WINDOWS_MSYS=true
+    IS_WIN_MSYS=true
   fi
   ;;
 Linux)
   if [[ $(uname -r) == *"icrosoft"* ]]; then
-    IS_WINDOWS=true
-    IS_WINDOWS_WSL=true
+    IS_WIN=true
+    IS_WIN_WSL=true
   elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then
     IS_LINUX=true
-    IS_LINUX_UBUNTU=true
+    IS_LINUX_UBU=true
   fi
   ;;
 Darwin)
@@ -36,18 +36,14 @@ Darwin)
 esac
 
 # ---------------------------------------
-# bh vars
+# vars
 # ---------------------------------------
 
 BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BH_RC="$BH_DIR/rc.sh"
-
-# ---------------------------------------
-# bh vars from .bh-cfg.sh vars
-# ---------------------------------------
-
 # if not "$HOME/.bh-cfg.sh" copy skel
 if ! test -f "$HOME/.bh-cfg.sh"; then cp $BH_DIR/skel/.bh-cfg.sh $HOME/; fi
+# load from from .bh-cfg.sh
 source $HOME/.bh-cfg.sh
 # set some var if .bh-cfg do not.
 if test -z "$BH_OPT_WIN"; then BH_OPT_WIN="$HOME/AppData/Local/Programs"; fi
@@ -82,14 +78,14 @@ function bh_bh_install() {
 # specific-OS helpers
 # ---------------------------------------
 
-if $IS_LINUX_UBUNTU; then
+if $IS_LINUX_UBU; then
   source "$BH_DIR/lib/rc-ubu.sh"
-elif $IS_WINDOWS_MSYS; then
+elif $IS_WIN_MSYS; then
   source "$BH_DIR/lib/rc-msys.sh"
-elif $IS_WINDOWS_WSL; then
+elif $IS_WIN_WSL; then
   source "$BH_DIR/lib/rc-ubu.sh"
   source "$BH_DIR/lib/rc-wsl.sh"
-elif $IS_WINDOWS_GITBASH; then
+elif $IS_WIN_GITBASH; then
   source "$BH_DIR/lib/rc-win.sh"
 elif $IS_MAC; then
   source "$BH_DIR/lib/rc-mac.sh"

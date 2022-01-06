@@ -48,7 +48,7 @@ function bh_cmake_check() {
 }
 
 function bh_cmake_install() {
-  if $IS_WINDOWS_MSYS; then
+  if $IS_WIN_MSYS; then
     cmake --install . --prefix /mingw64
   elif $IS_LINUX; then
     sudo cmake --install . --prefix /usr

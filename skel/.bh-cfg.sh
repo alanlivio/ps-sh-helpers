@@ -41,7 +41,7 @@ BH_PKGS_PYTHON+="nbdime " # jypter diff
 BH_PKGS_PYTHON+="autopep8 pylama pylint "
 BH_PKGS_VSCODE+="ms-python.python "
 
-if $IS_WINDOWS_GITBASH; then
+if $IS_WIN_GITBASH; then
   BH_PKGS_VSCODE+="ms-vscode.powershell "
   BH_PKGS_VSCODE+="ms-vscode-remote.remote-wsl "
 fi
@@ -68,11 +68,11 @@ BH_HOME_CLEAN_UNUSED=(
   'Pictures'
   '.cache'
 )
-if $IS_LINUX_UBUNTU; then
+if $IS_LINUX_UBU; then
   BH_HOME_CLEAN_UNUSED+=(
     'Documents' # sensible data in Windows
   )
-elif $IS_WINDOWS; then
+elif $IS_WIN; then
   BH_HOME_CLEAN_UNUSED+=(
     'Application Data'
     'Cookies'

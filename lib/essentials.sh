@@ -40,7 +40,7 @@ function bh_log_try() {
 
 function bh_bashrc_reload() {
   bh_log_func
-  if $IS_WINDOWS_WSL; then
+  if $IS_WIN_WSL; then
     source $HOME/.profile
   else
     source $HOME/.bashrc

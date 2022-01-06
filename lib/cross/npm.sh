@@ -15,7 +15,7 @@ function bh_npm_install() {
   if test ! -z "$pkgs_to_install"; then
     bh_log_msg "pkgs_to_install=$pkgs_to_install"
     if test -f pakcage.json; then cd /tmp/; fi
-    if test $IS_WINDOWS; then
+    if test $IS_WIN; then
       npm install -g $pkgs_to_install
       npm update
     else
