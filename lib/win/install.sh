@@ -13,18 +13,21 @@ function bh_win_install_store_essentials() {
 
 function bh_win_install_python() {
   bh_win_get_install Python.Python.3 --version 3.9.7150.0 --source winget
-  # It is not automatically added to the path
   bh_win_path_add $(winpath $HOME/AppData/Roaming/Python/Python39/Scripts/)
 }
 
 function bh_win_install_miktex() {
   bh_win_get_install ChristianSchenk.MiKTeX
-  # It is not automatically added to the path
   bh_win_path_add $(winpath $HOME/AppData/Local/Programs/MiKTeX/miktex/bin/x64/)
 }
 
 function bh_win_install_zotero() {
   bh_win_get_install Zotero.Zotero
+}
+
+function bh_win_install_msys() {
+  bh_win_get_install msys2.msys2
+  bh_log_msg "INFO: after start msys bash, load .bh/rc.sh and and run bf_msys_fix_home"
 }
 
 function bh_win_install_ghostscript() {
