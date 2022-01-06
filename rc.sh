@@ -110,10 +110,11 @@ if type docker &>/dev/null; then source "$BH_DIR/lib/cross/docker.sh"; fi
 if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/cross/ffmpeg.sh"; fi
 if type flutter &>/dev/null; then source "$BH_DIR/lib/cross/flutter.sh"; fi
 if type gcc &>/dev/null; then source "$BH_DIR/lib/cross/gcc.sh"; fi
+if type ghostscript &>/dev/null; then source "$BH_DIR/lib/cross/ghostscript.sh"; fi
 if type git &>/dev/null; then source "$BH_DIR/lib/cross/git.sh"; fi
 if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/lib/cross/gst.sh"; fi
+if type meson &>/dev/null; then source "$BH_DIR/lib/cross/meson.sh"; fi
 if type pandoc &>/dev/null; then source "$BH_DIR/lib/cross/pandoc.sh"; fi
-if type ghostscript &>/dev/null; then source "$BH_DIR/lib/cross/ghostscript.sh"; fi
 if type pdflatex &>/dev/null; then source "$BH_DIR/lib/cross/pdflatex.sh"; fi
 if type pkg-config &>/dev/null; then source "$BH_DIR/lib/cross/pkg-config.sh"; fi
 if type ruby &>/dev/null; then source "$BH_DIR/lib/cross/ruby.sh"; fi
