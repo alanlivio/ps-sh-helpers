@@ -85,24 +85,32 @@ function bh_win_path_show_as_list() {
 
 function bh_win_path_add() {
   local dir=$(winpath $@)
-  echo $dir
   ps_call ' 
-    function bh_win_path_add($addPath) {
-      if (Test-Path $addPath) {
-        $currentpath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
-        $regexAddPath = [regex]::Escape($addPath)
-        $arrPath = $currentpath -split ";" | Sort-Object -Unique | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
-        $newpath = ($arrPath + $addPath) -join ";"
-        [System.Environment]::SetEnvironmentVariable("PATH", $newpath, "user")
-      }
-      else {
-        Throw "$addPath is not a valid path."
-      }
+    function bh_win_path_add($addDir) {
+      $currentpath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
+      $regexAddPath = [regex]::Escape($addDir)
+      $arrPath = $currentpath -split ";" | Sort-Object -Unique | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
+      $newpath = ($arrPath + $addDir) -join ";"
+      [System.Environment]::SetEnvironmentVariable("PATH", $newpath, "user")
     }; bh_win_path_add ' \"$dir\"
 }
 
+function bh_win_path_remove() {
+  local dir=$(winpath $@)
+  ps_call ' 
+    function bh_win_path_remove($remDir) {
+      $currentpath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
+      $newpath = ($currentpath.Split(";") | Where-Object { $_ -ne "$remDir" }) -join ";"
+      [System.Environment]::SetEnvironmentVariable("PATH", $newpath, "user")
+    }; bh_win_path_remove ' \"$dir\"
+}
+
+function bh_win_path_add_winapps() {
+  bh_win_path_add "$HOME/AppData/Local/Microsoft/WindowsApps/"
+}
+
 function bh_win_path_open_settings() {
-  rundll32 sysdm.cpl,EditEnvironmentVariables
+  rundll32 sysdm.cpl,EditEnvironmentVariables &
 }
 
 # ---------------------------------------
