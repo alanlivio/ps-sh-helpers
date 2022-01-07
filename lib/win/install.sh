@@ -27,7 +27,19 @@ function bh_win_install_zotero() {
 
 function bh_win_install_msys() {
   bh_win_get_install msys2.msys2
-  bh_log_msg "INFO: after start msys bash, load .bh/rc.sh and and run bf_msys_fix_home"
+  if test -d /c/msys64; then
+    local msys_home="C:\msys64"
+    local msysbash="$msys_home\usr\bin\bash.exe"
+    ps_call "$msysbash -c 'echo none / cygdrive binary,posix=0,noacl,user 0 0 > /etc/fstab'"
+    ps_call "$msysbash -c 'echo C:/Users/ /Users ntfs binary,noacl,auto 1 1 >>  /etc/fstab'"
+    # mount /mnt/c/ like in WSL
+    ps_call "$msysbash -c ' echo /c /mnt/c none bind >> /etc/fstab'"
+    ps_call "$msysbash -c ' echo db_home: windows >> /etc/nsswitch.conf'"
+    bh_win_path_add "$msys_home\usr\bin"
+    bh_win_path_add "$msys_home\mingw64\bin"
+  else
+    bh_log_error "msys not in C:\msys64"
+  fi
 }
 
 function bh_win_install_ghostscript() {
