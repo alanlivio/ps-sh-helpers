@@ -115,6 +115,7 @@ if type git &>/dev/null; then source "$BH_DIR/lib/cross/git.sh"; fi
 if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/lib/cross/gst.sh"; fi
 if type meson &>/dev/null; then source "$BH_DIR/lib/cross/meson.sh"; fi
 if type pandoc &>/dev/null; then source "$BH_DIR/lib/cross/pandoc.sh"; fi
+if type pngquant &>/dev/null; then source "$BH_DIR/lib/cross/pngquant.sh"; fi
 if type pdflatex &>/dev/null; then source "$BH_DIR/lib/cross/pdflatex.sh"; fi
 if type pkg-config &>/dev/null; then source "$BH_DIR/lib/cross/pkg-config.sh"; fi
 if type ruby &>/dev/null; then source "$BH_DIR/lib/cross/ruby.sh"; fi
