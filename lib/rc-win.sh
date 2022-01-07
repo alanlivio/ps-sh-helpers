@@ -62,11 +62,11 @@ function bh_win_user_check_eleveated_shell() {
 # ---------------------------------------
 
 function bh_win_user_disable_password_policy() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/admin/disable-password-policy.ps1)
+  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/disable-password-policy.ps1)
 }
 
 function bh_win_disable_ctx_menu_unused() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/admin/disable-cxt-menu-unused.ps1)
+  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/disable-cxt-menu-unused.ps1)
 }
 
 function bh_win_user_adminstrator_enable() {
@@ -105,11 +105,11 @@ function bh_win_sysupdate_win_list_last_installed() {
 # ---------------------------------------
 
 function bh_win_feature_disable_unused_services_features() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/admin/disable-unused-services-features.ps1)
+  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/disable-unused-services-features.ps1)
 }
 
 function bh_win_feature_enable_ssh_server_pwsh() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/admin/enable-ssh-server-pwsh.ps1)
+  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/enable-ssh-server-pwsh.ps1)
 }
 
 function bh_win_feature_enable_ssh_server_gitbash() {

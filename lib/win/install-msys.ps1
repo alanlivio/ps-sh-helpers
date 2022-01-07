@@ -7,17 +7,12 @@ function bh_win_env_add($name, $value) {
   [System.Environment]::SetEnvironmentVariable("$name", "$value", 'user')
 }
 
-function bh_path_win_add($addPath) {
-  if (Test-Path $addPath) {
-    $currentpath = [System.Environment]::GetEnvironmentVariable('PATH', 'user')
-    $regexAddPath = [regex]::Escape($addPath)
-    $arrPath = $currentpath -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
-    $newpath = ($arrPath + $addPath) -join ';'
-    bh_win_env_add 'PATH' $newpath
-  }
-  else {
-    Throw "$addPath' is not a valid path."
-  }
+function bh_win_path_add($addPath) {
+  $currentpath = [System.Environment]::GetEnvironmentVariable('PATH', 'user')
+  $regexAddPath = [regex]::Escape($addPath)
+  $arrPath = $currentpath -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
+  $newpath = ($arrPath + $addPath) -join ';'
+  bh_win_env_add 'PATH' $newpath
 }
 
 function bh_msys_sanity() {
@@ -38,7 +33,7 @@ function bh_install_win_gsudo() {
   if (!(Get-Command 'gsudo.exe' -ea 0)) {
     Invoke-Expression $bh_log_func
     winget install --scope=machine gsudo
-    bh_path_win_add 'C:\Program Files (x86)\gsudo'
+    bh_win_path_add 'C:\Program Files (x86)\gsudo'
   }
 }
 
@@ -51,27 +46,18 @@ function bh_install_win_winget() {
 
 $MSYS_HOME = "C:\msys64"
 
-function bh_msys_add_to_path() {
-  bh_path_win_add "$MSYS_HOME\usr\bin"
-  bh_path_win_add "$MSYS_HOME\mingw64\bin"
-}
-
-function bh_install_win_msys() {
+function bh_win_install_msys() {
   Invoke-Expression $bh_log_func
   $MSYS_HOME = "C:\msys64"
-  # install winget
   if (!(Get-Command "winget.exe" -ea 0)) {
     bh_log "INFO: winget is not installed, installing..."
     bh_install_win_winget
   } 
-  # install gsudo
-  if (!(Get-Command "gsudo.exe" -ea 0)) {
-    bh_log "INFO: gsudo is not installed, installing..."
-    bh_install_win_gsudo
-  } 
   if (-not (Test-Path $MSYS_HOME)) {
     winget install --scope=machine msys2.msys2
   }
+  bh_win_path_add "$MSYS_HOME\usr\bin"
+  bh_win_path_add "$MSYS_HOME\mingw64\bin"
 }
 
-bh_install_win_msys
+bh_win_install_msys

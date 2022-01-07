@@ -1,5 +1,5 @@
 # ---------------------------------------
-# install non-admin
+# install
 # ---------------------------------------
 
 function bh_win_install_store_essentials() {
@@ -26,20 +26,7 @@ function bh_win_install_zotero() {
 }
 
 function bh_win_install_msys() {
-  bh_win_get_install msys2.msys2
-  if test -d /c/msys64; then
-    local msys_home="C:\msys64"
-    local msysbash="$msys_home\usr\bin\bash.exe"
-    ps_call "$msysbash -c 'echo none / cygdrive binary,posix=0,noacl,user 0 0 > /etc/fstab'"
-    ps_call "$msysbash -c 'echo C:/Users/ /Users ntfs binary,noacl,auto 1 1 >>  /etc/fstab'"
-    # mount /mnt/c/ like in WSL
-    ps_call "$msysbash -c ' echo /c /mnt/c none bind >> /etc/fstab'"
-    ps_call "$msysbash -c ' echo db_home: windows >> /etc/nsswitch.conf'"
-    bh_win_path_add "$msys_home\usr\bin"
-    bh_win_path_add "$msys_home\mingw64\bin"
-  else
-    bh_log_error "msys not in C:\msys64"
-  fi
+  ps_call_script $(unixpath -w $BH_DIR/lib/win/install-msys.ps1)
 }
 
 function bh_win_install_ghostscript() {
@@ -197,12 +184,8 @@ function bh_win_install_gsudo() {
   bh_win_get_install gsudo
 }
 
-# ---------------------------------------
-# install admin
-# ---------------------------------------
-
 function bh_win_install_wsl() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/admin/install-wsl.ps1)
+  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win//install-wsl.ps1)
 }
 
 function bh_win_install_docker() {
