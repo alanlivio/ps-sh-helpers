@@ -58,6 +58,95 @@ function bh_win_user_check_eleveated_shell() {
 }
 
 # ---------------------------------------
+# user
+# ---------------------------------------
+
+function bh_win_user_disable_password_policy() {
+  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/admin/disable-password-policy.ps1)
+}
+
+function bh_win_disable_ctx_menu_unused() {
+  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/admin/disable-cxt-menu-unused.ps1)
+}
+
+function bh_win_user_adminstrator_enable() {
+  ps_call_admin 'net user administrator /active:yes'
+}
+
+function bh_win_user_adminstrator_disable() {
+  ps_call_admin 'net user administrator /active:no'
+}
+
+# ---------------------------------------
+# sysupdate
+# ---------------------------------------
+
+function bh_win_sysupdate_win() {
+  bh_log_func
+  ps_call_admin '
+    Install-Module -Name PSWindowsUpdate -Force
+    $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
+    if ($_ -is [string]) {
+      $_.Split("", [System.StringSplitOptions]::RemoveEmptyEntries) 
+    } 
+  }'
+}
+
+function bh_win_sysupdate_win_list() {
+  ps_call_admin 'Get-WindowsUpdate'
+}
+
+function bh_win_sysupdate_win_list_last_installed() {
+  ps_call_admin 'Get-WUHistory -Last 10 | Select-Object Date, Title, Result'
+}
+
+# ---------------------------------------
+# feature
+# ---------------------------------------
+
+function bh_win_feature_disable_unused_services_features() {
+  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/admin/disable-unused-services-features.ps1)
+}
+
+function bh_win_feature_enable_ssh_server_pwsh() {
+  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/admin/enable-ssh-server-pwsh.ps1)
+}
+
+function bh_win_feature_enable_ssh_server_gitbash() {
+  bh_log_func
+  local gitbash_path=$(whereis bash | head -1)
+  ps_call_admin "
+    Add-WindowsCapability -Online -Name OpenSSH.Client
+    Add-WindowsCapability -Online -Name OpenSSH.Server
+    Start-Service sshd
+    Set-Service -Name sshd -StartupType 'Automatic'
+    New-ItemProperty -Path 'HKLM:\SOFTWARE\OpenSSH' -Name DefaultShell -Value '$gitbash_path' -PropertyType String -Force
+  "
+}
+
+function bh_win_feature_list_enabled() {
+  bh_log_msg "WindowsOptionalFeatures"
+  ps_call_admin 'Get-WindowsOptionalFeature -Online | Where-Object {$_.State -eq "Enabled"}'
+  bh_log_msg "WindowsCapabilities"
+  ps_call_admin 'Get-WindowsCapability -Online | Where-Object {$_.State -eq "Installed"}'
+}
+
+function bh_win_feature_list_disabled() {
+  bh_log_msg "WindowsOptionalFeatures"
+  ps_call_admin 'Get-WindowsOptionalFeature -Online | Where-Object {$_.State -eq "Disabled"}'
+  bh_log_msg "WindowsCapabilities"
+  ps_call_admin 'Get-WindowsCapability -Online | Where-Object {$_.State -eq "NotPresent"}'
+}
+
+# ---------------------------------------
+# services
+# ---------------------------------------
+
+function bh_win_services_list_running() {
+  ps_call_admin 'Get-Service | Where-Object {$_.Status -eq "Running"}'
+}
+
+# ---------------------------------------
 # env
 # ---------------------------------------
 
@@ -117,7 +206,7 @@ function bh_win_path_open_settings() {
 # load commands
 # ---------------------------------------
 
-if type gsudo &>/dev/null; then source "$BH_DIR/lib/win/admin.sh"; fi
+if type choco &>/dev/null; then source "$BH_DIR/lib/win/choco.sh"; fi
 source "$BH_DIR/lib/win/explorer.sh"
 source "$BH_DIR/lib/win/install.sh"
 source "$BH_DIR/lib/win/winget.sh"
