@@ -57,18 +57,6 @@ function bh_win_user_check_eleveated_shell() {
   ps_call '(New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)' | tr -d '\rn'
 }
 
-# ---------------------------------------
-# user
-# ---------------------------------------
-
-function bh_win_user_disable_password_policy() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/disable-password-policy.ps1)
-}
-
-function bh_win_disable_ctx_menu_unused() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/disable-cxt-menu-unused.ps1)
-}
-
 function bh_win_user_adminstrator_enable() {
   ps_call_admin 'net user administrator /active:yes'
 }
@@ -103,14 +91,6 @@ function bh_win_sysupdate_win_list_last_installed() {
 # ---------------------------------------
 # feature
 # ---------------------------------------
-
-function bh_win_feature_disable_unused_services_features() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/disable-unused-services-features.ps1)
-}
-
-function bh_win_feature_enable_ssh_server_pwsh() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/enable-ssh-server-pwsh.ps1)
-}
 
 function bh_win_feature_enable_ssh_server_gitbash() {
   bh_log_func
@@ -207,13 +187,10 @@ function bh_win_path_open_settings() {
 # ---------------------------------------
 
 if type choco &>/dev/null; then source "$BH_DIR/lib/win/choco.sh"; fi
+source "$BH_DIR/lib/win/sanity.sh"
 source "$BH_DIR/lib/win/explorer.sh"
 source "$BH_DIR/lib/win/install.sh"
 source "$BH_DIR/lib/win/winget.sh"
-
-function bh_win_sanity() {
-  powershell.exe -command "& { . $(unixpath -w $BH_DIR/lib/win/win-sanity.ps1) }"
-}
 
 # ---------------------------------------
 # update_clean
