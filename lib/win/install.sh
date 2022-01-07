@@ -158,73 +158,62 @@ function bh_win_install_latexindent() {
   fi
 }
 
+function bh_win_install_winget() {
+  ps_call '
+      if (!(Get-Command 'winget.exe' -ea 0)) {
+        Invoke-Expression $bh_log_func
+        Get-AppxPackage Microsoft.DesktopAppInstaller | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
+      }
+    '
+}
+
+function bh_win_install_winget_from_github() {
+  ps_call '
+      if (!(Get-Command 'winget.exe' -ea 0)) {
+        Invoke-WebRequest -URI https://github.com/microsoft/winget-cli/releases/download/v1.0.11692/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -UseBasicParsing -OutFile $env:TEMP\tmp.msixbundle
+        Add-AppxPackage -Path $env:TEMP\tmp.msixbundle
+      }
+    '
+}
+
+function bh_win_install_tesseract() {
+  bh_log_func
+  if ! type tesseract.exe &>/dev/null; then
+    bh_win_get_install tesseract
+    bh_win_path_add 'C:\Program Files\Tesseract-OCR'
+  fi
+}
+
+function bh_win_install_java() {
+  bh_log_func
+  if ! type java.exe &>/dev/null; then
+    bh_win_get_install ojdkbuild.ojdkbuild
+    local javahome=$(ps_call '$(get-command java).Source.replace("\bin\java.exe", "")')
+    bh_env_add "JAVA_HOME" "$javahome"
+  fi
+}
+
+function bh_win_install_gsudo() {
+  bh_win_get_install gsudo
+}
+
 # ---------------------------------------
 # install admin
 # ---------------------------------------
 
-if type gsudo &>/dev/null; then
+function bh_win_install_wsl() {
+  ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/admin/install-wsl.ps1)
+}
 
-  function bh_win_install_gsudo() {
-    bh_win_get_install gsudo
-  }
+function bh_win_install_docker() {
+  bh_log_func
+  ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
+  ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
+  bh_win_get_install Docker.DockerDesktop
+}
 
-  function bh_win_install_winget_from_github() {
-    ps_call_admin '
-    if (!(Get-Command 'winget.exe' -ea 0)) {
-      Invoke-WebRequest -URI https://github.com/microsoft/winget-cli/releases/download/v1.0.11692/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -UseBasicParsing -OutFile $env:TEMP\tmp.msixbundle
-      Add-AppxPackage -Path $env:TEMP\tmp.msixbundle
-    }
-  '
-  }
-
-  function bh_win_install_wsl() {
-    ps_call_script_admin $(unixpath -w $BH_DIR/lib/win/admin/install-wsl.ps1)
-  }
-
-  function bh_win_install_tesseract() {
-    bh_log_func
-    if ! type tesseract.exe &>/dev/null; then
-      bh_win_get_install tesseract
-      bh_win_path_add 'C:\Program Files\Tesseract-OCR'
-    fi
-  }
-
-  function bh_win_install_java() {
-    bh_log_func
-    if ! type java.exe &>/dev/null; then
-      bh_win_get_install ojdkbuild.ojdkbuild
-      local javahome=$(ps_call '$(get-command java).Source.replace("\bin\java.exe", "")')
-      bh_env_add "JAVA_HOME" "$javahome"
-    fi
-  }
-
-  function bh_win_install_docker() {
-    bh_log_func
-    ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
-    ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
-    bh_win_get_install Docker.DockerDesktop
-  }
-
-  function bh_win_install_choco() {
-    bh_log_func
-    ps_call_admin '
-    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-    choco feature disable -n checksumFiles
-    choco feature disable -n showDownloadProgress
-    choco feature disable -n showNonElevatedWarnings
-    choco feature disable -n logValidationResultsOnWarnings
-    choco feature disable -n logEnvironmentValues
-    choco feature disable -n exitOnRebootDetected
-    choco feature disable -n warnOnUpcomingLicenseExpiration
-    choco feature enable -n stopOnFirstPackageFailure
-    choco feature enable -n skipPackageUpgradesWhenNotInstalled
-    choco feature enable -n logWithoutColor
-    choco feature enable -n allowEmptyChecksumsSecure
-    choco feature enable -n allowGlobalConfirmation
-    choco feature enable -n failOnAutoUninstaller
-    choco feature enable -n removePackageInformationOnUninstall
-    choco feature enable -n useRememberedArgumentsForUpgrades
-    '
-  }
-
-fi
+function bh_win_install_choco() {
+  bh_log_func
+  ps_call_admin '
+    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))'
+}

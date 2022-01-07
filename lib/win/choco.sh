@@ -2,6 +2,24 @@
 # choco
 # ---------------------------------------
 
+function bh_win_choco_setup() {
+  choco feature disable -n checksumFiles
+  choco feature disable -n showDownloadProgress
+  choco feature disable -n showNonElevatedWarnings
+  choco feature disable -n logValidationResultsOnWarnings
+  choco feature disable -n logEnvironmentValues
+  choco feature disable -n exitOnRebootDetected
+  choco feature disable -n warnOnUpcomingLicenseExpiration
+  choco feature enable -n stopOnFirstPackageFailure
+  choco feature enable -n skipPackageUpgradesWhenNotInstalled
+  choco feature enable -n logWithoutColor
+  choco feature enable -n allowEmptyChecksumsSecure
+  choco feature enable -n allowGlobalConfirmation
+  choco feature enable -n failOnAutoUninstaller
+  choco feature enable -n removePackageInformationOnUninstall
+  choco feature enable -n useRememberedArgumentsForUpgrades
+}
+
 function bh_win_choco_list_installed() {
   choco list -l
 }
