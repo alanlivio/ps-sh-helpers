@@ -11,6 +11,7 @@ function bh_open {
 # load commands
 # ---------------------------------------
 
+source "$BH_DIR/lib/ubu/install.sh"
 if type gnome-shell &>/dev/null; then source "$BH_DIR/lib/ubu/gnome.sh"; fi
 if type pngquant jpegoptim &>/dev/null; then source "$BH_DIR/lib/cross/image.sh"; fi
 if type lxc &>/dev/null; then source "$BH_DIR/lib/cross/lxc.sh"; fi
