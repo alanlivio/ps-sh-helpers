@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ---------------------------------------
-# gitbash aliases
+# aliases
 # ---------------------------------------
 
 alias unixpath='cygpath'
