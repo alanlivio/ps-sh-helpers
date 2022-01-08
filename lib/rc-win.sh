@@ -44,8 +44,8 @@ function ps_call_script_admin() {
 # user
 # ---------------------------------------
 
-# usage if [ "$(bh_win_user_check_admin)" == "True" ]; then <commands>; fi
 function bh_win_user_check_admin() {
+  # usage if [ "$(bh_win_user_check_admin)" == "True" ]; then <commands>; fi
   ps_call '
     $user = "$env:COMPUTERNAME\$env:USERNAME"
     $group = "Administrators"

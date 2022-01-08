@@ -67,35 +67,32 @@ function bh_wsl_install_ssh() {
 # x_pulseaudio
 # ---------------------------------------
 
-if [ "$(bh_win_user_check_admin)" == "True" ]; then
+function bh_wsl_x_pulseaudio_enable() {
+  bh_win_choco_install "pulseaudio vcxsrv"
 
-  function bh_wsl_x_pulseaudio_enable() {
-    bh_win_choco_install "pulseaudio vcxsrv"
+  # https://wiki.ubuntu.com/WSL#Running_Graphical_Applications
+  sudo apt-get install pulseaudio
+  echo -e "load-module module-native-protocol-tcp auth-anonymous=1" | sudo "sudo tee -a $(unixpath C:\\ProgramData\\chocolatey\\lib\\pulseaudio\\tools\\etc\\pulse\\default.pa)"
+  echo -e "exit-idle-time = -1" | sudo "sudo tee -a $(unixpath C:\\ProgramData\\chocolatey\\lib\\pulseaudio\\tools\\etc\\pulse\\daemon.conf)"
 
-    # https://wiki.ubuntu.com/WSL#Running_Graphical_Applications
-    sudo apt-get install pulseaudio
-    echo -e "load-module module-native-protocol-tcp auth-anonymous=1" | sudo "sudo tee -a $(unixpath C:\\ProgramData\\chocolatey\\lib\\pulseaudio\\tools\\etc\\pulse\\default.pa)"
-    echo -e "exit-idle-time = -1" | sudo "sudo tee -a $(unixpath C:\\ProgramData\\chocolatey\\lib\\pulseaudio\\tools\\etc\\pulse\\daemon.conf)"
+  # configure .profile
+  if ! grep -q "PULSE_SERVER" $HOME/.profile; then
+    echo -e "\nexport DISPLAY=\"$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0\"" | tee -a $HOME/.profile
+    echo "export PULSE_SERVER=\"$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0\"" | tee -a $HOME/.profile
+    echo "export LIBGL_ALWAYS_INDIRECT=1" | tee -a $HOME/.profile
+  fi
+}
 
-    # configure .profile
-    if ! grep -q "PULSE_SERVER" $HOME/.profile; then
-      echo -e "\nexport DISPLAY=\"$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0\"" | tee -a $HOME/.profile
-      echo "export PULSE_SERVER=\"$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0\"" | tee -a $HOME/.profile
-      echo "export LIBGL_ALWAYS_INDIRECT=1" | tee -a $HOME/.profile
-    fi
-  }
+function bh_wsl_x_pulseaudio_start() {
+  bh_wsl_x_pulseaudio_stop
+  export DISPLAY="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0"
+  export PULSE_SERVER="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0"
+  export LIBGL_ALWAYS_INDIRECT=1
+  $(unixpath C:\\ProgramData\\chocolatey\\bin\\pulseaudio.exe) &
+  "$(unixpath 'C:\Program Files\VcXsrv\vcxsrv.exe')" :0 -multiwindow -clipboard -wgl -ac -silent-dup-error &
+}
 
-  function bh_wsl_x_pulseaudio_start() {
-    bh_wsl_x_pulseaudio_stop
-    export DISPLAY="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0"
-    export PULSE_SERVER="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0"
-    export LIBGL_ALWAYS_INDIRECT=1
-    $(unixpath C:\\ProgramData\\chocolatey\\bin\\pulseaudio.exe) &
-    "$(unixpath 'C:\Program Files\VcXsrv\vcxsrv.exe')" :0 -multiwindow -clipboard -wgl -ac -silent-dup-error &
-  }
-
-  function bh_wsl_x_pulseaudio_stop() {
-    cmd.exe /c "taskkill /IM pulseaudio.exe /F"
-    cmd.exe /c "taskkill /IM vcxsrv.exe /F"
-  }
-fi
+function bh_wsl_x_pulseaudio_stop() {
+  cmd.exe /c "taskkill /IM pulseaudio.exe /F"
+  cmd.exe /c "taskkill /IM vcxsrv.exe /F"
+}
