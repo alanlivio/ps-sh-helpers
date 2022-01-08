@@ -59,10 +59,11 @@ function bh_cmake_install() {
 
 function bh_cmake_uninstall() {
   local manifest="install_manifest.txt"
-  if test -f $manifest; then
-    cat $manifest | while read -r i; do
-      if test -f $i; then sudo rm -f $i; fi
-    done
+  if test -e $manifest; then
+    while IFS= read -r i; do
+      local file=${i%$'\r'}
+      if test -e "$file"; then sudo rm $file; fi
+    done <$manifest
   else
     bh_log_error "$manifest does not exist"
   fi
