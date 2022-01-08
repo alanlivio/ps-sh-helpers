@@ -17,7 +17,6 @@ function bh_adb_reinstall_providers() {
   adb shell pm install -r --user 0 /system/priv-app/ExternalStorageProvider/ExternalStorageProvider.apk
 }
 
-
 function bh_adb_get_ip() {
   adb shell netcfg
   adb shell ifconfig wlan0
@@ -38,13 +37,26 @@ function bh_adb_list_installed() {
   adb shell pm list packages
 }
 
+function bh_adb_ps() {
+  adb shell ps
+}
+
 function bh_adb_list_running() {
-  adb shell ps | grep apps | awk '{print $9}'
+  adb shell ps | grep ^u | awk '{print $9}'
 }
 
 function bh_adb_install() {
   : ${1?"Usage: ${FUNCNAME[0]} <package>"}
   adb shell pm install -k --user 0$1
+}
+
+function bh_adb_kill() {
+  : ${1?"Usage: ${FUNCNAME[0]} <package>"}
+  adb shell am kill $1
+}
+
+function bh_adb_get_foreground_package() {
+  adb shell dumpsys activity recents | grep 'Recent #0' | cut -d= -f2 | sed 's| .*||' | cut -d '/' -f1
 }
 
 function bh_adb_uninstall() {
