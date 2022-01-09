@@ -39,6 +39,10 @@ function bh_py_install() {
   fi
 }
 
+function bh_py_uninstall() {
+  pip uninstall "$@"
+}
+
 function bh_py_set_v3_default() {
   if [[ $(type python) && $(python -V) != "Python 3"* ]]; then
     sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
@@ -76,6 +80,7 @@ if type jupyter &>/dev/null; then
     jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace $@
   }
 fi
+
 # ---------------------------------------
 # pygmentize
 # ---------------------------------------
