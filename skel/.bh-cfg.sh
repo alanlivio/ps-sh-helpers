@@ -34,10 +34,10 @@ BH_PKGS_VSCODE+="DavidAnson.vscode-markdownlint shd101wyy.markdown-preview-enhan
 # HTML/XML vscode
 BH_PKGS_VSCODE+="dotjoshjohnson.xml redhat.vscode-yaml "
 BH_PKGS_VSCODE+="mkaufman.HTMLHint "
-# python DS
+# py DS
 BH_PKGS_PY+="wheel ipykernel numpy pandas scikit-learn mathplot matplotlib "
 BH_PKGS_PY+="nbdime " # jypter diff
-# python vscode
+# py vscode
 BH_PKGS_PY+="autopep8 pylama pylint "
 BH_PKGS_VSCODE+="ms-python.python "
 

@@ -12,21 +12,16 @@ function bh_open {
 # ---------------------------------------
 
 function bh_update_cleanup_mac() {
-  # essentials
+  # brew
   bh_install_mac_brew
   local pkgs="git bash vim diffutils curl "
-  # python
-  pkgs+="python python-pip "
-  bh_brew_install $pkgs
-  # brew
+  pkgs+="python3 python-pip "
   bh_brew_upgrade
-  bh_brew_install $BH_PKGS_BREW
-  # python
+  bh_brew_install $pkgs $BH_PKGS_BREW
+  # py
   bh_py_install $BH_PKGS_PY
   # vscode
-  if type code &>/dev/null; then
-    brew install --cask visual-studio-code
-  fi
+  brew install --cask visual-studio-code
   bh_vscode_install $BH_PKGS_VSCODE
   # cleanup
   bh_home_clean_unused

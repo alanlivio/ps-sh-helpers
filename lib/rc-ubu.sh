@@ -27,17 +27,14 @@ function bh_update_cleanup_ubu() {
     bh_snap_install_classic $BH_PKGS_SNAP_CLASSIC
     bh_snap_upgrade
   fi
-  local pkgs="git deborphan apt-file vim diffutils curl "
-  # python
-  pkgs+="python3 python3-pip "
-  bh_apt_install $pkgs
-  # set python3 as default
-  bh_py_set_v3_default
   # apt
-  bh_apt_install $BH_PKGS_APT_UBUNTU
+  local pkgs="git deborphan apt-file vim diffutils curl "
+  pkgs+="python3 python3-pip "
+  bh_apt_install $pkgs $BH_PKGS_APT_UBUNTU
   bh_apt_autoremove
   bh_apt_upgrade
-  # python
+  # py
+  bh_py_set_v3_default
   $HAS_PYTHON && bh_py_install $BH_PKGS_PY
   # vscode
   $HAS_VSCODE && bh_vscode_install $BH_PKGS_VSCODE
