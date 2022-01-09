@@ -14,14 +14,17 @@ function bh_open {
 source "$BH_DIR/lib/ubu/install.sh"
 if type gnome-shell &>/dev/null; then source "$BH_DIR/lib/ubu/gnome.sh"; fi
 if type lxc &>/dev/null; then source "$BH_DIR/lib/ubu/lxc.sh"; fi
-if type snap &>/dev/null; then source "$BH_DIR/lib/ubu/snap.sh"; fi
+if type snap &>/dev/null; then
+  HAS_SNAP=true
+  source "$BH_DIR/lib/ubu/snap.sh"
+fi
 
 # ---------------------------------------
 # update_clean
 # ---------------------------------------
 
 function bh_update_cleanup_ubu() {
-  if type snap &>/dev/null; then
+  if $HAS_SNAP; then
     # snap
     bh_snap_install $BH_PKGS_SNAP
     bh_snap_install_classic $BH_PKGS_SNAP_CLASSIC
@@ -35,7 +38,7 @@ function bh_update_cleanup_ubu() {
   bh_apt_upgrade
   # py
   bh_py_set_v3_default
-  $HAS_PYTHON && bh_py_install $BH_PKGS_PY
+  $HAS_PY && bh_py_install $BH_PKGS_PY
   # vscode
   $HAS_VSCODE && bh_vscode_install $BH_PKGS_VSCODE
   # cleanup
@@ -100,27 +103,25 @@ function bh_ubu_ports_list_one() {
 # deb
 # ---------------------------------------
 
-if type deb tar &>/dev/null; then
-  function bh_ubu_deb_install() {
-    : ${1?"Usage: ${FUNCNAME[0]} <pkg_name>"}
-    sudo dpkg -i $1
-  }
+function bh_ubu_deb_install() {
+  : ${1?"Usage: ${FUNCNAME[0]} <pkg_name>"}
+  sudo dpkg -i $1
+}
 
-  function bh_ubu_deb_install_force_depends() {
-    : ${1?"Usage: ${FUNCNAME[0]} <pkg_name>"}
-    sudo dpkg -i --force-depends $1
-  }
+function bh_ubu_deb_install_force_depends() {
+  : ${1?"Usage: ${FUNCNAME[0]} <pkg_name>"}
+  sudo dpkg -i --force-depends $1
+}
 
-  function bh_ubu_deb_info() {
-    : ${1?"Usage: ${FUNCNAME[0]} <pkg_name>"}
-    dpkg-deb --info $1
-  }
+function bh_ubu_deb_info() {
+  : ${1?"Usage: ${FUNCNAME[0]} <pkg_name>"}
+  dpkg-deb --info $1
+}
 
-  function bh_ubu_deb_contents() {
-    : ${1?"Usage: ${FUNCNAME[0]} <pkg_name>"}
-    dpkg-deb --show $1
-  }
-fi
+function bh_ubu_deb_contents() {
+  : ${1?"Usage: ${FUNCNAME[0]} <pkg_name>"}
+  dpkg-deb --show $1
+}
 
 # ---------------------------------------
 # apt helpers

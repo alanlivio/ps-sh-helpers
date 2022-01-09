@@ -21,7 +21,7 @@ function bh_update_cleanup_wsl() {
   bh_ubu_apt_autoremove
   # py
   bh_py_set_v3_default
-  $HAS_PYTHON && bh_py_install $BH_PKGS_PY_WSL
+  $HAS_PY && bh_py_install $BH_PKGS_PY_WSL
   # cleanup
   bh_home_clean_unused
 }
