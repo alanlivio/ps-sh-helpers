@@ -40,11 +40,7 @@ function bh_log_try() {
 
 function bh_bashrc_reload() {
   bh_log_func
-  if $IS_WIN_WSL; then
-    source $HOME/.profile
-  else
-    source $HOME/.bashrc
-  fi
+  source $HOME/.bashrc
 }
 
 # ---------------------------------------
@@ -165,7 +161,6 @@ function bh_diff_apply() {
   : ${2?"Usage: ${FUNCNAME[0]} <patch> <targed_file>"}
   patch apply "$1" "$2"
 }
-
 
 # ---------------------------------------
 # dotfiles
@@ -334,7 +329,6 @@ function bh_folder_info() {
 function bh_folder_find_duplicated_pdf() {
   find . -iname "*.pdf" -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find . -type f -size {}c -print0 | xargs -r -0 md5sum | sort | uniq -w32 --all-repeated=separate
 }
-
 
 # ---------------------------------------
 # mount

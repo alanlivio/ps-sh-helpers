@@ -13,8 +13,8 @@ function bh_open {
 
 source "$BH_DIR/lib/ubu/install.sh"
 if type gnome-shell &>/dev/null; then source "$BH_DIR/lib/ubu/gnome.sh"; fi
-if type lxc &>/dev/null; then source "$BH_DIR/lib/cross/lxc.sh"; fi
-if type snap &>/dev/null; then source "$BH_DIR/lib/cross/snap.sh"; fi
+if type lxc &>/dev/null; then source "$BH_DIR/lib/ubu/lxc.sh"; fi
+if type snap &>/dev/null; then source "$BH_DIR/lib/ubu/snap.sh"; fi
 
 # ---------------------------------------
 # update_clean
