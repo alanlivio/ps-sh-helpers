@@ -119,6 +119,28 @@ function bh_win_feature_list_disabled() {
 }
 
 # ---------------------------------------
+# appx
+# ---------------------------------------
+
+function bh_win_appx_list_installed() {
+  ps_call_admin "Get-AppxPackage -AllUsers | Select-Object Name, PackageFullName"
+}
+
+function bh_win_appx_uninstall() {
+  ps_call_admin '
+  if (Get-AppxPackage -Name ' "$1" ') {
+    Get-AppxPackage' "$1" '| Remove-AppxPackage
+  }
+  '
+}
+
+function bh_win_appx_install() {
+  ps_call_admin '
+    Get-AppxPackage ' "$1" '| ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
+  '
+}
+
+# ---------------------------------------
 # services
 # ---------------------------------------
 

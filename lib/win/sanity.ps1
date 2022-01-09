@@ -27,25 +27,27 @@ function bh_win_sanity_start_menu() {
     'Microsoft.3DBuilder'
     'Microsoft.Appconnector'
     'Microsoft.BingNews'
-    'Microsoft.MSPaint'
     'Microsoft.BingSports'
     'Microsoft.BingWeather'
     'Microsoft.CommsPhone'
-    'Microsoft.SkypeApp'
     'Microsoft.ConnectivityStore'
+    'Microsoft.GamingApp'
     'Microsoft.Getstarted'
+    'Microsoft.MSPaint'
     'Microsoft.Microsoft3DViewer'
     'Microsoft.MicrosoftOfficeHub'
     'Microsoft.MicrosoftSolitaireCollection'
     'Microsoft.MicrosoftStickyNotes'
-    'Microsoft.windowscommunicationsapps'
     'Microsoft.MixedReality.Portal'
     'Microsoft.Office.Desktop'
     'Microsoft.Office.Sway'
     'Microsoft.OneConnect'
-    'Microsoft.Print3D'
     'Microsoft.People'
+    'Microsoft.PowerAutomateDesktop'
+    'Microsoft.Print3D'
+    'Microsoft.SkypeApp'
     'Microsoft.StorePurchaseApp'
+    'Microsoft.Todos'
     'Microsoft.Wallet'
     'Microsoft.WindowsAlarms'
     'Microsoft.WindowsMaps'
@@ -55,7 +57,9 @@ function bh_win_sanity_start_menu() {
     'Microsoft.XboxGamingOverlay'
     'Microsoft.XboxIdentityProvider'
     'Microsoft.XboxSpeechToTextOverlay'
+    'Microsoft.YourPhone'
     'Microsoft.ZuneMusic'
+    'Microsoft.windowscommunicationsapps'
     # other
     '7EE7776C.LinkedInforWindows'
     '9E2F88E3.Twitter'
@@ -63,6 +67,7 @@ function bh_win_sanity_start_menu() {
     'A278AB0D.MarchofEmpires'
     'Facebook.Facebook'
     'king.com.BubbleWitch3Saga'
+    'Disney.37853FC22B2CE'
     'king.com.BubbleWitch3Saga'
     'king.com.CandyCrushFriends'
     'king.com.CandyCrushSaga'
@@ -71,6 +76,7 @@ function bh_win_sanity_start_menu() {
     'king.com.FarmHeroesSaga'
     'NORDCURRENT.COOKINGFEVER'
     'SpotifyAB.SpotifyMusic'
+    'cebook.InstagramBeta'
   )
   bh_win_appx_uninstall @pkgs
   
@@ -89,6 +95,8 @@ function bh_win_sanity_taskbar() {
 
   bh_log_2nd "enable small app icons"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarSmallIcons -Value 1
+  # wiw 11
+  Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarSi -Value 0
 
   bh_log_2nd "disable search button"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name SearchboxTaskbarMode -Value 0
