@@ -207,7 +207,7 @@ function bh_home_clean_unused() {
       else
         rm -rf "$HOME/${i:?}" >/dev/null
       fi
-    elif test -f "$HOME/$i"; then
+    elif test -e "$HOME/$i"; then
       echo remove $i
       if $IS_MAC; then
         sudo rm -f "$HOME/$i" >/dev/null

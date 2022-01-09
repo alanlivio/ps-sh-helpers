@@ -16,7 +16,7 @@ function bh_cmake_args_default() {
 }
 
 function bh_cmake_configure() {
-  if test -f CMakeLists.txt; then
+  if test -e CMakeLists.txt; then
     cmake -B $CMAKE_DIR -G Ninja $CMAKE_CONFIG_ARGS -DCMAKE_BUILD_TYPE=Debug $@
   else
     cmake .. -G Ninja $CMAKE_CONFIG_ARGS -DCMAKE_BUILD_TYPE=Debug $@
@@ -24,7 +24,7 @@ function bh_cmake_configure() {
 }
 
 function bh_cmake_configure_release() {
-  if test -f CMakeLists.txt; then
+  if test -e CMakeLists.txt; then
     cmake -B $CMAKE_DIR_RELEASE -G Ninja $CMAKE_CONFIG_ARGS -DCMAKE_BUILD_TYPE=Release $@
   else
     cmake .. -G Ninja $CMAKE_CONFIG_ARGS -DCMAKE_BUILD_TYPE=Release $@

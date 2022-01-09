@@ -15,7 +15,7 @@ IS_WIN_GITBASH=false
 case "$(uname -s)" in
 CYGWIN* | MINGW* | MSYS*)
   IS_WIN=true
-  if test -f /etc/profile.d/git-prompt.sh; then
+  if test -e /etc/profile.d/git-prompt.sh; then
     IS_WIN_GITBASH=true
   else
     IS_WIN_MSYS=true
