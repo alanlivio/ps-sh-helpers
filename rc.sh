@@ -36,7 +36,7 @@ Darwin)
 esac
 
 # ---------------------------------------
-# vars
+# vars/alias
 # ---------------------------------------
 
 BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -49,6 +49,11 @@ source $HOME/.bh-cfg.sh
 if test -z "$BH_OPT_WIN"; then BH_OPT_WIN="$HOME/AppData/Local/Programs"; fi
 if test -z "$BH_OPT_LINUX"; then BH_OPT_LINUX="$HOME/opt"; fi
 if test -z "$BH_DEV"; then BH_DEV="$HOME/dev"; fi
+
+if $IS_WIN; then
+  # hide windows user files when ls home
+  alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
+fi
 
 # ---------------------------------------
 # essentials helpers
@@ -73,23 +78,6 @@ function bh_bh_install() {
     echo -e "$line\n" >>$HOME/.bashrc
   fi
 }
-
-# ---------------------------------------
-# specific-OS helpers
-# ---------------------------------------
-
-if $IS_LINUX_UBU; then
-  source "$BH_DIR/lib/rc-ubu.sh"
-elif $IS_WIN_MSYS; then
-  source "$BH_DIR/lib/rc-msys.sh"
-elif $IS_WIN_WSL; then
-  source "$BH_DIR/lib/rc-ubu.sh"
-  source "$BH_DIR/lib/rc-wsl.sh"
-elif $IS_WIN_GITBASH; then
-  source "$BH_DIR/lib/rc-win.sh"
-elif $IS_MAC; then
-  source "$BH_DIR/lib/rc-mac.sh"
-fi
 
 # ---------------------------------------
 # specifc-commands helpers
@@ -124,3 +112,20 @@ if type tesseract &>/dev/null; then source "$BH_DIR/lib/cross/tesseract.sh"; fi
 if type wget &>/dev/null; then source "$BH_DIR/lib/cross/wget.sh"; fi
 if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/cross/youtube-dl.sh"; fi
 if type zip tar &>/dev/null; then source "$BH_DIR/lib/cross/zip.sh"; fi
+
+# ---------------------------------------
+# specific-OS helpers
+# ---------------------------------------
+
+if $IS_LINUX_UBU; then
+  source "$BH_DIR/lib/rc-ubu.sh"
+elif $IS_WIN_MSYS; then
+  source "$BH_DIR/lib/rc-msys.sh"
+elif $IS_WIN_WSL; then
+  source "$BH_DIR/lib/rc-ubu.sh"
+  source "$BH_DIR/lib/rc-wsl.sh"
+elif $IS_WIN_GITBASH; then
+  source "$BH_DIR/lib/rc-win.sh"
+elif $IS_MAC; then
+  source "$BH_DIR/lib/rc-mac.sh"
+fi

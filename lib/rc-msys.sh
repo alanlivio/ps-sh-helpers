@@ -1,11 +1,4 @@
 # ---------------------------------------
-# aliases
-# ---------------------------------------
-
-# hide windows user files when ls home
-alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
-
-# ---------------------------------------
 # update_clean
 # ---------------------------------------
 

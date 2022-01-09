@@ -9,8 +9,6 @@ alias winpath='cygpath -w'
 # fix mingw tmp
 unset temp
 unset tmp
-# hide windows user files when ls home
-alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
 alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
 alias whereis='where'
 alias reboot='gsudo shutdown \/r'
