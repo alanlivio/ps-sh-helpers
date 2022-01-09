@@ -39,15 +39,12 @@ function bh_python_install() {
   fi
 }
 
-if $IS_LINUX; then
-  function bh_python_set_python3_default() {
-    if [[ $(ptyhon -V) == "Python 3" ]]; then
-      bh_log_func
-      update-alternatives --install /usr/bin/python python /usr/bin/python3 1
-      update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
-    fi
-  }
-fi
+function bh_py_set_v3_default() {
+  if [[ $(type python) && $(python -V) != "Python 3"* ]]; then
+    sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+    sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+  fi
+}
 
 function bh_python_venv_create() {
   deactivate
