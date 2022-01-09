@@ -32,13 +32,13 @@ function bh_update_cleanup_ubu() {
   pkgs+="python3 python3-pip "
   bh_apt_install $pkgs
   # set python3 as default
-  bh_python_set_python3_default
+  bh_py_set_v3_default
   # apt
   bh_apt_install $BH_PKGS_APT_UBUNTU
   bh_apt_autoremove
   bh_apt_upgrade
   # python
-  $HAS_PYTHON && bh_python_install $BH_PKGS_PYTHON
+  $HAS_PYTHON && bh_py_install $BH_PKGS_PY
   # vscode
   $HAS_VSCODE && bh_vscode_install $BH_PKGS_VSCODE
   # cleanup

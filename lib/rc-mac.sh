@@ -22,7 +22,7 @@ function bh_update_cleanup_mac() {
   bh_brew_upgrade
   bh_brew_install $BH_PKGS_BREW
   # python
-  bh_python_install $BH_PKGS_PYTHON
+  bh_py_install $BH_PKGS_PY
   # vscode
   if type code &>/dev/null; then
     brew install --cask visual-studio-code

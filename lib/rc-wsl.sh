@@ -20,12 +20,12 @@ function bh_update_cleanup_wsl() {
   pkgs+="python3-pip "
   bh_ubu_apt_install $pkgs
   # set python3 as default
-  bh_python_set_python3_default
+  bh_py_set_v3_default
   # apt
-  bh_ubu_install $BH_PKGS_APT_WSL
-  bh_ubu_autoremove
+  bh_ubu_apt_install $BH_PKGS_APT_WSL
+  bh_ubu_apt_autoremove
   # python
-  $HAS_PYTHON && bh_python_install $BH_PKGS_PYTHON
+  $HAS_PYTHON && bh_py_install $BH_PKGS_PY_WSL
   # cleanup
   bh_home_clean_unused
 }

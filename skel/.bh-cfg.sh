@@ -12,13 +12,13 @@ BH_PKGS_APT_REMOVE_WSL=""
 BH_PKGS_MSYS=""
 BH_PKGS_CHOCO=""
 BH_PKGS_WINGET=""
-BH_PKGS_PYTHON_MSYS=""
+BH_PKGS_PY_MSYS=""
 # mac-only
 BH_PKGS_BREW=""
 # others
 BH_PKGS_VSCODE=""
 BH_PKGS_NPM=""
-BH_PKGS_PYTHON=""
+BH_PKGS_PY=""
 
 # ----------------------------------------
 # pkgs
@@ -35,10 +35,10 @@ BH_PKGS_VSCODE+="DavidAnson.vscode-markdownlint shd101wyy.markdown-preview-enhan
 BH_PKGS_VSCODE+="dotjoshjohnson.xml redhat.vscode-yaml "
 BH_PKGS_VSCODE+="mkaufman.HTMLHint "
 # python DS
-BH_PKGS_PYTHON+="wheel ipykernel numpy pandas scikit-learn mathplot matplotlib "
-BH_PKGS_PYTHON+="nbdime " # jypter diff
+BH_PKGS_PY+="wheel ipykernel numpy pandas scikit-learn mathplot matplotlib "
+BH_PKGS_PY+="nbdime " # jypter diff
 # python vscode
-BH_PKGS_PYTHON+="autopep8 pylama pylint "
+BH_PKGS_PY+="autopep8 pylama pylint "
 BH_PKGS_VSCODE+="ms-python.python "
 
 if $IS_WIN_GITBASH; then

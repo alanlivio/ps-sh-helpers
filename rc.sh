@@ -88,7 +88,7 @@ if type code &>/dev/null; then
   source "$BH_DIR/lib/cross/vscode.sh"
 fi
 if type pip &>/dev/null; then
-  HAS_PYTHON=true
+  HAS_PY=true
   source "$BH_DIR/lib/cross/python.sh"
 fi
 
