@@ -17,11 +17,10 @@ function bh_win_path_add($addPath) {
 
 function bh_msys_sanity() {
   Set-Alias -Name msysbash -Value C:\msys64\usr\bin\bash.exe # TODO: replace by $MSYS_BASH 
+  msysbash -c 'if ! test -d /mnt/; then mkdir /mnt/; fi'
   msysbash -c 'echo none / cygdrive binary,posix=0,noacl,user 0 0 > /etc/fstab'
   # mount /Users to use in both windows and WSL
   msysbash -c 'echo C:/Users/ /Users ntfs binary,noacl,auto 1 1 >>  /etc/fstab'
-  # mount /Users/user-name
-  msysbash -c 'echo C:/Users/$env:UserName /home/$env:UserName ntfs binary,noacl,auto 1 1 >> /etc/fstab'
   # mount /mnt/c/ like in WSL
   msysbash -c ' echo /c /mnt/c none bind >> /etc/fstab'
   # set home as /mnt/c/Users/user-name
