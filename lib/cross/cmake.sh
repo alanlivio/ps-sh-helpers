@@ -47,7 +47,7 @@ function bh_cmake_check() {
 
 function bh_cmake_install() {
   if $IS_WIN_MSYS; then
-    cmake --install . --prefix /mingw64
+    cmake --install .
   elif $IS_LINUX; then
     sudo cmake --install . --prefix /usr
   else
@@ -60,7 +60,10 @@ function bh_cmake_uninstall() {
   if test -e $manifest; then
     while IFS= read -r i; do
       local file=${i%$'\r'}
-      if test -e "$file"; then sudo rm $file; fi
+      if test -e "$file"; then 
+        echo "uninstall $file"
+        sudo rm "$file"
+      fi
     done <$manifest
   else
     bh_log_error "$manifest does not exist"
