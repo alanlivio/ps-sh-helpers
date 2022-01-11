@@ -24,6 +24,7 @@ function bh_win_sanity_start_menu() {
   Invoke-Expression $bh_log_func
   $pkgs = @(
     # microsoft
+    'MicrosoftTeams'
     'Microsoft.3DBuilder'
     'Microsoft.Appconnector'
     'Microsoft.BingNews'
@@ -76,7 +77,9 @@ function bh_win_sanity_start_menu() {
     'king.com.FarmHeroesSaga'
     'NORDCURRENT.COOKINGFEVER'
     'SpotifyAB.SpotifyMusic'
-    'cebook.InstagramBeta'
+    'Facebook.InstagramBeta'
+    'BytedancePte.Ltd.TikTok'
+    'Microsoft.MicrosoftEdge.Stable'
   )
   bh_win_appx_uninstall @pkgs
   
