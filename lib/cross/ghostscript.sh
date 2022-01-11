@@ -9,7 +9,7 @@ function bh_ghostscript_compress() {
 
 function bh_ghostscript_compress_hard1() {
   : ${1?"Usage: ${FUNCNAME[0]} <pdf>"}
-  ghostscript -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -dPDFSETTINGS=//printer -sOutputFile=${1%.*}-compressed.pdf $1
+  ghostscript -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -dPDFSETTINGS=//printer -dColorImageResolution=200 -sOutputFile=${1%.*}-compressed.pdf $1
 }
 
 function bh_ghostscript_compress_hard2() {
