@@ -147,20 +147,20 @@ function bh_win_install_latexindent() {
 
 function bh_win_install_winget() {
   ps_call '
-      if (!(Get-Command 'winget.exe' -ea 0)) {
-        Invoke-Expression $bh_log_func
-        Get-AppxPackage Microsoft.DesktopAppInstaller | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
-      }
-    '
+    if (!(Get-Command 'winget.exe' -ea 0)) {
+      Invoke-Expression $bh_log_func
+      Get-AppxPackage Microsoft.DesktopAppInstaller | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
+    }
+  '
 }
 
 function bh_win_install_winget_from_github() {
   ps_call '
-      if (!(Get-Command 'winget.exe' -ea 0)) {
-        Invoke-WebRequest -URI https://github.com/microsoft/winget-cli/releases/download/v1.0.11692/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -UseBasicParsing -OutFile $env:TEMP\tmp.msixbundle
-        Add-AppxPackage -Path $env:TEMP\tmp.msixbundle
-      }
-    '
+    if (!(Get-Command 'winget.exe' -ea 0)) {
+      Invoke-WebRequest -URI https://github.com/microsoft/winget-cli/releases/download/v1.0.11692/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -UseBasicParsing -OutFile $env:TEMP\tmp.msixbundle
+      Add-AppxPackage -Path $env:TEMP\tmp.msixbundle
+    }
+  '
 }
 
 function bh_win_install_tesseract() {
@@ -198,5 +198,22 @@ function bh_win_install_docker() {
 function bh_win_install_choco() {
   bh_log_func
   ps_call_admin '
-    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))'
+    if (!(Get-Command "choco.exe" -ea 0)) {
+      Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString("https://community.chocolatey.org/install.ps1"))
+      choco feature disable -n checksumFiles
+      choco feature disable -n showDownloadProgress
+      choco feature disable -n showNonElevatedWarnings
+      choco feature disable -n logValidationResultsOnWarnings
+      choco feature disable -n logEnvironmentValues
+      choco feature disable -n exitOnRebootDetected
+      choco feature enable -n stopOnFirstPackageFailure
+      choco feature enable -n skipPackageUpgradesWhenNotInstalled
+      choco feature enable -n logWithoutColor
+      choco feature enable -n allowEmptyChecksumsSecure
+      choco feature enable -n allowGlobalConfirmation
+      choco feature enable -n failOnAutoUninstaller
+      choco feature enable -n removePackageInformationOnUninstall
+      choco feature enable -n useRememberedArgumentsForUpgrades
+    }
+  '
 }
