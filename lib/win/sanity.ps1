@@ -20,7 +20,7 @@ function bh_win_appx_uninstall() {
 # setup_win
 # ---------------------------------------
 
-function bh_win_sanity_start_menu() {
+function bh_win_sanity_taskbar() {
   Invoke-Expression $bh_log_func
   $pkgs = @(
     # microsoft
@@ -81,37 +81,33 @@ function bh_win_sanity_start_menu() {
     'BytedancePte.Ltd.TikTok'
     'Microsoft.MicrosoftEdge.Stable'
   )
+  bh_log_2nd "uninstall startmenu unused apps "
   bh_win_appx_uninstall @pkgs
   
-  bh_log_2nd "disable Bing search "
-  reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BingSearchEnabled /d "0" /t REG_DWORD /f  | Out-null
-  reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v AllowSearchToUseLocation /d "0" /t REG_DWORD /f | Out-null
-  reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v CortanaConsent /d "0" /t REG_DWORD /f | Out-null
-  
-  bh_log_2nd "hide recent shortcuts"
-  Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" -Name "ShowRecent" -Type DWord -Value 0
-  Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" -Name "ShowFrequent" -Type DWord -Value 0
-}
-
-function bh_win_sanity_taskbar() {
-  Invoke-Expression $bh_log_func
-
-  bh_log_2nd "enable small app icons"
-  Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarSmallIcons -Value 1
+  bh_log_2nd "disable startmenu Bing search "
+  # wiw 10
+  Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name BingSearchEnabled -Value 0 
   # wiw 11
-  Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarSi -Value 0
+  New-Item -Path "HKCU:\Software\Policies\Microsoft\Windows\" -Name Explorer  -Force | Out-Null
+  Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name DisableSearchBoxSuggestions -Value 1 
+  
+  bh_log_2nd "enable taskbar small icons"
+  # wiw 10
+  Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarSmallIcons -Value 1  
+  # wiw 11
+  Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarSi -Value 0  
 
-  bh_log_2nd "disable search button"
+  bh_log_2nd "disable taskbar search button"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name SearchboxTaskbarMode -Value 0
 
-  bh_log_2nd "disable task view button"
+  bh_log_2nd "disable taskbar button"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name ShowTaskViewButton -Value 0
 }
 
-function bh_win_sanity_explorer() {
+function bh_win_sanity_ui() {
   Invoke-Expression $bh_log_func
   
-  bh_log_2nd "set visuals to performace"
+  bh_log_2nd "set ui to performace"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name 'VisualFXSetting' -Value 2
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name 'EnableTransparency' -Value 0
   Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "DragFullWindows" -Value 0
@@ -123,30 +119,34 @@ function bh_win_sanity_explorer() {
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ListviewShadow" -Value 0
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarAnimations" -Value 0
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\DWM" -Name "EnableAeroPeek" -Value 0
-
+  
   bh_log_2nd "enable dark mode"
   reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "AppsUseLightTheme" /t REG_DWORD /d 00000000 /f | Out-Null
-
+  
   bh_log_2nd "hide user folder from desktop"
   Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\ClassicStartMenu" -Name "{59031a47-3f72-44a7-89c5-5595fe6b30ee}" -ea 0
   Remove-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" -Name "{59031a47-3f72-44a7-89c5-5595fe6b30ee}" -ea 0
-
-  bh_log_2nd "enable show file extensions"
-  Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name HideFileExt -Value 0
   
   bh_log_2nd "disable system sounds"
   Set-ItemProperty -Path "HKCU:\AppEvents\Schemes" -Name "(Default)" -Value ".None"
   
   bh_log_2nd "disable icons in desktop"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideIcons" -Value 1
-
-  bh_log_2nd "disable recent files "
-  Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "ShowRecent" -Value 0
   
   bh_log_2nd "disable new drives autoplay"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers" -Name "DisableAutoplay" -Value 1
+}
+
+
+function bh_win_sanity_file_explorer() {
+
+  bh_log_2nd "enable file explorer show extensions"
+  Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name HideFileExt -Value 0
   
-  bh_log_2nd "set explorer open in This PC"
+  bh_log_2nd "disable file explorer recent files "
+  Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "ShowRecent" -Value 0
+  
+  bh_log_2nd "set file explorer open in This PC"
   Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "LaunchTo" -Type DWord -Value 1
 }
 
@@ -175,8 +175,8 @@ function bh_win_explorer_restart() {
 }
 
 bh_log "bh_win_sanity"
-bh_win_sanity_start_menu
 bh_win_sanity_taskbar
-bh_win_sanity_explorer
+bh_win_sanity_ui
+bh_win_sanity_file_explorer
 bh_win_sanity_keyboard
 bh_win_explorer_restart
