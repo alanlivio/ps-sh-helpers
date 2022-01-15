@@ -100,6 +100,16 @@ fi
 # home backups
 # ----------------------------------------
 
-# BKP_DOTFILES_DIR="$HOME/OneDrive/dotfiles"
-# BH_DEV_REPOS="$HOME/.bashrc  $BKP_DOTFILES_DIR/.bashrc"
-# BH_DEV_REPOS="$HOME/.profile  $BKP_DOTFILES_DIR/.bashrc"
+BKP_DOTFILES_DIR="$HOME/OneDrive/dotfiles"
+BH_DOTFILES_BKPS="$HOME/.bashrc $BKP_DOTFILES_DIR/.bashrc "
+BH_DOTFILES_BKPS+="$HOME/.profile $BKP_DOTFILES_DIR/.profile "
+BH_DOTFILES_BKPS+="$HOME/.bh-cfg.sh $BKP_DOTFILES_DIR/.bh-cfg.sh "
+BH_DOTFILES_BKPS+="$HOME/.vimrc $BKP_DOTFILES_DIR/.vimrc "
+BH_DOTFILES_BKPS+="$HOME/.editorconfig $BKP_DOTFILES_DIR/.editorconfig "
+BH_DOTFILES_BKPS+="$HOME/.gitconfig $BKP_DOTFILES_DIR/.gitconfig "
+
+# ----------------------------------------
+# dev/ git repos
+# ----------------------------------------
+
+BH_DEV_REPOS="sites git@github.com:alanlivio/alanlivio.github.io.git "
