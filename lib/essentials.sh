@@ -128,6 +128,9 @@ function bh_decompress() {
   zip)
     unzip $1 -d $DST
     ;;
+  zst)
+    tar --use-compress-program=unzstd -xvf $1 -C $DST
+    ;;
   xz)
     tar -xJf $1 -C $DST
     ;;
