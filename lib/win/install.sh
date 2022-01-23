@@ -12,8 +12,7 @@ function bh_win_install_store_essentials() {
 }
 
 function bh_win_install_python() {
-  bh_win_get_install Python.Python.3 --version 3.9.7150.0 --source winget
-  bh_win_path_add $(winpath $HOME/AppData/Roaming/Python/Python39/Scripts/)
+  winget install Python.Python.3 --source winget -i
 }
 
 function bh_win_install_miktex() {
