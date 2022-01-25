@@ -103,19 +103,19 @@ The helpers below are for cross plataform commands. For the full list, see lib/ 
 
 The projects bellow used as reference:
 
-* https://github.com/milianw/shell-helpers
-* https://github.com/wd5gnr/bashrc
-* https://github.com/martinburger/bash-common-helpers
-* https://github.com/jonathantneal/git-bash-helpers
-* https://github.com/Bash-it/bash-it
-* https://github.com/donnemartin/dev-setup
-* https://github.com/aspiers/shell-env
+* <https://github.com/milianw/shell-helpers>
+* <https://github.com/wd5gnr/bashrc>
+* <https://github.com/martinburger/bash-common-helpers>
+* <https://github.com/jonathantneal/git-bash-helpers>
+* <https://github.com/Bash-it/bash-it>
+* <https://github.com/donnemartin/dev-setup>
+* <https://github.com/aspiers/shell-env>
 
 And, particulary, these were reference for helpers on windows:
 
-* https://github.com/adolfintel/windows10-Privacy
-* https://gist.github.com/alirobe/7f3b34ad89a159e6daa1
-* https://github.com/RanzigeButter/fyWin10/blob/master/fyWin10.ps1
-* https://github.com/madbomb122/Win10Script/blob/master/Win10-Menu.ps1
-* https://github.com/Sycnex/windows10Debloater/blob/master/windows10Debloater.ps1
-* https://github.com/W4RH4WK/Debloat-windows-10/tree/master/scripts
+* <https://github.com/adolfintel/windows10-Privacy>
+* <https://gist.github.com/alirobe/7f3b34ad89a159e6daa1>
+* <https://github.com/RanzigeButter/fyWin10/blob/master/fyWin10.ps1>
+* <https://github.com/madbomb122/Win10Script/blob/master/Win10-Menu.ps1>
+* <https://github.com/Sycnex/windows10Debloater/blob/master/windows10Debloater.ps1>
+* <https://github.com/W4RH4WK/Debloat-windows-10/tree/master/scripts>
