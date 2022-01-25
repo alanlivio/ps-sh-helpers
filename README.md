@@ -1,4 +1,4 @@
-<h1 align="center"><img src="website/static/logo.svg" width="250"/></h1>
+<h1 align="center"><img src="docs/logo.svg" width="250" onerror='this.style.display="none"'/></h1>
 
 Cross-platform (Linux, Windows, macOS) bash helpers to configure OS (dark mode, disable animations), install/update software (python, vscode, docker, wsl, msys) and useful utilities (dotfiles, git, compress, curl). The project logo references the synthetic chemical element Bohrium, which also has the initials bh.
 
