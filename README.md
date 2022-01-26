@@ -1,8 +1,10 @@
 <h1 align="center"><img src="docs/logo.svg" width="250" onerror='this.style.display="none"'/></h1>
 
+# bash-helpers
+
 Cross-platform (Linux, Windows, macOS) bash helpers to configure OS (dark mode, disable animations), install/update software (python, vscode, docker, wsl, msys) and useful utilities (dotfiles, git, compress, curl). The project logo references the synthetic chemical element Bohrium, which also has the initials bh.
 
-# How to install bash-helpers
+## How to install bash-helpers
 
 The bash-helpers has two requirements: a `bash shell` and `git`. You may easily install using the scripts below.
 
@@ -27,7 +29,7 @@ Run in a powershell shell the script install/bh-on-win.ps1) to install git, GitB
   Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-on-win.ps1'))
 ```
 
-# helpers
+## helpers
 
 ### configure OS interface helpers
 
@@ -99,7 +101,7 @@ The helpers below are for cross plataform commands. For the full list, see lib/ 
 * `bh_youtubedl_*`: youtube-dl helpers.
 * `bh_zip_*`: zip helpers.
 
-# References
+## References
 
 The projects bellow used as reference:
 
