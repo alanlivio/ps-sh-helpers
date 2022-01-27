@@ -88,8 +88,8 @@ function bh_win_sanity_taskbar() {
   # wiw 10
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name BingSearchEnabled -Value 0 
   # wiw 11
-  New-Item -Path "HKCU:\Software\Policies\Microsoft\Windows\" -Name Explorer  -Force | Out-Null
-  Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name DisableSearchBoxSuggestions -Value 1 
+  # New-Item -Path "HKCU:\Software\Policies\Microsoft\Windows\" -Name Explorer  -Force | Out-Null
+  # Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name DisableSearchBoxSuggestions -Value 1 
   
   bh_log_2nd "enable taskbar small icons"
   # wiw 10
