@@ -4,28 +4,28 @@
 
 CMAKE_DIR="_build-Debug-$WSL_DISTRO_NAME$OS"
 CMAKE_DIR_RELEASE="_build-Release-$WSL_DISTRO_NAME$OS"
-CMAKE_CONFIG_ARGS="
+CMAKE_ARGS_CONFIG="
   -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE 
   -DSTATIC_LINKING=OFF 
   -DBUILD_SHARED_LIBS=ON 
   "
 function bh_cmake_args_default() {
-  echo $CMAKE_CONFIG_ARGS
+  echo $CMAKE_ARGS_CONFIG
 }
 
 function bh_cmake_configure() {
   if test -e CMakeLists.txt; then
-    cmake -B $CMAKE_DIR -G Ninja $CMAKE_CONFIG_ARGS -DCMAKE_BUILD_TYPE=Debug $@
+    cmake -B $CMAKE_DIR -G Ninja $CMAKE_ARGS_CONFIG -DCMAKE_BUILD_TYPE=Debug $@
   else
-    cmake .. -G Ninja $CMAKE_CONFIG_ARGS -DCMAKE_BUILD_TYPE=Debug $@
+    cmake .. -G Ninja $CMAKE_ARGS_CONFIG -DCMAKE_BUILD_TYPE=Debug $@
   fi
 }
 
 function bh_cmake_configure_release() {
   if test -e CMakeLists.txt; then
-    cmake -B $CMAKE_DIR_RELEASE -G Ninja $CMAKE_CONFIG_ARGS -DCMAKE_BUILD_TYPE=Release $@
+    cmake -B $CMAKE_DIR_RELEASE -G Ninja $CMAKE_ARGS_CONFIG -DCMAKE_BUILD_TYPE=Release $@
   else
-    cmake .. -G Ninja $CMAKE_CONFIG_ARGS -DCMAKE_BUILD_TYPE=Release $@
+    cmake .. -G Ninja $CMAKE_ARGS_CONFIG -DCMAKE_BUILD_TYPE=Release $@
   fi
 }
 

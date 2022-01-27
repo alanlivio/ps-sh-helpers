@@ -26,11 +26,7 @@ function bh_win_get_install() {
   if test ! -z "$pkgs_to_install"; then
     echo "pkgs_to_install=$pkgs_to_install"
     for pkg in $pkgs_to_install; do
-      winget install $pkg
-      if [ $? -gt 0 ]; then
-        bh_log_msg "INFO: winget install failed, trying winget install -i ..."
-        winget install -i $pkg
-      fi
+      winget install $WINGET_ARGS_INSTALL $pkg
     done
   fi
 }
