@@ -15,36 +15,16 @@ BH_PKGS_WINGET=""
 BH_PKGS_PY_MSYS=""
 # mac-only
 BH_PKGS_BREW=""
-# others
-BH_PKGS_VSCODE=""
-BH_PKGS_NPM=""
-BH_PKGS_PY=""
 
 # ----------------------------------------
-# pkgs
+# PKGS VSCODE/PY/NPM
 # ----------------------------------------
-# bash vscode
+BH_PKGS_VSCODE=""
+BH_PKGS_PY=""
+BH_PKGS_NPM=""
+# vscode bash
 BH_PKGS_VSCODE+="timonwong.shellcheck "
 BH_PKGS_VSCODE+="foxundermoon.shell-format "
-# editing vscode
-BH_PKGS_VSCODE+="henriiik.vscode-sort stkb.rewrap jianbingfang.dupchecker "
-BH_PKGS_VSCODE+="tomsaunders-code.workspace-explorer "
-# markdown vscode
-BH_PKGS_VSCODE+="DavidAnson.vscode-markdownlint shd101wyy.markdown-preview-enhanced mervin.markdown-formatter "
-# HTML/XML vscode
-BH_PKGS_VSCODE+="dotjoshjohnson.xml redhat.vscode-yaml "
-BH_PKGS_VSCODE+="mkaufman.HTMLHint "
-# py DS
-BH_PKGS_PY+="wheel ipykernel numpy pandas scikit-learn mathplot matplotlib "
-BH_PKGS_PY+="nbdime " # jypter diff
-# py vscode
-BH_PKGS_PY+="autopep8 pylama pylint "
-BH_PKGS_VSCODE+="ms-python.python "
-
-if $IS_WIN_GITBASH; then
-  BH_PKGS_VSCODE+="ms-vscode.powershell "
-  BH_PKGS_VSCODE+="ms-vscode-remote.remote-wsl "
-fi
 
 # ----------------------------------------
 # home dev folder
