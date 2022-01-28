@@ -150,7 +150,7 @@ function bh_git_github_check_ssh() {
 # github
 
 function bh_git_github_fix() {
-  echo -e "Host github.com\\n  Hostname ssh.github.com\\n  Port 443" | sudo tee $HOME/.ssh/config
+  echo -e "Host github.com\\n  Hostname ssh.github.com\\n  Port 443" | tee $HOME/.ssh/config
 }
 
 function bh_git_github_setup() {
