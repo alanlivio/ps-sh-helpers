@@ -231,7 +231,7 @@ function bh_git_push_commit_all() {
 
 function bh_git_check_if_need_pull() {
   [ $(git rev-parse HEAD) = $(git ls-remote $(git rev-parse --abbrev-ref "@{u}" \
-    | sed 's/\// /g') | cut -f1) ] && printf FALSE || printf TRUE
+    | sed 's/\// /g') | cut -f1) ] && printf false || printf TRUE
 }
 
 # gitignore

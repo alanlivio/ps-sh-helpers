@@ -10,6 +10,42 @@ else
 fi
 
 # ---------------------------------------
+# log
+# ---------------------------------------
+
+alias bh_log_func='bh_log_msg "${FUNCNAME[0]}"'
+alias bh_log_not_implemented_return="bh_log_error 'Not implemented'; return;"
+
+function bh_log_wrap() {
+  echo -e "$1" | fold -w100 -s
+}
+
+function bh_log_error() {
+  bh_log_wrap "\033[00;31m-- $* \033[00m"
+}
+
+function bh_log_msg() {
+  bh_log_wrap "\033[00;33m-- $* \033[00m"
+}
+
+function bh_log_msg_2nd() {
+  bh_log_wrap "\033[00;33m-- > $* \033[00m"
+}
+
+function bh_log_done() {
+  bh_log_wrap "\033[00;32m-- done\033[00m"
+}
+
+function bh_log_ok() {
+  bh_log_wrap "\033[00;32m-- ok\033[00m"
+}
+
+function bh_log_try() {
+  "$@"
+  if $? -ne 0; then bh_log_error "$1" && exit 1; fi
+}
+
+# ---------------------------------------
 # bh helpers
 # ---------------------------------------
 
@@ -60,42 +96,6 @@ if type tesseract &>/dev/null; then source "$BH_DIR/lib/cross/tesseract.sh"; fi
 if type wget &>/dev/null; then source "$BH_DIR/lib/cross/wget.sh"; fi
 if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/cross/youtube-dl.sh"; fi
 if type zip tar &>/dev/null; then source "$BH_DIR/lib/cross/zip.sh"; fi
-
-# ---------------------------------------
-# log
-# ---------------------------------------
-
-alias bh_log_func='bh_log_msg "${FUNCNAME[0]}"'
-alias bh_log_not_implemented_return="bh_log_error 'Not implemented'; return;"
-
-function bh_log_wrap() {
-  echo -e "$1" | fold -w100 -s
-}
-
-function bh_log_error() {
-  bh_log_wrap "\033[00;31m-- $* \033[00m"
-}
-
-function bh_log_msg() {
-  bh_log_wrap "\033[00;33m-- $* \033[00m"
-}
-
-function bh_log_msg_2nd() {
-  bh_log_wrap "\033[00;33m-- > $* \033[00m"
-}
-
-function bh_log_done() {
-  bh_log_wrap "\033[00;32m-- done\033[00m"
-}
-
-function bh_log_ok() {
-  bh_log_wrap "\033[00;32m-- ok\033[00m"
-}
-
-function bh_log_try() {
-  "$@"
-  if $? -ne 0; then bh_log_error "$1" && exit 1; fi
-}
 
 # ---------------------------------------
 # bashrc
@@ -234,7 +234,6 @@ function bh_diff_apply() {
 
 function bh_dotfiles_func() {
   : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
-  bh_log_func
   declare -a files_array
   files_array=($BH_DOTFILES_BKPS)
   if [ ${#files_array[@]} -eq 0 ]; then

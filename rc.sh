@@ -26,20 +26,11 @@ Darwin) IS_MAC=true;;
 esac
 
 # ---------------------------------------
-# load .bh-cfg.sh and helpers
+# load helpers
 # ---------------------------------------
 BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BH_RC="$BH_DIR/rc.sh"
-
-# if not "$HOME/.bh-cfg.sh". load from skel
-if test -f "$HOME/.bh-cfg.sh"; then 
-  source $HOME/.bh-cfg.sh
-else
-  source $BH_DIR/skel/.bh-cfg.sh 
-fi
-
 source "$BH_DIR/lib/base.sh" # uses echo, test, md5, curl, tar, unzip, curl, rename, find
-
 if $IS_UBU; then
   source "$BH_DIR/lib/rc-ubu.sh"
 elif $IS_MSYS; then
@@ -51,4 +42,12 @@ elif $IS_GITBASH; then
   source "$BH_DIR/lib/rc-gitbash.sh"
 elif $IS_MAC; then
   source "$BH_DIR/lib/rc-mac.sh"
+fi
+
+# load .bh-cfg.sh and 
+# if not "$HOME/.bh-cfg.sh". load from skel
+if test -f "$HOME/.bh-cfg.sh"; then 
+  source $HOME/.bh-cfg.sh
+else
+  source $BH_DIR/skel/.bh-cfg.sh 
 fi
