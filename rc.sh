@@ -44,10 +44,8 @@ elif $IS_MAC; then
   source "$BH_DIR/lib/rc-mac.sh"
 fi
 
-# load .bh-cfg.sh and 
-# if not "$HOME/.bh-cfg.sh". load from skel
-if test -f "$HOME/.bh-cfg.sh"; then 
-  source $HOME/.bh-cfg.sh
-else
-  source $BH_DIR/skel/.bh-cfg.sh 
+# load "$HOME/.bh_cfg.sh". # if not exist, copy from skel
+if ! test -f "$HOME/.bh_cfg.sh"; then 
+  cp $BH_DIR/skel/.bh_cfg.sh $HOME
 fi
+source $HOME/.bh_cfg.sh

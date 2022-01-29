@@ -42,7 +42,7 @@ on win admin powershell
 
 ### update/cleanup helpers
 
-The helpers bellow can be run routinely. They install packages defined in `BH_PKGS_*` vars from ~/.bashrc or ~/.bh-cfg.sh, and also clean unused files/folders defined in `BH_HOME_CLEAN_UNUSED` var. Please see the vars examples in skel/.bh-cfg.sh.
+The helpers bellow can be run routinely. They install packages defined in `BH_PKGS_*` vars from ~/.bashrc or ~/.bh_cfg.sh, and also clean unused files/folders defined in `BH_HOME_CLEAN_UNUSED` var. Please see the vars examples in skel/.bh_cfg.sh.
 
 * `bh_update_cleanup_mac` (at mac bash): BH_PKGS_BREW, BH_PKGS_PY, BH_PKGS_VSCODE
 * `bh_update_cleanup_ubu` (at ubuntu bash): BH_PKGS_APT_UBUNTU, BH_PKGS_PY, BH_PKGS_VSCODE, BH_PKGS_SNAP, BH_PKGS_SNAP_CLASSIC

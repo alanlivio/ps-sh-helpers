@@ -42,7 +42,7 @@ BH_PKGS_NPM=""
 # ----------------------------------------
 # BH_DOTFILES_BKP_DIR="$HOME/OneDrive/dotfiles"
 # BH_DOTFILES_BKPS="$HOME/.bashrc $BH_DOTFILES_BKP_DIR/.bashrc "
-# BH_DOTFILES_BKPS+="$HOME/.bh-cfg.sh $BH_DOTFILES_BKP_DIR/.bh-cfg.sh "
+# BH_DOTFILES_BKPS+="$HOME/.bh_cfg.sh $BH_DOTFILES_BKP_DIR/.bh_cfg.sh "
 
 # ----------------------------------------
 # dev/ repos
