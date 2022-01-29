@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # ---------------------------------------
 # aliases
 # ---------------------------------------
@@ -16,13 +15,18 @@ alias ps_call="powershell.exe -c"
 alias ps_call_admin="gsudo powershell.exe -c"
 alias ghostscript='gswin64c'
 
-function bh_win_gitbash_fix_prompt {
-  sed '/show\sMSYSTEM/d' -i /etc/profile.d/git-prompt.sh
-}
-
 function bh_open {
   local node="${1:-.}" # . is default value
-  ps_call "Start-Process $node"
+  ps_call "Start-Process '$node'"
+}
+
+function bh_win_gitbash_fix_prompt {
+  sed 's/show\sMSYSTEM/#&/g' -i /etc/profile.d/git-prompt.sh
+  sed "s/PS1=\"\$PS1\"'\\\\n/#&/g" -i /etc/profile.d/git-prompt.sh
+}
+
+function bh_win_gitbash_open_prompt {
+  bh_open "$(winpath /etc/profile.d/git-prompt.sh)"
 }
 
 function bh_open_wt_settings() {

@@ -43,8 +43,6 @@ if (!(Test-Path $("${env:userprofile}\.bh"))) {
   git clone https://github.com/alanlivio/bash-helpers.git $("${env:userprofile}\.bh")
   # load bh in gitbash console
   Write-Output 'source $HOME/.bh/rc.sh' | Out-File -FilePath "${env:userprofile}\.bashrc" -Append -Encoding ascii
-  # hide MSYSM in gitbash console
-  & "$(Split-Path  (Get-Command "git.exe").Source)\..\bin\bash.exe"  -c "sed '/show\sMSYSTEM/d' -i /etc/profile.d/git-prompt.sh"
 }
 # enable run scripts
 Set-ExecutionPolicy Unrestricted -Scope CurrentUser
