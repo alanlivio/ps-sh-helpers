@@ -51,7 +51,7 @@ BH_HOME_CLEAN_UNUSED=(
   'Pictures'
   '.cache'
 )
-if $IS_LINUX_UBU; then
+if $IS_UBU; then
   BH_HOME_CLEAN_UNUSED+=(
     'Documents' # sensible data in Windows
   )

@@ -46,9 +46,9 @@ function bh_cmake_check() {
 }
 
 function bh_cmake_install() {
-  if $IS_WIN_MSYS; then
+  if $IS_MSYS; then
     cmake --install .
-  elif $IS_LINUX; then
+  elif $IS_UBU; then
     sudo cmake --install . --prefix /usr
   else
     sudo cmake --install .
