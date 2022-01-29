@@ -1,12 +1,12 @@
-$bh_log_func = 'Write-Host -ForegroundColor DarkYellow "--" $MyInvocation.MyCommand.ToString()'
+$log_func = 'Write-Host -ForegroundColor DarkYellow "--" $MyInvocation.MyCommand.ToString()'
 
-function bh_explorer_restart() {
+function explorer_restart() {
   taskkill /f /im explorer.exe | Out-Null
   Start-Process explorer.exe
 }
 
-function bh_win_disable_ctx_menu_unused () {
-  Invoke-Expression $bh_log_func
+function disable_ctx_menu_unused () {
+  Invoke-Expression $log_func
 
   if (!(Test-Path "HKCR:")) { 
     New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null 
@@ -43,6 +43,6 @@ function bh_win_disable_ctx_menu_unused () {
   foreach ($name in $regs) {
     if (Test-Path $name) { Remove-Item -Path $name -Recurse }
   }
-  bh_explorer_restart
+  explorer_restart
 }
-bh_win_disable_ctx_menu_unused
+disable_ctx_menu_unused

@@ -1,7 +1,7 @@
-$bh_log_func = 'Write-Host -ForegroundColor DarkYellow "--" $MyInvocation.MyCommand.ToString()'
+$log_func = 'Write-Host -ForegroundColor DarkYellow "--" $MyInvocation.MyCommand.ToString()'
 
-function bh_win_user_disable_password_policy {
-  Invoke-Expression $bh_log_func
+function user_disable_password_policy {
+  Invoke-Expression $log_func
   $tmpfile = New-TemporaryFile
   secedit /export /cfg $tmpfile /quiet
   (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
@@ -9,4 +9,4 @@ function bh_win_user_disable_password_policy {
   Remove-Item -Path $tmpfile
 }
 
-bh_win_user_disable_password_policy
+user_disable_password_policy

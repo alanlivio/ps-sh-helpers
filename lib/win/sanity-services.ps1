@@ -1,42 +1,42 @@
-$bh_log_func = 'Write-Host -ForegroundColor DarkYellow "--" $MyInvocation.MyCommand.ToString()'
-function bh_log() {
+$log_func = 'Write-Host -ForegroundColor DarkYellow "--" $MyInvocation.MyCommand.ToString()'
+function log() {
   Write-Host -ForegroundColor DarkYellow "--" ($args -join " ")
 }
 
-function bh_reg_new_path ($path) {
+function reg_new_path ($path) {
   if (-not (Test-Path $path)) {
     New-Item -Path $path -ItemType Directory -Force | Out-Null
   }
 }
 
-function bh_win_service_disable($name) {
-  bh_log "disabling service $name"
+function service_disable($name) {
+  log "disabling service $name"
   Get-Service -Name $name | Stop-Service -WarningAction SilentlyContinue
   Get-Service -Name $name | Set-Service -StartupType Disabled -ea 0
 }
 
-function bh_win_feature_disable($featurename) {
-  bh_log "disabling feature $featurename"
+function feature_disable($featurename) {
+  log "disabling feature $featurename"
   dism.exe /online /quiet /disable-feature /featurename:$featurename /norestart
 }
 
-function bh_win_disable_unused_services_features() {
-  Invoke-Expression $bh_log_func
+function disable_unused_services_features() {
+  Invoke-Expression $log_func
 
-  bh_log "disabling Lockscreen "
-  bh_reg_new_path "HKLM:\Software\Policies\Microsoft\Windows\Personalization"
+  log "disabling Lockscreen "
+  reg_new_path "HKLM:\Software\Policies\Microsoft\Windows\Personalization"
   Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Personalization" -Name "NoLockScreen" -Value 1
   Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\System" -Name "DisableLogonBackgroundImage" -Value 1
 
-  bh_log "disabling Autorun for all drives"
-  bh_reg_new_path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+  log "disabling Autorun for all drives"
+  reg_new_path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
   Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoDriveTypeAutoRun" -Value 255
 
-  bh_log "disabling Windows Timeline "
+  log "disabling Windows Timeline "
   Set-ItemProperty -Path 'HKLM:\Software\Policies\Microsoft\Windows\System' -Name 'EnableActivityFeed' -Value 0
 
-  bh_win_feature_disable Printing-XPSServices-Features
-  bh_win_feature_disable WorkFolders-Client
+  feature_disable Printing-XPSServices-Features
+  feature_disable WorkFolders-Client
   
   $services = @("*diagnosticshub.standardcollector.service*" # Diagnostics Hub
     "*diagsvc*" # Diagnostic Execution Service
@@ -55,8 +55,8 @@ function bh_win_disable_unused_services_features() {
     "*wisvc*" # Windows Insider Service
   )
   foreach ($item in $services) {
-    bh_win_service_disable $item
+    service_disable $item
   }
 }
 
-bh_win_disable_unused_services_features
+disable_unused_services_features

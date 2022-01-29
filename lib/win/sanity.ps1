@@ -137,7 +137,6 @@ function bh_win_sanity_ui() {
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers" -Name "DisableAutoplay" -Value 1
 }
 
-
 function bh_win_sanity_file_explorer() {
 
   bh_log_2nd "enable file explorer show extensions"
