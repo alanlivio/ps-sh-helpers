@@ -1,18 +1,13 @@
-
 # ---------------------------------------
 # vars/alias
 # ---------------------------------------
 
-# set some var if .bh-cfg do not.
-if test -z "$BH_OPT_WIN"; then BH_OPT_WIN="$HOME/AppData/Local/Programs"; fi
-if test -z "$BH_OPT_LINUX"; then BH_OPT_LINUX="$HOME/opt"; fi
-if test -z "$BH_DEV"; then BH_DEV="$HOME/dev"; fi
-
 if $IS_WIN; then
   # hide windows user files when ls home
   alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
+else
+  alias ls='ls --color=auto'
 fi
-
 
 # ---------------------------------------
 # bh helpers
