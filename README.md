@@ -4,29 +4,25 @@
 
 Cross-platform (Linux, Windows, macOS) bash helpers to configure OS (dark mode, disable animations), install/update software (python, vscode, docker, wsl, msys) and useful utilities (dotfiles, git, compress, curl). The project logo references the synthetic chemical element Bohrium, which also has the initials bh.
 
-## How to install bash-helpers
+## Install
 
-The bash-helpers has two requirements: a `bash shell` and `git`. You may easily install using the scripts below.
+The bash-helpers has two requirements: a `bash shell` and `git` . Particulary on windows, they can be installed using GitBash. To easily them, run:
 
-macOS already has a bash shell.  
-Run in a bash shell the script install/bh-on-mac.sh to install git and bash-helpers:
-
+on macOS bash
 ```bash
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-on-mac.sh)"
+  bash -c "$(curl -fsSL \
+    https://raw.githubusercontent.com/alanlivio/bash-helpers/master/lib/mac/setup.sh)"
+```
+on ubuntu bash
+```bash
+  bash -c "$(curl -fsSL \
+    https://raw.githubusercontent.com/alanlivio/bash-helpers/master/lib/ubu/setup.sh)"
 ```
 
-Ubuntu already has a bash.  
-Run in a bash shell the script install/bh-on-ubu.sh), to install git and bash-helpers:
-
-```bash
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-on-ubu.sh)"
-```
-
-Windows do not have `bash shell` nor `git`.
-Run in a powershell shell the script install/bh-on-win.ps1) to install git, GitBash, and bash-helpers:
-
+on win admin powershell
 ```powershell
-  Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/alanlivio/bash-helpers/master/install/bh-on-win.ps1'))
+  Invoke-Expression ((New-Object System.Net.WebClient). `
+    DownloadString('https://raw.githubusercontent.com/alanlivio/bash-helpers/master/lib/win/setup.ps1'))
 ```
 
 ## helpers
