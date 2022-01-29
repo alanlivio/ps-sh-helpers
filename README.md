@@ -6,23 +6,13 @@ Cross-platform (Linux, Windows, macOS) bash helpers to configure OS (dark mode, 
 
 ## Install
 
-The bash-helpers has two requirements: a `bash shell` and `git` . Particulary on windows, they can be installed using GitBash. To easily them, run:
+The bash-helpers has two requirements: a `bash shell` and `git` . Particulary on windows, they can be installed using [GitForWindows](https://gitforwindows.org/). 
 
-on macOS bash
+on ubuntu/macOS/GitForWindows `bash shell` with git, run:
 ```bash
-  bash -c "$(curl -fsSL \
-    https://raw.githubusercontent.com/alanlivio/bash-helpers/master/lib/mac/setup.sh)"
-```
-on ubuntu bash
-```bash
-  bash -c "$(curl -fsSL \
-    https://raw.githubusercontent.com/alanlivio/bash-helpers/master/lib/ubu/setup.sh)"
-```
-
-on win admin powershell
-```powershell
-  Invoke-Expression ((New-Object System.Net.WebClient). `
-    DownloadString('https://raw.githubusercontent.com/alanlivio/bash-helpers/master/lib/win/setup.ps1'))
+  git clone https://github.com/alanlivio/bash-helpers.git ~/.bh &&\
+    echo "source ~/.bh/rc.sh" >> ~/.bashrc &&\
+    source ~/.bashrc
 ```
 
 ## helpers

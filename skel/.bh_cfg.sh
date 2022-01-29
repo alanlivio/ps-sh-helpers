@@ -34,7 +34,7 @@ BH_OPT_LINUX="$HOME/opt"
 BH_DEV="$HOME/dev"
 # cross os vscode/py/npm
 BH_PKGS_VSCODE="timonwong.shellcheck foxundermoon.shell-format "
-BH_PKGS_PY=" "
+BH_PKGS_PY=""
 BH_PKGS_NPM=""
 
 # ----------------------------------------

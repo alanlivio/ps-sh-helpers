@@ -32,8 +32,3 @@ function install_win_gitbash() {
 
 install_win_winget
 install_win_gitbash
-
-if (!(Test-Path $("${env:userprofile}\.bh"))) {
-  git clone https://github.com/alanlivio/bash-helpers.git $("${env:userprofile}\.bh")
-  Write-Output 'source $HOME/.bh/rc.sh' | Out-File -FilePath "${env:userprofile}\.bashrc" -Append -Encoding ascii
-}

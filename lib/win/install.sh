@@ -24,6 +24,10 @@ function bh_win_install_zotero() {
   bh_win_get_install Zotero.Zotero
 }
 
+function bh_win_install_gitforwindows() {
+  ps_call_script $(unixpath -w $BH_DIR/lib/win/install-gitforwindows.ps1)
+}
+
 function bh_win_install_msys() {
   ps_call_script $(unixpath -w $BH_DIR/lib/win/install-msys.ps1)
 }
