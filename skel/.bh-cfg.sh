@@ -1,5 +1,15 @@
 # ----------------------------------------
-# init vars
+# home clean unused
+# ----------------------------------------
+BH_HOME_CLEAN_UNUSED=('Images' 'Movies' 'Public' 'Templates' 'Tracing' 'Videos' 'Music' 'Pictures' '.cache')
+if $IS_UBU; then
+  BH_HOME_CLEAN_UNUSED+=('Documents') # sensible data in Windows
+elif $IS_WIN; then
+  BH_HOME_CLEAN_UNUSED+=('Application Data' 'Cookies' 'Local Settings' 'Start Menu' '3D Objects' 'Contacts' 'Favorites' 'Links' 'MicrosoftEdgeBackups' 'My Documents' 'NetHood' 'PrintHood' 'Recent' 'Saved Games' 'Searches' 'SendTo')
+fi
+
+# ----------------------------------------
+# pkgs 
 # ----------------------------------------
 # ubu only
 BH_PKGS_SNAP=""
@@ -23,72 +33,27 @@ BH_OPT_LINUX="$HOME/opt"
 # dev folder
 BH_DEV="$HOME/dev"
 # cross os vscode/py/npm
-BH_PKGS_VSCODE=""
-BH_PKGS_PY=""
+BH_PKGS_VSCODE="timonwong.shellcheck foxundermoon.shell-format "
+BH_PKGS_PY=" "
 BH_PKGS_NPM=""
-# vscode bash
-BH_PKGS_VSCODE+="timonwong.shellcheck "
-BH_PKGS_VSCODE+="foxundermoon.shell-format "
 
 # ----------------------------------------
-# dev repos
+# dotfiles backp
 # ----------------------------------------
-# BH_DEV_REPOS="parent/folder/name1/in/BH_DEV <REPO_URL_1>"
-# BH_DEV_REPOS="parent/folder/name1/in/BH_DEV <REPO_URL_2>"
-# BH_DEV_REPOS="parent/folder/name2/in/BH_DEV <REPO_URL_3>"
-
-# ----------------------------------------
-# home clean unused
-# ----------------------------------------
-BH_HOME_CLEAN_UNUSED=(
-  'Images'
-  'Movies'
-  'Public'
-  'Templates'
-  'Tracing'
-  'Videos'
-  'Music'
-  'Pictures'
-  '.cache'
-)
-if $IS_UBU; then
-  BH_HOME_CLEAN_UNUSED+=(
-    'Documents' # sensible data in Windows
-  )
-elif $IS_WIN; then
-  BH_HOME_CLEAN_UNUSED+=(
-    'Application Data'
-    'Cookies'
-    'OpenVPN'
-    'Local Settings'
-    'Start Menu'
-    '3D Objects'
-    'Contacts'
-    'Favorites'
-    'Intel'
-    'IntelGraphicsProfiles'
-    'Links'
-    'MicrosoftEdgeBackups'
-    'My Documents'
-    'NetHood'
-    'PrintHood'
-    'Recent'
-    'Saved Games'
-    'Searches'
-    'SendTo'
-  )
-fi
-
-# ----------------------------------------
-# home backups
-# ----------------------------------------
-
 # BH_DOTFILES_BKP_DIR="$HOME/OneDrive/dotfiles"
 # BH_DOTFILES_BKPS="$HOME/.bashrc $BH_DOTFILES_BKP_DIR/.bashrc "
 # BH_DOTFILES_BKPS+="$HOME/.bh-cfg.sh $BH_DOTFILES_BKP_DIR/.bh-cfg.sh "
 
 # ----------------------------------------
-# dev/ git repos
+# dev/ repos
 # ----------------------------------------
+# BH_DEV_REPOS="bash-helpers git@github.com:alanlivio/bash-helpers "
 
-# BH_DEV_REPOS="sites git@github.com:alanlivio/alanlivio.github.io.git "
+
+# ----------------------------------------
+# simple PS1
+# ----------------------------------------
+# parse_git_branch() {
+#   git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+# }
+# export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
