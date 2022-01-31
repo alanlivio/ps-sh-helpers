@@ -31,4 +31,5 @@ function install_win_gitbash() {
 }
 
 install_win_winget
+install_win_wt
 install_win_gitbash

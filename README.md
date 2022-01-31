@@ -6,7 +6,7 @@ Cross-platform (Linux, Windows, macOS) bash helpers to configure OS (dark mode, 
 
 ## Install
 
-The bash-helpers has two requirements: a `bash shell` and `git` . Particulary on windows, they can be installed using [GitForWindows](https://gitforwindows.org/). 
+The bash-helpers has two requirements: a `bash shell` and `git`. Particulary on windows, they can be installed using [GitForWindows](https://gitforwindows.org/) (you may install it using [install-gitforwindows-and-wt.ps1](./lib/win/install-gitforwindows-and-wt.ps1) script). 
 
 on ubuntu/macOS/GitForWindows `bash shell` with git, run:
 ```bash
@@ -27,7 +27,7 @@ on ubuntu/macOS/GitForWindows `bash shell` with git, run:
 
 * `bh_win_install_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
 * `bh_win_install_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automates the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password.
-* See others `bh_win_install*` at ./lib/win/
+* See others `bh_win_install_*` at ./lib/win/
 * See others `bh_ubu_install_*` at ./lib/ubu/
 
 ### update/cleanup helpers
