@@ -9,37 +9,42 @@ alias winpath='cygpath -w'
 unset temp
 unset tmp
 alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
+alias ghostscript='gswin64c'
 alias whereis='where'
 alias reboot='gsudo shutdown \/r'
 alias ps_call="powershell.exe -c"
 alias ps_call_admin="gsudo powershell.exe -c"
-alias ghostscript='gswin64c'
+function ps_call_script() { powershell.exe -c "& { . $1}"; }
+function ps_call_script_admin() { gsudo powershell.exe -c "& { . $1}";}
+function bh_open { ps_call "Start-Process ${1:-.}";}
 
-function bh_open {
-  local node="${1:-.}" # . is default value
-  ps_call "Start-Process '$node'"
-}
+# ---------------------------------------
+# gitforwindows_bash
+# ---------------------------------------
 
-function bh_win_gitbash_fix_prompt {
+function bh_win_gitforwindows_bash_fix_prompt {
   sed 's/show\sMSYSTEM/#&/g' -i /etc/profile.d/git-prompt.sh
   sed "s/PS1=\"\$PS1\"'\\\\n/#&/g" -i /etc/profile.d/git-prompt.sh
 }
 
-function bh_win_gitbash_open_prompt {
+function bh_win_gitforwindows_bash_open_prompt {
   bh_open "$(winpath /etc/profile.d/git-prompt.sh)"
 }
 
-function bh_open_wt_settings() {
+# ---------------------------------------
+# sound
+# ---------------------------------------
+function bh_win_sound_open_settings() {
+  rundll32.exe shell32.dll,control_rundll mmsys.cpl,,2
+}
+
+# ---------------------------------------
+# user
+# ---------------------------------------
+
+function bh_win_wt_open_settings() {
   bh_wt_stgs="$HOME/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json"
   code $bh_wt_stgs
-}
-
-function ps_call_script() {
-  powershell.exe -c "& { . $1}"
-}
-
-function ps_call_script_admin() {
-  gsudo powershell.exe -c "& { . $1}"
 }
 
 # ---------------------------------------
@@ -94,15 +99,15 @@ function bh_win_sysupdate_win_list_last_installed() {
 # feature
 # ---------------------------------------
 
-function bh_win_feature_enable_ssh_server_gitbash() {
+function bh_win_feature_enable_ssh_server_bash() {
   bh_log_func
-  local gitbash_path=$(whereis bash | head -1)
+  local current_bash_path=$(whereis bash | head -1)
   ps_call_admin "
     Add-WindowsCapability -Online -Name OpenSSH.Client
     Add-WindowsCapability -Online -Name OpenSSH.Server
     Start-Service sshd
     Set-Service -Name sshd -StartupType 'Automatic'
-    New-ItemProperty -Path 'HKLM:\SOFTWARE\OpenSSH' -Name DefaultShell -Value '$gitbash_path' -PropertyType String -Force
+    New-ItemProperty -Path 'HKLM:\SOFTWARE\OpenSSH' -Name DefaultShell -Value '$current_bash_path' -PropertyType String -Force
   "
 }
 
