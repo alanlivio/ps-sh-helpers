@@ -46,7 +46,7 @@ The helpers bellow can be run routinely. They install packages defined in `BH_PK
 * `bh_dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES_BKPS
 * `bh_dotfiles_install`: restore files/dirs defined in BH_DOTFILES_BKPS
 * `bh_home_clean_unused`: clean files/dirs defined in array BH_HOME_CLEAN_UNUSED
-* `bh_home_dev_folder_git_repos`: clone/update git repos defined in BH_DEV_REPOS
+* `bh_dev_folder_git_repos`: clone/update git repos defined in BH_DEV_REPOS
 
 ### curl helpers
 

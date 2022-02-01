@@ -4,9 +4,9 @@ on:
     branches:
       - master
     paths:
-      - "docs/*"
-      - "mkdocs.yaml"
-      - "README.md"
+      - 'docs/*'
+      - 'mkdocs.yaml'
+      - 'README.md'
 jobs:
   deploy:
     runs-on: ubuntu-latest

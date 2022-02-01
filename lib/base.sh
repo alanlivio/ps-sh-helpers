@@ -51,8 +51,12 @@ function bh_log_try() {
 
 function bh_bh_update_from_github_and_reload() {
   bh_log_func
-  cd $BH_DIR && git pull && cd $OLDPWD
-  bh_bashrc_reload
+  cd $BH_DIR
+  if bh_git_check_if_need_pull; then
+    git pull
+    bh_bashrc_reload
+  fi
+  cd $OLDPWD
 }
 
 function bh_bh_install() {
@@ -283,7 +287,7 @@ function bh_home_clean_unused() {
   done
 }
 
-function bh_home_dev_folder_git_repos() {
+function bh_dev_folder_git_repos() {
   bh_log_func
 
   # create dev dir
