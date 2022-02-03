@@ -16,7 +16,7 @@ function bh_py_list_installed() {
 
 function bh_py_upgrade() {
   bh_log_func
-  local outdated=$(pip list --outdated --format=freeze 2>/dev/null | grep -v '^\-e' | cut -d = -f 1)
+  local outdated=$(pip list --outdated --format=freeze --disable-pip-version-check 2>/dev/null | grep -v '^\-e' | cut -d = -f 1)
   if test "$outdated"; then
     pip install --upgrade pip 2>/dev/null
     pip install --upgrade $outdated 2>/dev/null
@@ -27,7 +27,7 @@ function bh_py_install() {
   bh_log_func
 
   local pkgs_to_install=""
-  local pkgs_installed=$(pip list --format=columns | cut -d' ' -f1 | grep -v Package | sed '1d' | tr '\n' ' ')
+  local pkgs_installed=$(pip list --format=columns --disable-pip-version-check | cut -d' ' -f1 | grep -v Package | sed '1d' | tr '\n' ' ')
   for i in "$@"; do
     if [[ ! $pkgs_installed =~ $i ]]; then
       pkgs_to_install="$i $pkgs_to_install"
