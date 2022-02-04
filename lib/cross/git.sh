@@ -175,7 +175,7 @@ function bh_git_upstream_pull() {
 
 # edit
 
-function bh_git_edit_tree_name_email() {
+function bh_git_edit_tree_rename_user_to_current() {
   git filter-branch -f --env-filter '
     NEW_NAME="$(git config user.name)"
     NEW_EMAIL="$(git config user.email)"
@@ -186,7 +186,7 @@ function bh_git_edit_tree_name_email() {
   ' --tag-name-filter cat -- --branches --tags
 }
 
-function bh_git_edit_tree__name_email_by_old_email() {
+function bh_git_edit_tree_rename_user_to_new() {
   : ${3?"Usage: ${FUNCNAME[0]} <old-name> <new-name> <new-email>"}
   git filter-branch --commit-filter '
     OLD_EMAIL="$1"
