@@ -2,7 +2,8 @@
 
 # bash-helpers
 
-Cross-platform (Linux, Windows, macOS) bash helpers to configure OS (dark mode, disable animations), install/update software (python, vscode, docker, wsl, msys) and useful utilities (dotfiles, git, compress, curl). The project logo references the synthetic chemical element Bohrium, which also has the initials bh.
+Bash helpers to install software (wsl/msys, adb, flutter, ffmpeg), configure OS (dark mode, clean taskbar/clutter), update python/vscode pkgs, clean unused folders, sync dotfiles, common git calls, and more. 
+The project logo refers to the synthetic chemical element Bohrium, which also has the initials bh.
 
 ## Install
 
@@ -19,8 +20,8 @@ on ubuntu/macOS/GitForWindows `bash shell` with git, run:
 
 ### configure OS interface helpers
 
-* `bh_ubu_gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons, no search), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
-* `bh_win_sanity` (at gitbash): enable dark mode, disable animations, clean dock (e.g. small icons)
+* `bh_ubu_gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
+* `bh_win_sanity` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons)
 * `bh_mac_sanity` (at bash): TODO
 
 ### install software helpers
@@ -32,10 +33,10 @@ on ubuntu/macOS/GitForWindows `bash shell` with git, run:
 
 ### update/cleanup helpers
 
-The helpers bellow can be run routinely. They install packages defined in `BH_PKGS_*` vars from ~/.bashrc or ~/.bh_cfg.sh, and also clean unused files/folders defined in `BH_HOME_CLEAN_UNUSED` var. Please see the vars examples in skel/.bh_cfg.sh.
+The helpers bellow can be run routinely. They install packages defined in `BH_PKGS_*` vars from `~/.bashrc` or `~/.bh_cfg.sh`, and also clean unused files/folders defined in `BH_HOME_CLEAN_UNUSED` var. Please see the vars examples in skel/.bh_cfg.sh.
 
 * `bh_update_cleanup_mac` (at mac bash): BH_PKGS_BREW, BH_PKGS_PY, BH_PKGS_VSCODE
-* `bh_update_cleanup_ubu` (at ubuntu bash): BH_PKGS_APT_UBUNTU, BH_PKGS_PY, BH_PKGS_VSCODE, BH_PKGS_SNAP, BH_PKGS_SNAP_CLASSIC
+* `bh_update_cleanup_ubu` (at ubuntu bash): BH_PKGS_APT_UBU, BH_PKGS_PY, BH_PKGS_VSCODE, BH_PKGS_SNAP, BH_PKGS_SNAP_CLASSIC
 * `bh_update_cleanup_win` (at GitBash): BH_PKGS_WINGET, BH_PKGS_PY, BH_PKGS_VSCODE
 * `bh_update_cleanup_wsl` (at WSL bash): BH_PKGS_APT_WSL, BH_PKGS_PY_WSL
 * `bh_update_cleanup_msys` (at msys bash): BH_PKGS_MSYS, BH_PKGS_PY_MSYS

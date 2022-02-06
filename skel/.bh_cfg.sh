@@ -1,6 +1,7 @@
 # ----------------------------------------
-# home clean unused
+# .bh_cfg.sh skel
 # ----------------------------------------
+# home clean foders
 BH_HOME_CLEAN_UNUSED=('Images' 'Movies' 'Public' 'Templates' 'Tracing' 'Videos' 'Music' 'Pictures' '.cache')
 if $IS_UBU; then
   BH_HOME_CLEAN_UNUSED+=('Documents') # sensible data in Windows
@@ -8,13 +9,10 @@ elif $IS_WIN; then
   BH_HOME_CLEAN_UNUSED+=('Application Data' 'Cookies' 'Local Settings' 'Start Menu' '3D Objects' 'Contacts' 'Favorites' 'Links' 'MicrosoftEdgeBackups' 'My Documents' 'NetHood' 'PrintHood' 'Recent' 'Saved Games' 'Searches' 'SendTo')
 fi
 
-# ----------------------------------------
-# pkgs 
-# ----------------------------------------
 # ubu only
 BH_PKGS_SNAP=""
 BH_PKGS_SNAP_CLASSIC=""
-BH_PKGS_APT_UBUNTU=""
+BH_PKGS_APT_UBU=""
 # wsl only
 BH_PKGS_APT_WSL=""
 BH_PKGS_APT_REMOVE_WSL=""
@@ -37,23 +35,13 @@ BH_PKGS_VSCODE="timonwong.shellcheck foxundermoon.shell-format "
 BH_PKGS_PY=""
 BH_PKGS_NPM=""
 
-# ----------------------------------------
 # dotfiles backp
-# ----------------------------------------
 # BH_DOTFILES_BKP_DIR="$HOME/OneDrive/dotfiles"
 # BH_DOTFILES_BKPS="$HOME/.bashrc $BH_DOTFILES_BKP_DIR/.bashrc "
 # BH_DOTFILES_BKPS+="$HOME/.bh_cfg.sh $BH_DOTFILES_BKP_DIR/.bh_cfg.sh "
 
-# ----------------------------------------
 # dev/ repos
-# ----------------------------------------
 # BH_DEV_REPOS="bash-helpers git@github.com:alanlivio/bash-helpers "
 
-
-# ----------------------------------------
 # simple PS1
-# ----------------------------------------
-# parse_git_branch() {
-#   git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
-# }
-# export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
+# export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] $ "

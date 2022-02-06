@@ -33,7 +33,7 @@ function bh_update_cleanup_ubu() {
   # apt
   local pkgs="git deborphan apt-file vim diffutils curl "
   pkgs+="python3 python3-pip "
-  bh_apt_install $pkgs $BH_PKGS_APT_UBUNTU
+  bh_apt_install $pkgs $BH_PKGS_APT_UBU
   bh_apt_autoremove
   bh_apt_upgrade
   # py
