@@ -79,7 +79,6 @@ function bh_win_sanity_taskbar() {
     'SpotifyAB.SpotifyMusic'
     'Facebook.InstagramBeta'
     'BytedancePte.Ltd.TikTok'
-    'Microsoft.MicrosoftEdge.Stable'
   )
   bh_log_2nd "uninstall startmenu unused apps "
   bh_win_appx_uninstall @pkgs
