@@ -1,5 +1,5 @@
 # ----------------------------------------
-# .bh_cfg.sh skel
+# .bhrc.sh skel
 # ----------------------------------------
 # home clean foders
 BH_HOME_CLEAN_UNUSED=('Images' 'Movies' 'Public' 'Templates' 'Tracing' 'Videos' 'Music' 'Pictures' '.cache')
@@ -38,7 +38,7 @@ BH_PKGS_NPM=""
 # dotfiles backp
 # BH_DOTFILES_BKP_DIR="$HOME/OneDrive/dotfiles"
 # BH_DOTFILES_BKPS="$HOME/.bashrc $BH_DOTFILES_BKP_DIR/.bashrc "
-# BH_DOTFILES_BKPS+="$HOME/.bh_cfg.sh $BH_DOTFILES_BKP_DIR/.bh_cfg.sh "
+# BH_DOTFILES_BKPS+="$HOME/.bhrc.sh $BH_DOTFILES_BKP_DIR/.bhrc.sh "
 
 # dev/ repos
 # BH_DEV_REPOS="bash-helpers git@github.com:alanlivio/bash-helpers "

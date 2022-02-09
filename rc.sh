@@ -29,7 +29,6 @@ esac
 # load helpers
 # ---------------------------------------
 BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BH_RC="$BH_DIR/rc.sh"
 source "$BH_DIR/lib/base.sh" # uses echo, test, md5, curl, tar, unzip, curl, rename, find
 if $IS_UBU; then
   source "$BH_DIR/lib/rc-ubu.sh"
@@ -44,8 +43,12 @@ elif $IS_MAC; then
   source "$BH_DIR/lib/rc-mac.sh"
 fi
 
-# load "$HOME/.bh_cfg.sh". # if not exist, copy from skel
-if ! test -f "$HOME/.bh_cfg.sh"; then 
-  cp $BH_DIR/skel/.bh_cfg.sh $HOME
+# load $BH_RC or "$HOME/.bhrc.sh"
+if test -z $BH_RC ; then 
+   BH_RC="$HOME/.bhrc.sh"
 fi
-source $HOME/.bh_cfg.sh
+if test -f $BH_RC; then 
+  source $BH_RC
+else
+  bh_log_msg "The ~/.bhrc.sh file do not exists. You may copy $BH_DIR/skel/bhrc.sh or define \$BH_RC)."
+fi
