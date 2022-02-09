@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# bh location
+BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # ---------------------------------------
 # OS vars
 # ---------------------------------------
@@ -15,36 +18,23 @@ CYGWIN* | MINGW* | MSYS*)
     IS_MSYS=true
   fi;;
 Linux)
+  IS_LINUX=true
   if [[ $(uname -r) == *"icrosoft"* ]]; then
-    IS_WIN=true
-    IS_WSL=true
+    IS_UBU=true; IS_WSL=true
   elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then
     IS_UBU=true
-  fi
-  IS_LINUX=true;;
-Darwin) IS_MAC=true;;
+  fi;;
+Darwin)
+  IS_MAC=true;;
 esac
-
-# ---------------------------------------
-# BH_DIR
-# ---------------------------------------
-
-BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # ---------------------------------------
 # specifc-commands helpers
 # ---------------------------------------
 
-if type code &>/dev/null; then
-  HAS_VSCODE=true
-  source "$BH_DIR/lib/vscode.sh"
-fi
-if type pip &>/dev/null; then
-  HAS_PY=true
-  source "$BH_DIR/lib/python.sh"
-fi
-
 source "$BH_DIR/lib/base.sh" # uses echo, test, md5, curl, tar, unzip, curl, rename, find
+if type code &>/dev/null; then HAS_VSCODE=true;source "$BH_DIR/lib/vscode.sh";fi
+if type pip &>/dev/null; then HAS_PY=true; source "$BH_DIR/lib/python.sh"; fi
 if type adb &>/dev/null; then source "$BH_DIR/lib/adb.sh"; fi
 if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.sh"; fi
 if type docker &>/dev/null; then source "$BH_DIR/lib/docker.sh"; fi
@@ -64,11 +54,12 @@ if type ssh &>/dev/null; then source "$BH_DIR/lib/ssh.sh"; fi
 if type tesseract &>/dev/null; then source "$BH_DIR/lib/tesseract.sh"; fi
 if type wget &>/dev/null; then source "$BH_DIR/lib/wget.sh"; fi
 if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/youtube-dl.sh"; fi
-if type zip tar &>/dev/null; then source "$BH_DIR/lib/zip.sh"; fi
+if type zip &>/dev/null; then source "$BH_DIR/lib/zip.sh"; fi
 
 # ---------------------------------------
 # OS helpers
 # ---------------------------------------
+
 if $IS_UBU; then
   source "$BH_DIR/lib/init-ubu.sh"
 elif $IS_MSYS; then
