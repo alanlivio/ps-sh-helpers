@@ -13,6 +13,8 @@ function bh_win_install_store_essentials() {
 
 function bh_win_install_python() {
   winget install Python.Python.3 --source winget -i
+  bh_win_path_add $(winpath $HOME/AppData/Local/Programs/Python/Python310/Scripts/)
+  bh_win_path_add $(winpath $HOME/AppData/Roaming/Python/Python310/Scripts/)
 }
 
 function bh_win_install_miktex() {
