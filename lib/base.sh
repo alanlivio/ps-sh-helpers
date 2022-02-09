@@ -61,45 +61,11 @@ function bh_bh_update_from_github_and_reload() {
 
 function bh_bh_install() {
   bh_log_func
-  local line='source $HOME/.bh/rc.sh'
+  local line='source $HOME/.bh/init.sh'
   if ! grep -Fxq "$line" $HOME/.bashrc; then
     echo -e "$line\n" >>$HOME/.bashrc
   fi
 }
-
-# ---------------------------------------
-# specifc-commands helpers
-# ---------------------------------------
-
-if type code &>/dev/null; then
-  HAS_VSCODE=true
-  source "$BH_DIR/lib/cross/vscode.sh"
-fi
-if type pip &>/dev/null; then
-  HAS_PY=true
-  source "$BH_DIR/lib/cross/python.sh"
-fi
-
-if type adb &>/dev/null; then source "$BH_DIR/lib/cross/adb.sh"; fi
-if type cmake &>/dev/null; then source "$BH_DIR/lib/cross/cmake.sh"; fi
-if type docker &>/dev/null; then source "$BH_DIR/lib/cross/docker.sh"; fi
-if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/cross/ffmpeg.sh"; fi
-if type flutter &>/dev/null; then source "$BH_DIR/lib/cross/flutter.sh"; fi
-if type gcc &>/dev/null; then source "$BH_DIR/lib/cross/gcc.sh"; fi
-if type ghostscript &>/dev/null; then source "$BH_DIR/lib/cross/ghostscript.sh"; fi
-if type git &>/dev/null; then source "$BH_DIR/lib/cross/git.sh"; fi
-if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/lib/cross/gst.sh"; fi
-if type meson &>/dev/null; then source "$BH_DIR/lib/cross/meson.sh"; fi
-if type pandoc &>/dev/null; then source "$BH_DIR/lib/cross/pandoc.sh"; fi
-if type pngquant &>/dev/null; then source "$BH_DIR/lib/cross/pngquant.sh"; fi
-if type pdflatex &>/dev/null; then source "$BH_DIR/lib/cross/pdflatex.sh"; fi
-if type pkg-config &>/dev/null; then source "$BH_DIR/lib/cross/pkg-config.sh"; fi
-if type ruby &>/dev/null; then source "$BH_DIR/lib/cross/ruby.sh"; fi
-if type ssh &>/dev/null; then source "$BH_DIR/lib/cross/ssh.sh"; fi
-if type tesseract &>/dev/null; then source "$BH_DIR/lib/cross/tesseract.sh"; fi
-if type wget &>/dev/null; then source "$BH_DIR/lib/cross/wget.sh"; fi
-if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/cross/youtube-dl.sh"; fi
-if type zip tar &>/dev/null; then source "$BH_DIR/lib/cross/zip.sh"; fi
 
 # ---------------------------------------
 # bashrc

@@ -12,7 +12,7 @@ The bash-helpers has two requirements: a `bash shell` and `git`. Particulary on 
 on ubuntu/macOS/GitForWindows `bash shell` with git, run:
 ```bash
   git clone https://github.com/alanlivio/bash-helpers ~/.bh &&\
-    echo "source ~/.bh/rc.sh" >> ~/.bashrc &&\
+    echo "source ~/.bh/init.sh" >> ~/.bashrc &&\
     source ~/.bashrc
 ```
 
@@ -33,7 +33,7 @@ on ubuntu/macOS/GitForWindows `bash shell` with git, run:
 
 ### update/cleanup helpers
 
-The helpers bellow can be run routinely. They install packages defined in `BH_PKGS_*` vars at `~/.bashrc` or `~/.bhrc.sh`, and also clean unused files/folders defined in `BH_HOME_CLEAN_UNUSED` var. Please see the vars examples in skel/.bhrc.sh.
+The helpers bellow can be run routinely. They install packages defined in `BH_PKGS_*` vars at `~/.bhrc.sh` (or `~/.bashrc`), and also clean unused files/folders defined in `BH_HOME_CLEAN_UNUSED` var. Please see the vars examples in [skel/.bhrc.sh](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bhrc.sh).
 
 * `bh_update_cleanup_mac` (at mac bash): BH_PKGS_BREW, BH_PKGS_PY, BH_PKGS_VSCODE
 * `bh_update_cleanup_ubu` (at ubuntu bash): BH_PKGS_APT_UBU, BH_PKGS_PY, BH_PKGS_VSCODE, BH_PKGS_SNAP, BH_PKGS_SNAP_CLASSIC
