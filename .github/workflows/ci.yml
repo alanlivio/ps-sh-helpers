@@ -4,14 +4,16 @@ on:
     branches:
       - master
     paths:
-      - 'docs/*'
-      - 'mkdocs.yaml'
-      - 'README.md'
+      - "docs/*"
+      - "README.md"
 jobs:
-  deploy:
+  deploy-docs:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - run: pip install -r mkdocs-reqs.txt
+      - run: pip install -r requirements.txt
       - run: mkdocs gh-deploy --force

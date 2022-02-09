@@ -1,4 +1,3 @@
-# info
 site_name: bash-helpers
 site_author: Alan Guedes
 site_url: http://alanlivio.github.io/bash-helpers
@@ -7,20 +6,14 @@ copyright: MIT
 remote_branch: gh-pages
 repo_url: https://github.com/alanlivio/bash-helpers
 edit_uri: edit/master/docs/
+docs_dir: src
 
-# plugins
 plugins:
   - search
   - macros:
       verbose: false
-      include_dir: .
+      include_dir: ../
 
-# analytics
-analytics:
-  provider: google
-  property: G-P8VQHVLPZD
-
-# theme
 theme:
   logo: logo.svg
   name: material
@@ -30,3 +23,7 @@ theme:
       primary: black
       accent: indigo
   nav_style: dark
+
+extras:
+  provider: google
+  property: G-P8VQHVLPZD
