@@ -10,7 +10,6 @@ unset temp
 unset tmp
 alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
 alias ghostscript='gswin64c'
-alias whereis='where'
 alias reboot='gsudo shutdown \/r'
 alias ps_call="powershell.exe -c"
 alias ps_call_admin="gsudo powershell.exe -c"
@@ -101,7 +100,7 @@ function bh_win_sysupdate_win_list_last_installed() {
 
 function bh_win_feature_enable_ssh_server_bash() {
   bh_log_func
-  local current_bash_path=$(whereis bash | head -1)
+  local current_bash_path=$(where bash | head -1)
   ps_call_admin "
     Add-WindowsCapability -Online -Name OpenSSH.Client
     Add-WindowsCapability -Online -Name OpenSSH.Server

@@ -46,13 +46,22 @@ function bh_log_try() {
 }
 
 # ---------------------------------------
+# bashrc helpers
+# ---------------------------------------
+
+function bh_bashrc_reload() {
+  bh_log_func
+  source $HOME/.bashrc
+}
+
+# ---------------------------------------
 # bh helpers
 # ---------------------------------------
 
-function bh_bh_update_from_github_and_reload() {
+function bh_bh_reload() {
   bh_log_func
   cd $BH_DIR
-  if bh_git_check_if_need_pull; then
+  if $(bh_git_check_if_need_pull); then
     git pull
     bh_bashrc_reload
   fi
@@ -64,16 +73,8 @@ function bh_bh_install() {
   local line='source $HOME/.bh/init.sh'
   if ! grep -Fxq "$line" $HOME/.bashrc; then
     echo -e "$line\n" >>$HOME/.bashrc
+    bh_bashrc_reload
   fi
-}
-
-# ---------------------------------------
-# bashrc
-# ---------------------------------------
-
-function bh_bashrc_reload() {
-  bh_log_func
-  source $HOME/.bashrc
 }
 
 # ---------------------------------------
