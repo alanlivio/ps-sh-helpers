@@ -315,7 +315,7 @@ function bh_git_tag_list() {
 function bh_git_tag_move_to_corrent() {
   git tag -d $1
   git tag $1
-  git push --force --tags 
+  git push --force --tags
 }
 
 function bh_git_tag_1dot0_move_to_corrent() {
@@ -355,3 +355,32 @@ function bh_git_log_history_file() {
 function bh_git_large_files_list() {
   git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -3
 }
+
+# bfg repo cleaner (https://rtyley.github.io/bfg-repo-cleaner/)
+
+BH_GIT_BFG="$BH_OPT/bfg-1.14.0.jar"
+
+if test -e $BH_GIT_BFG; then
+  function bh_git_bfg() {
+    java -jar $BH_OPT/bfg-1.14.0.jar "$@"
+  }
+
+  function bh_git_bfg_delete_bigger_than_50M() {
+    java -jar $BH_OPT/bfg-1.14.0.jar --strip-blobs-bigger-than 50M
+  }
+
+  function bh_git_bfg_delete_file() {
+    : ${1?"Usage: ${FUNCNAME[0]} <filename| {filename, filename}>"}
+    java -jar $BH_OPT/bfg-1.14.0.jar -D "$1" .
+  }
+
+  function bh_git_bfg_delete_file_no_protect_current_commit() {
+    : ${1?"Usage: ${FUNCNAME[0]} <filename| {filename, filename}>"}
+    java -jar $BH_OPT/bfg-1.14.0.jar -D "$1" --no-blob-protection .
+  }
+
+  function bh_git_bfg_finish() {
+    git reflog expire --expire=now --all && git gc --prune=now --aggressive
+    git push --force
+  }
+fi

@@ -49,7 +49,7 @@ function bh_win_install_cmake() {
 
 function bh_win_install_make() {
   local url="https://jztkft.dl.sourceforge.net/project/ezwinports/make-4.3-without-guile-w32-bin.zip"
-  local bin_dir="$BH_OPT_WIN/make-4.3-without-guile-w32-bin"
+  local bin_dir="$BH_OPT/make-4.3-without-guile-w32-bin"
   if ! test -d $bin_dir; then
     bh_test_and_create_folder $bin_dir
     bh_decompress_from_url $url $bin_dir # no root folder
@@ -61,9 +61,9 @@ function bh_win_install_make() {
 BH_FFMPEG_VER="4.4"
 function bh_win_install_ffmpeg() {
   local url="https://www.gyan.dev/ffmpeg/builds/packages/ffmpeg-${BH_FFMPEG_VER}-essentials_build.zip"
-  local bin_dir="$BH_OPT_WIN/ffmpeg-${BH_FFMPEG_VER}-essentials_build/bin/"
+  local bin_dir="$BH_OPT/ffmpeg-${BH_FFMPEG_VER}-essentials_build/bin/"
   if ! test -d $bin_dir; then
-    bh_decompress_from_url $url $BH_OPT_WIN/ # has root folder
+    bh_decompress_from_url $url $BH_OPT/ # has root folder
     if [[ $? != 0 || ! -d $bin_dir ]]; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
   fi
   bh_win_path_add $(winpath $bin_dir)
@@ -72,10 +72,10 @@ function bh_win_install_ffmpeg() {
 BH_NODE_VER="14.17.5"
 function bh_win_install_node() {
   local url="https://nodejs.org/dist/v${BH_NODE_VER}/node-v${BH_NODE_VER}-win-x64.zip"
-  local bin_dir="$BH_OPT_WIN/node-v${BH_NODE_VER}-win-x64"
+  local bin_dir="$BH_OPT/node-v${BH_NODE_VER}-win-x64"
   if ! test -d $bin_dir; then
     bh_test_and_create_folder $bin_dir # no root folder
-    bh_decompress_from_url $url $BH_OPT_WIN
+    bh_decompress_from_url $url $BH_OPT
     if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
   fi
   bh_win_env_add 'NODEJS_HOME' $(winpath $bin_dir)
@@ -90,7 +90,7 @@ function bh_win_install_adb() {
   bh_log_func
 
   # create opt
-  local opt_dst="$BH_OPT_WIN"
+  local opt_dst="$BH_OPT"
   bh_test_and_create_folder $opt_dst
   bh_test_and_create_folder $android_sdk_dir
 
@@ -109,7 +109,7 @@ function bh_win_install_flutter() {
   bh_log_func
 
   # create opt
-  local opt_dst="$BH_OPT_WIN"
+  local opt_dst="$BH_OPT"
   bh_test_and_create_folder $opt_dst
   bh_test_and_create_folder $android_sdk_dir
 
@@ -144,9 +144,9 @@ function bh_win_install_flutter() {
 function bh_win_install_latexindent() {
   bh_log_func
   if ! type latexindent.exe &>/dev/null; then
-    bh_curl_fetch_to_dir https://github.com/cmhughes/latexindent.pl/releases/download/V3.10/latexindent.exe $BH_OPT_WIN
-    bh_curl_fetch_to_dir https://raw.githubusercontent.com/cmhughes/latexindent.pl/main/defaultSettings.yaml $BH_OPT_WIN
-    bh_win_path_add $BH_OPT_WIN
+    bh_curl_fetch_to_dir https://github.com/cmhughes/latexindent.pl/releases/download/V3.10/latexindent.exe $BH_OPT
+    bh_curl_fetch_to_dir https://raw.githubusercontent.com/cmhughes/latexindent.pl/main/defaultSettings.yaml $BH_OPT
+    bh_win_path_add $BH_OPT
   fi
 }
 

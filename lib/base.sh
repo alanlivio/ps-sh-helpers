@@ -373,3 +373,11 @@ function bh_folder_find_duplicated_pdf() {
 function bh_mount_list() {
   df -haT
 }
+
+# ---------------------------------------
+# install cross
+# ---------------------------------------
+
+function bh_install_git_bfg() {
+  bh_curl_fetch_to_dir https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar $BH_OPT
+}

@@ -26,8 +26,11 @@ BH_PKGS_PY_MSYS=""
 # mac only
 BH_PKGS_BREW=""
 # opt folder
-BH_OPT_WIN="$HOME/AppData/Local/Programs"
-BH_OPT_LINUX="$HOME/opt"
+if $IS_WIN; then
+  BH_OPT="$HOME/opt"
+else
+  BH_OPT="$HOME/AppData/Local/Programs"
+fi
 # dev folder
 BH_DEV="$HOME/dev"
 # cross os vscode/py/npm
