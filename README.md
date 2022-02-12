@@ -2,7 +2,7 @@
 
 # bash-helpers
 
-Bash helpers to install software (wsl/msys, adb, flutter, ffmpeg), configure OS (dark mode, clean taskbar/clutter), update python/vscode pkgs, clean unused folders, sync dotfiles, common git calls, and more. 
+Cross-OS bash helpers to install software (wsl/msys, adb, flutter, ffmpeg), setup (dark mode, clean taskbar/clutter/unused), update python/vscode pkgs, sync dotfiles, common git calls, and more. 
 The project logo refers to the synthetic chemical element Bohrium, which also has the initials bh.
 
 ## Install

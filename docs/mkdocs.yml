@@ -1,12 +1,12 @@
 site_name: bash-helpers
 site_author: Alan Guedes
-site_url: http://alanlivio.github.io/bash-helpers
+# site_url: http://alanlivio.github.io/bash-helpers
 site_description: bash-helpers website
 copyright: MIT
 remote_branch: gh-pages
 repo_url: https://github.com/alanlivio/bash-helpers
 edit_uri: edit/master/docs/
-docs_dir: src
+docs_dir: mkdocs
 
 plugins:
   - search
