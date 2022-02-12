@@ -14,8 +14,8 @@ alias reboot='gsudo shutdown \/r'
 alias ps_call="powershell.exe -c"
 alias ps_call_admin="gsudo powershell.exe -c"
 function ps_call_script() { powershell.exe -c "& { . $1}"; }
-function ps_call_script_admin() { gsudo powershell.exe -c "& { . $1}";}
-function bh_open { ps_call "Start-Process ${1:-.}";}
+function ps_call_script_admin() { gsudo powershell.exe -c "& { . $1}"; }
+function bh_open { ps_call "Start-Process ${1:-.}"; }
 
 # ---------------------------------------
 # gitforwindows_bash
@@ -50,8 +50,8 @@ function bh_win_wt_open_settings() {
 # user
 # ---------------------------------------
 
-function bh_win_user_check_admin() {
-  # usage if [ "$(bh_win_user_check_admin)" == "True" ]; then <commands>; fi
+function bh_win_user_check_admin_group() {
+  # usage if [ "$(bh_win_user_check_admin_group)" == "True" ]; then <commands>; fi
   ps_call '
     $user = "$env:COMPUTERNAME\$env:USERNAME"
     $group = "Administrators"
@@ -215,6 +215,7 @@ function bh_win_path_open_settings() {
 # ---------------------------------------
 
 if type choco &>/dev/null; then source "$BH_DIR/lib/win/choco.sh"; fi
+if type gsudo &>/dev/null; then HAS_GSUDO=true; fi
 source "$BH_DIR/lib/win/sanity.sh"
 source "$BH_DIR/lib/win/explorer.sh"
 source "$BH_DIR/lib/win/install.sh"
@@ -229,11 +230,11 @@ function bh_update_cleanup_win() {
   bh_home_clean_unused
   bh_win_explorer_hide_home_dotfiles
   # py
-  type pip &>/dev/null && bh_py_install $BH_PKGS_PY
+  $HAS_PY && bh_py_install $BH_PKGS_PY
   # vscode
-  type code &>/dev/null && bh_vscode_install $BH_PKGS_VSCODE
+  $HAS_CODE && bh_vscode_install $BH_PKGS_VSCODE
   # win
-  type gsudo &>/dev/null && bh_win_sysupdate_win
+  $HAS_GSUDO && bh_win_sysupdate_win
   # winget (it uses --scope=user)
   bh_win_get_install $BH_PKGS_WINGET
 }
