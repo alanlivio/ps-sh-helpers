@@ -4,6 +4,12 @@
 
 # count
 
+function bh_git_log_oneline() {
+  git log --oneline
+}
+
+# count
+
 function bh_git_count() {
   git rev-list --all --count
 }
@@ -179,7 +185,7 @@ function bh_git_push_force() {
   git push --force
 }
 
-function bh_git_push_ammend_all() {
+function bh_git_push_amend_all() {
   git commit -a --amend --no-edit
   git push --force
 }
@@ -203,6 +209,10 @@ function bh_git_check_if_need_pull() {
 function bh_git_gitignore_create() {
   : ${1?"Usage: ${FUNCNAME[0]} <contexts,..>"}
   curl -L -s "https://www.gitignore.io/api/$1"
+}
+
+function bh_git_gitignore_create_python() {
+  bh_git_gitignore_create python
 }
 
 function bh_git_gitignore_create_javascript() {
@@ -292,75 +302,94 @@ function bh_git_tag_remove_local_and_remote() {
   git push origin :refs/tags/$1
 }
 
-# ammend
+# amend
 
-function bh_git_ammend_commit_all() {
+function bh_git_amend_commit_all() {
   git commit -a --amend --no-edit
 }
 
-# filter
+# filter-repo <https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html>
 
-alias bh_git_filter_test_and_msg='if [ $? -eq 0 ]; then bh_log_msg "fiter-repo succeeded. check and if agree run bh_git_filter_bfg_finish to push"; fi'
+alias bh_git_filter_repo_test_and_msg='if [ $? -eq 0 ]; then bh_log_msg "fiter-repo succeeded. check if you agree and run bh_git_filter_repo_finish to push"; fi'
 
-function bh_git_filter_rename_user_to_current() {
+function bh_git_filter_repo_save_origin() {
+  if [[ -n $(git remote get-url origin) ]]; then
+    BH_FILTER_REPO_LAST_ORIGIN=$(git remote get-url origin)
+  fi
+}
+
+function bh_git_filter_repo_rename_user_to_current() {
+  bh_git_filter_repo_save_origin
   local new_name="$(git config user.name)"
   local new_email="$(git config user.email)"
   # TODO: only work if echo |
   echo git filter-repo --name-callback "'return b\""$new_name"\"'" --email-callback "'return b\""$new_email"\"'" --force | bash
-  bh_git_filter_test_and_msg
+  bh_git_filter_repo_test_and_msg
 }
 
-function bh_git_filter_rename_as_mailmap() {
-  : ${3?"Usage: ${FUNCNAME[0]} <mailmap>. See more at 'https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html#:~:text=User%20and%20email%20based%20filtering'"}
+function bh_git_filter_repo_rename_user_as_mailmap() {
+  bh_git_filter_repo_save_origin
+  : ${1?"Usage: ${FUNCNAME[0]} <mailmap>. See more at 'https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html#:~:text=User%20and%20email%20based%20filtering'"}
   git filter-repo --mailmap $1
-  bh_git_filter_test_and_msg
+  bh_git_filter_repo_test_and_msg
 }
 
-function bh_git_filter_delete_bigger_than_50M() {
+function bh_git_filter_repo_delete_bigger_than_50M() {
+  bh_git_filter_repo_save_origin
   git filter-repo --strip-blobs-bigger-than 50M
-  bh_git_filter_test_and_msg
+  bh_git_filter_repo_test_and_msg
 }
 
-function bh_git_filter_delete_path() {
+function bh_git_filter_repo_delete_path() {
   : ${1?"Usage: ${FUNCNAME[0]} <filename>"}
-  git filter-repo --invert-paths --path "$1" --use-base-name
-  bh_git_filter_test_and_msg
+  bh_git_filter_repo_save_origin
+  git filter-repo --use-base-name --invert-paths --path "$1"
+  bh_git_filter_repo_test_and_msg
 }
 
-function bh_git_filter_finish() {
+function bh_git_filter_repo_finish() {
+  if [ -z "$BH_FILTER_REPO_LAST_ORIGIN" ]; then
+    echo "$BH_FILTER_REPO_LAST_ORIGIN not defined fix it"
+    return
+  fi
+  echo -n "Is it to push into origin $BH_FILTER_REPO_LAST_ORIGIN and branch master (y/n)? "
+  answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
+  if echo "$answer" | grep -iq "^y"; then
+    if [[ $(git remote get-url origin 2>/dev/null) != "$BH_FILTER_REPO_LAST_ORIGIN" ]]; then
+      git remote add origin $BH_FILTER_REPO_LAST_ORIGIN
+    fi
+    git push --set-upstream origin master --force
+  fi
+}
+
+# bfg repo cleaner <https://rtyley.github.io/bfg-repo-cleaner/>
+
+alias bh_git_bfg_test_and_msg='if [ $? -eq 0 ]; then bh_log_msg "bfg succeeded. check if you agree and bh_git_bfg_finish to push"; fi'
+
+function bh_git_bfg() {
+  java -jar $BH_OPT/bfg-1.14.0.jar "$@"
+  bh_git_bfg_test_and_msg
+}
+
+function bh_git_bfg_delete_bigger_than_50M() {
+  java -jar $BH_OPT/bfg-1.14.0.jar --strip-blobs-bigger-than 50M
+  bh_git_bfg_test_and_msg
+}
+
+function bh_git_bfg_delete_file() {
+  : ${1?"Usage: ${FUNCNAME[0]} <filename| {filename, filename}>"}
+  java -jar $BH_OPT/bfg-1.14.0.jar -D "$1" .
+  bh_git_bfg_test_and_msg
+}
+
+function bh_git_bfg_delete_file_no_protect_current_commit() {
+  : ${1?"Usage: ${FUNCNAME[0]} <filename| {filename, filename}>"}
+  java -jar $BH_OPT/bfg-1.14.0.jar -D "$1" --no-blob-protection .
+  bh_git_bfg_test_and_msg
+}
+
+function bh_git_bfg_finish() {
   git reflog expire --expire=now --all
   git gc --prune=now --aggressive
   git push --force
 }
-
-function bh_git_filter_finish() {
-  git reflog expire --expire=now --all
-  git gc --prune=now --aggressive
-  git push --force
-}
-
-# bfg repo cleaner (https://rtyley.github.io/bfg-repo-cleaner/)
-
-if test -e "$BH_OPT/bfg-1.14.0.jar"; then
-  function bh_git_filter_bfg() {
-    java -jar $BH_OPT/bfg-1.14.0.jar "$@"
-    bh_git_filter_test_and_msg
-  }
-
-  function bh_git_filter_bfg_delete_bigger_than_50M() {
-    java -jar $BH_OPT/bfg-1.14.0.jar --strip-blobs-bigger-than 50M
-    bh_git_filter_test_and_msg
-  }
-
-  function bh_git_filter_bfg_delete_file() {
-    : ${1?"Usage: ${FUNCNAME[0]} <filename| {filename, filename}>"}
-    java -jar $BH_OPT/bfg-1.14.0.jar -D "$1" .
-    bh_git_filter_test_and_msg
-  }
-
-  function bh_git_filter_bfg_delete_file_no_protect_current_commit() {
-    : ${1?"Usage: ${FUNCNAME[0]} <filename| {filename, filename}>"}
-    java -jar $BH_OPT/bfg-1.14.0.jar -D "$1" --no-blob-protection .
-    bh_git_filter_test_and_msg
-  }
-fi

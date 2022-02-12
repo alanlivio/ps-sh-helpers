@@ -111,7 +111,6 @@ function install_wsl() {
   # enable wsl feature (require restart)
   if (!(Get-Command 'wsl.exe' -ea 0)) {
     log "INFO: Windows features for WSL not enabled, enabling..."
-    sysfeature_enable /featurename:VirtualMachinePlatform 
     sysfeature_enable Microsoft-Windows-Subsystem-Linux
     log "INFO: restart windows and run setup_ubu again"
     return

@@ -1,4 +1,4 @@
-<h1 align="center"><img src="docs/src/logo.svg" width="250" onerror='this.style.display="none"'/></h1>
+<h1 align="center"><img src="docs/mkdocs/logo.svg" width="250" onerror='this.style.display="none"'/></h1>
 
 # bash-helpers
 
@@ -9,7 +9,7 @@ The project logo refers to the synthetic chemical element Bohrium, which also ha
 
 The bash-helpers has two requirements: a `bash shell` and `git`. Particulary on windows, they can be installed using [GitForWindows](https://gitforwindows.org/) (you may install it running [install-gitforwindows-and-wt.ps1](https://github.com/alanlivio/bash-helpers/blob/master/lib/win/install-gitforwindows-and-wt.ps1) on powershell). 
 
-on ubuntu/macOS/GitForWindows `bash shell` with git, run:
+Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 ```bash
   git clone https://github.com/alanlivio/bash-helpers ~/.bh &&\
     echo "source ~/.bh/init.sh" >> ~/.bashrc &&\
