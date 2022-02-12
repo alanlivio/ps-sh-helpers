@@ -173,42 +173,6 @@ function bh_git_upstream_pull() {
   git rebase upstream/master
 }
 
-# edit
-
-function bh_git_edit_tree_rename_user_to_current() {
-  git filter-branch -f --env-filter '
-    NEW_NAME="$(git config user.name)"
-    NEW_EMAIL="$(git config user.email)"
-    export GIT_AUTHOR_NAME="$NEW_NAME"; 
-    export GIT_AUTHOR_EMAIL="$NEW_EMAIL"; 
-    export GIT_COMMITTER_NAME="$NEW_NAME"; 
-    export GIT_COMMITTER_EMAIL="$NEW_EMAIL"; 
-  ' --tag-name-filter cat -- --branches --tags
-}
-
-function bh_git_edit_tree_rename_user_to_new() {
-  : ${3?"Usage: ${FUNCNAME[0]} <old-name> <new-name> <new-email>"}
-  git filter-branch --commit-filter '
-    OLD_EMAIL="$1"
-    NEW_NAME="$2"
-    NEW_EMAIL="$3"
-    if [ "$GIT_COMMITTER_EMAIL" = "$OLD_EMAIL" ]
-    then
-      export GIT_COMMITTER_NAME="$NEW_NAME"
-      export GIT_COMMITTER_EMAIL="$NEW_EMAIL"
-    fi
-    if [ "$GIT_AUTHOR_EMAIL" = "$OLD_EMAIL" ]
-    then
-      export GIT_AUTHOR_NAME="$NEW_NAME"
-      export GIT_AUTHOR_EMAIL="$NEW_EMAIL"
-    fi
-    ' --tag-name-filter cat -- --branches --tags
-}
-
-function bh_git_edit_tree_remove_file() {
-  git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch $1' --prune-empty --tag-name-filter cat -- --all
-}
-
 # push
 
 function bh_git_push_force() {
@@ -334,53 +298,69 @@ function bh_git_ammend_commit_all() {
   git commit -a --amend --no-edit
 }
 
-# open
+# filter
 
-function bh_git_open_gitg() {
-  if ! test -d .git; then
-    bh_log_error "There is no git repo in current folder"
-    return
-  fi
-  gitg 2>/dev/null &
+alias bh_git_filter_test_and_msg='if [ $? -eq 0 ]; then bh_log_msg "fiter-repo succeeded. check and if agree run bh_git_filter_bfg_finish to push"; fi'
+
+function bh_git_filter_rename_user_to_current() {
+  local new_name="$(git config user.name)"
+  local new_email="$(git config user.email)"
+  # TODO: only work if echo |
+  echo git filter-repo --name-callback "'return b\""$new_name"\"'" --email-callback "'return b\""$new_email"\"'" --force | bash
+  bh_git_filter_test_and_msg
 }
 
-# open
-
-function bh_git_log_history_file() {
-  git log --follow -p --all --first-parent --remotes --reflog --author-date-order -- $1
+function bh_git_filter_rename_as_mailmap() {
+  : ${3?"Usage: ${FUNCNAME[0]} <mailmap>. See more at 'https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html#:~:text=User%20and%20email%20based%20filtering'"}
+  git filter-repo --mailmap $1
+  bh_git_filter_test_and_msg
 }
 
-# large_files
+function bh_git_filter_delete_bigger_than_50M() {
+  git filter-repo --strip-blobs-bigger-than 50M
+  bh_git_filter_test_and_msg
+}
 
-function bh_git_large_files_list() {
-  git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -3
+function bh_git_filter_delete_path() {
+  : ${1?"Usage: ${FUNCNAME[0]} <filename>"}
+  git filter-repo --invert-paths --path "$1" --use-base-name
+  bh_git_filter_test_and_msg
+}
+
+function bh_git_filter_finish() {
+  git reflog expire --expire=now --all
+  git gc --prune=now --aggressive
+  git push --force
+}
+
+function bh_git_filter_finish() {
+  git reflog expire --expire=now --all
+  git gc --prune=now --aggressive
+  git push --force
 }
 
 # bfg repo cleaner (https://rtyley.github.io/bfg-repo-cleaner/)
 
-BH_GIT_BFG="$BH_OPT/bfg-1.14.0.jar"
-
-if test -e $BH_GIT_BFG; then
-  function bh_git_bfg() {
+if test -e "$BH_OPT/bfg-1.14.0.jar"; then
+  function bh_git_filter_bfg() {
     java -jar $BH_OPT/bfg-1.14.0.jar "$@"
+    bh_git_filter_test_and_msg
   }
 
-  function bh_git_bfg_delete_bigger_than_50M() {
+  function bh_git_filter_bfg_delete_bigger_than_50M() {
     java -jar $BH_OPT/bfg-1.14.0.jar --strip-blobs-bigger-than 50M
+    bh_git_filter_test_and_msg
   }
 
-  function bh_git_bfg_delete_file() {
+  function bh_git_filter_bfg_delete_file() {
     : ${1?"Usage: ${FUNCNAME[0]} <filename| {filename, filename}>"}
     java -jar $BH_OPT/bfg-1.14.0.jar -D "$1" .
+    bh_git_filter_test_and_msg
   }
 
-  function bh_git_bfg_delete_file_no_protect_current_commit() {
+  function bh_git_filter_bfg_delete_file_no_protect_current_commit() {
     : ${1?"Usage: ${FUNCNAME[0]} <filename| {filename, filename}>"}
     java -jar $BH_OPT/bfg-1.14.0.jar -D "$1" --no-blob-protection .
-  }
-
-  function bh_git_bfg_finish() {
-    git reflog expire --expire=now --all && git gc --prune=now --aggressive
-    git push --force
+    bh_git_filter_test_and_msg
   }
 fi

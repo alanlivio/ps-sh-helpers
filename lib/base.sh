@@ -42,7 +42,7 @@ function bh_log_ok() {
 
 function bh_log_try() {
   "$@"
-  if $? -ne 0; then bh_log_error "$1" && exit 1; fi
+  if [ $? -ne 0 ]; then bh_log_error "$1" && exit 1; fi
 }
 
 # ---------------------------------------
