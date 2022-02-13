@@ -80,5 +80,5 @@ fi
 if test -f $BH_RC; then 
   source $BH_RC
 else
-  bh_log_msg "The ~/.bhrc.sh file do not exists. You may copy $BH_DIR/skel/bhrc.sh or define \$BH_RC)."
+  bh_log_msg "The ~/.bhrc.sh does not exist. You may copy bh/skel/bhrc.sh or define \$BH_RC)."
 fi
