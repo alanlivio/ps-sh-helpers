@@ -58,23 +58,14 @@ function bh_bashrc_reload() {
 # bh helpers
 # ---------------------------------------
 
-function bh_bh_reload() {
-  bh_log_func
+function bh_bh_update_if_needed() {
   cd $BH_DIR
   if $(bh_git_check_if_need_pull); then
+    bh_log_func
     git pull
     bh_bashrc_reload
   fi
   cd $OLDPWD
-}
-
-function bh_bh_install() {
-  bh_log_func
-  local line='source $HOME/.bh/init.sh'
-  if ! grep -Fxq "$line" $HOME/.bashrc; then
-    echo -e "$line\n" >>$HOME/.bashrc
-    bh_bashrc_reload
-  fi
 }
 
 # ---------------------------------------
