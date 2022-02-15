@@ -215,7 +215,7 @@ function bh_win_path_open_settings() {
 # ---------------------------------------
 
 if type choco &>/dev/null; then source "$BH_DIR/lib/win/choco.sh"; fi
-if type gsudo &>/dev/null; then HAS_GSUDO=true; fi
+if type gsudo &>/dev/null; then HAS_GSUDO=true; else HAS_GSUDO=false; fi
 source "$BH_DIR/lib/win/sanity.sh"
 source "$BH_DIR/lib/win/explorer.sh"
 source "$BH_DIR/lib/win/install.sh"
