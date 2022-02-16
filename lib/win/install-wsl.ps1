@@ -85,11 +85,11 @@ function wsl_fix_home() {
   wsl -u root usermod -aG sudo "$env:UserName"
   wsl -u root usermod -aG root "$env:UserName"
 
-  # change default folder to /mnt/c/Users/
+  # change default dir to /mnt/c/Users/
   wsl -u root skill -KILL -u $env:UserName
   wsl -u root usermod -d /mnt/c/Users/$env:UserName $env:UserName
   
-  # delete the folder at /home/ and create a link to one at /mnt/c/Users/
+  # delete the dir at /home/ and create a link to one at /mnt/c/Users/
   wsl -u root rm -rf  /home/$env:UserName
   wsl -u root ln -s /mnt/c/Users/$env:UserName /home/$env:UserName
 
@@ -141,7 +141,7 @@ function install_wsl() {
   }
   # fix home user to \Users
   if (!(wsl echo '$HOME').Contains("Users")) {
-    log "INFO: Configuring to same home folder as windows..."
+    log "INFO: Configuring to same home dir as windows..."
     wsl_fix_home
   }
 }

@@ -72,7 +72,7 @@ function bh_bh_update_if_needed() {
 # test
 # ---------------------------------------
 
-function bh_test_and_create_folder() {
+function bh_test_and_create_dir() {
   if test ! -d $1; then
     bh_log_msg "creating $1"
     mkdir -p $1
@@ -82,7 +82,7 @@ function bh_test_and_create_folder() {
 function bh_test_and_create_file() {
   : ${1?"Usage: ${FUNCNAME[0]} [file]"}
   if ! test -f "$1"; then
-    bh_test_and_create_folder $(dirname $1)
+    bh_test_and_create_dir $(dirname $1)
     touch "$1"
   fi
 }
@@ -91,7 +91,11 @@ function bh_test_and_delete_dir() {
   if test -d $1; then rm -rf $1; fi
 }
 
-function bh_test_md5_compare() {
+# ---------------------------------------
+# md5
+# ---------------------------------------
+
+function bh_md5_compare_files() {
   : ${2?"Usage: ${FUNCNAME[0]} [file1] [file2]"}
   if [ $(md5sum $1 | awk '{print $1;exit}') == $(md5sum $2 | awk '{print $1;exit}') ]; then echo "same"; else echo "different"; fi
 }
@@ -131,7 +135,7 @@ function bh_decompress_zip_list() {
 }
 
 function bh_decompress() {
-  : ${1?"Usage: ${FUNCNAME[0]} <zip-name> [folder-name]"}
+  : ${1?"Usage: ${FUNCNAME[0]} <zip-name> [dir-name]"}
   local EXT=${1##*.}
   local DST
   if [ $# -eq 1 ]; then
@@ -166,7 +170,7 @@ function bh_decompress() {
 }
 
 function bh_decompress_from_url() {
-  : ${2?"Usage: ${FUNCNAME[0]} <URL> <folder>"}
+  : ${2?"Usage: ${FUNCNAME[0]} <URL> <dir>"}
   local file_name="/tmp/$(basename $1)"
 
   if test ! -f $file_name; then
@@ -245,11 +249,11 @@ function bh_home_clean_unused() {
   done
 }
 
-function bh_dev_folder_git_repos() {
+function bh_dev_dir_git_repos() {
   bh_log_func
 
   # create dev dir
-  bh_test_and_create_folder $BH_DEV
+  bh_test_and_create_dir $BH_DEV
   local cwd=$(pwd)
 
   declare -a repos_array
@@ -259,18 +263,18 @@ function bh_dev_folder_git_repos() {
     local repo=${repos_array[$((i + 1))]}
     # create parent
     if ! test -d $parent; then
-      bh_test_and_create_folder $parent
+      bh_test_and_create_dir $parent
     fi
     # clone/pull repo
     local repo_basename="$(basename -s .git $repo)"
-    local dst_folder="$parent/$repo_basename"
-    if ! test -d "$dst_folder"; then
-      bh_log_msg_2nd "clone $dst_folder"
+    local dst_dir="$parent/$repo_basename"
+    if ! test -d "$dst_dir"; then
+      bh_log_msg_2nd "clone $dst_dir"
       cd $parent
       git clone $repo
     else
-      cd $dst_folder
-      bh_log_msg_2nd "pull $dst_folder"
+      cd $dst_dir
+      bh_log_msg_2nd "pull $dst_dir"
       git pull
     fi
   done
@@ -310,7 +314,7 @@ function bh_rename_to_lowercase_with_dash() {
 # ---------------------------------------
 
 function bh_user_sudo_nopasswd() {
-  if ! test -d /etc/sudoers.d/; then bh_test_and_create_folder /etc/sudoers.d/; fi
+  if ! test -d /etc/sudoers.d/; then bh_test_and_create_dir /etc/sudoers.d/; fi
   SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
 }
 
@@ -335,14 +339,14 @@ function bh_user_lang_set_en() {
 }
 
 # ---------------------------------------
-# folder
+# dir
 # ---------------------------------------
 
-function bh_folder_sorted_by_size() {
+function bh_dir_sorted_by_size() {
   du -ahd 1 | sort -h
 }
 
-function bh_folder_info() {
+function bh_dir_info() {
   local extensions=$(for f in *.*; do printf "%s\n" "${f##*.}"; done | sort -u)
   echo "size="$(du -sh | awk '{print $1;exit}')
   echo "dirs="$(find . -mindepth 1 -maxdepth 1 -type d | wc -l)
@@ -353,7 +357,7 @@ function bh_folder_info() {
   echo ")"
 }
 
-function bh_folder_find_duplicated_pdf() {
+function bh_dir_find_duplicated_pdf() {
   find . -iname "*.pdf" -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find . -type f -size {}c -print0 | xargs -r -0 md5sum | sort | uniq -w32 --all-repeated=separate
 }
 

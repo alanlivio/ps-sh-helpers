@@ -63,7 +63,7 @@ function bh_py_venv_load() {
   if test requirements.txt; then pip install -r requirements.txt; fi
 }
 
-function bh_py_http_host_folder() {
+function bh_py_http_host_dir() {
   python -m http.server 80
 }
 
@@ -86,21 +86,21 @@ fi
 # ---------------------------------------
 
 if type pygmentize &>/dev/null; then
-  function bh_py_pygmentize_folder_xml_files_by_extensions_to_jpeg() {
-    : ${1?"Usage: ${FUNCNAME[0]} <folder>"}
+  function bh_py_pygmentize_dir_xml_files_by_extensions_to_jpeg() {
+    : ${1?"Usage: ${FUNCNAME[0]} <dir>"}
     find . -maxdepth 1 -name "*.xml" | while read -r i; do
       pygmentize -f jpeg -l xml -o $i.jpg $i
     done
   }
-  function bh_py_pygmentize_folder_xml_files_by_extensions_to_rtf() {
-    : ${1?"Usage: ${FUNCNAME[0]} <folder>"}
+  function bh_py_pygmentize_dir_xml_files_by_extensions_to_rtf() {
+    : ${1?"Usage: ${FUNCNAME[0]} <dir>"}
 
     find . -maxdepth 1 -name "*.xml" | while read -r i; do
       pygmentize -f jpeg -l xml -o $i.jpg $i
       pygmentize -P fontsize=16 -P fontface=consolas -l xml -o $i.rtf $i
     done
   }
-  function bh_py_pygmentize_folder_xml_files_by_extensions_to_html() {
+  function bh_py_pygmentize_dir_xml_files_by_extensions_to_html() {
     : ${1?"Usage: ${FUNCNAME[0]} ARGUMENT"}
     find . -maxdepth 1 -name "*.xml" | while read -r i; do
       pygmentize -O full,style=default -f html -l xml -o $i.html $i

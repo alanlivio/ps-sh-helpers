@@ -25,7 +25,7 @@ function install_win_gitbash() {
     log "GitBash not installed. installing.."
     log "make sure to check 'Add GitBash Profile To Windows Terminal'"
     winget install Git.Git -i
-    # gitbash do not use your home folder by default, to fix that run in powershell:
+    # gitbash do not use your home dir by default, to fix that run in powershell:
     [Environment]::SetEnvironmentVariable("HOME", "${env:userprofile}")
   }
 }

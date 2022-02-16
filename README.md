@@ -33,7 +33,7 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 ### update/cleanup/dotfiles/repos
 
-The helpers bellow can be run routinely. They use in variables at `~/.bhrc.sh` (or `~/.bashrc`) to install software clean unused files/folders, and update repositories. Please see examples in [skel/.bhrc.sh](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bhrc.sh).
+The helpers bellow can be run routinely. They use in variables at `~/.bhrc.sh` (or `~/.bashrc`) to install software clean unused files/dirs, and update repositories. Please see examples in [skel/.bhrc.sh](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bhrc.sh).
 
 * `bh_update_cleanup_mac` (at mac bash): BH_MAC_BREW, BH_MAC_PY, BH_MAC_VSCODE
 * `bh_update_cleanup_ubu` (at ubuntu bash): BH_UBU_APT, BH_UBU_PY, BH_UBU_VSCODE, BH_UBU_SNAP
@@ -44,7 +44,7 @@ The helpers bellow can be run routinely. They use in variables at `~/.bhrc.sh` (
 * `bh_dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES
 * `bh_dotfiles_install`: restore files/dirs defined in BH_DOTFILES
 * `bh_home_clean_unused`: clean files/dirs defined in array BH_HOME_CLEAN_UNUSED
-* `bh_dev_folder_git_repos`: clone/update git repos defined in BH_DEV_REPOS
+* `bh_dev_dir_git_repos`: clone/update git repos defined in BH_DEV_REPOS
 
 ### curl helpers
 
@@ -55,13 +55,13 @@ The helpers bellow can be run routinely. They use in variables at `~/.bhrc.sh` (
 
 ### forder helpers
 
-* `bh_folder_sorted_by_size`: list folder sorted by items size
-* `bh_folder_info`: list number of folder and files per extension
-* `bh_folder_find_duplicated_pdf`: list duplicated pdf files in folder recursively
+* `bh_dir_sorted_by_size`: list dir sorted by items size
+* `bh_dir_info`: list number of dir and files per extension
+* `bh_dir_find_duplicated_pdf`: list duplicated pdf files in dir recursively
 
 ### others helpers
 
-The helpers below are for cross plataform commands. For the full list, see lib/ folder.
+The helpers below are for cross plataform commands. For the full list, see lib/.
 
 * `bh_adb_*`: adb helpers.
 * `bh_cmake_*`: cmake helpers.

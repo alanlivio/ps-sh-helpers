@@ -246,14 +246,14 @@ function bh_git_diff_last_commit() {
   git diff HEAD^1
 }
 
-# subfolders
+# subdirs
 
-function bh_git_subfolders_pull() {
+function bh_git_subdirs_pull() {
   local cwd=$(pwd)
-  local folder=$(pwd $0)
-  cd $folder
+  local dir=$(pwd $0)
+  cd $dir
   for i in $(find . -type d -iname .git | sed 's/\.git//g'); do
-    cd "$folder/$i"
+    cd "$dir/$i"
     if test -d .git; then
       bh_log_msg "pull on $i"
       git pull
@@ -263,12 +263,12 @@ function bh_git_subfolders_pull() {
   cd $cwd
 }
 
-function bh_git_subfolders_reset_clean() {
+function bh_git_subdirs_reset_clean() {
   local cwd=$(pwd)
-  local folder=$(pwd $1)
-  cd $folder
+  local dir=$(pwd $1)
+  cd $dir
   for i in $(find . -type d -iname .git | sed 's/\.git//g'); do
-    cd "$folder/$i"
+    cd "$dir/$i"
     if test -d .git; then
       bh_log_msg "reset and clean on $i"
       git reset --hard

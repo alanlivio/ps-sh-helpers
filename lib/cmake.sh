@@ -74,7 +74,7 @@ function bh_cmake_clean_retain_objs() {
   if test -d CMakeFiles; then
     find . -maxdepth 1 -not -name '.' -not -name CMakeFiles -exec rm -rf {} \;
   else
-    bh_log_error "there is no CMakeFiles folder"
+    bh_log_error "there is no CMakeFiles dir"
   fi
 }
 

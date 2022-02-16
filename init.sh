@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# bh location
-BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
 # ---------------------------------------
 # OS vars
 # ---------------------------------------
@@ -32,9 +29,10 @@ esac
 # specifc-commands helpers
 # ---------------------------------------
 
+BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$BH_DIR/lib/base.sh" # uses echo, test, md5, curl, tar, unzip, curl, rename, find
 if type code &>/dev/null; then HAS_VSCODE=true; source "$BH_DIR/lib/vscode.sh"; else HAS_VSCODE=false; fi
-if type code &>/dev/null; then HAS_PY=true;source "$BH_DIR/lib/python.sh"; else HAS_PY=false; fi
+if type python &>/dev/null; then HAS_PY=true;source "$BH_DIR/lib/python.sh"; else HAS_PY=false; fi
 if type adb &>/dev/null; then source "$BH_DIR/lib/adb.sh"; fi
 if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.sh"; fi
 if type docker &>/dev/null; then source "$BH_DIR/lib/docker.sh"; fi

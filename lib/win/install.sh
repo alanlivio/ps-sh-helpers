@@ -51,8 +51,8 @@ function bh_win_install_make() {
   local url="https://jztkft.dl.sourceforge.net/project/ezwinports/make-4.3-without-guile-w32-bin.zip"
   local bin_dir="$BH_OPT/make-4.3-without-guile-w32-bin"
   if ! test -d $bin_dir; then
-    bh_test_and_create_folder $bin_dir
-    bh_decompress_from_url $url $bin_dir # no root folder
+    bh_test_and_create_dir $bin_dir
+    bh_decompress_from_url $url $bin_dir # no root dir
     if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
   fi
   bh_win_path_add $(winpath $bin_dir/bin)
@@ -63,7 +63,7 @@ function bh_win_install_ffmpeg() {
   local url="https://www.gyan.dev/ffmpeg/builds/packages/ffmpeg-${BH_FFMPEG_VER}-essentials_build.zip"
   local bin_dir="$BH_OPT/ffmpeg-${BH_FFMPEG_VER}-essentials_build/bin/"
   if ! test -d $bin_dir; then
-    bh_decompress_from_url $url $BH_OPT/ # has root folder
+    bh_decompress_from_url $url $BH_OPT/ # has root dir
     if [[ $? != 0 || ! -d $bin_dir ]]; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
   fi
   bh_win_path_add $(winpath $bin_dir)
@@ -74,7 +74,7 @@ function bh_win_install_node() {
   local url="https://nodejs.org/dist/v${BH_NODE_VER}/node-v${BH_NODE_VER}-win-x64.zip"
   local bin_dir="$BH_OPT/node-v${BH_NODE_VER}-win-x64"
   if ! test -d $bin_dir; then
-    bh_test_and_create_folder $bin_dir # no root folder
+    bh_test_and_create_dir $bin_dir # no root dir
     bh_decompress_from_url $url $BH_OPT
     if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
   fi
@@ -91,8 +91,8 @@ function bh_win_install_adb() {
 
   # create opt
   local opt_dst="$BH_OPT"
-  bh_test_and_create_folder $opt_dst
-  bh_test_and_create_folder $android_sdk_dir
+  bh_test_and_create_dir $opt_dst
+  bh_test_and_create_dir $android_sdk_dir
 
   # android cmd and sdk
   local android_sdk_dir="$opt_dst/android"
@@ -110,8 +110,8 @@ function bh_win_install_flutter() {
 
   # create opt
   local opt_dst="$BH_OPT"
-  bh_test_and_create_folder $opt_dst
-  bh_test_and_create_folder $android_sdk_dir
+  bh_test_and_create_dir $opt_dst
+  bh_test_and_create_dir $android_sdk_dir
 
   # android cmd and sdk
   local android_sdk_dir="$opt_dst/android"

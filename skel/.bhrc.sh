@@ -29,13 +29,13 @@ BH_WSL_PY="autopep8 "
 # msys only
 BH_MSYS_PAC="python "
 BH_MSYS_PY="autopep8 "
-# opt folder
+# opt
 if $IS_WIN; then
   BH_OPT="$HOME/opt"
 else
   BH_OPT="$HOME/AppData/Local/Programs"
 fi
-# dev folder
+# dev
 BH_DEV="$HOME/dev"
 # cross os vscode/py/npm
 BH_WIN_VSCODE="timonwong.shellcheck foxundermoon.shell-format "

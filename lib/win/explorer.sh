@@ -18,11 +18,11 @@ function bh_win_explorer_open_tmp() {
   ps_call 'Start-Process explorer "${env:localappdata}\temp"'
 }
 
-function bh_win_explorer_open_start_menu_folder() {
+function bh_win_explorer_open_start_menu_dir() {
   ps_call 'Start-Process explorer "${env:appdata}\Microsoft\Windows\Start Menu\Programs"'
 }
 
-function bh_win_explorer_open_start_menu_folder_allusers() {
+function bh_win_explorer_open_start_menu_dir_allusers() {
   ps_call 'Start-Process explorer "${env:allusersprofile}\Microsoft\Windows\Start Menu\Programs"'
 }
 

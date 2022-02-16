@@ -9,7 +9,7 @@ function bh_zip_files() {
   zip "$zipname" -r "$@"
 }
 
-function bh_zip_folder() {
-  : ${1?"Usage: ${FUNCNAME[0]} <folder-name>"}
+function bh_zip_dir() {
+  : ${1?"Usage: ${FUNCNAME[0]} <dir-name>"}
   zip "$(basename $1).zip" -r $1
 }

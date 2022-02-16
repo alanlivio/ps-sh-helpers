@@ -62,6 +62,6 @@ function bh_ubu_snap_upgrade() {
   sudo snap refresh 2>/dev/null
 }
 
-function bh_ubu_snap_hide_home_folder() {
+function bh_ubu_snap_hide_home_dir() {
   echo snap >>$HOME/.hidden
 }
