@@ -24,23 +24,26 @@ fi
 # ---------------------------------------
 
 function bh_update_cleanup_ubu() {
+  bh_log_func
+  # update bh
+  bh_bh_update_if_needed
+  # snap
   if $HAS_SNAP; then
     # snap
-    bh_snap_install $BH_PKGS_SNAP
-    bh_snap_install_classic $BH_PKGS_SNAP_CLASSIC
+    bh_snap_install $BH_UBU_SNAP
     bh_snap_upgrade
   fi
   # apt
   local pkgs="git deborphan apt-file vim diffutils curl "
   pkgs+="python3 python3-pip "
-  bh_apt_install $pkgs $BH_PKGS_APT_UBU
+  bh_apt_install $pkgs $BH_UBU_APT
   bh_apt_autoremove
   bh_apt_upgrade
   # py
   bh_py_set_v3_default
-  $HAS_PY && bh_py_install $BH_PKGS_PY
+  $HAS_PY && bh_py_install $BH_UBU_PY
   # vscode
-  $HAS_VSCODE && bh_vscode_install $BH_PKGS_VSCODE
+  $HAS_VSCODE && bh_vscode_install $BH_UBU_VSCODE
   # cleanup
   bh_home_clean_unused
 }

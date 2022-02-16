@@ -4,10 +4,14 @@
 
 function bh_update_cleanup_msys() {
   bh_log_func
+  # update bh
+  bh_bh_update_if_needed
   # essentials
-  local pkgs="pacman pacman-mirrors msys2-runtime vim diffutils curl $BH_PKGS_MSYS"
+  local pkgs="pacman pacman-mirrors msys2-runtime vim diffutils curl $BH_MSYS_PAC"
   bh_msys_install $pkgs
   bh_msys_upgrade
+  # py
+  $HAS_PY && bh_py_install $BH_MSYS_PY
   # cleanup
   bh_home_clean_unused
 }

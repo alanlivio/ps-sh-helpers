@@ -10,21 +10,25 @@ elif $IS_WIN; then
 fi
 
 # ubu only
-BH_PKGS_SNAP=""
-BH_PKGS_SNAP_CLASSIC=""
-BH_PKGS_APT_UBU=""
-# wsl only
-BH_PKGS_APT_WSL=""
-BH_PKGS_APT_REMOVE_WSL=""
-# win only
-BH_PKGS_MSYS=""
-BH_PKGS_CHOCO=""
-BH_PKGS_WINGET=""
-# msys only
-BH_PKGS_MSYS=""
-BH_PKGS_PY_MSYS=""
+BH_UBU_SNAP="vscode "
+BH_UBU_APT="python "
+BH_UBU_PY="autopep8 "
+BH_MAC_VSCODE="timonwong.shellcheck ms-python.python "
 # mac only
-BH_PKGS_BREW=""
+BH_MAC_BREW="vscode "
+BH_MAC_PY="autopep8 "
+BH_MAC_VSCODE="timonwong.shellcheck ms-python.python "
+# win only
+BH_WIN_CHOCO="gsudo "
+BH_WIN_GET="Microsoft.WindowsTerminal "
+BH_WIN_PY="autopep8 "
+BH_WIN_VSCODE="timonwong.shellcheck ms-python.python "
+# wsl only
+BH_WSL_APT="python "
+BH_WSL_PY="autopep8 "
+# msys only
+BH_MSYS_PAC="python "
+BH_MSYS_PY="autopep8 "
 # opt folder
 if $IS_WIN; then
   BH_OPT="$HOME/opt"
@@ -34,14 +38,13 @@ fi
 # dev folder
 BH_DEV="$HOME/dev"
 # cross os vscode/py/npm
-BH_PKGS_VSCODE="timonwong.shellcheck foxundermoon.shell-format "
-BH_PKGS_PY=""
-BH_PKGS_NPM=""
+BH_WIN_VSCODE="timonwong.shellcheck foxundermoon.shell-format "
+BH_WIN_PY="autopep8 "
 
 # dotfiles backp
 # BH_DOTFILES_BKP_DIR="$HOME/OneDrive/dotfiles"
-# BH_DOTFILES_BKPS="$HOME/.bashrc $BH_DOTFILES_BKP_DIR/.bashrc "
-# BH_DOTFILES_BKPS+="$HOME/.bhrc.sh $BH_DOTFILES_BKP_DIR/.bhrc.sh "
+# BH_DOTFILES="$HOME/.bashrc $BH_DOTFILES_BKP_DIR/.bashrc "
+# BH_DOTFILES+="$HOME/.bhrc.sh $BH_DOTFILES_BKP_DIR/.bhrc.sh "
 
 # dev/ repos
 # BH_DEV_REPOS="bash-helpers git@github.com:alanlivio/bash-helpers "

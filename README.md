@@ -28,24 +28,21 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 * `bh_win_install_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
 * `bh_win_install_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automates the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password.
-* See others `bh_win_install_*` at ./lib/win/
-* See others `bh_ubu_install_*` at ./lib/ubu/
+* See others `bh_win_install_*` at ./lib/win/install.sh
+* See others `bh_ubu_install_*` at ./lib/ubu/install.sh
 
-### update/cleanup helpers
+### update/cleanup/dotfiles/repos
 
-The helpers bellow can be run routinely. They install packages defined in `BH_PKGS_*` vars at `~/.bhrc.sh` (or `~/.bashrc`), and also clean unused files/folders defined in `BH_HOME_CLEAN_UNUSED` var. Please see the vars examples in [skel/.bhrc.sh](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bhrc.sh).
+The helpers bellow can be run routinely. They use in variables at `~/.bhrc.sh` (or `~/.bashrc`) to install software clean unused files/folders, and update repositories. Please see examples in [skel/.bhrc.sh](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bhrc.sh).
 
-* `bh_update_cleanup_mac` (at mac bash): BH_PKGS_BREW, BH_PKGS_PY, BH_PKGS_VSCODE
-* `bh_update_cleanup_ubu` (at ubuntu bash): BH_PKGS_APT_UBU, BH_PKGS_PY, BH_PKGS_VSCODE, BH_PKGS_SNAP, BH_PKGS_SNAP_CLASSIC
-* `bh_update_cleanup_win` (at GitBash): BH_PKGS_WINGET, BH_PKGS_PY, BH_PKGS_VSCODE
-* `bh_update_cleanup_wsl` (at WSL bash): BH_PKGS_APT_WSL, BH_PKGS_PY_WSL
-* `bh_update_cleanup_msys` (at msys bash): BH_PKGS_MSYS, BH_PKGS_PY_MSYS
-
-### dotfiles/home managment helpers
-
-* `bh_dotfiles_backup`: backup files/dirs defined in BH_DOTFILES_BKPS
-* `bh_dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES_BKPS
-* `bh_dotfiles_install`: restore files/dirs defined in BH_DOTFILES_BKPS
+* `bh_update_cleanup_mac` (at mac bash): BH_MAC_BREW, BH_MAC_PY, BH_MAC_VSCODE
+* `bh_update_cleanup_ubu` (at ubuntu bash): BH_UBU_APT, BH_UBU_PY, BH_UBU_VSCODE, BH_UBU_SNAP
+* `bh_update_cleanup_win` (at GitBash): BH_WIN_GET, BH_WIN_PY, BH_WIN_VSCODE
+* `bh_update_cleanup_wsl` (at WSL bash): BH_WSL_APT, BH_WSL_PY
+* `bh_update_cleanup_msys` (at msys bash): BH_MSYS_PAC, BH_MSYS_PY
+* `bh_dotfiles_backup`: backup files/dirs defined in BH_DOTFILES
+* `bh_dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES
+* `bh_dotfiles_install`: restore files/dirs defined in BH_DOTFILES
 * `bh_home_clean_unused`: clean files/dirs defined in array BH_HOME_CLEAN_UNUSED
 * `bh_dev_folder_git_repos`: clone/update git repos defined in BH_DEV_REPOS
 

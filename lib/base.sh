@@ -197,9 +197,9 @@ function bh_diff_apply() {
 function bh_dotfiles_func() {
   : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
   declare -a files_array
-  files_array=($BH_DOTFILES_BKPS)
+  files_array=($BH_DOTFILES)
   if [ ${#files_array[@]} -eq 0 ]; then
-    bh_log_error "BH_DOTFILES_BKPS empty"
+    bh_log_error "BH_DOTFILES empty"
   fi
   for ((i = 0; i < ${#files_array[@]}; i = i + 2)); do
     bh_test_and_create_file ${files_array[$i]}
