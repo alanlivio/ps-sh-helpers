@@ -292,7 +292,7 @@ function bh_git_tag_move_to_head_and_push() {
 }
 
 function bh_git_tag_v1_move_to_head_and_push() {
-  bh_git_tag_move_to_current_and_push 1.0
+  bh_git_tag_move_to_head_and_push 1.0
 }
 
 function bh_git_tag_remove_local_and_remote() {
