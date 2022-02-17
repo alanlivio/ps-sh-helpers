@@ -11,14 +11,11 @@ docs_dir: mkdocs
 plugins:
   - search
   - macros:
-      verbose: false
       include_dir: ../
 
 theme:
-  # features:
-  #   - navigation.tabs
-  logo: logo.svg
   name: material
+  logo: logo.svg
   locale: en
   palette:
     - scheme: slate

@@ -2,12 +2,12 @@
 
 # bash-helpers
 
-Cross-OS bash helpers to install software (wsl/msys, adb, flutter, ffmpeg), setup (dark mode, clean taskbar/clutter/unused), update python/vscode pkgs, sync dotfiles, common git calls, and more. 
+Cross-OS bash helpers for installation (wsl/msys, adb, flutter, ffmpeg), setup (dark mode, clean taskbar/clutter/unused), update python/vscode pkgs, sync dotfiles, common git calls, and more. 
 The project logo refers to the synthetic chemical element Bohrium, which also has the initials bh.
 
 ## Install
 
-The bash-helpers has two requirements: a `bash shell` and `git`. Particulary on windows, they can be installed using [GitForWindows](https://gitforwindows.org/) (you may install it running [install-gitforwindows-and-wt.ps1](https://github.com/alanlivio/bash-helpers/blob/master/lib/win/install-gitforwindows-and-wt.ps1) on powershell). 
+The bash-helpers project has two requirements: a `bash shell` and `git`. Particularly on windows, they can be installed using [GitForWindows](https://gitforwindows.org/) (you may install it running [install-gitforwindows-and-wt.ps1](https://github.com/alanlivio/bash-helpers/blob/master/lib/win/install-gitforwindows-and-wt.ps1) on powershell). 
 
 Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 ```bash
@@ -33,7 +33,7 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 ### update/cleanup/dotfiles/repos
 
-The helpers bellow can be run routinely. They use in variables at `~/.bhrc.sh` (or `~/.bashrc`) to install software clean unused files/dirs, and update repositories. Please see examples in [skel/.bhrc.sh](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bhrc.sh).
+The helpers below can be run routinely. They use variables at `~/.bhrc.sh` (or `~/.bashrc`) to install software, clean unused files/dirs, and update repositories. Please see examples in [skel/.bhrc.sh](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bhrc.sh).
 
 * `bh_update_cleanup_mac` (at mac bash): BH_MAC_BREW, BH_MAC_PY, BH_MAC_VSCODE
 * `bh_update_cleanup_ubu` (at ubuntu bash): BH_UBU_APT, BH_UBU_PY, BH_UBU_VSCODE, BH_UBU_SNAP
@@ -61,7 +61,7 @@ The helpers bellow can be run routinely. They use in variables at `~/.bhrc.sh` (
 
 ### others helpers
 
-The helpers below are for cross plataform commands. For the full list, see lib/.
+The helpers below are for cross-OS commands. For the full list, see lib/.
 
 * `bh_adb_*`: adb helpers.
 * `bh_cmake_*`: cmake helpers.
