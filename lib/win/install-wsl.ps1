@@ -115,6 +115,11 @@ function install_wsl() {
     log "INFO: restart windows and run setup_ubu again"
     return
   }
+  # enable wsl 2
+  wsl -l -v | Out-null # -v is only avaliable in wsl 2
+  if ($LastExitCode -eq -1) {
+    wsl --install
+  }
   # install ubuntu
   if (!(Get-Command "ubuntu*.exe" -ea 0)) {
     log "INFO: Ubuntu is not installed, installing..."
@@ -126,13 +131,6 @@ function install_wsl() {
     log "INFO: Ubuntu is not configured, running it..."
     log "INFO: You should configure username and passwd, after that exit Ubuntu by invoke 'exit'."
     Invoke-Expression (Get-Command "ubuntu*.exe").Source
-  }
-  # enable wsl 2
-  wsl -l -v | Out-null # -v is only avaliable in wsl 2
-  if ($LastExitCode -eq -1) {
-    log "INFO: WSL 2 kernel update is not installed, installing..."
-    Invoke-WebRequest -Uri "https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi" -Outfile $env:TEMP\wsl_update_x64.msi
-    msiexec.exe /I "$env:TEMP\wsl_update_x64.msi"
   }
   # set to version 2
   if ((wsl_get_default_version) -eq 1) {
