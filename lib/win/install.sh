@@ -141,29 +141,14 @@ function bh_win_install_flutter() {
   bh_win_path_add $(winpath $flutter_sdk_dir/bin)
 }
 
-function bh_win_install_latexindent() {
-  bh_log_func
-  if ! type latexindent.exe &>/dev/null; then
-    bh_curl_fetch_to_dir https://github.com/cmhughes/latexindent.pl/releases/download/V3.10/latexindent.exe $BH_OPT
-    bh_curl_fetch_to_dir https://raw.githubusercontent.com/cmhughes/latexindent.pl/main/defaultSettings.yaml $BH_OPT
-    bh_win_path_add $BH_OPT
-  fi
-}
-
 function bh_win_install_winget() {
   ps_call '
     if (!(Get-Command 'winget.exe' -ea 0)) {
-      Invoke-Expression $bh_log_func
-      Get-AppxPackage Microsoft.DesktopAppInstaller | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
-    }
-  '
-}
-
-function bh_win_install_winget_from_github() {
-  ps_call '
-    if (!(Get-Command 'winget.exe' -ea 0)) {
-      Invoke-WebRequest -URI https://github.com/microsoft/winget-cli/releases/download/v1.0.11692/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -UseBasicParsing -OutFile $env:TEMP\tmp.msixbundle
-      Add-AppxPackage -Path $env:TEMP\tmp.msixbundle
+    $repoName = "microsoft/winget-cli"
+    $releasesUri = "https://api.github.com/repos/$repoName/releases/latest"
+    $url = (Invoke-WebRequest $releasesUri | ConvertFrom-Json).assets | Where-Object name -like *.msixbundle | Select-Object -ExpandProperty browser_download_url
+    Invoke-WebRequest $url -OutFile "${env:tmp}\tmp.msixbundle"
+    Add-AppPackage -path "${env:tmp}\tmp.msixbundle"
     }
   '
 }

@@ -7,10 +7,11 @@ function log() {
 function install_win_winget() {
   if (!(Get-Command 'winget.exe' -ea 0)) {
     Invoke-Expression $log_func
-    $filename = "Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
-    $url = "https://github.com/microsoft/winget-cli/releases/download/v1.0.11692/$filename"
-    Invoke-WebRequest $url -OutFile "${env:tmp}\$filename"
-    Add-AppPackage -path "${env:tmp}\$filename"
+    $repoName = "microsoft/winget-cli"
+    $releasesUri = "https://api.github.com/repos/$repoName/releases/latest"
+    $url = (Invoke-WebRequest $releasesUri | ConvertFrom-Json).assets | Where-Object name -like *.msixbundle | Select-Object -ExpandProperty browser_download_url
+    Invoke-WebRequest $url -OutFile "${env:tmp}\tmp.msixbundle"
+    Add-AppPackage -path "${env:tmp}\tmp.msixbundle"
   }
 }
 

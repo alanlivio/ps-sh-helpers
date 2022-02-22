@@ -370,9 +370,11 @@ function bh_mount_list() {
 }
 
 # ---------------------------------------
-# install cross
+# hub
 # ---------------------------------------
 
-function bh_install_git_bfg() {
-  bh_curl_fetch_to_dir https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar $BH_OPT
+bh_hub_latest_release_url() {
+  : ${2?"Usage: ${FUNCNAME[0]} <user-with-slash/repo> <installer_extension>"}
+  # ref: curl -s https://api.github.com/repos/microsoft/winget-cli/releases/latest| grep -E 'browser_download_url' | grep -E 'msixbundle'  | cut -d '"' -f 4
+  curl -s https://api.github.com/repos/$1/releases/latest | grep -E 'browser_download_url' | grep -E $2 | cut -d '"' -f 4
 }
