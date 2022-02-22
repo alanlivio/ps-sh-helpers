@@ -235,7 +235,7 @@ function bh_update_cleanup_win() {
   # py
   $HAS_PY && bh_py_install $BH_WIN_PY
   # vscode
-  $HAS_CODE && bh_vscode_install $BH_WIN_VSCODE
+  $HAS_VSCODE && bh_vscode_install $BH_WIN_VSCODE
   # win
   $HAS_GSUDO && bh_win_sysupdate_win
   # winget (it uses --scope=user)

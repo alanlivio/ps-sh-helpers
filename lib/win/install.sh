@@ -26,7 +26,7 @@ function bh_win_install_zotero() {
   bh_win_get_install Zotero.Zotero
 }
 
-function bh_win_install_gitforwindows_wt() {
+function bh_win_install_gitforwindows_and_wt() {
   ps_call_script $(unixpath -w $BH_DIR/lib/win/install-gitforwindows-and-wt.ps1)
 }
 
@@ -45,6 +45,16 @@ function bh_win_install_vscode() {
 
 function bh_win_install_cmake() {
   bh_win_get_install Kitware.CMake
+}
+
+function bh_win_install_pgrep() {
+  local url="https://soft.rubypdf.com/download/pdfgrep/pdfgrep-1.4.0-win32.zip"
+  local bin_dir="$BH_OPT/pdfgrep"
+  if ! test -f $bin_dir; then
+    bh_decompress_from_url $url $bin_dir
+    if test $? != 0; then bh_log_error "bh_decompress_from_url failed." && return 1; fi
+  fi
+  bh_win_path_add $(winpath $bin_dir)
 }
 
 function bh_win_install_make() {
