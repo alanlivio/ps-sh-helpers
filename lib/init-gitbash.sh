@@ -18,21 +18,33 @@ function ps_call_script_admin() { gsudo powershell.exe -c "& { . $1}"; }
 function bh_open { ps_call "Start-Process ${1:-.}"; }
 
 # ---------------------------------------
-# gitforwindows_bash
+# gitbash
 # ---------------------------------------
 
-function bh_win_gitforwindows_bash_fix_prompt {
+function bh_win_gitbash_fix_prompt {
+  bh_log_func
   sed 's/show\sMSYSTEM/#&/g' -i /etc/profile.d/git-prompt.sh
   sed "s/PS1=\"\$PS1\"'\\\\n/#&/g" -i /etc/profile.d/git-prompt.sh
 }
 
-function bh_win_gitforwindows_bash_open_prompt {
+function bh_win_gitbash_open_prompt {
+  bh_log_func
   bh_open "$(winpath /etc/profile.d/git-prompt.sh)"
+}
+
+# ---------------------------------------
+# recycle_bin
+# ---------------------------------------
+
+function bh_win_recycle_bin_clean() {
+  bh_log_func
+  ps_call 'Clear-RecycleBin -Confirm:$false 2> out-null'
 }
 
 # ---------------------------------------
 # sound
 # ---------------------------------------
+
 function bh_win_sound_open_settings() {
   rundll32.exe shell32.dll,control_rundll mmsys.cpl,,2
 }
@@ -230,6 +242,7 @@ function bh_update_cleanup_win() {
   # update bh
   bh_bh_update_if_needed
   # cleanup
+  bh_win_recycle_bin_clean
   bh_home_clean_unused
   bh_win_explorer_hide_home_dotfiles
   # py
