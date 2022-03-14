@@ -12,6 +12,7 @@ function bh_update_cleanup_msys() {
   bh_msys_upgrade
   # py
   $HAS_PY && bh_py_install $BH_MSYS_PY
+  $HAS_PY && bh_py_upgrade
   # cleanup
   bh_home_clean_unused
 }

@@ -24,8 +24,9 @@ function bh_update_cleanup_wsl() {
   bh_ubu_apt_install $pkgs $BH_WSL_APT
   bh_ubu_apt_autoremove
   # py
-  bh_py_set_v3_default
+  $HAS_PY && bh_py_set_v3_default
   $HAS_PY && bh_py_install $BH_WSL_PY
+  $HAS_PY && bh_py_upgrade
   # cleanup
   bh_home_clean_unused
 }

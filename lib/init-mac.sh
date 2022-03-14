@@ -22,10 +22,11 @@ function bh_update_cleanup_mac() {
   bh_brew_upgrade
   bh_brew_install $pkgs $BH_MAC_BREW
   # py
-  bh_py_install $BH_MAC_PY
+  $HAS_PY && bh_py_install $BH_MAC_PY
+  $HAS_PY && bh_py_upgrade
   # vscode
   brew install --cask visual-studio-code
-  bh_vscode_install $BH_MAC_VSCODE
+  $HAS_VSCODE && bh_vscode_install $BH_MAC_VSCODE
   # cleanup
   bh_home_clean_unused
 }

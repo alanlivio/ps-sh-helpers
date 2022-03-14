@@ -247,6 +247,7 @@ function bh_update_cleanup_win() {
   bh_win_explorer_hide_home_dotfiles
   # py
   $HAS_PY && bh_py_install $BH_WIN_PY
+  $HAS_PY && bh_py_upgrade
   # vscode
   $HAS_VSCODE && bh_vscode_install $BH_WIN_VSCODE
   # win

@@ -40,8 +40,9 @@ function bh_update_cleanup_ubu() {
   bh_apt_autoremove
   bh_apt_upgrade
   # py
-  bh_py_set_v3_default
+  $HAS_PY && bh_py_set_v3_default
   $HAS_PY && bh_py_install $BH_UBU_PY
+  $HAS_PY && bh_py_upgrade
   # vscode
   $HAS_VSCODE && bh_vscode_install $BH_UBU_VSCODE
   # cleanup
