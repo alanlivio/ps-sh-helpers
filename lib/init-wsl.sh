@@ -13,6 +13,7 @@ fi
 # ---------------------------------------
 
 unset bh_update_cleanup_ubu
+
 function bh_update_cleanup_wsl() {
   bh_log_func
   # update bh

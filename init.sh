@@ -17,7 +17,7 @@ CYGWIN* | MINGW* | MSYS*)
 Linux)
   IS_LINUX=true
   if [[ $(uname -r) == *"icrosoft"* ]]; then
-    IS_UBU=true; IS_WSL=true
+    IS_WSL=true
   elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then
     IS_UBU=true
   fi;;
@@ -58,15 +58,15 @@ if type zip &>/dev/null; then source "$BH_DIR/lib/zip.sh"; fi
 # OS helpers
 # ---------------------------------------
 
-if $IS_UBU; then
-  source "$BH_DIR/lib/init-ubu.sh"
-elif $IS_MSYS; then
-  source "$BH_DIR/lib/init-msys.sh"
+if $IS_GITBASH; then
+  source "$BH_DIR/lib/init-gitbash.sh"
 elif $IS_WSL; then
   source "$BH_DIR/lib/init-ubu.sh"
   source "$BH_DIR/lib/init-wsl.sh"
-elif $IS_GITBASH; then
-  source "$BH_DIR/lib/init-gitbash.sh"
+elif $IS_MSYS; then
+  source "$BH_DIR/lib/init-msys.sh"
+elif $IS_UBU; then
+  source "$BH_DIR/lib/init-ubu.sh"
 elif $IS_MAC; then
   source "$BH_DIR/lib/init-mac.sh"
 fi
