@@ -38,7 +38,7 @@ function bh_win_gitbash_open_prompt {
 
 function bh_win_recycle_bin_clean() {
   bh_log_func
-  ps_call 'Clear-RecycleBin -Confirm:$false 2> out-null'
+  ps_call 'Clear-RecycleBin -Confirm:$false 2> $null'
 }
 
 # ---------------------------------------
