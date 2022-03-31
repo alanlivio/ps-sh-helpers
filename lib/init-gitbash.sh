@@ -242,7 +242,6 @@ function bh_update_cleanup_win() {
   # update bh
   bh_bh_update_if_needed
   # cleanup
-  bh_win_recycle_bin_clean
   bh_home_clean_unused
   bh_win_explorer_hide_home_dotfiles
   # py
