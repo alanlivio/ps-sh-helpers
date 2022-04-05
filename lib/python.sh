@@ -68,6 +68,28 @@ function bh_py_http_host_dir() {
 }
 
 # ---------------------------------------
+# setup
+# ---------------------------------------
+
+function bh_py_setup_user_install() {
+  python setup.py install --user
+}
+
+function bh_py_setup_upload_testpypi() {
+  rm -r dist/
+  python setup.py sdist bdist_wheel
+  twine check dist/*
+  twine upload --repository testpypi dist/* -u $PYPI_USER -p "$PYPI_PASS"
+}
+
+function bh_py_setup_upload() {
+  rm -r dist/
+  python setup.py sdist bdist_wheel
+  twine check dist/*
+  twine upload dist/* -u $PYPI_USER -p "$PYPI_PASS"
+}
+
+# ---------------------------------------
 # jupyter
 # ---------------------------------------
 
