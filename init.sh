@@ -59,7 +59,7 @@ if type zip &>/dev/null; then source "$BH_DIR/lib/zip.sh"; fi
 # ---------------------------------------
 
 if $IS_GITBASH; then
-  source "$BH_DIR/lib/init-gitbash.sh"
+  source "$BH_DIR/lib/init-win.sh"
 elif $IS_WSL; then
   source "$BH_DIR/lib/init-ubu.sh"
   source "$BH_DIR/lib/init-wsl.sh"

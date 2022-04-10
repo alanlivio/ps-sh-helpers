@@ -103,7 +103,7 @@ function bh_win_sanity_taskbar() {
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name ShowTaskViewButton -Value 0
 }
 
-function bh_win_sanity_ui() {
+function bh_win_sanity_dark_no_effects() {
   Invoke-Expression $bh_log_func
   
   bh_log_2nd "set ui to performace"
@@ -175,9 +175,9 @@ function bh_win_explorer_restart() {
   Stop-Process -ProcessName explorer -ea 0 | Out-Null
 }
 
-bh_log "bh_win_sanity"
+bh_log "bh_win_sanity_ui"
 bh_win_sanity_taskbar
-bh_win_sanity_ui
+bh_win_sanity_dark_no_effects
 bh_win_sanity_file_explorer
 bh_win_sanity_keyboard
 bh_win_explorer_restart
