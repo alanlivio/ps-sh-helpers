@@ -134,6 +134,9 @@ function bh_win_sanity_ui() {
   
   bh_log_2nd "disable new drives autoplay"
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers" -Name "DisableAutoplay" -Value 1
+
+  bh_log_2nd "disable widgets"
+  Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" -Name "TaskbarDa" -Value 0
 }
 
 function bh_win_sanity_file_explorer() {
