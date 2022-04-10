@@ -11,10 +11,13 @@ unset tmp
 alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
 alias ghostscript='gswin64c'
 alias reboot='gsudo shutdown \/r'
-alias ps_call="powershell.exe -c"
-alias ps_call_admin="gsudo powershell.exe -c"
-function ps_call_script() { powershell.exe -c "& { . $1}"; }
-function ps_call_script_admin() { gsudo powershell.exe -c "& { . $1}"; }
+if ! type pwsh &>/dev/null; then
+  alias powershell="powershell"
+fi
+alias ps_call="powershell -c"
+alias ps_call_admin="gsudo powershell -c"
+function ps_call_script() { powershell -c "& { . $1}"; }
+function ps_call_script_admin() { gsudo powershell -c "& { . $1}"; }
 function bh_open { ps_call "Start-Process ${1:-.}"; }
 
 # ---------------------------------------
