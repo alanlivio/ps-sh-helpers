@@ -96,6 +96,15 @@ The projects bellow used as reference:
 * <https://github.com/Bash-it/bash-it>
 * <https://github.com/donnemartin/dev-setup>
 * <https://github.com/aspiers/shell-env>
+* <https://github.com/nafigator/bash-helpers>
+* <https://github.com/martinburger/bash-common-helpers>
+* <https://github.com/TiSiE/BASH.helpers>
+* <https://jonlabelle.com/snippets/view/shell/bash-date-helper-functions>
+* <https://jonlabelle.com/snippets/tag/bash>
+* <https://github.com/midwire/bash.env>
+* <https://github.com/e-picas/bash-library>
+* <https://github.com/cyberark/bash-lib>
+* <https://www.conjur.org/blog/stop-bashing-bash>
 
 And, particulary, these were reference for helpers on windows:
 
