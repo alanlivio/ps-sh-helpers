@@ -59,16 +59,16 @@ if type zip &>/dev/null; then source "$BH_DIR/lib/zip.sh"; fi
 # ---------------------------------------
 
 if $IS_GITBASH; then
-  source "$BH_DIR/lib/init-win.sh"
+  source "$BH_DIR/init-win.sh"
 elif $IS_WSL; then
-  source "$BH_DIR/lib/init-ubu.sh"
-  source "$BH_DIR/lib/init-wsl.sh"
+  source "$BH_DIR/init-ubu.sh"
+  source "$BH_DIR/init-wsl.sh"
 elif $IS_MSYS; then
-  source "$BH_DIR/lib/init-msys.sh"
+  source "$BH_DIR/init-msys.sh"
 elif $IS_UBU; then
-  source "$BH_DIR/lib/init-ubu.sh"
+  source "$BH_DIR/init-ubu.sh"
 elif $IS_MAC; then
-  source "$BH_DIR/lib/init-mac.sh"
+  source "$BH_DIR/init-mac.sh"
 fi
 
 # load $BH_RC or "$HOME/.bhrc.sh"
