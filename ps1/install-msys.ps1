@@ -1,7 +1,4 @@
-$log_func = 'Write-Host -ForegroundColor DarkYellow "--" $MyInvocation.MyCommand.ToString()'
-function log() {
-  Write-Host -ForegroundColor DarkYellow "--" ($args -join " ")
-}
+function log() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
 function env_add($name, $value) {
   [System.Environment]::SetEnvironmentVariable("$name", "$value", 'user')
@@ -30,7 +27,7 @@ function msys_sanity() {
 
 function install_win_gsudo() {
   if (!(Get-Command 'gsudo.exe' -ea 0)) {
-    Invoke-Expression $log_func
+    log "install_win_gsudo"
     winget install --scope=machine gsudo
     path_add 'C:\Program Files (x86)\gsudo'
   }
@@ -38,13 +35,13 @@ function install_win_gsudo() {
 
 function install_win_winget() {
   if (!(Get-Command 'winget.exe' -ea 0)) {
-    Invoke-Expression $log_func
+    log "install_win_winget"
     Get-AppxPackage Microsoft.DesktopAppInstaller | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
   }
 }
 
 function install_msys() {
-  Invoke-Expression $log_func
+  log "install_msys"
   $MSYS_HOME = "C:\msys64"
   install_win_gsudo
   install_win_winget

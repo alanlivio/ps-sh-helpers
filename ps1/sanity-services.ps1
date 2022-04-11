@@ -1,7 +1,5 @@
-$log_func = 'Write-Host -ForegroundColor DarkYellow "--" $MyInvocation.MyCommand.ToString()'
-function log() {
-  Write-Host -ForegroundColor DarkYellow "--" ($args -join " ")
-}
+function log() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
+function log_2nd() { Write-Host -ForegroundColor DarkYellow "-- >" ($args -join " ") }
 
 function reg_new_path ($path) {
   if (-not (Test-Path $path)) {
@@ -20,19 +18,19 @@ function feature_disable($featurename) {
   dism.exe /online /quiet /disable-feature /featurename:$featurename /norestart
 }
 
-function disable_unused_services_features() {
-  Invoke-Expression $log_func
+function sanity_services() {
+  log "sanity_services"
 
-  log "disabling Lockscreen "
+  log_2nd "disabling Lockscreen "
   reg_new_path "HKLM:\Software\Policies\Microsoft\Windows\Personalization"
   Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Personalization" -Name "NoLockScreen" -Value 1
   Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\System" -Name "DisableLogonBackgroundImage" -Value 1
 
-  log "disabling Autorun for all drives"
+  log_2nd "disabling Autorun for all drives"
   reg_new_path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
   Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoDriveTypeAutoRun" -Value 255
 
-  log "disabling Windows Timeline "
+  log_2nd "disabling Windows Timeline "
   Set-ItemProperty -Path 'HKLM:\Software\Policies\Microsoft\Windows\System' -Name 'EnableActivityFeed' -Value 0
 
   feature_disable Printing-XPSServices-Features
@@ -59,4 +57,4 @@ function disable_unused_services_features() {
   }
 }
 
-disable_unused_services_features
+sanity_services

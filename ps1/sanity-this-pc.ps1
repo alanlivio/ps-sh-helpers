@@ -1,13 +1,12 @@
-$log_func = 'Write-Host -ForegroundColor DarkYellow "--" $MyInvocation.MyCommand.ToString()'
+function log() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
 function explorer_restart() {
-  taskkill /f /im explorer.exe | Out-Null
-  Start-Process explorer.exe
+  log "explorer_restart"
+  Stop-Process -ProcessName explorer -ea 0 | Out-Null
 }
 
-function disable_ctx_menu_unused () {
-  Invoke-Expression $log_func
-
+function sanity_ctx_menu () {
+  log "sanity_ctx_menu"
   if (!(Test-Path "HKCR:")) { 
     New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null 
   }
@@ -26,4 +25,4 @@ function disable_ctx_menu_unused () {
   }
   explorer_restart
 }
-disable_ctx_menu_unused
+sanity_ctx_menu

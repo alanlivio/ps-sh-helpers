@@ -1,7 +1,7 @@
-$log_func = 'Write-Host -ForegroundColor DarkYellow "--" $MyInvocation.MyCommand.ToString()'
+function log() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
-function user_disable_password_policy {
-  Invoke-Expression $log_func
+function sanity_password_policy {
+  log "sanity_password_policy"
   $tmpfile = New-TemporaryFile
   secedit /export /cfg $tmpfile /quiet
   (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
@@ -9,4 +9,4 @@ function user_disable_password_policy {
   Remove-Item -Path $tmpfile
 }
 
-user_disable_password_policy
+sanity_password_policy

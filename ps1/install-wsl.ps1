@@ -1,10 +1,7 @@
-$log_func = 'Write-Host -ForegroundColor DarkYellow "--" $MyInvocation.MyCommand.ToString()'
-function log() {
-  Write-Host -ForegroundColor DarkYellow "--" ($args -join " ")
-}
+function log() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
 function sysfeature_enable($featurename) {
-  Invoke-Expression "$log_func $featurename"
+  log "sysfeature_enable"
   gsudo dism.exe /online /quiet /enable-feature /featurename:$featurename /all/norestart
 }
 
@@ -51,7 +48,7 @@ function wsl_set_version2() {
 
 function install_gsudo() {
   if (!(Get-Command 'gsudo.exe' -ea 0)) {
-    Invoke-Expression $log_func
+    log "install_gsudo"
     winget install --scope=machine gsudo
     path_add 'C:\Program Files (x86)\gsudo'
   }
@@ -59,13 +56,13 @@ function install_gsudo() {
 
 function install_winget() {
   if (!(Get-Command 'winget.exe' -ea 0)) {
-    Invoke-Expression $log_func
+    log "install_winget"
     Get-AppxPackage Microsoft.DesktopAppInstaller | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
   }
 }
 
 function wsl_fix_home() {
-  Invoke-Expression $log_func
+  log "wsl_fix_home"
   # fix file metadata
   # https://docs.microsoft.com/en-us/windows/wsl/wsl-config
   # https://github.com/Microsoft/WSL/issues/3138
@@ -100,10 +97,10 @@ function wsl_fix_home() {
 
 
 function install_wsl() {
-  # this helper automate the process describred in :
+  # this automate the process describred in :
   # - https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
   # - https://ubuntu.com/wsl
-  Invoke-Expression $log_func
+  log "install_wsl"
 
   install_winget
   install_gsudo
@@ -130,7 +127,7 @@ function install_wsl() {
   if ($LastExitCode -eq -1) {
     log "INFO: Ubuntu is not configured, running it..."
     log "INFO: You should configure username and passwd, after that exit Ubuntu by invoke 'exit'."
-    Invoke-Expression (Get-Command "ubuntu*.exe").Source
+    log (Get-Command "ubuntu*.exe").Source
   }
   # set to version 2
   if ((wsl_get_default_version) -eq 1) {
