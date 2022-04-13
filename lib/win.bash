@@ -277,11 +277,11 @@ function bh_win_install_zotero() {
 }
 
 function bh_win_install_gitforwindows_and_wt() {
-  ps_call_script $(unixpath -w $BH_DIR/ps1/install-gitforwindows-and-wt.ps1)
+  ps_call_script $(unixpath -w $BH_DIR/lib/ps1/install-gitforwindows-and-wt.ps1)
 }
 
 function bh_win_install_msys() {
-  ps_call_script $(unixpath -w $BH_DIR/ps1/install-msys.ps1)
+  ps_call_script $(unixpath -w $BH_DIR/lib/ps1/install-msys.ps1)
 }
 
 function bh_win_install_ghostscript() {
@@ -435,7 +435,7 @@ function bh_win_install_gsudo() {
 }
 
 function bh_win_install_wsl() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/ps1//install-wsl.ps1)
+  ps_call_script_admin $(unixpath -w $BH_DIR/lib/ps1//install-wsl.ps1)
 }
 
 function bh_win_install_docker() {
@@ -619,23 +619,23 @@ function bh_win_explorer_hide_home_dotfiles() {
 # ---------------------------------------
 
 function bh_win_sanity_ui() {
-  ps_call_script $(unixpath -w $BH_DIR/ps1/sanity-ui.ps1)
+  ps_call_script $(unixpath -w $BH_DIR/lib/ps1/sanity-ui.ps1)
 }
 
 function bh_win_sanity_ctx_menu() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/ps1/sanity-cxt-menu.ps1)
+  ps_call_script_admin $(unixpath -w $BH_DIR/lib/ps1/sanity-cxt-menu.ps1)
 }
 
 function bh_win_sanity_services() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/ps1/sanity-services.ps1)
+  ps_call_script_admin $(unixpath -w $BH_DIR/lib/ps1/sanity-services.ps1)
 }
 
 function bh_win_sanity_password_policy() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/ps1/sanity-password-policy.ps1)
+  ps_call_script_admin $(unixpath -w $BH_DIR/lib/ps1/sanity-password-policy.ps1)
 }
 
 function bh_win_sanity_this_pc() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/ps1/sanity-this-pc.ps1)
+  ps_call_script_admin $(unixpath -w $BH_DIR/lib/ps1/sanity-this-pc.ps1)
 }
 
 function bh_win_sanity_all() {
