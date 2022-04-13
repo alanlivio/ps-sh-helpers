@@ -20,8 +20,8 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 ### configure OS interface helpers
 
-* `bh_ubu_gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
-* `bh_win_sanity` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons)
+* `bh_gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
+* `bh_win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons)
 
 ### install software helpers
 
