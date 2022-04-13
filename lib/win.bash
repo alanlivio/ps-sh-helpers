@@ -54,7 +54,7 @@ function win_sound_open_settings() {
 }
 
 # ---------------------------------------
-# user
+# wt
 # ---------------------------------------
 
 function win_wt_open_settings() {

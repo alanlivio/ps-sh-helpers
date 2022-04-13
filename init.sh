@@ -33,6 +33,7 @@ BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$BH_DIR/lib/base.bash" # uses echo, test, md5, curl, tar, unzip, curl, rename, find
 if type code &>/dev/null; then HAS_VSCODE=true; source "$BH_DIR/lib/vscode.bash"; else HAS_VSCODE=false; fi
 if type python &>/dev/null; then HAS_PY=true;source "$BH_DIR/lib/python.bash"; else HAS_PY=false; fi
+if type deb &>/dev/null; then source "$BH_DIR/lib/deb.bash"; fi
 if type adb &>/dev/null; then source "$BH_DIR/lib/adb.bash"; fi
 if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.bash"; fi
 if type docker &>/dev/null; then source "$BH_DIR/lib/docker.bash"; fi
@@ -55,11 +56,10 @@ if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/youtube-dl.bash"; fi
 if type zip &>/dev/null; then source "$BH_DIR/lib/zip.bash"; fi
 if type gnome-shell &>/dev/null; then source "$BH_DIR/lib/gnome.bash"; fi
 if type lxc &>/dev/null; then source "$BH_DIR/lib/lxc.bash"; fi
+if type apt &>/dev/null; then source "$BH_DIR/lib/apt.bash"; fi
 if type brew &>/dev/null; then source "$BH_DIR/lib/brew.bash"; fi
-if type snap &>/dev/null; then
-  HAS_SNAP=true
-  source "$BH_DIR/lib/snap.bash"
-fi
+if type snap &>/dev/null; then source "$BH_DIR/lib/snap.bash"; fi
+if type pacman &>/dev/null; then source "$BH_DIR/lib/pacman.bash"; fi
 
 # ---------------------------------------
 # OS helpers
@@ -85,7 +85,6 @@ if $IS_GITBASH; then
     win_get_install $BH_WIN_GET
   }
 elif $IS_WSL; then
-  source "$BH_DIR/lib/ubu.bash"
   source "$BH_DIR/lib/wsl.bash"
   function setup_wsl() {
     log_func
@@ -104,15 +103,24 @@ elif $IS_WSL; then
     home_clean_unused
   }
 elif $IS_MSYS; then
-  source "$BH_DIR/lib/msys.bash"
+  function msys_fix_home() {
+    if ! test -d /mnt/; then mkdir /mnt/; fi
+    echo -e "none / cygdrive binary,posix=0,noacl,user 0 0" | tee /etc/fstab
+    echo -e "C:/Users /home ntfs binary,noacl,auto 1 1" | tee -a /etc/fstab
+    echo -e "C:/Users /Users ntfs binary,noacl,auto 1 1" | tee -a /etc/fstab
+    # use /mnt/c/ like in WSL
+    echo -e "/c /mnt/c none bind" | tee -a /etc/fstab
+    echo -e 'db_home: windows >> /etc/nsswitch.conf' | tee -a /etc/nsswitch.conf
+  }
   function setup_msys() {
     log_func
     # update bh
     update_if_needed
     # essentials
     local pkgs="pacman pacman-mirrors msys2-runtime vim diffutils curl $BH_MSYS_PAC"
-    msys_install $pkgs
-    msys_upgrade
+    pacman_install $pkgs
+    pacman --needed -S bash pacman pacman-mirrors msys2-runtime
+    pacman -Su --noconfirm
     # py
     $HAS_PY && py_install $BH_MSYS_PY
     $HAS_PY && py_upgrade
@@ -120,18 +128,11 @@ elif $IS_MSYS; then
     home_clean_unused
   }
 elif $IS_UBU; then
-  source "$BH_DIR/lib/ubu.bash"
   alias open="xdg-open"
   function setup_ubu() {
     log_func
     # update bh
     update_if_needed
-    # snap
-    if $HAS_SNAP; then
-      # snap
-      snap_install $BH_UBU_SNAP
-      snap_upgrade
-    fi
     # apt
     local pkgs="git deborphan apt-file vim diffutils curl "
     pkgs+="python3 python3-pip "

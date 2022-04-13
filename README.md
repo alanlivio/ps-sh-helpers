@@ -35,7 +35,7 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 The helpers below can be run routinely. They use variables at `~/.bhrc.sh` (or `~/.bashrc`) to install software, clean unused files/dirs, and update repositories. Please see examples in [skel/.bhrc.sh](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bhrc.sh).
 
 * `setup_mac` (at mac bash): install/update BH_MAC_BREW, BH_MAC_PY, BH_MAC_VSCODE
-* `setup_ubu` (at ubuntu bash): install/update BH_UBU_APT, BH_UBU_PY, BH_UBU_VSCODE, BH_UBU_SNAP
+* `setup_ubu` (at ubuntu bash): install/update BH_UBU_APT, BH_UBU_PY, BH_UBU_VSCODE
 * `setup_win` (at GitBash): install/update BH_WIN_GET, BH_WIN_PY, BH_WIN_VSCODE
 * `setup_wsl` (at WSL bash): install/update BH_WSL_APT, BH_WSL_PY
 * `setup_msys` (at msys bash): install/update BH_MSYS_PAC, BH_MSYS_PY
