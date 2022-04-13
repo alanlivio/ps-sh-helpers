@@ -94,8 +94,8 @@ elif $IS_WSL; then
     # apt
     local pkgs="git deborphan apt-file vim diffutils curl "
     pkgs+="python3 python3-pip "
-    ubu_apt_install $pkgs $BH_WSL_APT
-    ubu_apt_autoremove
+    apt_install $pkgs $BH_WSL_APT
+    apt_autoremove
     # py
     $HAS_PY && py_set_v3_default
     $HAS_PY && py_install $BH_WSL_PY

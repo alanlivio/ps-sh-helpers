@@ -80,7 +80,7 @@ function ubu_deb_contents() {
 # apt helpers
 # ---------------------------------------
 
-function ubu_apt_upgrade() {
+function apt_upgrade() {
   log_func
   sudo apt -y update
   if [ "$(apt list --upgradable 2>/dev/null | wc -l)" -gt 1 ]; then
@@ -88,22 +88,22 @@ function ubu_apt_upgrade() {
   fi
 }
 
-function ubu_apt_update() {
+function apt_update() {
   log_func
   sudo apt -y update
 }
 
-function ubu_apt_ppa_remove() {
+function apt_ppa_remove() {
   log_func
   sudo add-apt-repository --remove $1
 }
 
-function ubu_apt_ppa_list() {
+function apt_ppa_list() {
   log_func
   apt policy
 }
 
-function ubu_apt_fixes() {
+function apt_fixes() {
   log_func
   sudo dpkg --configure -a
   sudo apt install -f --fix-broken
@@ -111,7 +111,7 @@ function ubu_apt_fixes() {
   sudo apt dist-upgrade
 }
 
-function ubu_apt_install() {
+function apt_install() {
   log_func
 
   local pkgs_to_install=""
@@ -127,7 +127,7 @@ function ubu_apt_install() {
   fi
 }
 
-function ubu_apt_lastest_pkgs() {
+function apt_lastest_pkgs() {
   local pkgs=""
   for i in "$@"; do
     pkgs+=$(apt search $i 2>/dev/null | grep -E -o "^$i([0-9.]+)/" | cut -d/ -f1)
@@ -136,14 +136,14 @@ function ubu_apt_lastest_pkgs() {
   echo $pkgs
 }
 
-function ubu_apt_autoremove() {
+function apt_autoremove() {
   log_func
   if [ "$(apt --dry-run autoremove 2>/dev/null | grep -c -Po 'Remv \K[^ ]+')" -gt 0 ]; then
     sudo apt -y autoremove
   fi
 }
 
-function ubu_apt_remove_pkgs() {
+function apt_remove_pkgs() {
   log_func
   local pkgs_to_remove=""
   for i in "$@"; do
@@ -158,7 +158,7 @@ function ubu_apt_remove_pkgs() {
   fi
 }
 
-function ubu_apt_remove_orphan_pkgs() {
+function apt_remove_orphan_pkgs() {
   local pkgs_orphan_to_remove=""
   while [ "$(deborphan | wc -l)" -gt 0 ]; do
     for i in $(deborphan); do
@@ -180,7 +180,7 @@ function ubu_apt_remove_orphan_pkgs() {
   done
 }
 
-function ubu_apt_fetch_install() {
+function apt_fetch_install() {
   : ${1?"Usage: ${FUNCNAME[0]} <URL>"}
   local apt_name=$(basename $1)
   if test ! -f /tmp/$apt_name; then
