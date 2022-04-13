@@ -30,48 +30,48 @@ esac
 # ---------------------------------------
 
 BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$BH_DIR/lib/base.sh" # uses echo, test, md5, curl, tar, unzip, curl, rename, find
-if type code &>/dev/null; then HAS_VSCODE=true; source "$BH_DIR/lib/vscode.sh"; else HAS_VSCODE=false; fi
-if type python &>/dev/null; then HAS_PY=true;source "$BH_DIR/lib/python.sh"; else HAS_PY=false; fi
-if type adb &>/dev/null; then source "$BH_DIR/lib/adb.sh"; fi
-if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.sh"; fi
-if type docker &>/dev/null; then source "$BH_DIR/lib/docker.sh"; fi
-if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/ffmpeg.sh"; fi
-if type flutter &>/dev/null; then source "$BH_DIR/lib/flutter.sh"; fi
-if type gcc &>/dev/null; then source "$BH_DIR/lib/gcc.sh"; fi
-if type ghostscript &>/dev/null; then source "$BH_DIR/lib/ghostscript.sh"; fi
-if type git &>/dev/null; then source "$BH_DIR/lib/git.sh"; fi
-if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/lib/gst.sh"; fi
-if type meson &>/dev/null; then source "$BH_DIR/lib/meson.sh"; fi
-if type pandoc &>/dev/null; then source "$BH_DIR/lib/pandoc.sh"; fi
-if type pngquant &>/dev/null; then source "$BH_DIR/lib/pngquant.sh"; fi
-if type pdflatex &>/dev/null; then source "$BH_DIR/lib/pdflatex.sh"; fi
-if type pkg-config &>/dev/null; then source "$BH_DIR/lib/pkg-config.sh"; fi
-if type ruby &>/dev/null; then source "$BH_DIR/lib/ruby.sh"; fi
-if type ssh &>/dev/null; then source "$BH_DIR/lib/ssh.sh"; fi
-if type tesseract &>/dev/null; then source "$BH_DIR/lib/tesseract.sh"; fi
-if type wget &>/dev/null; then source "$BH_DIR/lib/wget.sh"; fi
-if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/youtube-dl.sh"; fi
-if type zip &>/dev/null; then source "$BH_DIR/lib/zip.sh"; fi
+source "$BH_DIR/lib/base.bash" # uses echo, test, md5, curl, tar, unzip, curl, rename, find
+if type code &>/dev/null; then HAS_VSCODE=true; source "$BH_DIR/lib/vscode.bash"; else HAS_VSCODE=false; fi
+if type python &>/dev/null; then HAS_PY=true;source "$BH_DIR/lib/python.bash"; else HAS_PY=false; fi
+if type adb &>/dev/null; then source "$BH_DIR/lib/adb.bash"; fi
+if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.bash"; fi
+if type docker &>/dev/null; then source "$BH_DIR/lib/docker.bash"; fi
+if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/ffmpeg.bash"; fi
+if type flutter &>/dev/null; then source "$BH_DIR/lib/flutter.bash"; fi
+if type gcc &>/dev/null; then source "$BH_DIR/lib/gcc.bash"; fi
+if type ghostscript &>/dev/null; then source "$BH_DIR/lib/ghostscript.bash"; fi
+if type git &>/dev/null; then source "$BH_DIR/lib/git.bash"; fi
+if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/lib/gst.bash"; fi
+if type meson &>/dev/null; then source "$BH_DIR/lib/meson.bash"; fi
+if type pandoc &>/dev/null; then source "$BH_DIR/lib/pandoc.bash"; fi
+if type pngquant &>/dev/null; then source "$BH_DIR/lib/pngquant.bash"; fi
+if type pdflatex &>/dev/null; then source "$BH_DIR/lib/pdflatex.bash"; fi
+if type pkg-config &>/dev/null; then source "$BH_DIR/lib/pkg-config.bash"; fi
+if type ruby &>/dev/null; then source "$BH_DIR/lib/ruby.bash"; fi
+if type ssh &>/dev/null; then source "$BH_DIR/lib/ssh.bash"; fi
+if type tesseract &>/dev/null; then source "$BH_DIR/lib/tesseract.bash"; fi
+if type wget &>/dev/null; then source "$BH_DIR/lib/wget.bash"; fi
+if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/youtube-dl.bash"; fi
+if type zip &>/dev/null; then source "$BH_DIR/lib/zip.bash"; fi
 
 # ---------------------------------------
 # OS helpers
 # ---------------------------------------
 
 if $IS_GITBASH; then
-  source "$BH_DIR/init-win.sh"
+  source "$BH_DIR/init-win.bash"
 elif $IS_WSL; then
-  source "$BH_DIR/init-ubu.sh"
-  source "$BH_DIR/init-wsl.sh"
+  source "$BH_DIR/init-ubu.bash"
+  source "$BH_DIR/init-wsl.bash"
 elif $IS_MSYS; then
-  source "$BH_DIR/init-msys.sh"
+  source "$BH_DIR/init-msys.bash"
 elif $IS_UBU; then
-  source "$BH_DIR/init-ubu.sh"
+  source "$BH_DIR/init-ubu.bash"
 elif $IS_MAC; then
-  source "$BH_DIR/init-mac.sh"
+  source "$BH_DIR/init-mac.bash"
 fi
 
-# load $BH_RC or "$HOME/.bhrc.sh"
+# load $BH_RC or "$HOME/.bhrc.bash"
 if test -z $BH_RC ; then 
    BH_RC="$HOME/.bhrc.sh"
 fi

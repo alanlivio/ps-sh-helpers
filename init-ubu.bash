@@ -11,11 +11,11 @@ function bh_open {
 # load commands
 # ---------------------------------------
 
-if type gnome-shell &>/dev/null; then source "$BH_DIR/lib/gnome.sh"; fi
-if type lxc &>/dev/null; then source "$BH_DIR/lib/lxc.sh"; fi
+if type gnome-shell &>/dev/null; then source "$BH_DIR/lib/gnome.bash"; fi
+if type lxc &>/dev/null; then source "$BH_DIR/lib/lxc.bash"; fi
 if type snap &>/dev/null; then
   HAS_SNAP=true
-  source "$BH_DIR/lib/snap.sh"
+  source "$BH_DIR/lib/snap.bash"
 fi
 
 # ---------------------------------------
