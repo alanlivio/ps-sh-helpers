@@ -22,7 +22,6 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 * `bh_ubu_gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
 * `bh_win_sanity` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons)
-* `bh_mac_sanity` (at bash): TODO
 
 ### install software helpers
 
@@ -35,11 +34,11 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 The helpers below can be run routinely. They use variables at `~/.bhrc.sh` (or `~/.bashrc`) to install software, clean unused files/dirs, and update repositories. Please see examples in [skel/.bhrc.sh](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bhrc.sh).
 
-* `bh_update_cleanup_mac` (at mac bash): BH_MAC_BREW, BH_MAC_PY, BH_MAC_VSCODE
-* `bh_update_cleanup_ubu` (at ubuntu bash): BH_UBU_APT, BH_UBU_PY, BH_UBU_VSCODE, BH_UBU_SNAP
-* `bh_update_cleanup_win` (at GitBash): BH_WIN_GET, BH_WIN_PY, BH_WIN_VSCODE
-* `bh_update_cleanup_wsl` (at WSL bash): BH_WSL_APT, BH_WSL_PY
-* `bh_update_cleanup_msys` (at msys bash): BH_MSYS_PAC, BH_MSYS_PY
+* `bh_setup_mac` (at mac bash): install/update BH_MAC_BREW, BH_MAC_PY, BH_MAC_VSCODE
+* `bh_setup_ubu` (at ubuntu bash): install/update BH_UBU_APT, BH_UBU_PY, BH_UBU_VSCODE, BH_UBU_SNAP
+* `bh_setup_win` (at GitBash): install/update BH_WIN_GET, BH_WIN_PY, BH_WIN_VSCODE
+* `bh_setup_wsl` (at WSL bash): install/update BH_WSL_APT, BH_WSL_PY
+* `bh_setup_msys` (at msys bash): install/update BH_MSYS_PAC, BH_MSYS_PY
 * `bh_dotfiles_backup`: backup files/dirs defined in BH_DOTFILES
 * `bh_dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES
 * `bh_dotfiles_install`: restore files/dirs defined in BH_DOTFILES

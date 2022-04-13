@@ -227,28 +227,6 @@ function bh_win_path_open_settings() {
 }
 
 # ---------------------------------------
-# update_clean
-# ---------------------------------------
-
-function bh_update_cleanup_win() {
-  bh_log_func
-  # update bh
-  bh_bh_update_if_needed
-  # cleanup
-  bh_home_clean_unused
-  bh_win_explorer_hide_home_dotfiles
-  # py
-  $HAS_PY && bh_py_install $BH_WIN_PY
-  $HAS_PY && bh_py_upgrade
-  # vscode
-  $HAS_VSCODE && bh_vscode_install $BH_WIN_VSCODE
-  # win
-  $HAS_GSUDO && bh_win_sysupdate_win
-  # winget (it uses --scope=user)
-  bh_win_get_install $BH_WIN_GET
-}
-
-# ---------------------------------------
 # install
 # ---------------------------------------
 

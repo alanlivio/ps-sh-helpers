@@ -9,29 +9,6 @@ if [[ "$(umask)" = "0000" ]]; then
 fi
 
 # ---------------------------------------
-# update_clean
-# ---------------------------------------
-
-unset bh_update_cleanup_ubu
-
-function bh_update_cleanup_wsl() {
-  bh_log_func
-  # update bh
-  bh_bh_update_if_needed
-  # apt
-  local pkgs="git deborphan apt-file vim diffutils curl "
-  pkgs+="python3 python3-pip "
-  bh_ubu_apt_install $pkgs $BH_WSL_APT
-  bh_ubu_apt_autoremove
-  # py
-  $HAS_PY && bh_py_set_v3_default
-  $HAS_PY && bh_py_install $BH_WSL_PY
-  $HAS_PY && bh_py_upgrade
-  # cleanup
-  bh_home_clean_unused
-}
-
-# ---------------------------------------
 # wsl_install
 # ---------------------------------------
 
