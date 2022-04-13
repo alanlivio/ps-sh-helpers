@@ -20,69 +20,69 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 ### configure OS interface helpers
 
-* `bh_gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
-* `bh_win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons)
+* `gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
+* `win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons)
 
 ### install software helpers
 
-* `bh_win_install_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
-* `bh_win_install_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automates the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password.
-* See others `bh_win_install_*` at ./lib/win.bash
-* See others `bh_ubu_install_*` at ./lib/ubu.bash
+* `win_install_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
+* `win_install_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automates the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password.
+* See others `win_install_*` at ./lib/win.bash
+* See others `ubu_install_*` at ./lib/ubu.bash
 
 ### update/cleanup/dotfiles/repos
 
 The helpers below can be run routinely. They use variables at `~/.bhrc.sh` (or `~/.bashrc`) to install software, clean unused files/dirs, and update repositories. Please see examples in [skel/.bhrc.sh](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bhrc.sh).
 
-* `bh_setup_mac` (at mac bash): install/update BH_MAC_BREW, BH_MAC_PY, BH_MAC_VSCODE
-* `bh_setup_ubu` (at ubuntu bash): install/update BH_UBU_APT, BH_UBU_PY, BH_UBU_VSCODE, BH_UBU_SNAP
-* `bh_setup_win` (at GitBash): install/update BH_WIN_GET, BH_WIN_PY, BH_WIN_VSCODE
-* `bh_setup_wsl` (at WSL bash): install/update BH_WSL_APT, BH_WSL_PY
-* `bh_setup_msys` (at msys bash): install/update BH_MSYS_PAC, BH_MSYS_PY
-* `bh_dotfiles_backup`: backup files/dirs defined in BH_DOTFILES
-* `bh_dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES
-* `bh_dotfiles_install`: restore files/dirs defined in BH_DOTFILES
-* `bh_home_clean_unused`: clean files/dirs defined in array BH_HOME_CLEAN_UNUSED
-* `bh_dev_dir_git_repos`: clone/update git repos defined in BH_DEV_REPOS
+* `setup_mac` (at mac bash): install/update BH_MAC_BREW, BH_MAC_PY, BH_MAC_VSCODE
+* `setup_ubu` (at ubuntu bash): install/update BH_UBU_APT, BH_UBU_PY, BH_UBU_VSCODE, BH_UBU_SNAP
+* `setup_win` (at GitBash): install/update BH_WIN_GET, BH_WIN_PY, BH_WIN_VSCODE
+* `setup_wsl` (at WSL bash): install/update BH_WSL_APT, BH_WSL_PY
+* `setup_msys` (at msys bash): install/update BH_MSYS_PAC, BH_MSYS_PY
+* `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES
+* `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES
+* `dotfiles_install`: restore files/dirs defined in BH_DOTFILES
+* `home_clean_unused`: clean files/dirs defined in array BH_HOME_CLEAN_UNUSED
+* `dev_dir_git_repos`: clone/update git repos defined in BH_DEV_REPOS
 
 ### curl helpers
 
-* `bh_curl_get`: GET request to URL
-* `bh_curl_post`: POST request to URL
-* `bh_curl_post_json`: POST request to URL using JSON
-* `bh_curl_fetch_to_dir`: get URL to parent dir
+* `curl_get`: GET request to URL
+* `curl_post`: POST request to URL
+* `curl_post_json`: POST request to URL using JSON
+* `curl_fetch_to_dir`: get URL to parent dir
 
 ### forder helpers
 
-* `bh_dir_sorted_by_size`: list dir sorted by items size
-* `bh_dir_info`: list number of dir and files per extension
-* `bh_dir_find_duplicated_pdf`: list duplicated pdf files in dir recursively
+* `dir_sorted_by_size`: list dir sorted by items size
+* `dir_info`: list number of dir and files per extension
+* `dir_find_duplicated_pdf`: list duplicated pdf files in dir recursively
 
 ### others helpers
 
 The helpers below are for cross-OS commands. For the full list, see lib/.
 
-* `bh_adb_*`: adb helpers.
-* `bh_cmake_*`: cmake helpers.
-* `bh_docker_*`: docker helpers.
-* `bh_ffmpeg_*`: ffmpeg helpers.
-* `bh_flutter_*`: flutter helpers.
-* `bh_gcc_*`: gcc helpers.
-* `bh_git_*`: git helpers.
-* `bh_ghostscript_*`: ghostscript helpers (for pdf).
-* `bh_meson_*`: meson helpers.
-* `bh_npm_*`: npm helpers.
-* `bh_pandoc_*`: pandoc helpers.
-* `bh_pdflatex_*`: pdflatex helpers.
-* `bh_pkg-config_*`: pkg-config helpers.
-* `bh_py_*`: python helpers.
-* `bh_ruby_*`: ruby helpers.
-* `bh_ssh_*`: ssh helpers.
-* `bh_tesseract_*`: tesseract helpers.
-* `bh_vscode_*`: vscode helpers.
-* `bh_wget_*`: wget helpers.
-* `bh_youtubedl_*`: youtube-dl helpers.
-* `bh_zip_*`: zip helpers.
+* `adb_*`: adb helpers.
+* `cmake_*`: cmake helpers.
+* `docker_*`: docker helpers.
+* `ffmpeg_*`: ffmpeg helpers.
+* `flutter_*`: flutter helpers.
+* `gcc_*`: gcc helpers.
+* `git_*`: git helpers.
+* `ghostscript_*`: ghostscript helpers (for pdf).
+* `meson_*`: meson helpers.
+* `npm_*`: npm helpers.
+* `pandoc_*`: pandoc helpers.
+* `pdflatex_*`: pdflatex helpers.
+* `pkg-config_*`: pkg-config helpers.
+* `py_*`: python helpers.
+* `ruby_*`: ruby helpers.
+* `ssh_*`: ssh helpers.
+* `tesseract_*`: tesseract helpers.
+* `vscode_*`: vscode helpers.
+* `wget_*`: wget helpers.
+* `youtubedl_*`: youtube-dl helpers.
+* `zip_*`: zip helpers.
 
 ## References
 

@@ -2,8 +2,8 @@
 # npm
 # ---------------------------------------
 
-function bh_npm_install() {
-  bh_log_func
+function npm_install() {
+  log_func
 
   local pkgs_to_install=""
   local pkgs_installed=$(npm ls -g --depth 0 2>/dev/null | grep -v UNMET | cut -d' ' -f2 -s | cut -d'@' -f1 | tr '\n' ' ')
@@ -13,7 +13,7 @@ function bh_npm_install() {
     fi
   done
   if test ! -z "$pkgs_to_install"; then
-    bh_log_msg "pkgs_to_install=$pkgs_to_install"
+    log_msg "pkgs_to_install=$pkgs_to_install"
     if test -e pakcage.json; then cd /tmp/; fi
     if test $IS_WIN; then
       npm install -g $pkgs_to_install

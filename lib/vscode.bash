@@ -2,7 +2,7 @@
 # vscode
 # ---------------------------------------
 
-function bh_vscode_diff() {
+function vscode_diff() {
   : ${1?"Usage: ${FUNCNAME[0]} <old_file> <new_file>"}
   diff "$1" "$2" &>/dev/null
   if test $? -eq 1; then
@@ -10,8 +10,8 @@ function bh_vscode_diff() {
   fi
 }
 
-function bh_vscode_install() {
-  bh_log_func
+function vscode_install() {
+  log_func
   local pkgs_to_install=""
   local pkgs_installed_tmp_file="/tmp/code-list-extensions"
   code --list-extensions >$pkgs_installed_tmp_file

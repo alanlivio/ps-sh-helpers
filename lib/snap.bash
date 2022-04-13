@@ -2,8 +2,8 @@
 # snap
 # ---------------------------------------
 
-function bh_ubu_snap_install() {
-  bh_log_func
+function ubu_snap_install() {
+  log_func
 
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""
@@ -21,8 +21,8 @@ function bh_ubu_snap_install() {
   fi
 }
 
-function bh_ubu_snap_install_classic() {
-  bh_log_func
+function ubu_snap_install_classic() {
+  log_func
 
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""
@@ -32,15 +32,15 @@ function bh_ubu_snap_install_classic() {
     fi
   done
   if test ! -z "$pkgs_to_install"; then
-    bh_log_msg "pkgs_to_install=$pkgs_to_install"
+    log_msg "pkgs_to_install=$pkgs_to_install"
     for i in $pkgs_to_install; do
       sudo snap install --classic "$i"
     done
   fi
 }
 
-function bh_ubu_snap_install_edge() {
-  bh_log_func
+function ubu_snap_install_edge() {
+  log_func
 
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""
@@ -50,18 +50,18 @@ function bh_ubu_snap_install_edge() {
     fi
   done
   if test ! -z "$pkgs_to_install"; then
-    bh_log_msg "pkgs_to_install=$pkgs_to_install"
+    log_msg "pkgs_to_install=$pkgs_to_install"
     for i in $pkgs_to_install; do
       sudo snap install --edge "$i"
     done
   fi
 }
 
-function bh_ubu_snap_upgrade() {
-  bh_log_func
+function ubu_snap_upgrade() {
+  log_func
   sudo snap refresh 2>/dev/null
 }
 
-function bh_ubu_snap_hide_home_dir() {
+function ubu_snap_hide_home_dir() {
   echo snap >>$HOME/.hidden
 }

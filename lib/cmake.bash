@@ -9,11 +9,11 @@ CMAKE_ARGS_CONFIG="
   -DSTATIC_LINKING=OFF 
   -DBUILD_SHARED_LIBS=ON 
   "
-function bh_cmake_args_default() {
+function cmake_args_default() {
   echo $CMAKE_ARGS_CONFIG
 }
 
-function bh_cmake_configure() {
+function cmake_configure() {
   if test -e CMakeLists.txt; then
     cmake -B $CMAKE_DIR -G Ninja $CMAKE_ARGS_CONFIG -DCMAKE_BUILD_TYPE=Debug $@
   else
@@ -21,7 +21,7 @@ function bh_cmake_configure() {
   fi
 }
 
-function bh_cmake_configure_release() {
+function cmake_configure_release() {
   if test -e CMakeLists.txt; then
     cmake -B $CMAKE_DIR_RELEASE -G Ninja $CMAKE_ARGS_CONFIG -DCMAKE_BUILD_TYPE=Release $@
   else
@@ -29,23 +29,23 @@ function bh_cmake_configure_release() {
   fi
 }
 
-function bh_cmake_build() {
+function cmake_build() {
   cmake --build . --target all
 }
 
-function bh_cmake_clean() {
+function cmake_clean() {
   cmake --build . --target clean
 }
 
-function bh_cmake_build_target() {
+function cmake_build_target() {
   cmake --build . --target $1
 }
 
-function bh_cmake_check() {
+function cmake_check() {
   cmake --build . --target check
 }
 
-function bh_cmake_install() {
+function cmake_install() {
   if $IS_MSYS; then
     cmake --install .
   elif $IS_LINUX; then
@@ -55,7 +55,7 @@ function bh_cmake_install() {
   fi
 }
 
-function bh_cmake_uninstall() {
+function cmake_uninstall() {
   local manifest="install_manifest.txt"
   if test -e $manifest; then
     while IFS= read -r i; do
@@ -66,23 +66,23 @@ function bh_cmake_uninstall() {
       fi
     done <$manifest
   else
-    bh_log_error "$manifest does not exist"
+    log_error "$manifest does not exist"
   fi
 }
 
-function bh_cmake_clean_retain_objs() {
+function cmake_clean_retain_objs() {
   if test -d CMakeFiles; then
     find . -maxdepth 1 -not -name '.' -not -name CMakeFiles -exec rm -rf {} \;
   else
-    bh_log_error "there is no CMakeFiles dir"
+    log_error "there is no CMakeFiles dir"
   fi
 }
 
-function bh_cmake_test_all() {
+function cmake_test_all() {
   ctest
 }
 
-function bh_cmake_test_target() {
+function cmake_test_target() {
   cmake --build . --target $1
   ctest -R $1
 }

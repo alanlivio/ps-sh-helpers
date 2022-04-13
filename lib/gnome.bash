@@ -2,24 +2,24 @@
 # gnome
 # ---------------------------------------
 
-function bh_gnome_sanity() {
-  bh_gnome_dark
-  bh_gnome_sanity
-  bh_gnome_disable_unused_apps_in_search
-  bh_gnome_disable_super_workspace_change
+function gnome_sanity() {
+  gnome_dark
+  gnome_sanity
+  gnome_disable_unused_apps_in_search
+  gnome_disable_super_workspace_change
 }
 
-function bh_gnome_uninstall_desktop_unused() {
+function gnome_uninstall_desktop_unused() {
   local pkgs_apt_remove_ubu+="libreoffice-* mpv yad ubuntu-report ubuntu-web-launchers mercurial nano zathura simple-scan xterm devhelp thunderbird remmina zeitgeist plymouth evolution-plugins evolution-common fwupd gnome-todo aisleriot gnome-user-guide gnome-mahjongg gnome-weather gnome-mines gnome-sudoku cheese gnome-calendar rhythmbox deja-dup evolution empathy gnome-music gnome-maps gnome-photos totem gnome-orca gnome-getting-started-docs gnome-logs gnome-color-manager gucharmap seahorse gnome-accessibility-themes brasero transmission-gtk "
-  bh_apt_remove_pkgs $pkgs_apt_remove_ubu
+  apt_remove_pkgs $pkgs_apt_remove_ubu
 }
 
-function bh_gnome_execute_desktop_file() {
+function gnome_execute_desktop_file() {
   awk '/^Exec=/ {sub("^Exec=", ""); gsub(" ?%[cDdFfikmNnUuv]", ""); exit system($0)}' $1
 }
 
-function bh_gnome_reset_keybindings() {
-  bh_log_func
+function gnome_reset_keybindings() {
+  log_func
   gsettings reset-recursively org.gnome.mutter.keybindings
   gsettings reset-recursively org.gnome.mutter.wayland.keybindings
   gsettings reset-recursively org.gnome.desktop.wm.keybindings
@@ -27,13 +27,13 @@ function bh_gnome_reset_keybindings() {
   gsettings reset-recursively org.gnome.settings-daemon.plugins.media-keys
 }
 
-function bh_gnome_dark_mode() {
+function gnome_dark_mode() {
   gsettings set org.gnome.desktop.interface cursor-theme 'DMZ-Black'
   gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
   gsettings set org.gnome.desktop.interface icon-theme 'ubuntu-mono-dark'
 }
 
-function bh_gnome_dark_desktop_background() {
+function gnome_dark_desktop_background() {
   # desktop
   gsettings set org.gnome.desktop.background color-shading-type "solid"
   gsettings set org.gnome.desktop.background picture-uri ''
@@ -41,8 +41,8 @@ function bh_gnome_dark_desktop_background() {
   gsettings set org.gnome.desktop.background secondary-color "#000000"
 }
 
-function bh_gnome_sanity() {
-  bh_log_func
+function gnome_sanity() {
+  log_func
   # gnome search
   gsettings set org.gnome.desktop.search-providers sort-order "[]"
   gsettings set org.gnome.desktop.search-providers disable-external false
@@ -90,71 +90,71 @@ function bh_gnome_sanity() {
   gsettings set org.gnome.shell.extensions.dash-to-dock show-show-apps-button false
 }
 
-function bh_gnome_disable_unused_apps_in_search() {
-  bh_log_func
+function gnome_disable_unused_apps_in_search() {
+  log_func
   local apps_to_hide=$(find /usr/share/applications/ -iname '*im6*' -iname '*java*' -o -iname '*JB*' -o -iname '*policy*' -o -iname '*icedtea*' -o -iname '*uxterm*' -o -iname '*display-im6*' -o -iname '*unity*' -o -iname '*webbrowser-app*' -o -iname '*amazon*' -o -iname '*icedtea*' -o -iname '*xdiagnose*' -o -iname yelp.desktop -o -iname '*brasero*')
   for i in $apps_to_hide; do
     sudo sh -c " echo 'NoDisplay=true' >> $i"
   done
 }
 
-function bh_gnome_disable_super_workspace_change() {
-  bh_log_func
+function gnome_disable_super_workspace_change() {
+  log_func
   # remove super+arrow virtual terminal change
   sudo sh -c 'dumpkeys |grep -v cr_Console |loadkeys'
 }
 
-function bh_gnome_disable_tiling() {
+function gnome_disable_tiling() {
   # disable tiling
   gsettings set org.gnome.mutter edge-tiling false
 }
 
-function bh_gnome_reset_tracker() {
+function gnome_reset_tracker() {
   sudo tracker reset --hard
   sudo tracker daemon -s
 }
 
-function bh_gnome_reset_shotwell() {
+function gnome_reset_shotwell() {
   rm -r $HOME/.cache/shotwell $HOME/.local/share/shotwell
 }
 
-function bh_gnome_update_desktop_database() {
+function gnome_update_desktop_database() {
   sudo update-desktop-database -v /usr/share/applications $HOME/.local/share/applications $HOME/.gnome/apps/
 }
 
-function bh_gnome_update_icons() {
+function gnome_update_icons() {
   sudo update-icon-caches -v /usr/share/icons/ $HOME/.local/share/icons/
 }
 
-function bh_gnome_version() {
+function gnome_version() {
   gnome-shell --version
   mutter --version | head -n 1
   gnome-terminal --version
   gnome-text-editor --version
 }
 
-function bh_gnome_gdm_restart() {
+function gnome_gdm_restart() {
   sudo /etc/setup.d/gdm3 restart
 }
 
-function bh_gnome_settings_reset() {
+function gnome_settings_reset() {
   : ${1?"Usage: ${FUNCNAME[0]} <scheme>"}
   gsettings reset-recursively $1
 }
 
-function bh_gnome_settings_save_to_file() {
+function gnome_settings_save_to_file() {
   : ${2?"Usage: ${FUNCNAME[0]} <dconf-dir> <file_name>"}
   dconf dump $1 >$2
 }
 
-function bh_gnome_settings_load_from_file() {
+function gnome_settings_load_from_file() {
   : ${1?"Usage: ${FUNCNAME[0]} <dconf-dir> <file_name>"}
   dconf load $1 <$2
 }
 
-function bh_gnome_settings_diff_actual_and_file() {
+function gnome_settings_diff_actual_and_file() {
   : ${2?"Usage: ${FUNCNAME[0]} <dconf-dir> <file_name>"}
   local tmp_file=/tmp/gnome_settings_diff
-  bh_gnome_settings_save_to_file $1 $tmp_file
+  gnome_settings_save_to_file $1 $tmp_file
   diff $tmp_file $2
 }

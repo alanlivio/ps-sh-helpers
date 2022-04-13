@@ -4,7 +4,7 @@
 
 MESON_DIR="_build"
 
-function bh_meson_configure() {
+function meson_configure() {
   if test -e meson.build; then
     meson $MESON_DIR 
   else
@@ -12,10 +12,10 @@ function bh_meson_configure() {
   fi
 }
 
-function bh_meson_build() {
+function meson_build() {
   ninja
 }
 
-function bh_meson_install() {
+function meson_install() {
   ninja install
 }
