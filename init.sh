@@ -29,7 +29,7 @@ if type ssh &>/dev/null; then source "$BH_DIR/plugins/ssh.plugin.bash"; fi
 if type tesseract &>/dev/null; then source "$BH_DIR/plugins/tesseract.plugin.bash"; fi
 if type wget &>/dev/null; then source "$BH_DIR/plugins/wget.plugin.bash"; fi
 if type youtube-dl &>/dev/null; then source "$BH_DIR/plugins/youtube-dl.plugin.bash"; fi
-if type zip &>/dev/null; then source "$BH_DIR/plugins/zip.plugin.bash"; fi
+if type zip &>/dev/null; then  source "$BH_DIR/plugins/zip.plugin.bash"; fi
 if type gnome-shell &>/dev/null; then source "$BH_DIR/plugins/gnome.plugin.bash"; fi
 if type lxc &>/dev/null; then source "$BH_DIR/plugins/lxc.plugin.bash"; fi
 if type apt &>/dev/null; then source "$BH_DIR/plugins/apt.plugin.bash"; fi
@@ -63,6 +63,7 @@ case $OSTYPE in
 esac
 
 if $IS_GITBASH; then
+  source "$BH_DIR/aliases/msys.aliases.bash"
   source "$BH_DIR/plugins/win.plugin.bash"
   if type gsudo &>/dev/null; then HAS_GSUDO=true; else HAS_GSUDO=false; fi
   function win_update_clean() {

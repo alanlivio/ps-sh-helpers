@@ -1,10 +1,3 @@
-# fix mingw tmp
-unset temp
-unset tmp
-if ! type pwsh &>/dev/null; then alias powershell="powershell"; fi
-alias win_recycle_bin_clean='powershell -c "Clear-RecycleBin -Confirm:$false 2> $null"'
-alias win_sound_open_settings='powershell -c "rundll32.exe shell32.dll,control_rundll mmsys.cpl,,2'
-
 # ---------------------------------------
 # user
 # ---------------------------------------
@@ -155,22 +148,9 @@ function win_path_remove() {
     }; win_path_remove ' \"$dir\"
 }
 
-function win_settings_dialog() {
-  rundll32 sysdm.cpl,EditEnvironmentVariables &
-}
-
 # ---------------------------------------
 # install
 # ---------------------------------------
-
-function win_install_store_essentials() {
-  local pkgs='Microsoft.WindowsStore Microsoft.WindowsCalculator Microsoft.Windows.Photos Microsoft.WindowsFeedbackHub Microsoft.WindowsCamera Microsoft.WindowsSoundRecorder'
-  for pkg in $pkgs; do
-    powershell -c "
-      Get-AppxPackage $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register \"\$(\$_.InstallLocation)\AppXManifest.xml\" } | Out-null
-    "
-  done
-}
 
 function win_install_python() {
   winget install Python.Python.3 --source winget -i
@@ -385,53 +365,6 @@ function win_get_settings() {
 
 function win_get_upgrade() {
   winget upgrade --all --silent
-}
-
-# ---------------------------------------
-# explorer
-# ---------------------------------------
-
-function explorer_trash() {
-  powershell -c 'Start-Process explorer shell:recyclebinfolder'
-}
-
-function explorer_appdata_local_programns() {
-  powershell -c 'Start-Process explorer "${env:localappdata}\Programs"'
-}
-
-function explorer_appdata() {
-  powershell -c 'Start-Process explorer "${env:appdata}"'
-}
-
-function explorer_tmp() {
-  powershell -c 'Start-Process explorer "${env:localappdata}\temp"'
-}
-
-function explorer_start_menu_dir() {
-  powershell -c 'Start-Process explorer "${env:appdata}\Microsoft\Windows\Start Menu\Programs"'
-}
-
-function explorer_start_menu_dir_allusers() {
-  powershell -c 'Start-Process explorer "${env:allusersprofile}\Microsoft\Windows\Start Menu\Programs"'
-}
-
-function explorer_restart() {
-  powershell -c 'taskkill /f /im explorer.exe | Out-Null'
-  powershell -c 'Start-Process explorer.exe'
-}
-
-function explorer_home_restore_desktop() {
-  powershell -c '
-    if (Test-Path "${env:userprofile}\Desktop") { return}
-    mkdir "${env:userprofile}\Desktop"
-    reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v "Desktop" /t REG_SZ /d "${env:userprofile}\Desktop" /f
-    reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" /v "Desktop" /t REG_EXPAND_SZ /d "${env:userprofile}\Desktop" /f
-    attrib +r -s -h "${env:userprofile}\Desktop"
-  '
-}
-
-function explorer_hide_home_dotfiles() {
-  powershell.exe -c 'Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
 }
 
 # ---------------------------------------
