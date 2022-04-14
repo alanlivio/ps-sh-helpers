@@ -68,13 +68,14 @@ if type pacman &>/dev/null; then source "$BH_DIR/lib/pacman.bash"; fi
 
 if $IS_GITBASH; then
   source "$BH_DIR/lib/win.bash"
+  if type gsudo &>/dev/null; then HAS_GSUDO=true; else HAS_GSUDO=false; fi
   function win_update_clean() {
     log_func
     # update bh
     update_if_needed
     # cleanup
     home_clean_unused
-    win_explorer_hide_home_dotfiles
+    explorer_hide_home_dotfiles
     # py
     $HAS_PY && py_install $BH_WIN_PY
     $HAS_PY && py_upgrade

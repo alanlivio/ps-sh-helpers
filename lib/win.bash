@@ -1,63 +1,13 @@
 #!/bin/bash
-# ---------------------------------------
-# aliases
-# ---------------------------------------
 
 alias unixpath='cygpath'
 alias winpath='cygpath -w'
 # fix mingw tmp
 unset temp
 unset tmp
-alias chrome="/c/Program\ Files/Google/Chrome/Application/chrome.exe"
-alias ghostscript='gswin64c'
-alias reboot='gsudo shutdown \/r'
-if ! type pwsh &>/dev/null; then
-  alias powershell="powershell"
-fi
-alias ps_call="powershell -c"
-alias ps_call_admin="gsudo powershell -c"
-function ps_call_script() { powershell -c "& { . $1}"; }
-function ps_call_script_admin() { gsudo powershell -c "& { . $1}"; }
-function open { ps_call "Start-Process ${1:-.}"; }
-if type gsudo &>/dev/null; then HAS_GSUDO=true; else HAS_GSUDO=false; fi
-
-# ---------------------------------------
-# gitbash
-# ---------------------------------------
-
-function win_gitbash_fix_prompt {
-  sed 's/show\sMSYSTEM/#&/g' -i /etc/profile.d/git-prompt.sh
-  sed "s/PS1=\"\$PS1\"'\\\\n/#&/g" -i /etc/profile.d/git-prompt.sh
-}
-
-function win_gitbash_open_prompt {
-  open "$(winpath /etc/profile.d/git-prompt.sh)"
-}
-
-# ---------------------------------------
-# recycle_bin
-# ---------------------------------------
-
-function win_recycle_bin_clean() {
-  ps_call 'Clear-RecycleBin -Confirm:$false 2> $null'
-}
-
-# ---------------------------------------
-# sound
-# ---------------------------------------
-
-function win_sound_open_settings() {
-  rundll32.exe shell32.dll,control_rundll mmsys.cpl,,2
-}
-
-# ---------------------------------------
-# wt
-# ---------------------------------------
-
-function win_wt_open_settings() {
-  wt_stgs="$HOME/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json"
-  code $wt_stgs
-}
+if ! type pwsh &>/dev/null; then alias powershell="powershell"; fi
+alias win_recycle_bin_clean='powershell -c "Clear-RecycleBin -Confirm:$false 2> $null"'
+alias win_sound_open_settings='powershell -c "rundll32.exe shell32.dll,control_rundll mmsys.cpl,,2'
 
 # ---------------------------------------
 # user
@@ -65,23 +15,19 @@ function win_wt_open_settings() {
 
 function win_user_check_admin_group() {
   # usage if [ "$(win_user_check_admin_group)" == "True" ]; then <commands>; fi
-  ps_call '
-    $user = "$env:COMPUTERNAME\$env:USERNAME"
-    $group = "Administrators"
-    (Get-LocalGroupMember $group).Name -contains $user
-  '
+  powershell -c '(Get-LocalGroupMember "Administrators").Name -contains "$env:COMPUTERNAME\$env:USERNAME"'
 }
 
 function win_user_check_eleveated_shell() {
-  ps_call '(New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)' | tr -d '\rn'
+  powershell -c '(New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)' | tr -d '\rn'
 }
 
 function win_user_adminstrator_enable() {
-  ps_call_admin 'net user administrator /active:yes'
+  gsudo powershell -c 'net user administrator /active:yes'
 }
 
 function win_user_adminstrator_disable() {
-  ps_call_admin 'net user administrator /active:no'
+  gsudo powershell -c 'net user administrator /active:no'
 }
 
 # ---------------------------------------
@@ -89,7 +35,7 @@ function win_user_adminstrator_disable() {
 # ---------------------------------------
 
 function win_sysupdate_win() {
-  ps_call_admin '
+  gsudo powershell -c '
     Install-Module -Name PSWindowsUpdate -Force
     $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
     if ($_ -is [string]) {
@@ -99,11 +45,11 @@ function win_sysupdate_win() {
 }
 
 function win_sysupdate_win_list() {
-  ps_call_admin 'Get-WindowsUpdate'
+  gsudo powershell -c 'Get-WindowsUpdate'
 }
 
 function win_sysupdate_win_list_last_installed() {
-  ps_call_admin 'Get-WUHistory -Last 10 | Select-Object Date, Title, Result'
+  gsudo powershell -c 'Get-WUHistory -Last 10 | Select-Object Date, Title, Result'
 }
 
 # ---------------------------------------
@@ -112,7 +58,7 @@ function win_sysupdate_win_list_last_installed() {
 
 function win_feature_enable_ssh_server_bash() {
   local current_bash_path=$(where bash | head -1)
-  ps_call_admin "
+  gsudo powershell -c "
     Add-WindowsCapability -Online -Name OpenSSH.Client
     Add-WindowsCapability -Online -Name OpenSSH.Server
     Start-Service sshd
@@ -123,16 +69,16 @@ function win_feature_enable_ssh_server_bash() {
 
 function win_feature_list_enabled() {
   log_msg "WindowsOptionalFeatures"
-  ps_call_admin 'Get-WindowsOptionalFeature -Online | Where-Object {$_.State -eq "Enabled"}'
+  gsudo powershell -c 'Get-WindowsOptionalFeature -Online | Where-Object {$_.State -eq "Enabled"}'
   log_msg "WindowsCapabilities"
-  ps_call_admin 'Get-WindowsCapability -Online | Where-Object {$_.State -eq "Installed"}'
+  gsudo powershell -c 'Get-WindowsCapability -Online | Where-Object {$_.State -eq "Installed"}'
 }
 
 function win_feature_list_disabled() {
   log_msg "WindowsOptionalFeatures"
-  ps_call_admin 'Get-WindowsOptionalFeature -Online | Where-Object {$_.State -eq "Disabled"}'
+  gsudo powershell -c 'Get-WindowsOptionalFeature -Online | Where-Object {$_.State -eq "Disabled"}'
   log_msg "WindowsCapabilities"
-  ps_call_admin 'Get-WindowsCapability -Online | Where-Object {$_.State -eq "NotPresent"}'
+  gsudo powershell -c 'Get-WindowsCapability -Online | Where-Object {$_.State -eq "NotPresent"}'
 }
 
 # ---------------------------------------
@@ -140,11 +86,11 @@ function win_feature_list_disabled() {
 # ---------------------------------------
 
 function win_appx_list_installed() {
-  ps_call_admin "Get-AppxPackage -AllUsers | Select-Object Name, PackageFullName"
+  gsudo powershell -c "Get-AppxPackage -AllUsers | Select-Object Name, PackageFullName"
 }
 
 function win_appx_uninstall() {
-  ps_call_admin '
+  gsudo powershell -c '
   if (Get-AppxPackage -Name ' "$1" ') {
     Get-AppxPackage' "$1" '| Remove-AppxPackage
   }
@@ -152,7 +98,7 @@ function win_appx_uninstall() {
 }
 
 function win_appx_install() {
-  ps_call_admin '
+  gsudo powershell -c '
     Get-AppxPackage ' "$1" '| ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
   '
 }
@@ -162,7 +108,7 @@ function win_appx_install() {
 # ---------------------------------------
 
 function win_services_list_running() {
-  ps_call_admin 'Get-Service | Where-Object {$_.Status -eq "Running"}'
+  gsudo powershell -c 'Get-Service | Where-Object {$_.Status -eq "Running"}'
 }
 
 # ---------------------------------------
@@ -170,12 +116,12 @@ function win_services_list_running() {
 # ---------------------------------------
 
 function win_env_show() {
-  ps_call 'Get-ChildItem Env:'
+  powershell -c 'Get-ChildItem Env:'
 }
 
 function win_env_add() {
   : ${2?"Usage: ${FUNCNAME[0]} <varname> <value>"}
-  ps_call "[System.Environment]::SetEnvironmentVariable('$1', '$2', 'user')"
+  powershell -c "[System.Environment]::SetEnvironmentVariable('$1', '$2', 'user')"
 }
 
 # ---------------------------------------
@@ -183,7 +129,7 @@ function win_env_add() {
 # ---------------------------------------
 
 function win_path_show() {
-  ps_call '(Get-ChildItem Env:Path).Value'
+  powershell -c '(Get-ChildItem Env:Path).Value'
 }
 
 function win_path_show_as_list() {
@@ -193,7 +139,7 @@ function win_path_show_as_list() {
 
 function win_path_add() {
   local dir=$(winpath $@)
-  ps_call ' 
+  powershell -c ' 
     function win_path_add($addDir) {
       $currentpath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
       $regexAddPath = [regex]::Escape($addDir)
@@ -205,7 +151,7 @@ function win_path_add() {
 
 function win_path_remove() {
   local dir=$(winpath $@)
-  ps_call ' 
+  powershell -c ' 
     function win_path_remove($remDir) {
       $currentpath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
       $newpath = ($currentpath.Split(";") | Where-Object { $_ -ne "$remDir" }) -join ";"
@@ -213,11 +159,7 @@ function win_path_remove() {
     }; win_path_remove ' \"$dir\"
 }
 
-function win_path_add_winapps() {
-  win_path_add "$HOME/AppData/Local/Microsoft/WindowsApps/"
-}
-
-function win_path_open_settings() {
+function win_settings_dialog() {
   rundll32 sysdm.cpl,EditEnvironmentVariables &
 }
 
@@ -228,7 +170,7 @@ function win_path_open_settings() {
 function win_install_store_essentials() {
   local pkgs='Microsoft.WindowsStore Microsoft.WindowsCalculator Microsoft.Windows.Photos Microsoft.WindowsFeedbackHub Microsoft.WindowsCamera Microsoft.WindowsSoundRecorder'
   for pkg in $pkgs; do
-    ps_call "
+    powershell -c "
       Get-AppxPackage $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register \"\$(\$_.InstallLocation)\AppXManifest.xml\" } | Out-null
     "
   done
@@ -246,11 +188,11 @@ function win_install_miktex() {
 }
 
 function win_install_gitforwindows_and_wt() {
-  ps_call_script $(unixpath -w $BH_DIR/lib/ps1/install-gitforwindows-and-wt.ps1)
+  powershell -c_script $(unixpath -w $BH_DIR/lib/ps1/install-gitforwindows-and-wt.ps1)
 }
 
 function win_install_msys() {
-  ps_call_script $(unixpath -w $BH_DIR/lib/ps1/install-msys.ps1)
+  powershell -c_script $(unixpath -w $BH_DIR/lib/ps1/install-msys.ps1)
 }
 
 function win_install_ghostscript() {
@@ -369,7 +311,7 @@ function win_install_flutter() {
 }
 
 function win_install_winget() {
-  ps_call '
+  powershell -c '
     if (!(Get-Command 'winget.exe' -ea 0)) {
     $repoName = "microsoft/winget-cli"
     $releasesUri = "https://api.github.com/repos/$repoName/releases/latest"
@@ -390,7 +332,7 @@ function win_install_tesseract() {
 function win_install_java() {
   if ! type java.exe &>/dev/null; then
     win_get_install ojdkbuild.ojdkbuild
-    local javahome=$(ps_call '$(get-command java).Source.replace("\bin\java.exe", "")')
+    local javahome=$(powershell -c '$(get-command java).Source.replace("\bin\java.exe", "")')
     env_add "JAVA_HOME" "$javahome"
   fi
 }
@@ -400,12 +342,12 @@ function win_install_gsudo() {
 }
 
 function win_install_wsl() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/lib/ps1/install-wsl.ps1)
+  gsudo powershell $(unixpath -w $BH_DIR/lib/ps1/install-wsl.ps1)
 }
 
 function win_install_docker() {
-  ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
-  ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
+  gsudo powershell -c Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
+  gsudo powershell -c Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
   win_get_install Docker.DockerDesktop
 }
 
@@ -450,44 +392,40 @@ function win_get_upgrade() {
 }
 
 # ---------------------------------------
-# open
-# ---------------------------------------
-
-function win_open_trash() {
-  ps_call 'Start-Process explorer shell:recyclebinfolder'
-}
-
-function win_open_appdata_local_programns() {
-  ps_call 'Start-Process explorer "${env:localappdata}\Programs"'
-}
-
-function win_open_appdata() {
-  ps_call 'Start-Process explorer "${env:appdata}"'
-}
-
-function win_open_tmp() {
-  ps_call 'Start-Process explorer "${env:localappdata}\temp"'
-}
-
-function win_open_start_menu_dir() {
-  ps_call 'Start-Process explorer "${env:appdata}\Microsoft\Windows\Start Menu\Programs"'
-}
-
-function win_open_start_menu_dir_allusers() {
-  ps_call 'Start-Process explorer "${env:allusersprofile}\Microsoft\Windows\Start Menu\Programs"'
-}
-
-# ---------------------------------------
 # explorer
 # ---------------------------------------
 
-function win_explorer_restart() {
-  ps_call 'taskkill /f /im explorer.exe | Out-Null'
-  ps_call 'Start-Process explorer.exe'
+function explorer_trash() {
+  powershell -c 'Start-Process explorer shell:recyclebinfolder'
 }
 
-function win_explorer_home_restore_desktop() {
-  ps_call '
+function explorer_appdata_local_programns() {
+  powershell -c 'Start-Process explorer "${env:localappdata}\Programs"'
+}
+
+function explorer_appdata() {
+  powershell -c 'Start-Process explorer "${env:appdata}"'
+}
+
+function explorer_tmp() {
+  powershell -c 'Start-Process explorer "${env:localappdata}\temp"'
+}
+
+function explorer_start_menu_dir() {
+  powershell -c 'Start-Process explorer "${env:appdata}\Microsoft\Windows\Start Menu\Programs"'
+}
+
+function explorer_start_menu_dir_allusers() {
+  powershell -c 'Start-Process explorer "${env:allusersprofile}\Microsoft\Windows\Start Menu\Programs"'
+}
+
+function explorer_restart() {
+  powershell -c 'taskkill /f /im explorer.exe | Out-Null'
+  powershell -c 'Start-Process explorer.exe'
+}
+
+function explorer_home_restore_desktop() {
+  powershell -c '
     if (Test-Path "${env:userprofile}\Desktop") { return}
     mkdir "${env:userprofile}\Desktop"
     reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v "Desktop" /t REG_SZ /d "${env:userprofile}\Desktop" /f
@@ -496,7 +434,7 @@ function win_explorer_home_restore_desktop() {
   '
 }
 
-function win_explorer_hide_home_dotfiles() {
+function explorer_hide_home_dotfiles() {
   powershell.exe -c 'Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
 }
 
@@ -505,23 +443,23 @@ function win_explorer_hide_home_dotfiles() {
 # ---------------------------------------
 
 function win_sanity_ui() {
-  ps_call_script $(unixpath -w $BH_DIR/lib/ps1/sanity-ui.ps1)
+  powershell $(unixpath -w $BH_DIR/lib/ps1/sanity-ui.ps1)
 }
 
 function win_sanity_ctx_menu() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/lib/ps1/sanity-cxt-menu.ps1)
+  gsudo powershell $(unixpath -w $BH_DIR/lib/ps1/sanity-cxt-menu.ps1)
 }
 
 function win_sanity_services() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/lib/ps1/sanity-services.ps1)
+  gsudo powershell $(unixpath -w $BH_DIR/lib/ps1/sanity-services.ps1)
 }
 
 function win_sanity_password_policy() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/lib/ps1/sanity-password-policy.ps1)
+  gsudo powershell $(unixpath -w $BH_DIR/lib/ps1/sanity-password-policy.ps1)
 }
 
 function win_sanity_this_pc() {
-  ps_call_script_admin $(unixpath -w $BH_DIR/lib/ps1/sanity-this-pc.ps1)
+  gsudo powershell $(unixpath -w $BH_DIR/lib/ps1/sanity-this-pc.ps1)
 }
 
 function win_sanity_all() {
