@@ -238,38 +238,6 @@ function home_clean_unused() {
   done
 }
 
-function dev_dir_git_repos() {
-  log_func
-
-  # create dev dir
-  test_and_create_dir $BH_DEV
-  local cwd=$(pwd)
-
-  declare -a repos_array
-  repos_array=($BH_DEV_REPOS)
-  for ((i = 0; i < ${#repos_array[@]}; i = i + 2)); do
-    local parent=$BH_DEV/${repos_array[$i]}
-    local repo=${repos_array[$((i + 1))]}
-    # create parent
-    if ! test -d $parent; then
-      test_and_create_dir $parent
-    fi
-    # clone/pull repo
-    local repo_basename="$(basename -s .git $repo)"
-    local dst_dir="$parent/$repo_basename"
-    if ! test -d "$dst_dir"; then
-      log_msg_2nd "clone $dst_dir"
-      cd $parent
-      git clone $repo
-    else
-      cd $dst_dir
-      log_msg_2nd "pull $dst_dir"
-      git pull
-    fi
-  done
-  cd $cwd
-}
-
 # ---------------------------------------
 # rename
 # ---------------------------------------

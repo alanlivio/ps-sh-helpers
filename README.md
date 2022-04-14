@@ -33,7 +33,8 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 ### update/cleanup/dotfiles/repos
 
-The helpers below can be run routinely. They use variables at `~/.bhrc.sh` (or `~/.bashrc`) to install software, clean unused files/dirs, and update repositories. Please see examples in [skel/.bhrc.sh](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bhrc.sh).
+The helpers below can be run routinely. They use variables  from `~/.bashrc` to install software, clean unused files/dirs, and update repositories. 
+Please see examples in [skel/.bashrc](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bashrc).
 
 * `mac_update_clean` (at mac bash): install/update BH_MAC_BREW, BH_MAC_PY, BH_MAC_VSCODE, clean files/dirs from BH_HOME_CLEAN_UNUSED
 * `ubu_update_clean` (at ubuntu bash): install/update BH_UBU_APT, BH_UBU_PY, BH_UBU_VSCODE, clean files/dirs from BH_HOME_CLEAN_UNUSED
@@ -44,7 +45,6 @@ The helpers below can be run routinely. They use variables at `~/.bhrc.sh` (or `
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES
 * `home_clean_unused`: clean files/dirs from BH_HOME_CLEAN_UNUSED
-* `dev_dir_git_repos`: clone/update git repos defined in BH_DEV_REPOS
 
 ### curl helpers
 

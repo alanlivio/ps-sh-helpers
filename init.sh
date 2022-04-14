@@ -83,7 +83,7 @@ if $IS_GITBASH; then
     win_get_install $BH_WIN_GET
   }
 elif $IS_WSL; then
-  source "$BH_DIR/aliases/win.aliases.bash"
+  source "$BH_DIR/aliases/wsl.aliases.bash"
   function wsl_update_clean() {
     log_func
     # update bh
@@ -101,6 +101,7 @@ elif $IS_WSL; then
     home_clean_unused
   }
 elif $IS_MSYS; then
+  source "$BH_DIR/aliases/msys.aliases.bash"
   function msys_fix_home() {
     if ! test -d /mnt/; then mkdir /mnt/; fi
     echo -e "none / cygdrive binary,posix=0,noacl,user 0 0" | tee /etc/fstab
@@ -166,14 +167,4 @@ elif $IS_MAC; then
     # cleanup
     home_clean_unused
   }
-fi
-
-# load $BH_RC or "$HOME/.bhrc.bash"
-if test -z $BH_RC ; then 
-   BH_RC="$HOME/.bhrc.sh"
-fi
-if test -f $BH_RC; then 
-  source $BH_RC
-else
-  log_msg "The ~/.bhrc.sh does not exist. You may copy bh/skel/bhrc.sh or define \$BH_RC)."
 fi
