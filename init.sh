@@ -1,32 +1,7 @@
 #!/bin/bash
 
 # ---------------------------------------
-# OS vars
-# ---------------------------------------
-
-declare IS_{MAC,UBU,LINUX,WIN,WSL,MSYS,GITBASH}=false
-
-case "$(uname -s)" in
-CYGWIN* | MINGW* | MSYS*)
-  IS_WIN=true
-  if test -e /etc/profile.d/git-prompt.sh; then
-    IS_GITBASH=true
-  else
-    IS_MSYS=true
-  fi;;
-Linux)
-  IS_LINUX=true
-  if [[ $(uname -r) == *"icrosoft"* ]]; then
-    IS_WSL=true
-  elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then
-    IS_UBU=true
-  fi;;
-Darwin)
-  IS_MAC=true;;
-esac
-
-# ---------------------------------------
-# specifc-commands helpers
+# command helpers
 # ---------------------------------------
 
 BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -65,6 +40,27 @@ if type pacman &>/dev/null; then source "$BH_DIR/plugins/pacman.plugin.bash"; fi
 # ---------------------------------------
 # OS helpers
 # ---------------------------------------
+
+declare IS_{MAC,UBU,LINUX,WIN,WSL,MSYS,GITBASH}=false
+
+case $OSTYPE in
+  linux*)
+    IS_LINUX=true
+    if [[ $(uname -r) == *"icrosoft"* ]]; then
+      IS_WSL=true
+    elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then
+      IS_UBU=true
+    fi;;
+  msys*)
+    IS_WIN=true
+    if test -e /etc/profile.d/git-prompt.sh; then
+      IS_GITBASH=true
+    else
+      IS_MSYS=true
+    fi;;
+  darwin*)
+    IS_MAC=true;;
+esac
 
 if $IS_GITBASH; then
   source "$BH_DIR/plugins/win.plugin.bash"

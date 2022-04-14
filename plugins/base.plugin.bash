@@ -1,15 +1,4 @@
 # ---------------------------------------
-# vars/alias
-# ---------------------------------------
-
-if $IS_WIN; then
-  # hide windows user files when ls home
-  alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
-else
-  alias ls='ls --color=auto'
-fi
-
-# ---------------------------------------
 # log
 # ---------------------------------------
 
