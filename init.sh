@@ -30,44 +30,44 @@ esac
 # ---------------------------------------
 
 BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$BH_DIR/lib/base.bash" # uses echo, test, md5, curl, tar, unzip, curl, rename, find
-if type code &>/dev/null; then HAS_VSCODE=true; source "$BH_DIR/lib/vscode.bash"; else HAS_VSCODE=false; fi
-if type python &>/dev/null; then HAS_PY=true;source "$BH_DIR/lib/python.bash"; else HAS_PY=false; fi
-if type choco &>/dev/null; then source "$BH_DIR/lib/choco.bash"; fi
-if type deb &>/dev/null; then source "$BH_DIR/lib/deb.bash"; fi
-if type adb &>/dev/null; then source "$BH_DIR/lib/adb.bash"; fi
-if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.bash"; fi
-if type docker &>/dev/null; then source "$BH_DIR/lib/docker.bash"; fi
-if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/ffmpeg.bash"; fi
-if type flutter &>/dev/null; then source "$BH_DIR/lib/flutter.bash"; fi
-if type gcc &>/dev/null; then source "$BH_DIR/lib/gcc.bash"; fi
-if type ghostscript &>/dev/null; then source "$BH_DIR/lib/ghostscript.bash"; fi
-if type git &>/dev/null; then source "$BH_DIR/lib/git.bash"; fi
-if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/lib/gst.bash"; fi
-if type meson &>/dev/null; then source "$BH_DIR/lib/meson.bash"; fi
-if type pandoc &>/dev/null; then source "$BH_DIR/lib/pandoc.bash"; fi
-if type pngquant &>/dev/null; then source "$BH_DIR/lib/pngquant.bash"; fi
-if type pdflatex &>/dev/null; then source "$BH_DIR/lib/pdflatex.bash"; fi
-if type pkg-config &>/dev/null; then source "$BH_DIR/lib/pkg-config.bash"; fi
-if type ruby &>/dev/null; then source "$BH_DIR/lib/ruby.bash"; fi
-if type ssh &>/dev/null; then source "$BH_DIR/lib/ssh.bash"; fi
-if type tesseract &>/dev/null; then source "$BH_DIR/lib/tesseract.bash"; fi
-if type wget &>/dev/null; then source "$BH_DIR/lib/wget.bash"; fi
-if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/youtube-dl.bash"; fi
-if type zip &>/dev/null; then source "$BH_DIR/lib/zip.bash"; fi
-if type gnome-shell &>/dev/null; then source "$BH_DIR/lib/gnome.bash"; fi
-if type lxc &>/dev/null; then source "$BH_DIR/lib/lxc.bash"; fi
-if type apt &>/dev/null; then source "$BH_DIR/lib/apt.bash"; fi
-if type brew &>/dev/null; then source "$BH_DIR/lib/brew.bash"; fi
-if type snap &>/dev/null; then source "$BH_DIR/lib/snap.bash"; fi
-if type pacman &>/dev/null; then source "$BH_DIR/lib/pacman.bash"; fi
+source "$BH_DIR/plugins/base.plugin.bash" # uses echo, test, md5, curl, tar, unzip, curl, rename, find
+if type code &>/dev/null; then HAS_VSCODE=true; source "$BH_DIR/plugins/vscode.plugin.bash"; else HAS_VSCODE=false; fi
+if type python &>/dev/null; then HAS_PY=true;source "$BH_DIR/plugins/python.plugin.bash"; else HAS_PY=false; fi
+if type choco &>/dev/null; then source "$BH_DIR/plugins/choco.plugin.bash"; fi
+if type deb &>/dev/null; then source "$BH_DIR/plugins/deb.plugin.bash"; fi
+if type adb &>/dev/null; then source "$BH_DIR/plugins/adb.plugin.bash"; fi
+if type cmake &>/dev/null; then source "$BH_DIR/plugins/cmake.plugin.bash"; fi
+if type docker &>/dev/null; then source "$BH_DIR/plugins/docker.plugin.bash"; fi
+if type ffmpeg &>/dev/null; then source "$BH_DIR/plugins/ffmpeg.plugin.bash"; fi
+if type flutter &>/dev/null; then source "$BH_DIR/plugins/flutter.plugin.bash"; fi
+if type gcc &>/dev/null; then source "$BH_DIR/plugins/gcc.plugin.bash"; fi
+if type ghostscript &>/dev/null; then source "$BH_DIR/plugins/ghostscript.plugin.bash"; fi
+if type git &>/dev/null; then source "$BH_DIR/plugins/git.plugin.bash"; fi
+if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/plugins/gst.plugin.bash"; fi
+if type meson &>/dev/null; then source "$BH_DIR/plugins/meson.plugin.bash"; fi
+if type pandoc &>/dev/null; then source "$BH_DIR/plugins/pandoc.plugin.bash"; fi
+if type pngquant &>/dev/null; then source "$BH_DIR/plugins/pngquant.plugin.bash"; fi
+if type pdflatex &>/dev/null; then source "$BH_DIR/plugins/pdflatex.plugin.bash"; fi
+if type pkg-config &>/dev/null; then source "$BH_DIR/plugins/pkg-config.plugin.bash"; fi
+if type ruby &>/dev/null; then source "$BH_DIR/plugins/ruby.plugin.bash"; fi
+if type ssh &>/dev/null; then source "$BH_DIR/plugins/ssh.plugin.bash"; fi
+if type tesseract &>/dev/null; then source "$BH_DIR/plugins/tesseract.plugin.bash"; fi
+if type wget &>/dev/null; then source "$BH_DIR/plugins/wget.plugin.bash"; fi
+if type youtube-dl &>/dev/null; then source "$BH_DIR/plugins/youtube-dl.plugin.bash"; fi
+if type zip &>/dev/null; then source "$BH_DIR/plugins/zip.plugin.bash"; fi
+if type gnome-shell &>/dev/null; then source "$BH_DIR/plugins/gnome.plugin.bash"; fi
+if type lxc &>/dev/null; then source "$BH_DIR/plugins/lxc.plugin.bash"; fi
+if type apt &>/dev/null; then source "$BH_DIR/plugins/apt.plugin.bash"; fi
+if type brew &>/dev/null; then source "$BH_DIR/plugins/brew.plugin.bash"; fi
+if type snap &>/dev/null; then source "$BH_DIR/plugins/snap.plugin.bash"; fi
+if type pacman &>/dev/null; then source "$BH_DIR/plugins/pacman.plugin.bash"; fi
 
 # ---------------------------------------
 # OS helpers
 # ---------------------------------------
 
 if $IS_GITBASH; then
-  source "$BH_DIR/lib/win.bash"
+  source "$BH_DIR/plugins/win.plugin.bash"
   if type gsudo &>/dev/null; then HAS_GSUDO=true; else HAS_GSUDO=false; fi
   function win_update_clean() {
     log_func
@@ -87,7 +87,7 @@ if $IS_GITBASH; then
     win_get_install $BH_WIN_GET
   }
 elif $IS_WSL; then
-  source "$BH_DIR/lib/wsl.bash"
+  source "$BH_DIR/aliases/wsl.aliases.bash"
   function wsl_update_clean() {
     log_func
     # update bh
