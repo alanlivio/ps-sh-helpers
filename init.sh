@@ -33,6 +33,7 @@ BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$BH_DIR/lib/base.bash" # uses echo, test, md5, curl, tar, unzip, curl, rename, find
 if type code &>/dev/null; then HAS_VSCODE=true; source "$BH_DIR/lib/vscode.bash"; else HAS_VSCODE=false; fi
 if type python &>/dev/null; then HAS_PY=true;source "$BH_DIR/lib/python.bash"; else HAS_PY=false; fi
+if type choco &>/dev/null; then source "$BH_DIR/lib/choco.bash"; fi
 if type deb &>/dev/null; then source "$BH_DIR/lib/deb.bash"; fi
 if type adb &>/dev/null; then source "$BH_DIR/lib/adb.bash"; fi
 if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.bash"; fi

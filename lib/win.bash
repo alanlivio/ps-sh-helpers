@@ -26,13 +26,11 @@ if type gsudo &>/dev/null; then HAS_GSUDO=true; else HAS_GSUDO=false; fi
 # ---------------------------------------
 
 function win_gitbash_fix_prompt {
-  log_func
   sed 's/show\sMSYSTEM/#&/g' -i /etc/profile.d/git-prompt.sh
   sed "s/PS1=\"\$PS1\"'\\\\n/#&/g" -i /etc/profile.d/git-prompt.sh
 }
 
 function win_gitbash_open_prompt {
-  log_func
   open "$(winpath /etc/profile.d/git-prompt.sh)"
 }
 
@@ -41,7 +39,6 @@ function win_gitbash_open_prompt {
 # ---------------------------------------
 
 function win_recycle_bin_clean() {
-  log_func
   ps_call 'Clear-RecycleBin -Confirm:$false 2> $null'
 }
 
@@ -92,7 +89,6 @@ function win_user_adminstrator_disable() {
 # ---------------------------------------
 
 function win_sysupdate_win() {
-  log_func
   ps_call_admin '
     Install-Module -Name PSWindowsUpdate -Force
     $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
@@ -115,7 +111,6 @@ function win_sysupdate_win_list_last_installed() {
 # ---------------------------------------
 
 function win_feature_enable_ssh_server_bash() {
-  log_func
   local current_bash_path=$(where bash | head -1)
   ps_call_admin "
     Add-WindowsCapability -Online -Name OpenSSH.Client
@@ -321,7 +316,6 @@ BH_PLATOOLS_VER="31.0.3-windows"
 BH_ANDROID_CMD_VER="7583922"
 
 function win_install_adb() {
-  log_func
 
   # create opt
   local opt_dst="$BH_OPT"
@@ -340,7 +334,6 @@ function win_install_adb() {
 }
 
 function win_install_flutter() {
-  log_func
 
   # create opt
   local opt_dst="$BH_OPT"
@@ -388,7 +381,6 @@ function win_install_winget() {
 }
 
 function win_install_tesseract() {
-  log_func
   if ! type tesseract.exe &>/dev/null; then
     win_get_install tesseract
     win_path_add 'C:\Program Files\Tesseract-OCR'
@@ -396,7 +388,6 @@ function win_install_tesseract() {
 }
 
 function win_install_java() {
-  log_func
   if ! type java.exe &>/dev/null; then
     win_get_install ojdkbuild.ojdkbuild
     local javahome=$(ps_call '$(get-command java).Source.replace("\bin\java.exe", "")')
@@ -413,33 +404,9 @@ function win_install_wsl() {
 }
 
 function win_install_docker() {
-  log_func
   ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
   ps_call_admin Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
   win_get_install Docker.DockerDesktop
-}
-
-function win_install_choco() {
-  log_func
-  ps_call_admin '
-    if (!(Get-Command "choco.exe" -ea 0)) {
-      Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString("https://community.chocolatey.org/install.ps1"))
-      choco feature disable -n checksumFiles
-      choco feature disable -n showDownloadProgress
-      choco feature disable -n showNonElevatedWarnings
-      choco feature disable -n logValidationResultsOnWarnings
-      choco feature disable -n logEnvironmentValues
-      choco feature disable -n exitOnRebootDetected
-      choco feature enable -n stopOnFirstPackageFailure
-      choco feature enable -n skipPackageUpgradesWhenNotInstalled
-      choco feature enable -n logWithoutColor
-      choco feature enable -n allowEmptyChecksumsSecure
-      choco feature enable -n allowGlobalConfirmation
-      choco feature enable -n failOnAutoUninstaller
-      choco feature enable -n removePackageInformationOnUninstall
-      choco feature enable -n useRememberedArgumentsForUpgrades
-    }
-  '
 }
 
 # ---------------------------------------
@@ -460,7 +427,6 @@ function win_get_list_installed_exported_str() {
 }
 
 function win_get_install() {
-  log_func
   local pkgs_to_install=""
   for i in "$@"; do
     if [[ $(winget list --id $i) =~ "No installed"* ]]; then
@@ -531,7 +497,6 @@ function win_explorer_home_restore_desktop() {
 }
 
 function win_explorer_hide_home_dotfiles() {
-  log_func
   powershell.exe -c 'Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
 }
 
