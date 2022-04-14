@@ -66,7 +66,6 @@ if $IS_GITBASH; then
   source "$BH_DIR/plugins/win.plugin.bash"
   if type gsudo &>/dev/null; then HAS_GSUDO=true; else HAS_GSUDO=false; fi
   function win_update_clean() {
-    log_func
     # update bh
     update_if_needed
     # cleanup
@@ -85,7 +84,6 @@ if $IS_GITBASH; then
 elif $IS_WSL; then
   source "$BH_DIR/aliases/wsl.aliases.bash"
   function wsl_update_clean() {
-    log_func
     # update bh
     update_if_needed
     # apt
@@ -112,7 +110,6 @@ elif $IS_MSYS; then
     echo -e 'db_home: windows >> /etc/nsswitch.conf' | tee -a /etc/nsswitch.conf
   }
   function msys_update_clean() {
-    log_func
     # update bh
     update_if_needed
     # essentials
@@ -129,7 +126,6 @@ elif $IS_MSYS; then
 elif $IS_UBU; then
   alias open="xdg-open"
   function ubu_update_clean() {
-    log_func
     # update bh
     update_if_needed
     # apt
@@ -149,7 +145,6 @@ elif $IS_UBU; then
   }
 elif $IS_MAC; then
   function mac_update_clean() {
-    log_func
     # update bh
     update_if_needed
     # brew

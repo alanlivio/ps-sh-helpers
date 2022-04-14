@@ -15,7 +15,6 @@ function py_list_installed() {
 }
 
 function py_upgrade() {
-  log_func
   local outdated=$(pip list --outdated --format=freeze --disable-pip-version-check 2>/dev/null | grep -v '^\-e' | cut -d = -f 1)
   if test "$outdated"; then
     pip install --upgrade pip 2>/dev/null
@@ -24,8 +23,6 @@ function py_upgrade() {
 }
 
 function py_install() {
-  log_func
-
   local pkgs_to_install=""
   local pkgs_installed=$(pip list --format=columns --disable-pip-version-check | cut -d' ' -f1 | grep -v Package | sed '1d' | tr '\n' ' ')
   for i in "$@"; do

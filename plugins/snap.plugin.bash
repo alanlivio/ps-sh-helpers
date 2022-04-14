@@ -3,8 +3,6 @@
 # ---------------------------------------
 
 function ubu_snap_install() {
-  log_func
-
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""
   for i in "$@"; do
@@ -22,8 +20,6 @@ function ubu_snap_install() {
 }
 
 function ubu_snap_install_classic() {
-  log_func
-
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""
   for i in "$@"; do
@@ -40,8 +36,6 @@ function ubu_snap_install_classic() {
 }
 
 function ubu_snap_install_edge() {
-  log_func
-
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""
   for i in "$@"; do
@@ -58,7 +52,6 @@ function ubu_snap_install_edge() {
 }
 
 function ubu_snap_upgrade() {
-  log_func
   sudo snap refresh 2>/dev/null
 }
 

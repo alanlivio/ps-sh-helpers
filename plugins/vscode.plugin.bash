@@ -11,7 +11,6 @@ function vscode_diff() {
 }
 
 function vscode_install() {
-  log_func
   local pkgs_to_install=""
   local pkgs_installed_tmp_file="/tmp/code-list-extensions"
   code --list-extensions >$pkgs_installed_tmp_file

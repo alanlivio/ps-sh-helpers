@@ -3,7 +3,6 @@
 # ---------------------------------------
 
 function apt_upgrade() {
-  log_func
   sudo apt -y update
   if [ "$(apt list --upgradable 2>/dev/null | wc -l)" -gt 1 ]; then
     sudo apt -y upgrade
@@ -11,22 +10,18 @@ function apt_upgrade() {
 }
 
 function apt_update() {
-  log_func
   sudo apt -y update
 }
 
 function apt_ppa_remove() {
-  log_func
   sudo add-apt-repository --remove $1
 }
 
 function apt_ppa_list() {
-  log_func
   apt policy
 }
 
 function apt_fixes() {
-  log_func
   sudo dpkg --configure -a
   sudo apt install -f --fix-broken
   sudo apt-get update --fix-missing
@@ -34,7 +29,6 @@ function apt_fixes() {
 }
 
 function apt_install() {
-  log_func
 
   local pkgs_to_install=""
   for i in "$@"; do
@@ -59,14 +53,12 @@ function apt_lastest_pkgs() {
 }
 
 function apt_autoremove() {
-  log_func
   if [ "$(apt --dry-run autoremove 2>/dev/null | grep -c -Po 'Remv \K[^ ]+')" -gt 0 ]; then
     sudo apt -y autoremove
   fi
 }
 
 function apt_remove_pkgs() {
-  log_func
   local pkgs_to_remove=""
   for i in "$@"; do
     dpkg --status "$i" &>/dev/null

@@ -3,8 +3,6 @@
 # ---------------------------------------
 
 function ruby_install() {
-  log_func
-
   local pkgs_to_install=""
   local pkgs_installed=$(gem list | cut -d' ' -f1 -s | tr '\n' ' ')
   for i in "$@"; do

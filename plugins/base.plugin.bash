@@ -39,7 +39,6 @@ function log_try() {
 # ---------------------------------------
 
 function bashrc_reload() {
-  log_func
   source $HOME/.bashrc
 }
 
@@ -50,7 +49,6 @@ function bashrc_reload() {
 function update_if_needed() {
   cd $BH_DIR
   if $(git_check_if_need_pull); then
-    log_func
     git pull
     bashrc_reload
   fi
@@ -219,7 +217,6 @@ alias dotfiles_diff="dotfiles_func diff"
 # ---------------------------------------
 
 function home_clean_unused() {
-  log_func
   for i in "${BH_HOME_CLEAN_UNUSED[@]}"; do
     if test -d "$HOME/$i"; then
       if $IS_MAC; then
@@ -280,7 +277,6 @@ function user_passwd_disable_len_restriction() {
 }
 
 function user_permissions_opt() {
-  log_func
   sudo chown -R root:root /opt
   sudo chmod -R 775 /opt/
   grep root /etc/group | grep $USER >/dev/null

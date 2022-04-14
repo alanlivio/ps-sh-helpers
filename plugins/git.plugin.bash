@@ -319,12 +319,10 @@ function git_filter_repo_save_origin() {
 }
 
 function git_filter_repo_install() {
-  log_func
   py_install git-filter-repo
 }
 
 function git_filter_repo_messages_to_lower_case() {
-  log_func
   git_filter_repo_save_origin
   # TODO: only work if echo |
   echo git filter-repo --message-callback "'return message.lower()'" --force | bash
@@ -333,7 +331,6 @@ function git_filter_repo_messages_to_lower_case() {
 
 function git_filter_repo_messages_remove_str() {
   : ${2?"Usage: ${FUNCNAME[0]} <str> "}
-  log_func
   git_filter_repo_save_origin
   # TODO: only work if echo |
   echo git filter-repo --message-callback "'return message.replace(b\"$1\", b\"\")'" --force | bash
@@ -341,7 +338,6 @@ function git_filter_repo_messages_remove_str() {
 }
 
 function git_filter_repo_user_rename_to_current() {
-  log_func
   git_filter_repo_save_origin
   local new_name="$(git config user.name)"
   local new_email="$(git config user.email)"
@@ -351,7 +347,6 @@ function git_filter_repo_user_rename_to_current() {
 }
 
 function git_filter_repo_user_rename_as_mailmap() {
-  log_func
   git_filter_repo_save_origin
   : ${1?"Usage: ${FUNCNAME[0]} <mailmap>. See more at 'https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html#:~:text=User%20and%20email%20based%20filtering'"}
   git filter-repo --mailmap $1
@@ -359,7 +354,6 @@ function git_filter_repo_user_rename_as_mailmap() {
 }
 
 function git_filter_repo_delete_file_bigger_than_50M() {
-  log_func
   git_filter_repo_save_origin
   git filter-repo --strip-blobs-bigger-than 50M
   git_filter_repo_test_and_msg
@@ -367,14 +361,12 @@ function git_filter_repo_delete_file_bigger_than_50M() {
 
 function git_filter_repo_delete_file() {
   : ${1?"Usage: ${FUNCNAME[0]} <filename>"}
-  log_func
   git_filter_repo_save_origin
   git filter-repo --use-base-name --invert-paths --path "$1"
   git_filter_repo_test_and_msg
 }
 
 function git_filter_repo_finish() {
-  log_func
   if [ -z "$BH_FILTER_REPO_LAST_ORIGIN" ]; then
     echo "$BH_FILTER_REPO_LAST_ORIGIN not defined fix it"
     return

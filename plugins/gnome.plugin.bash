@@ -19,7 +19,6 @@ function gnome_execute_desktop_file() {
 }
 
 function gnome_reset_keybindings() {
-  log_func
   gsettings reset-recursively org.gnome.mutter.keybindings
   gsettings reset-recursively org.gnome.mutter.wayland.keybindings
   gsettings reset-recursively org.gnome.desktop.wm.keybindings
@@ -42,7 +41,6 @@ function gnome_dark_desktop_background() {
 }
 
 function gnome_sanity() {
-  log_func
   # gnome search
   gsettings set org.gnome.desktop.search-providers sort-order "[]"
   gsettings set org.gnome.desktop.search-providers disable-external false
@@ -91,7 +89,6 @@ function gnome_sanity() {
 }
 
 function gnome_disable_unused_apps_in_search() {
-  log_func
   local apps_to_hide=$(find /usr/share/applications/ -iname '*im6*' -iname '*java*' -o -iname '*JB*' -o -iname '*policy*' -o -iname '*icedtea*' -o -iname '*uxterm*' -o -iname '*display-im6*' -o -iname '*unity*' -o -iname '*webbrowser-app*' -o -iname '*amazon*' -o -iname '*icedtea*' -o -iname '*xdiagnose*' -o -iname yelp.desktop -o -iname '*brasero*')
   for i in $apps_to_hide; do
     sudo sh -c " echo 'NoDisplay=true' >> $i"
@@ -99,7 +96,6 @@ function gnome_disable_unused_apps_in_search() {
 }
 
 function gnome_disable_super_workspace_change() {
-  log_func
   # remove super+arrow virtual terminal change
   sudo sh -c 'dumpkeys |grep -v cr_Console |loadkeys'
 }

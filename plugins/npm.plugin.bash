@@ -3,8 +3,6 @@
 # ---------------------------------------
 
 function npm_install() {
-  log_func
-
   local pkgs_to_install=""
   local pkgs_installed=$(npm ls -g --depth 0 2>/dev/null | grep -v UNMET | cut -d' ' -f2 -s | cut -d'@' -f1 | tr '\n' ' ')
   for i in "$@"; do
