@@ -35,7 +35,7 @@ if type code &>/dev/null; then HAS_VSCODE=true; source "$BH_DIR/plugins/vscode.p
 if type python &>/dev/null; then HAS_PY=true;source "$BH_DIR/plugins/python.plugin.bash"; else HAS_PY=false; fi
 if type choco &>/dev/null; then source "$BH_DIR/plugins/choco.plugin.bash"; fi
 if type deb &>/dev/null; then source "$BH_DIR/plugins/deb.plugin.bash"; fi
-if type adb &>/dev/null; then source "$BH_DIR/plugins/adb.plugin.bash"; fi
+if type adb &>/dev/null; then source "$BH_DIR/aliases/adb.aliases.bash"; fi
 if type cmake &>/dev/null; then source "$BH_DIR/plugins/cmake.plugin.bash"; fi
 if type docker &>/dev/null; then source "$BH_DIR/plugins/docker.plugin.bash"; fi
 if type ffmpeg &>/dev/null; then source "$BH_DIR/plugins/ffmpeg.plugin.bash"; fi
@@ -87,7 +87,7 @@ if $IS_GITBASH; then
     win_get_install $BH_WIN_GET
   }
 elif $IS_WSL; then
-  source "$BH_DIR/aliases/wsl.aliases.bash"
+  source "$BH_DIR/aliases/win.aliases.bash"
   function wsl_update_clean() {
     log_func
     # update bh
