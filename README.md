@@ -22,6 +22,7 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 * `gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
 * `win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons)
+* `win_sanity_all` (at gitbash): to disable other services, glutter (see ./lib/win.bash)
 
 ### install software helpers
 
@@ -34,15 +35,15 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 The helpers below can be run routinely. They use variables at `~/.bhrc.sh` (or `~/.bashrc`) to install software, clean unused files/dirs, and update repositories. Please see examples in [skel/.bhrc.sh](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bhrc.sh).
 
-* `setup_mac` (at mac bash): install/update BH_MAC_BREW, BH_MAC_PY, BH_MAC_VSCODE
-* `setup_ubu` (at ubuntu bash): install/update BH_UBU_APT, BH_UBU_PY, BH_UBU_VSCODE
-* `setup_win` (at GitBash): install/update BH_WIN_GET, BH_WIN_PY, BH_WIN_VSCODE
-* `setup_wsl` (at WSL bash): install/update BH_WSL_APT, BH_WSL_PY
-* `setup_msys` (at msys bash): install/update BH_MSYS_PAC, BH_MSYS_PY
+* `mac_update_clean` (at mac bash): install/update BH_MAC_BREW, BH_MAC_PY, BH_MAC_VSCODE, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `ubu_update_clean` (at ubuntu bash): install/update BH_UBU_APT, BH_UBU_PY, BH_UBU_VSCODE, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `win_update_clean` (at GitBash): install/update BH_WIN_GET, BH_WIN_PY, BH_WIN_VSCODE, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `wsl_update_clean` (at WSL bash): install/update BH_WSL_APT, BH_WSL_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `msys_update_clean` (at msys bash): install/update BH_MSYS_PAC, BH_MSYS_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES
-* `home_clean_unused`: clean files/dirs defined in array BH_HOME_CLEAN_UNUSED
+* `home_clean_unused`: clean files/dirs from BH_HOME_CLEAN_UNUSED
 * `dev_dir_git_repos`: clone/update git repos defined in BH_DEV_REPOS
 
 ### curl helpers

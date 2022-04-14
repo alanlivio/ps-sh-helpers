@@ -67,7 +67,7 @@ if type pacman &>/dev/null; then source "$BH_DIR/lib/pacman.bash"; fi
 
 if $IS_GITBASH; then
   source "$BH_DIR/lib/win.bash"
-  function setup_win() {
+  function win_update_clean() {
     log_func
     # update bh
     update_if_needed
@@ -86,7 +86,7 @@ if $IS_GITBASH; then
   }
 elif $IS_WSL; then
   source "$BH_DIR/lib/wsl.bash"
-  function setup_wsl() {
+  function wsl_update_clean() {
     log_func
     # update bh
     update_if_needed
@@ -112,7 +112,7 @@ elif $IS_MSYS; then
     echo -e "/c /mnt/c none bind" | tee -a /etc/fstab
     echo -e 'db_home: windows >> /etc/nsswitch.conf' | tee -a /etc/nsswitch.conf
   }
-  function setup_msys() {
+  function msys_update_clean() {
     log_func
     # update bh
     update_if_needed
@@ -129,7 +129,7 @@ elif $IS_MSYS; then
   }
 elif $IS_UBU; then
   alias open="xdg-open"
-  function setup_ubu() {
+  function ubu_update_clean() {
     log_func
     # update bh
     update_if_needed
@@ -149,7 +149,7 @@ elif $IS_UBU; then
     home_clean_unused
   }
 elif $IS_MAC; then
-  function setup_mac() {
+  function mac_update_clean() {
     log_func
     # update bh
     update_if_needed

@@ -12,15 +12,6 @@ fi
 # wsl_install
 # ---------------------------------------
 
-function wsl_install_lxc() {
-  # https://www.youtube.com/watch?v=SLDrvGUksv0
-  sudo apt install lxd snap
-  sudo apt-get install -yqq daemonize dbus-user-session fontconfig
-  sudo daemonize /usr/bin/unshare --fork --pid --mount-proc /lib/systemd/systemd --system-unit=basic.target
-  sudo nsenter -t $(pidof systemd) -a su - $LOGNAME
-  sudo snap install lxd
-}
-
 function wsl_install_ssh() {
   sudo apt install -y openssh-server
   # https://github.com/JetBrains/clion-wsl/blob/master/ubuntu_setup_env.sh
