@@ -68,7 +68,7 @@ if $IS_GITBASH; then
   if type gsudo &>/dev/null; then HAS_GSUDO=true; else HAS_GSUDO=false; fi
   function win_update_clean() {
     # update bh
-    update_if_needed
+    bh_update_if_needed
     # cleanup
     home_clean_unused
     explorer_hide_home_dotfiles
@@ -86,7 +86,7 @@ elif $IS_WSL; then
   source "$BH_DIR/aliases/wsl.aliases.bash"
   function wsl_update_clean() {
     # update bh
-    update_if_needed
+    bh_update_if_needed
     # apt
     local pkgs="git deborphan apt-file vim diffutils curl "
     pkgs+="python3 python3-pip "
@@ -112,7 +112,7 @@ elif $IS_MSYS; then
   }
   function msys_update_clean() {
     # update bh
-    update_if_needed
+    bh_update_if_needed
     # essentials
     local pkgs="pacman pacman-mirrors msys2-runtime vim diffutils curl $BH_MSYS_PAC"
     pacman_install $pkgs
@@ -128,7 +128,7 @@ elif $IS_UBU; then
   alias open="xdg-open"
   function ubu_update_clean() {
     # update bh
-    update_if_needed
+    bh_update_if_needed
     # apt
     local pkgs="git deborphan apt-file vim diffutils curl "
     pkgs+="python3 python3-pip "
@@ -147,7 +147,7 @@ elif $IS_UBU; then
 elif $IS_MAC; then
   function mac_update_clean() {
     # update bh
-    update_if_needed
+    bh_update_if_needed
     # brew
     install_mac_brew
     local pkgs="git bash vim diffutils curl "

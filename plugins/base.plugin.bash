@@ -46,7 +46,7 @@ function bashrc_reload() {
 # bh helpers
 # ---------------------------------------
 
-function update_if_needed() {
+function bh_update_if_needed() {
   cd $BH_DIR
   if $(git_check_if_need_pull); then
     git pull
