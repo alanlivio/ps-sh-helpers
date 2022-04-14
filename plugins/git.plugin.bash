@@ -1,9 +1,3 @@
-# ---------------------------------------
-# git
-# ---------------------------------------
-
-# count
-
 function git_log_oneline() {
   git log --oneline
 }
@@ -11,8 +5,6 @@ function git_log_oneline() {
 function git_log_oneline_graph() {
   git log --oneline --graph --decorate --all
 }
-
-# count
 
 function git_count() {
   git rev-list --all --count
@@ -22,20 +14,14 @@ function git_count_by_user() {
   git shortlog -s -n
 }
 
-# overleaf
-
 function git_overleaf_push_commit_all() {
   git commit -am "Update from local git"
   git push
 }
 
-# untrack
-
 function git_untrack_repo_file_options_changes() {
   git config core.fileMode false
 }
-
-# assume
 
 function git_assume_unchanged() {
   : ${1?"Usage: ${FUNCNAME[0]} <file>"}
@@ -47,8 +33,6 @@ function git_assume_unchanged_disable() {
   git update-index --no-assume-unchanged $1
 }
 
-# reset
-
 function git_reset_last_commit() {
   git reset HEAD~1
 }
@@ -57,8 +41,6 @@ function git_reset_hard() {
   git reset --hard
 }
 
-# show
-
 function git_show_file_in_commit() {
   : ${1?"Usage: ${FUNCNAME[0]} <commit> <file>"}
   REV=$1
@@ -66,13 +48,9 @@ function git_show_file_in_commit() {
   git show $REV:$FILE
 }
 
-# stash
-
 function git_stash_list() {
   git stash save --include-untracked
 }
-
-# branch
 
 function git_branch_rebase_from_upstream() {
   git rebase upstream/master
@@ -122,9 +100,7 @@ function git_branch_delete_local_and_origin() {
 }
 
 function git_branch_clean_removed_remotes() {
-  # clean removed remotes
   git fetch --prune
-  # clean banchs with removed upstreams
   git branch -vv | awk '/: gone]/{print $1}' | xargs -r git branch -d
 }
 
@@ -136,8 +112,6 @@ function git_branch_upstrem_set() {
   : ${1?"Usage: ${FUNCNAME[0]} <remote-branch>"}
   git branch --set-upstream-to $1
 }
-
-# partial_commit
 
 function git_partial_commit() {
   git stash
@@ -151,8 +125,6 @@ function git_partial_commit_continue() {
 function git_github_check_ssh() {
   ssh -T git@github.com
 }
-
-# github
 
 function git_github_fix() {
   echo -e "Host github.com\\n  Hostname ssh.github.com\\n  Port 443" | tee $HOME/.ssh/config
@@ -171,14 +143,10 @@ function git_github_setup() {
   git push -u origin master
 }
 
-# upstream
-
 function git_upstream_pull() {
   git fetch upstream
   git rebase upstream/master
 }
-
-# push
 
 function git_push_force() {
   git push --force
@@ -196,14 +164,10 @@ function git_push_commit_all() {
   git push
 }
 
-# check
-
 function git_check_if_need_pull() {
   [ $(git rev-parse HEAD) = $(git ls-remote $(git rev-parse --abbrev-ref "@{u}" \
     | sed 's/\// /g') | cut -f1) ] && printf false || printf true
 }
-
-# gitignore
 
 function git_gitignore_create() {
   : ${1?"Usage: ${FUNCNAME[0]} <contexts,..>"}
@@ -222,8 +186,6 @@ function git_gitignore_create_cpp() {
   git_gitignore_create c,c++,qt,autotools,make,ninja,cmake
 }
 
-# formated_patch
-
 function git_formated_patch_last_commit() {
   git format-patch HEAD~1
 }
@@ -236,8 +198,6 @@ function git_formated_patch_apply() {
   git am <"$@"
 }
 
-# diff
-
 function git_diff_files_last_commit() {
   git diff --stat HEAD^1
 }
@@ -245,8 +205,6 @@ function git_diff_files_last_commit() {
 function git_diff_last_commit() {
   git diff HEAD^1
 }
-
-# subdirs
 
 function git_subdirs_pull() {
   local cwd=$(pwd)
@@ -279,8 +237,6 @@ function git_subdirs_reset_clean() {
   cd $cwd
 }
 
-# tag
-
 function git_tag_list() {
   git tag -l
 }
@@ -301,14 +257,9 @@ function git_tag_remove_local_and_remote() {
   git push origin :refs/tags/$1
 }
 
-# amend
-
 function git_amend_commit_all() {
   git commit -a --amend --no-edit
 }
-
-# filter-repo tool 
-# <https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html>
 
 alias git_filter_repo_test_and_msg='if [ $? -eq 0 ]; then log_msg "fiter-repo succeeded. check if you agree and run git_filter_repo_finish to push"; fi'
 
@@ -324,7 +275,6 @@ function git_filter_repo_install() {
 
 function git_filter_repo_messages_to_lower_case() {
   git_filter_repo_save_origin
-  # TODO: only work if echo |
   echo git filter-repo --message-callback "'return message.lower()'" --force | bash
   git_filter_repo_test_and_msg
 }
@@ -332,7 +282,6 @@ function git_filter_repo_messages_to_lower_case() {
 function git_filter_repo_messages_remove_str() {
   : ${2?"Usage: ${FUNCNAME[0]} <str> "}
   git_filter_repo_save_origin
-  # TODO: only work if echo |
   echo git filter-repo --message-callback "'return message.replace(b\"$1\", b\"\")'" --force | bash
   git_filter_repo_test_and_msg
 }
@@ -341,7 +290,6 @@ function git_filter_repo_user_rename_to_current() {
   git_filter_repo_save_origin
   local new_name="$(git config user.name)"
   local new_email="$(git config user.email)"
-  # TODO: only work if echo |
   echo git filter-repo --name-callback "'return b\""$new_name"\"'" --email-callback "'return b\""$new_email"\"'" --force | bash
   git_filter_repo_test_and_msg
 }

@@ -1,7 +1,3 @@
-# ---------------------------------------
-# pkg-config
-# ---------------------------------------
-
 function pkg_config_search() {
   : ${1?"Usage: ${FUNCNAME[0]} <pkg_name>"}
   pkg-config --list-all | grep --color=auto $1

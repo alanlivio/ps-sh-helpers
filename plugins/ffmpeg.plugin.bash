@@ -1,7 +1,3 @@
-# ---------------------------------------
-# ffmpeg
-# ---------------------------------------
-
 function ffmpeg_show_motion_vectors() {
   : ${1?"Usage: ${FUNCNAME[0]} <video>"}
   ffplay -flags2 +export_mvs -vf codecview=mv=pf+bf+bb $1

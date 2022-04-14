@@ -1,7 +1,3 @@
-# ---------------------------------------
-# lxc
-# ---------------------------------------
-
 function ubu_lxc_list_all() {
   lxc image list
   lxc network list

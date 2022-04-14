@@ -1,7 +1,3 @@
-# ---------------------------------------
-# pdflatex
-# ---------------------------------------
-
 function pdflatex_clean() {
   rm -rf ./*.aux ./*.dvi ./*.log ./*.lox ./*.out ./*.lol ./*.pdf ./*.synctex.gz ./_minted-* ./*.bbl ./*.blg ./*.lot ./*.lof ./*.toc ./*.lol ./*.fdb_latexmk ./*.fls ./*.bcf
 }

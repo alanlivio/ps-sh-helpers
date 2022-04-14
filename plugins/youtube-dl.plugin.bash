@@ -1,7 +1,3 @@
-# ---------------------------------------
-# youtube-dl
-# ---------------------------------------
-
 YOUTUBEDL_ARGS="--download-archive .downloaded.txt --no-warnings --no-post-overwrites --ignore-errors"
 
 function youtubedl_from_txt() {

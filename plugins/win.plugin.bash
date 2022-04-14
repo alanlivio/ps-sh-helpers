@@ -1,7 +1,3 @@
-#!/bin/bash
-
-alias unixpath='cygpath'
-alias winpath='cygpath -w'
 # fix mingw tmp
 unset temp
 unset tmp

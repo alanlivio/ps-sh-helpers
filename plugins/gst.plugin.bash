@@ -1,7 +1,3 @@
-# ---------------------------------------
-# gst
-# ---------------------------------------
-
 function gst_audio_create_empty() {
   : ${1?"Usage: ${FUNCNAME[0]} [audio_output]"}
   gst-launch-1.0 audiotestsrc wave=4 ! audioconvert ! lamemp3enc ! id3v2mux ! filesink location="$1"

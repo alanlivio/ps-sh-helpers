@@ -1,7 +1,3 @@
-# ---------------------------------------
-# snap
-# ---------------------------------------
-
 function ubu_snap_install() {
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""

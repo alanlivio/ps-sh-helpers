@@ -1,7 +1,3 @@
-# ---------------------------------------
-# ruby
-# ---------------------------------------
-
 function ruby_install() {
   local pkgs_to_install=""
   local pkgs_installed=$(gem list | cut -d' ' -f1 -s | tr '\n' ' ')

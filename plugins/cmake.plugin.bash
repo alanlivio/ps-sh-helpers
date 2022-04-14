@@ -1,7 +1,3 @@
-# ---------------------------------------
-# cmake
-# ---------------------------------------
-
 CMAKE_DIR="_build-Debug-$WSL_DISTRO_NAME$OS"
 CMAKE_DIR_RELEASE="_build-Release-$WSL_DISTRO_NAME$OS"
 CMAKE_ARGS_CONFIG="

@@ -1,7 +1,3 @@
-# ---------------------------------------
-# ssh
-# ---------------------------------------
-
 function ssh_fix_permissions() {
   chmod 700 $HOME/.ssh/
   if test -e $HOME/.ssh/id_rsa; then

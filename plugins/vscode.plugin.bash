@@ -1,7 +1,3 @@
-# ---------------------------------------
-# vscode
-# ---------------------------------------
-
 function vscode_diff() {
   : ${1?"Usage: ${FUNCNAME[0]} <old_file> <new_file>"}
   diff "$1" "$2" &>/dev/null

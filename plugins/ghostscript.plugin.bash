@@ -1,7 +1,3 @@
-# ---------------------------------------
-# ghostscript
-# ---------------------------------------
-
 function ghostscript_compress() {
   : ${1?"Usage: ${FUNCNAME[0]} <pdf>"}
   ghostscript -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=${1%.*}-compressed.pdf $1

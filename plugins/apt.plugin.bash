@@ -1,7 +1,3 @@
-# ---------------------------------------
-# apt helpers
-# ---------------------------------------
-
 function apt_upgrade() {
   sudo apt -y update
   if [ "$(apt list --upgradable 2>/dev/null | wc -l)" -gt 1 ]; then
