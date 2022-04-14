@@ -1,4 +1,4 @@
-function ubu_snap_install() {
+function snap_install() {
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""
   for i in "$@"; do
@@ -15,7 +15,7 @@ function ubu_snap_install() {
   fi
 }
 
-function ubu_snap_install_classic() {
+function snap_install_classic() {
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""
   for i in "$@"; do
@@ -31,7 +31,7 @@ function ubu_snap_install_classic() {
   fi
 }
 
-function ubu_snap_install_edge() {
+function snap_install_edge() {
   local pkgs_installed="$(snap list | awk 'NR>1 {print $1}')"
   local pkgs_to_install=""
   for i in "$@"; do
@@ -45,12 +45,4 @@ function ubu_snap_install_edge() {
       sudo snap install --edge "$i"
     done
   fi
-}
-
-function ubu_snap_upgrade() {
-  sudo snap refresh 2>/dev/null
-}
-
-function ubu_snap_hide_home_dir() {
-  echo snap >>$HOME/.hidden
 }
