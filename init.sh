@@ -15,7 +15,7 @@ if type cmake &>/dev/null; then source "$BH_DIR/plugins/cmake.plugin.bash"; fi
 if type docker &>/dev/null; then source "$BH_DIR/plugins/docker.plugin.bash"; fi
 if type ffmpeg &>/dev/null; then source "$BH_DIR/plugins/ffmpeg.plugin.bash"; fi
 if type flutter &>/dev/null; then source "$BH_DIR/aliases/flutter.aliases.bash"; fi
-if type gcc &>/dev/null; then source "$BH_DIR/plugins/gcc.plugin.bash"; fi
+if type gdb &>/dev/null; then source "$BH_DIR/plugins/gdb.aliases.bash"; fi
 if type ghostscript &>/dev/null; then source "$BH_DIR/plugins/ghostscript.plugin.bash"; fi
 if type git &>/dev/null; then source "$BH_DIR/plugins/git.plugin.bash"; fi
 if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/plugins/gst.plugin.bash"; fi
