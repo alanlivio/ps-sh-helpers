@@ -1,29 +1,8 @@
 # ---------------------------------------
-# user
-# ---------------------------------------
-
-function win_user_check_admin_group() {
-  # usage if [ "$(win_user_check_admin_group)" == "True" ]; then <commands>; fi
-  powershell -c '(Get-LocalGroupMember "Administrators").Name -contains "$env:COMPUTERNAME\$env:USERNAME"'
-}
-
-function win_user_check_eleveated_shell() {
-  powershell -c '(New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)' | tr -d '\rn'
-}
-
-function win_user_adminstrator_enable() {
-  gsudo powershell -c 'net user administrator /active:yes'
-}
-
-function win_user_adminstrator_disable() {
-  gsudo powershell -c 'net user administrator /active:no'
-}
-
-# ---------------------------------------
 # sysupdate
 # ---------------------------------------
 
-function win_sysupdate_win() {
+function win_sysupdate() {
   gsudo powershell -c '
     Install-Module -Name PSWindowsUpdate -Force
     $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
@@ -33,11 +12,11 @@ function win_sysupdate_win() {
   }'
 }
 
-function win_sysupdate_win_list() {
+function win_sysupdate_list() {
   gsudo powershell -c 'Get-WindowsUpdate'
 }
 
-function win_sysupdate_win_list_last_installed() {
+function win_sysupdate_list_last_installed() {
   gsudo powershell -c 'Get-WUHistory -Last 10 | Select-Object Date, Title, Result'
 }
 
@@ -218,15 +197,7 @@ function win_install_ffmpeg() {
 
 BH_NODE_VER="14.17.5"
 function win_install_node() {
-  local url="https://nodejs.org/dist/v${BH_NODE_VER}/node-v${BH_NODE_VER}-win-x64.zip"
-  local bin_dir="$BH_OPT/node-v${BH_NODE_VER}-win-x64"
-  if ! test -d $bin_dir; then
-    test_and_create_dir $bin_dir # no root dir
-    decompress_from_url $url $BH_OPT
-    if test $? != 0; then log_error "decompress_from_url failed." && return 1; fi
-  fi
-  win_env_add 'NODEJS_HOME' $(winpath $bin_dir)
-  win_path_add $(winpath $bin_dir)
+  winget install OpenJS.NodeJS
 }
 
 BH_FLUTTER_VER="2.2.3"
@@ -234,7 +205,6 @@ BH_PLATOOLS_VER="31.0.3-windows"
 BH_ANDROID_CMD_VER="7583922"
 
 function win_install_adb() {
-
   # create opt
   local opt_dst="$BH_OPT"
   test_and_create_dir $opt_dst
@@ -284,18 +254,6 @@ function win_install_flutter() {
     if test $? != 0; then log_error "decompress_from_url failed." && return 1; fi
   fi
   win_path_add $(winpath $flutter_sdk_dir/bin)
-}
-
-function win_install_winget() {
-  powershell -c '
-    if (!(Get-Command 'winget.exe' -ea 0)) {
-    $repoName = "microsoft/winget-cli"
-    $releasesUri = "https://api.github.com/repos/$repoName/releases/latest"
-    $url = (Invoke-WebRequest $releasesUri | ConvertFrom-Json).assets | Where-Object name -like *.msixbundle | Select-Object -ExpandProperty browser_download_url
-    Invoke-WebRequest $url -OutFile "${env:tmp}\tmp.msixbundle"
-    Add-AppPackage -path "${env:tmp}\tmp.msixbundle"
-    }
-  '
 }
 
 function win_install_tesseract() {

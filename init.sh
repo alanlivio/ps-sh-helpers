@@ -78,7 +78,7 @@ if $IS_GITBASH; then
     # vscode
     $HAS_VSCODE && vscode_install $BH_WIN_VSCODE
     # win
-    $HAS_GSUDO && win_sysupdate_win
+    $HAS_GSUDO && win_sysupdate
     # winget (it uses --scope=user)
     win_get_install $BH_WIN_GET
   }
