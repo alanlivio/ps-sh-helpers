@@ -25,7 +25,6 @@ function apt_fixes() {
 }
 
 function apt_install() {
-
   local pkgs_to_install=""
   for i in "$@"; do
     dpkg --status "$i" &>/dev/null
@@ -39,22 +38,13 @@ function apt_install() {
   fi
 }
 
-function apt_lastest_pkgs() {
-  local pkgs=""
-  for i in "$@"; do
-    pkgs+=$(apt search $i 2>/dev/null | grep -E -o "^$i([0-9.]+)/" | cut -d/ -f1)
-    pkgs+=" "
-  done
-  echo $pkgs
-}
-
 function apt_autoremove() {
   if [ "$(apt --dry-run autoremove 2>/dev/null | grep -c -Po 'Remv \K[^ ]+')" -gt 0 ]; then
     sudo apt -y autoremove
   fi
 }
 
-function apt_remove_pkgs() {
+function apt_uninstall() {
   local pkgs_to_remove=""
   for i in "$@"; do
     dpkg --status "$i" &>/dev/null
@@ -68,7 +58,7 @@ function apt_remove_pkgs() {
   fi
 }
 
-function apt_remove_orphan_pkgs() {
+function apt_uninstall_orphan() {
   local pkgs_orphan_to_remove=""
   while [ "$(deborphan | wc -l)" -gt 0 ]; do
     for i in $(deborphan); do
@@ -88,14 +78,4 @@ function apt_remove_orphan_pkgs() {
       sudo apt remove -y --purge $pkgs_orphan_to_remove
     fi
   done
-}
-
-function apt_fetch_install() {
-  : ${1?"Usage: ${FUNCNAME[0]} <URL>"}
-  local apt_name=$(basename $1)
-  if test ! -f /tmp/$apt_name; then
-    decompress_from_url $1 /tmp/
-    if test $? != 0; then log_error "decompress_from_url failed." && return 1; fi
-  fi
-  sudo dpkg -i /tmp/$apt_name
 }

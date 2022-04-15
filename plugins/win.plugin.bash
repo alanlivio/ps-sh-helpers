@@ -117,14 +117,14 @@ function win_path_add() {
     }; win_path_add ' \"$dir\"
 }
 
-function win_path_remove() {
+function win_path_rm() {
   local dir=$(winpath $@)
   powershell -c ' 
-    function win_path_remove($remDir) {
+    function win_path_rm($remDir) {
       $currentpath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
       $newpath = ($currentpath.Split(";") | Where-Object { $_ -ne "$remDir" }) -join ";"
       [System.Environment]::SetEnvironmentVariable("PATH", $newpath, "user")
-    }; win_path_remove ' \"$dir\"
+    }; win_path_rm ' \"$dir\"
 }
 
 # ---------------------------------------

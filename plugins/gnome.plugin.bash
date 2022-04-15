@@ -6,8 +6,8 @@ function gnome_sanity() {
 }
 
 function gnome_uninstall_desktop_unused() {
-  local pkgs_apt_remove_ubu+="libreoffice-* mpv yad ubuntu-report ubuntu-web-launchers mercurial nano zathura simple-scan xterm devhelp thunderbird remmina zeitgeist plymouth evolution-plugins evolution-common fwupd gnome-todo aisleriot gnome-user-guide gnome-mahjongg gnome-weather gnome-mines gnome-sudoku cheese gnome-calendar rhythmbox deja-dup evolution empathy gnome-music gnome-maps gnome-photos totem gnome-orca gnome-getting-started-docs gnome-logs gnome-color-manager gucharmap seahorse gnome-accessibility-themes brasero transmission-gtk "
-  apt_remove_pkgs $pkgs_apt_remove_ubu
+  local pkgs_apt_uninstall_ubu+="libreoffice-* mpv yad ubuntu-report ubuntu-web-launchers mercurial nano zathura simple-scan xterm devhelp thunderbird remmina zeitgeist plymouth evolution-plugins evolution-common fwupd gnome-todo aisleriot gnome-user-guide gnome-mahjongg gnome-weather gnome-mines gnome-sudoku cheese gnome-calendar rhythmbox deja-dup evolution empathy gnome-music gnome-maps gnome-photos totem gnome-orca gnome-getting-started-docs gnome-logs gnome-color-manager gucharmap seahorse gnome-accessibility-themes brasero transmission-gtk "
+  apt_uninstall $pkgs_apt_uninstall_ubu
 }
 
 function gnome_execute_desktop_file() {
