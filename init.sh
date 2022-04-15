@@ -9,12 +9,12 @@ source "$BH_DIR/plugins/base.plugin.bash" # uses echo, test, md5, curl, tar, unz
 if type code &>/dev/null; then HAS_VSCODE=true; source "$BH_DIR/plugins/vscode.plugin.bash"; else HAS_VSCODE=false; fi
 if type python &>/dev/null; then HAS_PY=true;source "$BH_DIR/plugins/python.plugin.bash"; else HAS_PY=false; fi
 if type choco &>/dev/null; then source "$BH_DIR/plugins/choco.plugin.bash"; fi
-if type deb &>/dev/null; then source "$BH_DIR/plugins/deb.plugin.bash"; fi
+if type deb &>/dev/null; then source "$BH_DIR/aliases/deb.aliases.bash"; fi
 if type adb &>/dev/null; then source "$BH_DIR/aliases/adb.aliases.bash"; fi
 if type cmake &>/dev/null; then source "$BH_DIR/plugins/cmake.plugin.bash"; fi
 if type docker &>/dev/null; then source "$BH_DIR/plugins/docker.plugin.bash"; fi
 if type ffmpeg &>/dev/null; then source "$BH_DIR/plugins/ffmpeg.plugin.bash"; fi
-if type flutter &>/dev/null; then source "$BH_DIR/plugins/flutter.plugin.bash"; fi
+if type flutter &>/dev/null; then source "$BH_DIR/aliases/flutter.aliases.bash"; fi
 if type gcc &>/dev/null; then source "$BH_DIR/plugins/gcc.plugin.bash"; fi
 if type ghostscript &>/dev/null; then source "$BH_DIR/plugins/ghostscript.plugin.bash"; fi
 if type git &>/dev/null; then source "$BH_DIR/plugins/git.plugin.bash"; fi

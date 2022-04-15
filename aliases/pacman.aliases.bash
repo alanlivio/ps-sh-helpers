@@ -1,0 +1,6 @@
+alias pacman_search='pacman -Ss --noconfirm'
+alias pacman_show='pacman -Qi'
+alias pacman_list_installed='pacman -Qqe'
+alias pacman_install='pacman -Su --needed --noconfirm'
+alias pacman_install_force='pacman -Syu --noconfirm'
+alias pacman_uninstall='pacman -R --noconfirm'
