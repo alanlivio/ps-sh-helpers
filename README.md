@@ -61,29 +61,7 @@ Please see examples in [skel/.bashrc](https://github.com/alanlivio/bash-helpers/
 
 ### others helpers
 
-The helpers below are for cross-OS commands. For the full list, see lib/.
-
-* `adb_*`: adb helpers.
-* `cmake_*`: cmake helpers.
-* `docker_*`: docker helpers.
-* `ffmpeg_*`: ffmpeg helpers.
-* `flutter_*`: flutter helpers.
-* `gcc_*`: gcc helpers.
-* `git_*`: git helpers.
-* `ghostscript_*`: ghostscript helpers (for pdf).
-* `meson_*`: meson helpers.
-* `npm_*`: npm helpers.
-* `pandoc_*`: pandoc helpers.
-* `pdflatex_*`: pdflatex helpers.
-* `pkg-config_*`: pkg-config helpers.
-* `py_*`: python helpers.
-* `ruby_*`: ruby helpers.
-* `ssh_*`: ssh helpers.
-* `tesseract_*`: tesseract helpers.
-* `vscode_*`: vscode helpers.
-* `wget_*`: wget helpers.
-* `youtubedl_*`: youtube-dl helpers.
-* `zip_*`: zip helpers.
+The helpers below are for cross-OS commands. For the full list, see plugins/ and aliases/.
 
 ## References
 
