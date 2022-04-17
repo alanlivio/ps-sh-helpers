@@ -3,7 +3,7 @@ function pkg_config_search() {
   pkg-config --list-all | grep --color=auto $1
 }
 
-function pkg_config_show() {
+function pkg_config_show_like() {
   : ${1?"Usage: ${FUNCNAME[0]} <pkg_name>"}
   PKG=$(pkg-config --list-all | grep -w $1 | awk '{print $1;exit}')
   echo 'version:    '"$(pkg-config --modversion $PKG)"
