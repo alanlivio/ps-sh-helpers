@@ -1,3 +1,34 @@
+alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
+
+function win_trash_clean() {
+  powershell -c 'Clear-RecycleBin -Confirm:$false 2> $null'
+}
+
+function win_trash_open() {
+  powershell -c 'Start-Process explorer shell:recyclebinfolder'
+}
+
+function explorer_restart() {
+  powershell -c 'taskkill /f /im explorer | Out-Null; Start-Process explorer'
+}
+
+function explorer_tmp() {
+  powershell -c 'Start-Process explorer "${env:localappdata}\\temp\'
+}
+
+function explorer_hide_home_dotfiles() {
+  powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
+}
+
+function win_user_is_admin() {
+  # return True/False
+  powershell -c ' (Get-LocalGroupMember "Administrators").Name -contains "$env:COMPUTERNAME\$env:USERNAME" '
+}
+
+function win_shell_eleveated() {
+  powershell -c '(New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)' # return True/False
+}
+
 # ---------------------------------------
 # sysupdate
 # ---------------------------------------
@@ -106,7 +137,7 @@ function win_path_show_as_list() {
 }
 
 function win_path_add() {
-  local dir=$(winpath $@)
+  local dir=$(cygpath -w $@)
   powershell -c ' 
     function win_path_add($addDir) {
       $currentpath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
@@ -118,7 +149,7 @@ function win_path_add() {
 }
 
 function win_path_rm() {
-  local dir=$(winpath $@)
+  local dir=$(cygpath -w $@)
   powershell -c ' 
     function win_path_rm($remDir) {
       $currentpath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
@@ -133,26 +164,26 @@ function win_path_rm() {
 
 function win_install_python() {
   winget install Python.Python.3 --source winget -i
-  win_path_add $(winpath $HOME/AppData/Local/Programs/Python/Python310/Scripts/)
-  win_path_add $(winpath $HOME/AppData/Roaming/Python/Python310/Scripts/)
+  win_path_add $(cygpath -w $HOME/AppData/Local/Programs/Python/Python310/Scripts/)
+  win_path_add $(cygpath -w $HOME/AppData/Roaming/Python/Python310/Scripts/)
 }
 
 function win_install_miktex() {
   win_get_install ChristianSchenk.MiKTeX
-  win_path_add $(winpath $HOME/AppData/Local/Programs/MiKTeX/miktex/bin/x64/)
+  win_path_add $(cygpath -w $HOME/AppData/Local/Programs/MiKTeX/miktex/bin/x64/)
 }
 
 function win_install_gitforwindows_and_wt() {
-  powershell -c_script $(unixpath -w $BH_DIR/lib/ps1/install-gitforwindows-and-wt.ps1)
+  powershell -c_script $(cygpath -w $BH_DIR/plugins/ps1/install-gitforwindows-and-wt.ps1)
 }
 
 function win_install_msys() {
-  powershell -c_script $(unixpath -w $BH_DIR/lib/ps1/install-msys.ps1)
+  powershell -c_script $(cygpath -w $BH_DIR/plugins/ps1/install-msys.ps1)
 }
 
 function win_install_ghostscript() {
   win_get_install ArtifexSoftware.GhostScript
-  win_path_add $(winpath '/c/Program Files/gs/gs9.55.0/bin')
+  win_path_add $(cygpath -w '/c/Program Files/gs/gs9.55.0/bin')
 }
 
 function win_install_vscode() {
@@ -170,7 +201,7 @@ function win_install_pgrep() {
     decompress_from_url $url $bin_dir
     if test $? != 0; then log_error "decompress_from_url failed." && return 1; fi
   fi
-  win_path_add $(winpath $bin_dir)
+  win_path_add $(cygpath -w $bin_dir)
 }
 
 function win_install_make() {
@@ -181,7 +212,7 @@ function win_install_make() {
     decompress_from_url $url $bin_dir # no root dir
     if test $? != 0; then log_error "decompress_from_url failed." && return 1; fi
   fi
-  win_path_add $(winpath $bin_dir/bin)
+  win_path_add $(cygpath -w $bin_dir/bin)
 }
 
 BH_FFMPEG_VER="4.4"
@@ -192,7 +223,7 @@ function win_install_ffmpeg() {
     decompress_from_url $url $BH_OPT/ # has root dir
     if [[ $? != 0 || ! -d $bin_dir ]]; then log_error "decompress_from_url failed." && return 1; fi
   fi
-  win_path_add $(winpath $bin_dir)
+  win_path_add $(cygpath -w $bin_dir)
 }
 
 BH_NODE_VER="14.17.5"
@@ -218,7 +249,7 @@ function win_install_adb() {
     decompress_from_url $android_plattools_url $android_sdk_dir
     if test $? != 0; then log_error "decompress_from_url failed." && return 1; fi
   fi
-  win_path_add $(winpath $android_plattools_dir)
+  win_path_add $(cygpath -w $android_plattools_dir)
 }
 
 function win_install_flutter() {
@@ -235,15 +266,15 @@ function win_install_flutter() {
   if ! test -d $android_cmd_dir; then
     decompress_from_url $android_cmd_url $android_sdk_dir
     if test $? != 0; then log_error "decompress_from_url failed." && return 1; fi
-    win_path_add $(winpath $android_cmd_dir/bin)
+    win_path_add $(cygpath -w $android_cmd_dir/bin)
   fi
   if ! test -d $android_sdk_dir/platforms; then
     $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --install 'platform-tools' 'platforms;android-29'
     yes | $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --licenses
   fi
-  win_env_add ANDROID_HOME $(winpath $android_sdk_dir)
-  win_env_add ANDROID_SDK_ROOT $(winpath $android_sdk_dir)
-  win_path_add $(winpath $android_sdk_dir/platform-tools)
+  win_env_add ANDROID_HOME $(cygpath -w $android_sdk_dir)
+  win_env_add ANDROID_SDK_ROOT $(cygpath -w $android_sdk_dir)
+  win_path_add $(cygpath -w $android_sdk_dir/platform-tools)
 
   # flutter
   local flutter_sdk_dir="$opt_dst/flutter"
@@ -253,7 +284,7 @@ function win_install_flutter() {
     decompress_from_url $flutter_sdk_url $opt_dst
     if test $? != 0; then log_error "decompress_from_url failed." && return 1; fi
   fi
-  win_path_add $(winpath $flutter_sdk_dir/bin)
+  win_path_add $(cygpath -w $flutter_sdk_dir/bin)
 }
 
 function win_install_tesseract() {
@@ -276,7 +307,7 @@ function win_install_gsudo() {
 }
 
 function win_install_wsl() {
-  gsudo powershell $(unixpath -w $BH_DIR/lib/ps1/install-wsl.ps1)
+  gsudo powershell $(cygpath -w $BH_DIR/plugins/ps1/install-wsl.ps1)
 }
 
 function win_install_docker() {
@@ -330,23 +361,23 @@ function win_get_upgrade() {
 # ---------------------------------------
 
 function win_sanity_ui() {
-  powershell $(unixpath -w $BH_DIR/lib/ps1/sanity-ui.ps1)
+  powershell $(cygpath -w $BH_DIR/plugins/ps1/sanity-ui.ps1)
 }
 
 function win_sanity_ctx_menu() {
-  gsudo powershell $(unixpath -w $BH_DIR/lib/ps1/sanity-cxt-menu.ps1)
+  gsudo powershell $(cygpath -w $BH_DIR/plugins/ps1/sanity-cxt-menu.ps1)
 }
 
 function win_sanity_services() {
-  gsudo powershell $(unixpath -w $BH_DIR/lib/ps1/sanity-services.ps1)
+  gsudo powershell $(cygpath -w $BH_DIR/plugins/ps1/sanity-services.ps1)
 }
 
 function win_sanity_password_policy() {
-  gsudo powershell $(unixpath -w $BH_DIR/lib/ps1/sanity-password-policy.ps1)
+  gsudo powershell $(cygpath -w $BH_DIR/plugins/ps1/sanity-password-policy.ps1)
 }
 
 function win_sanity_this_pc() {
-  gsudo powershell $(unixpath -w $BH_DIR/lib/ps1/sanity-this-pc.ps1)
+  gsudo powershell $(cygpath -w $BH_DIR/plugins/ps1/sanity-this-pc.ps1)
 }
 
 function win_sanity_all() {

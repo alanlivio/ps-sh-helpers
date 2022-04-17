@@ -63,7 +63,6 @@ case $OSTYPE in
 esac
 
 if $IS_GITBASH; then
-  source "$BH_DIR/aliases/msys.aliases.bash"
   source "$BH_DIR/plugins/win.plugin.bash"
   if type gsudo &>/dev/null; then HAS_GSUDO=true; else HAS_GSUDO=false; fi
   function win_update_clean() {
@@ -100,7 +99,6 @@ elif $IS_WSL; then
     home_clean_unused
   }
 elif $IS_MSYS; then
-  source "$BH_DIR/aliases/msys.aliases.bash"
   function msys_fix_home() {
     if ! test -d /mnt/; then mkdir /mnt/; fi
     echo -e "none / cygdrive binary,posix=0,noacl,user 0 0" | tee /etc/fstab
