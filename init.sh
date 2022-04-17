@@ -22,14 +22,11 @@ if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/plugins/gst.plugin.bash
 if type meson &>/dev/null; then source "$BH_DIR/plugins/meson.plugin.bash"; fi
 if type pandoc &>/dev/null; then source "$BH_DIR/plugins/pandoc.plugin.bash"; fi
 if type pngquant &>/dev/null; then source "$BH_DIR/plugins/pngquant.plugin.bash"; fi
-if type pdflatex &>/dev/null; then source "$BH_DIR/plugins/pdflatex.plugin.bash"; fi
 if type pkg-config &>/dev/null; then source "$BH_DIR/plugins/pkg-config.plugin.bash"; fi
 if type ruby &>/dev/null; then source "$BH_DIR/plugins/ruby.plugin.bash"; fi
 if type ssh &>/dev/null; then source "$BH_DIR/plugins/ssh.plugin.bash"; fi
 if type tesseract &>/dev/null; then source "$BH_DIR/plugins/tesseract.plugin.bash"; fi
-if type wget &>/dev/null; then source "$BH_DIR/plugins/wget.plugin.bash"; fi
 if type youtube-dl &>/dev/null; then source "$BH_DIR/plugins/youtube-dl.plugin.bash"; fi
-if type zip &>/dev/null; then  source "$BH_DIR/plugins/zip.plugin.bash"; fi
 if type gnome-shell &>/dev/null; then source "$BH_DIR/plugins/gnome.plugin.bash"; fi
 if type lxc &>/dev/null; then source "$BH_DIR/plugins/lxc.plugin.bash"; fi
 if type apt &>/dev/null; then source "$BH_DIR/plugins/apt.plugin.bash"; fi
