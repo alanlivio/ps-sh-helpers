@@ -1,11 +1,15 @@
 #!/bin/bash
 
+alias log_error='log_wrap "\033[00;31m-- $* \033[00m"'
+alias log_msg='log_wrap "\033[00;33m-- $* \033[00m"'
+alias log_msg_2nd='log_wrap "\033[00;33m-- > $* \033[00m"'
+alias bashrc_reload='source $HOME/.bashrc'
+
 # ---------------------------------------
 # command helpers
 # ---------------------------------------
 
-BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$BH_DIR/plugins/base.plugin.bash" # uses echo, test, md5, curl, tar, unzip, curl, rename, find
+BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
 if [[ $OSTYPE == "msys" ]]; then source "$BH_DIR/plugins/win.plugin.bash"; fi
 if type adb &>/dev/null; then source "$BH_DIR/aliases/adb.aliases.bash"; fi
 if type apt &>/dev/null; then source "$BH_DIR/plugins/apt.plugin.bash"; fi
@@ -36,12 +40,125 @@ if type tesseract &>/dev/null; then source "$BH_DIR/plugins/tesseract.plugin.bas
 if type youtube-dl &>/dev/null; then source "$BH_DIR/plugins/youtube-dl.plugin.bash"; fi
 
 # ---------------------------------------
-# OS helpers
+# decompress
+# ---------------------------------------
+
+function decompress() {
+  : ${1?"Usage: ${FUNCNAME[0]} <zip-name> [dir-name]"}
+  local EXT=${1##*.}
+  local DST
+  if [ $# -eq 1 ]; then DST=.; else DST=$2; fi
+  case $EXT in
+  tgz)
+    tar -xzf $1 -C $DST
+    ;;
+  gz) # consider tar.gz
+    tar -xf $1 -C $DST
+    ;;
+  bz2) # consider tar.bz2
+    tar -xjf $1 -C $DST
+    ;;
+  zip)
+    unzip $1 -d $DST
+    ;;
+  zst)
+    tar --use-compress-program=unzstd -xvf $1 -C $DST
+    ;;
+  xz)
+    tar -xJf $1 -C $DST
+    ;;
+  *)
+    log_error "$EXT is not supported compress." && exit
+    ;;
+  esac
+}
+
+function decompress_from_url() {
+  : ${2?"Usage: ${FUNCNAME[0]} <URL> <dir>"}
+  local file_name="/tmp/$(basename $1)"
+
+  if test ! -f $file_name; then
+    curl -O $1 --create-dirs --output-dir /tmp/
+  fi
+  echo "extracting $file_name to $2"
+  decompress $file_name $2
+}
+
+# ---------------------------------------
+# dotfiles
+# ---------------------------------------
+
+function dotfiles_func() {
+  : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
+  declare -a files_array
+  files_array=($BH_DOTFILES)
+  if [ ${#files_array[@]} -eq 0 ]; then
+    log_error "BH_DOTFILES empty"
+  fi
+  for ((i = 0; i < ${#files_array[@]}; i = i + 2)); do
+    if [ $1 = "backup" ]; then
+      cp ${files_array[$i]} ${files_array[$((i + 1))]}
+    elif [ $1 = "install" ]; then
+      cp ${files_array[$((i + 1))]} ${files_array[$i]}
+    elif [ $1 = "diff" ]; then
+      ret=$(diff ${files_array[$i]} ${files_array[$((i + 1))]})
+      if [ $? = 1 ]; then
+        log_msg "diff ${files_array[$i]} ${files_array[$((i + 1))]}"
+        echo "$ret"
+      fi
+    fi
+  done
+}
+alias dotfiles_install="dotfiles_func install"
+alias dotfiles_backup="dotfiles_func backup"
+alias dotfiles_diff="dotfiles_func diff"
+
+# ---------------------------------------
+# home
+# ---------------------------------------
+
+function home_clean_unused() {
+  for i in "${BH_HOME_CLEAN_UNUSED[@]}"; do
+    if test -d "$HOME/$i"; then
+      rm -rf "$HOME/${i:?}" >/dev/null
+    elif test -e "$HOME/$i"; then
+      rm -f "$HOME/${i:?}" >/dev/null
+    fi
+  done
+}
+
+# ---------------------------------------
+# user
+# ---------------------------------------
+
+function user_sudo_nopasswd() {
+  if ! test -d /etc/sudoers.d/; then test_and_create_dir /etc/sudoers.d/; fi
+  SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
+}
+
+function user_passwd_disable_len_restriction() {
+  sudo sed -i 's/sha512/minlen=1 sha512/g' /etc/pam.d/common-password
+}
+
+# ---------------------------------------
+# dir
+# ---------------------------------------
+
+function dir_sorted_by_size() {
+  du -ahd 1 | sort -h
+}
+
+function dir_find_duplicated_pdf() {
+  find . -iname "*.pdf" -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find . -type f -size {}c -print0 | xargs -r -0 md5sum | sort | uniq -w32 --all-repeated=separate
+}
+
+# ---------------------------------------
+# setup_os
 # ---------------------------------------
 
 function setup_os() {
-
   case $OSTYPE in
+
   linux*) # wsl/ubu
     local pkgs="git deborphan apt-file vim diffutils curl python3 python3-pip "
     if [[ $(uname -r) == *"icrosoft"* ]]; then
@@ -83,5 +200,6 @@ function setup_os() {
       py_upgrade
       home_clean_unused
     ;;
+
   esac
 }
