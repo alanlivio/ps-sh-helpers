@@ -4,13 +4,14 @@
 # command helpers
 # ---------------------------------------
 
+declare {HAS_VSCODE,HAS_PY}=false
 BH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$BH_DIR/plugins/base.plugin.bash" # uses echo, test, md5, curl, tar, unzip, curl, rename, find
 if type adb &>/dev/null; then source "$BH_DIR/aliases/adb.aliases.bash"; fi
 if type apt &>/dev/null; then source "$BH_DIR/plugins/apt.plugin.bash"; fi
 if type choco &>/dev/null; then source "$BH_DIR/plugins/choco.plugin.bash"; fi
 if type cmake &>/dev/null; then source "$BH_DIR/plugins/cmake.plugin.bash"; fi
-if type code &>/dev/null; then HAS_VSCODE=true; source "$BH_DIR/plugins/vscode.plugin.bash"; else HAS_VSCODE=false; fi
+if type code &>/dev/null; then HAS_VSCODE=true; source "$BH_DIR/plugins/vscode.plugin.bash"; fi
 if type deb &>/dev/null; then source "$BH_DIR/aliases/deb.aliases.bash"; fi
 if type docker &>/dev/null; then source "$BH_DIR/plugins/docker.plugin.bash"; fi
 if type ffmpeg &>/dev/null; then source "$BH_DIR/plugins/ffmpeg.plugin.bash"; fi
@@ -26,7 +27,7 @@ if type pacman &>/dev/null; then source "$BH_DIR/plugins/pacman.plugin.bash"; fi
 if type pandoc &>/dev/null; then source "$BH_DIR/plugins/pandoc.plugin.bash"; fi
 if type pkg-config &>/dev/null; then source "$BH_DIR/plugins/pkg-config.plugin.bash"; fi
 if type pngquant &>/dev/null; then source "$BH_DIR/plugins/pngquant.plugin.bash"; fi
-if type python &>/dev/null; then HAS_PY=true;source "$BH_DIR/plugins/python.plugin.bash"; else HAS_PY=false; fi
+if type python &>/dev/null; then HAS_PY=true; source "$BH_DIR/plugins/python.plugin.bash"; fi
 if type ruby &>/dev/null; then source "$BH_DIR/plugins/ruby.plugin.bash"; fi
 if type snap &>/dev/null; then source "$BH_DIR/aliases/snap.aliases.bash"; fi
 if type ssh &>/dev/null; then source "$BH_DIR/plugins/ssh.plugin.bash"; fi
@@ -37,64 +38,52 @@ if type youtube-dl &>/dev/null; then source "$BH_DIR/plugins/youtube-dl.plugin.b
 # OS helpers
 # ---------------------------------------
 
-declare IS_{MAC,UBU,LINUX,WIN,WSL,MSYS,GITBASH}=false
-
 case $OSTYPE in
-  linux*)
-    IS_LINUX=true
-    if [[ $(uname -r) == *"icrosoft"* ]]; then
-      IS_WSL=true
-    elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then
-      IS_UBU=true
-    fi;;
-  msys*)
-    IS_WIN=true
-    if test -e /etc/profile.d/git-prompt.sh; then
-      IS_GITBASH=true
-    else
-      IS_MSYS=true
-    fi;;
-  darwin*)
-    IS_MAC=true;;
-esac
+linux*)
+  if [[ $(uname -r) == *"icrosoft"* ]]; then # wsl
+    source "$BH_DIR/aliases/wsl.aliases.bash"
+    function wsl_update_clean() {
+      bh_update_if_needed
+      local pkgs="git deborphan apt-file vim diffutils curl "
+      pkgs+="python3 python3-pip "
+      apt_install $pkgs $BH_WSL_APT
+      apt_autoremove
+      $HAS_PY && py_set_v3_default
+      $HAS_PY && py_install $BH_WSL_PY
+      $HAS_PY && py_upgrade
+      home_clean_unused
+    }
+  elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then # ubu
+    alias open="xdg-open"
+    function ubu_update_clean() {
+      bh_update_if_needed
+      local pkgs="git deborphan apt-file vim diffutils curl "
+      pkgs+="python3 python3-pip "
+      apt_install $pkgs $BH_UBU_APT
+      apt_autoremove
+      apt_upgrade
+      $HAS_PY && py_install $BH_UBU_PY
+      $HAS_PY && py_upgrade
+      $HAS_VSCODE && vscode_install $BH_UBU_VSCODE
+      home_clean_unused
+    }
+  fi
+  ;;
 
-if $IS_GITBASH; then
+msys*)
   source "$BH_DIR/plugins/win.plugin.bash"
   if type gsudo &>/dev/null; then HAS_GSUDO=true; else HAS_GSUDO=false; fi
   function win_update_clean() {
-    # update bh
     bh_update_if_needed
-    # cleanup
     home_clean_unused
     explorer_hide_home_dotfiles
-    # py
     $HAS_PY && py_install $BH_WIN_PY
     $HAS_PY && py_upgrade
-    # vscode
     $HAS_VSCODE && vscode_install $BH_WIN_VSCODE
-    # win
     $HAS_GSUDO && win_sysupdate
     # winget (it uses --scope=user)
     win_get_install $BH_WIN_GET
   }
-elif $IS_WSL; then
-  source "$BH_DIR/aliases/wsl.aliases.bash"
-  function wsl_update_clean() {
-    # update bh
-    bh_update_if_needed
-    # apt
-    local pkgs="git deborphan apt-file vim diffutils curl "
-    pkgs+="python3 python3-pip "
-    apt_install $pkgs $BH_WSL_APT
-    apt_autoremove
-    # py
-    $HAS_PY && py_set_v3_default
-    $HAS_PY && py_install $BH_WSL_PY
-    $HAS_PY && py_upgrade
-    # cleanup
-    home_clean_unused
-  }
-elif $IS_MSYS; then
   function msys_fix_home() {
     if ! test -d /mnt/; then mkdir /mnt/; fi
     echo -e "none / cygdrive binary,posix=0,noacl,user 0 0" | tee /etc/fstab
@@ -105,54 +94,31 @@ elif $IS_MSYS; then
     echo -e 'db_home: windows >> /etc/nsswitch.conf' | tee -a /etc/nsswitch.conf
   }
   function msys_update_clean() {
-    # update bh
     bh_update_if_needed
     # essentials
     local pkgs="pacman pacman-mirrors msys2-runtime vim diffutils curl $BH_MSYS_PAC"
     pacman_install $pkgs
     pacman --needed -S bash pacman pacman-mirrors msys2-runtime
     pacman -Su --noconfirm
-    # py
     $HAS_PY && py_install $BH_MSYS_PY
     $HAS_PY && py_upgrade
-    # cleanup
     home_clean_unused
   }
-elif $IS_UBU; then
-  alias open="xdg-open"
-  function ubu_update_clean() {
-    # update bh
-    bh_update_if_needed
-    # apt
-    local pkgs="git deborphan apt-file vim diffutils curl "
-    pkgs+="python3 python3-pip "
-    apt_install $pkgs $BH_UBU_APT
-    apt_autoremove
-    apt_upgrade
-    # py
-    $HAS_PY && py_install $BH_UBU_PY
-    $HAS_PY && py_upgrade
-    # vscode
-    $HAS_VSCODE && vscode_install $BH_UBU_VSCODE
-    # cleanup
-    home_clean_unused
-  }
-elif $IS_MAC; then
+  ;;
+
+darwin*)
   function mac_update_clean() {
-    # update bh
     bh_update_if_needed
     # brew
     local pkgs="git bash vim diffutils curl "
     pkgs+="python3 python-pip "
-    brew update 
+    brew update
     sudo brew upgrade
     brew install $pkgs $BH_MAC_BREW
-    # py
     $HAS_PY && py_install $BH_MAC_PY
     $HAS_PY && py_upgrade
-    # vscode
     $HAS_VSCODE && vscode_install $BH_MAC_VSCODE
-    # cleanup
     home_clean_unused
   }
-fi
+  ;;
+esac

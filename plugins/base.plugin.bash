@@ -219,18 +219,9 @@ alias dotfiles_diff="dotfiles_func diff"
 function home_clean_unused() {
   for i in "${BH_HOME_CLEAN_UNUSED[@]}"; do
     if test -d "$HOME/$i"; then
-      if $IS_MAC; then
-        sudo rm -rf "$HOME/${i:?}" >/dev/null
-      else
-        rm -rf "$HOME/${i:?}" >/dev/null
-      fi
+      rm -rf "$HOME/${i:?}" >/dev/null
     elif test -e "$HOME/$i"; then
-      echo remove $i
-      if $IS_MAC; then
-        sudo rm -f "$HOME/$i" >/dev/null
-      else
-        rm -f "$HOME/${i:?}" >/dev/null
-      fi
+      rm -f "$HOME/${i:?}" >/dev/null
     fi
   done
 }

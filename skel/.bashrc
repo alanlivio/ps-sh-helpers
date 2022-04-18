@@ -2,11 +2,15 @@ source $HOME/.bh/init.sh
 
 # home_clean_unused()
 BH_HOME_CLEAN_UNUSED=('Images' 'Movies' 'Public' 'Templates' 'Tracing' 'Videos' 'Music' 'Pictures' '.cache')
-if $IS_LINUX; then
-  BH_HOME_CLEAN_UNUSED+=('Documents') # sensible data in Windows
-elif $IS_WIN; then
+
+case $OSTYPE in
+msys*)
   BH_HOME_CLEAN_UNUSED+=('Application Data' 'Cookies' 'Local Settings' 'Start Menu' '3D Objects' 'Contacts' 'Favorites' 'Links' 'MicrosoftEdgeBackups' 'My Documents' 'NetHood' 'PrintHood' 'Recent' 'Saved Games' 'Searches' 'SendTo')
-fi
+  ;;
+linux*)
+  BH_HOME_CLEAN_UNUSED+=('Documents') # sensible data in Windows
+  ;;
+esac
 # ubu_update_clean()
 BH_UBU_SNAP="vscode "
 BH_UBU_APT="python "

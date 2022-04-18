@@ -42,13 +42,17 @@ function cmake_check() {
 }
 
 function cmake_install() {
-  if $IS_MSYS; then
-    cmake --install .
-  elif $IS_LINUX; then
+  case $OSTYPE in
+  linux*)
     sudo cmake --install . --prefix /usr
-  else
+    ;;
+  msys*)
+    cmake --install .
+    ;;
+  *)
     sudo cmake --install .
-  fi
+    ;;
+  esac
 }
 
 function cmake_uninstall() {
@@ -56,7 +60,7 @@ function cmake_uninstall() {
   if test -e $manifest; then
     while IFS= read -r i; do
       local file=${i%$'\r'}
-      if test -e "$file"; then 
+      if test -e "$file"; then
         echo "uninstall $file"
         sudo rm "$file"
       fi
