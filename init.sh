@@ -1,8 +1,7 @@
 #!/bin/bash
 
-alias log_error='log_wrap "\033[00;31m-- $* \033[00m"'
-alias log_msg='log_wrap "\033[00;33m-- $* \033[00m"'
-alias log_msg_2nd='log_wrap "\033[00;33m-- > $* \033[00m"'
+function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
+function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
 alias bashrc_reload='source $HOME/.bashrc'
 
 # ---------------------------------------
@@ -176,7 +175,6 @@ function setup_os() {
 
   msys*)
     if test -e /etc/profile.d/git-prompt.sh; then
-      echo  "in gitbash"
       py_install $BH_WIN_PY
       $HAS_GSUDO && win_sysupdate
       win_get_install $BH_WIN_GET  # winget (it uses --scope=user)

@@ -117,14 +117,6 @@ function win_appx_install() {
 }
 
 # ---------------------------------------
-# services
-# ---------------------------------------
-
-function win_services_list_running() {
-  gsudo powershell -c 'Get-Service | Where-Object {$_.Status -eq "Running"}'
-}
-
-# ---------------------------------------
 # env
 # ---------------------------------------
 
@@ -338,13 +330,12 @@ function win_get_list_installed() {
   winget list
 }
 
-function win_get_list_installed_exported_str() {
-  powershell -c '
-    $tmpfile = New-TemporaryFile
-    winget export $tmpfile | Select-String -Pattern "\n|Installed package is not available" -NotMatch
-    $pkgs = ((Get-Content $tmpfile | ConvertFrom-Json).Sources.Packages | ForEach-Object { $_.PackageIdentifier }) -join " "
-    echo $pkgs
-  '
+function win_get_settings() {
+  winget settings
+}
+
+function win_get_upgrade() {
+  winget upgrade --all --silent
 }
 
 function win_get_install() {
@@ -357,17 +348,9 @@ function win_get_install() {
   if test ! -z "$pkgs_to_install"; then
     echo "pkgs_to_install=$pkgs_to_install"
     for pkg in $pkgs_to_install; do
-      winget install $WINGET_ARGS_INSTALL $pkg
+      winget install $pkg
     done
   fi
-}
-
-function win_get_settings() {
-  winget settings
-}
-
-function win_get_upgrade() {
-  winget upgrade --all --silent
 }
 
 # ---------------------------------------
