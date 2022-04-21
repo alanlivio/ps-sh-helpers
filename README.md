@@ -46,10 +46,11 @@ Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helper
 
 ### others helpers
 
-* `decompress`:  decompress from multiple formats
 * `decompress_from_url`: fetch and decompress to folder
-* `dir_sorted_by_size`: list dir sorted by items size
+* `decompress`:  decompress from multiple formats
 * `dir_find_duplicated_pdf`: list duplicated pdf files in dir recursively
+* `dir_sorted_by_size`: list dir sorted by items size
+* `user_sudo_nopasswd`:  disable password when call sudo (user must be in sudores)
 
 See the full helpers at plugins/ and aliases/ folders.
 

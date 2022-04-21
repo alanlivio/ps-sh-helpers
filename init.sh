@@ -117,11 +117,15 @@ alias dotfiles_diff="dotfiles_func diff"
 # ---------------------------------------
 
 function home_clean_unused() {
-  for i in "${BH_HOME_CLEAN_UNUSED[@]}"; do
-    if test -d "$HOME/$i"; then
-      rm -rf "$HOME/${i:?}" >/dev/null
+  if [ -z $BH_HOME_CLEAN_UNUSED ]; then
+    log_error "\$BH_HOME_CLEAN_UNUSED is not defined"
+    return
+  fi
+    for i in "${BH_HOME_CLEAN_UNUSED[@]}"; do
+      if test -d "$HOME/$i"; then
+        rm -rf "$HOME/${i:?}" >/dev/null
     elif test -e "$HOME/$i"; then
-      rm -f "$HOME/${i:?}" >/dev/null
+        rm -f "$HOME/${i:?}" >/dev/null
     fi
   done
 }
@@ -133,10 +137,6 @@ function home_clean_unused() {
 function user_sudo_nopasswd() {
   if ! test -d /etc/sudoers.d/; then test_and_create_dir /etc/sudoers.d/; fi
   SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
-}
-
-function user_passwd_disable_len_restriction() {
-  sudo sed -i 's/sha512/minlen=1 sha512/g' /etc/pam.d/common-password
 }
 
 # ---------------------------------------
@@ -156,10 +156,10 @@ function dir_find_duplicated_pdf() {
 # ---------------------------------------
 
 function setup_os() {
-  case $OSTYPE in
 
+  case $OSTYPE in
   linux*) # wsl/ubu
-    local pkgs="git deborphan apt-file vim diffutils curl python3 python3-pip "
+    local pkgs="git vim diffutils curl python3 python3-pip "
     if [[ $(uname -r) == *"icrosoft"* ]]; then
         apt_install $pkgs $BH_WSL_APT
         py_install $BH_WSL_PY
@@ -174,10 +174,10 @@ function setup_os() {
     ;;
 
   msys*)
+    win_get_install $BH_WIN_GET  # winget (it uses --scope=user)
+    $HAS_GSUDO && win_sysupdate
     if test -e /etc/profile.d/git-prompt.sh; then
       py_install $BH_WIN_PY
-      $HAS_GSUDO && win_sysupdate
-      win_get_install $BH_WIN_GET  # winget (it uses --scope=user)
     else
       local pkgs="bash pacman pacman-mirrors msys2-runtime vim diffutils curl "
       pacman_install $pkgs $BH_MSYS_PAC
@@ -198,6 +198,6 @@ function setup_os() {
       py_upgrade
       home_clean_unused
     ;;
-
   esac
+
 }
