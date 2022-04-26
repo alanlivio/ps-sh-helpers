@@ -44,6 +44,41 @@ Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helper
 * See others `win_install_*` at ./lib/win.bash
 * See others `ubu_install_*` at ./lib/ubu.bash
 
+### win helpers
+
+* `win_clean_trash`: clean trash
+* `win_open_trash`: explorer open trash
+* `win_restart_explorer`: explorer restart
+* `win_open_tmp`:  explorer open win tmp
+* `win_hide_home_dotfiles`: hide dotfiles at home folder
+* `win_is_user_admin`: check if shell is admin
+* `win_is_shell_eleveated`: check if shell is elevated
+* `msys_fix_home`: make msys uses win home
+* `win_sysupdate`: update win
+* `win_sysupdate_list`: list avaliable updates
+* `win_feature_list_enabled`: list enabled features
+* `win_feature_list_disabled`: list disabled features
+* `win_feature_enable_ssh_server_bash`: add OpenSSH.Server capability
+* `win_appx_list`:  Get-AppxPackage 
+* `win_appx_install`: Add-AppxPackage
+* `win_appx_uninstall`: Remove-AppxPackage
+* `win_env_show`: show ENV
+* `win_env_add`: add variable to ENV
+* `win_path_show`: show PATH string
+* `win_path_show_as_list`:  show PATH as list
+* `win_path_add`: add dir to PATH
+* `win_path_rm`: remove dir from PATH
+* `win_get_list`: winget list
+* `win_get_settings`: vscode open winget settings.json
+* `win_get_upgrade`: winget upgrade
+* `win_get_install`: winget install (check installed)
+* `win_sanity_ui`: metioned above
+* `win_sanity_ctx_menu`: remove unused ctx menu
+* `win_sanity_services`: remove unused ctx services
+* `win_sanity_password_policy`: remove unused password policy
+* `win_sanity_this_pc`: remove link folder on This PC 
+* `win_sanity_all`: run all sanity above
+
 ### others helpers
 
 * `decompress_from_url`: fetch and decompress to folder

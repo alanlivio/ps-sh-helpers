@@ -1,32 +1,31 @@
 alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
 
-function win_trash_clean() {
+function win_clean_trash() {
   powershell -c 'Clear-RecycleBin -Confirm:$false 2> $null'
 }
 
-function win_trash_open() {
+function win_open_trash() {
   powershell -c 'Start-Process explorer shell:recyclebinfolder'
 }
 
-function explorer_restart() {
+function win_restart_explorer() {
   powershell -c 'taskkill /f /im explorer | Out-Null; Start-Process explorer'
 }
 
-function explorer_tmp() {
+function win_open_tmp() {
   powershell -c 'Start-Process explorer "${env:localappdata}\\temp\'
 }
 
-function explorer_hide_home_dotfiles() {
+function win_hide_home_dotfiles() {
   powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
 }
 
-function win_user_is_admin() {
-  # return True/False
+function win_is_user_admin() { # return True/False
   powershell -c ' (Get-LocalGroupMember "Administrators").Name -contains "$env:COMPUTERNAME\$env:USERNAME" '
 }
 
-function win_shell_eleveated() {
-  powershell -c '(New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)' # return True/False
+function win_is_shell_eleveated() { # return True/False
+  powershell -c '(New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)'
 }
 
 # ---------------------------------------
@@ -61,13 +60,17 @@ function win_sysupdate_list() {
   gsudo powershell -c 'Get-WindowsUpdate'
 }
 
-function win_sysupdate_list_last_installed() {
-  gsudo powershell -c 'Get-WUHistory -Last 10 | Select-Object Date, Title, Result'
-}
-
 # ---------------------------------------
 # feature
 # ---------------------------------------
+
+function win_feature_list_enabled() {
+  gsudo powershell -c 'Get-WindowsOptionalFeature -Online | Where-Object {$_.State -eq "Enabled"}'
+}
+
+function win_feature_list_disabled() {
+  gsudo powershell -c 'Get-WindowsOptionalFeature -Online | Where-Object {$_.State -eq "Disabled"}'
+}
 
 function win_feature_enable_ssh_server_bash() {
   local current_bash_path=$(where bash | head -1)
@@ -80,25 +83,11 @@ function win_feature_enable_ssh_server_bash() {
   "
 }
 
-function win_feature_list_enabled() {
-  log_msg "WindowsOptionalFeatures"
-  gsudo powershell -c 'Get-WindowsOptionalFeature -Online | Where-Object {$_.State -eq "Enabled"}'
-  log_msg "WindowsCapabilities"
-  gsudo powershell -c 'Get-WindowsCapability -Online | Where-Object {$_.State -eq "Installed"}'
-}
-
-function win_feature_list_disabled() {
-  log_msg "WindowsOptionalFeatures"
-  gsudo powershell -c 'Get-WindowsOptionalFeature -Online | Where-Object {$_.State -eq "Disabled"}'
-  log_msg "WindowsCapabilities"
-  gsudo powershell -c 'Get-WindowsCapability -Online | Where-Object {$_.State -eq "NotPresent"}'
-}
-
 # ---------------------------------------
 # appx
 # ---------------------------------------
 
-function win_appx_list_installed() {
+function win_appx_list() {
   gsudo powershell -c "Get-AppxPackage -AllUsers | Select-Object Name, PackageFullName"
 }
 
@@ -326,7 +315,7 @@ function win_install_docker() {
 # winget
 # ---------------------------------------
 
-function win_get_list_installed() {
+function win_get_list() {
   winget list
 }
 
