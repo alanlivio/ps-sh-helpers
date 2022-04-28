@@ -18,33 +18,41 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 ## helpers
 
-### setup OS helpers
-
-* `gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
-* `win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons)
-* `win_sanity_all` (at gitbash): to disable other services, glutter (see ./lib/win.bash)
+### update_clean and dotfiles helpers
 
 The next helpers use variables from `~/.bashrc` to install software, clean unused files/dirs, and update repositories. 
 Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bashrc).
 
-* `setup_os` (at mac bash): install/update BH_MAC_BREW, BH_MAC_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
-* `setup_os` (at ubuntu bash): install/update BH_UBU_APT, BH_UBU_PY,  clean files/dirs from BH_HOME_CLEAN_UNUSED
-* `setup_os` (at GitBash): install/update BH_WIN_GET, BH_WIN_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
-* `setup_os` (at WSL bash): install/update BH_WSL_APT, BH_WSL_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
-* `setup_os` (at msys bash): install/update BH_MSYS_PAC, BH_MSYS_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `update_clean` (at mac bash): install/update BH_MAC_BREW, BH_MAC_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `update_clean` (at ubuntu bash): install/update BH_UBU_APT, BH_UBU_PY,  clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `update_clean` (at GitBash): install/update BH_WIN_GET, BH_WIN_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `update_clean` (at WSL bash): install/update BH_WSL_APT, BH_WSL_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `update_clean` (at msys bash): install/update BH_MSYS_PAC, BH_MSYS_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES
-* `home_clean_unused`: clean files/dirs from BH_HOME_CLEAN_UNUSED
 
-### install helpers
+### ubu helpers
+
+* `gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
+* See others `ubu_install_*` at ./lib/ubu.bash
+
+### win install helpers
 
 * `win_install_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
 * `win_install_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automates the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password.
 * See others `win_install_*` at ./lib/win.bash
-* See others `ubu_install_*` at ./lib/ubu.bash
 
-### win helpers
+### win sanity helpers
+
+* `win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons)
+* `win_sanity_ctx_menu`: remove unused ctx menu
+* `win_sanity_services`: remove unused ctx services
+* `win_sanity_password_policy`: remove unused password policy
+* `win_sanity_this_pc`: remove link folder on This PC 
+* `win_sanity_all`: run all sanity above
+
+### other win helpers
 
 * `win_clean_trash`: clean trash
 * `win_open_trash`: explorer open trash
@@ -72,12 +80,6 @@ Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helper
 * `win_get_settings`: vscode open winget settings.json
 * `win_get_upgrade`: winget upgrade
 * `win_get_install`: winget install (check installed)
-* `win_sanity_ui`: metioned above
-* `win_sanity_ctx_menu`: remove unused ctx menu
-* `win_sanity_services`: remove unused ctx services
-* `win_sanity_password_policy`: remove unused password policy
-* `win_sanity_this_pc`: remove link folder on This PC 
-* `win_sanity_all`: run all sanity above
 
 ### others helpers
 

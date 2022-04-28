@@ -152,10 +152,10 @@ function dir_find_duplicated_pdf() {
 }
 
 # ---------------------------------------
-# setup_os
+# update_clean
 # ---------------------------------------
 
-function setup_os() {
+function update_clean() {
 
   case $OSTYPE in
   linux*) # wsl/ubu
