@@ -32,10 +32,18 @@ Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helper
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES
 
-### ubu helpers
+### bash/dir/curl helpers
+
+* `bash_sudo_nopasswd`:  disable password when call sudo (user must be in sudores)
+* `decompress`:  decompress from multiple formats
+* `decompress_from_url`: fetch and decompress to folder
+* `dir_find_duplicated_pdf`: list duplicated pdf files in dir recursively
+* `dir_sorted_by_size`: list dir sorted by items size
+
+### gnome helpers
 
 * `gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
-* See others `ubu_install_*` at ./lib/ubu.bash
+* `gnome_disable_unused_apps_in_search`: remove from apps such as icedtea,brasero,etc from search
 
 ### win install helpers
 
@@ -80,14 +88,6 @@ Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helper
 * `win_get_settings`: vscode open winget settings.json
 * `win_get_upgrade`: winget upgrade
 * `win_get_install`: winget install (check installed)
-
-### others helpers
-
-* `decompress_from_url`: fetch and decompress to folder
-* `decompress`:  decompress from multiple formats
-* `dir_find_duplicated_pdf`: list duplicated pdf files in dir recursively
-* `dir_sorted_by_size`: list dir sorted by items size
-* `user_sudo_nopasswd`:  disable password when call sudo (user must be in sudores)
 
 See the full helpers at plugins/ and aliases/ folders.
 

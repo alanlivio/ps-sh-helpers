@@ -39,7 +39,99 @@ if type tesseract &>/dev/null; then source "$BH_DIR/plugins/tesseract.plugin.bas
 if type youtube-dl &>/dev/null; then source "$BH_DIR/plugins/youtube-dl.plugin.bash"; fi
 
 # ---------------------------------------
-# decompress
+# dotfiles
+# ---------------------------------------
+
+function dotfiles_func() {
+  : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
+  declare -a files_array
+  files_array=($BH_DOTFILES)
+  if [ ${#files_array[@]} -eq 0 ]; then
+    log_error "BH_DOTFILES empty"
+  fi
+  for ((i = 0; i < ${#files_array[@]}; i = i + 2)); do
+    if [ $1 = "backup" ]; then
+      cp ${files_array[$i]} ${files_array[$((i + 1))]}
+    elif [ $1 = "install" ]; then
+      cp ${files_array[$((i + 1))]} ${files_array[$i]}
+    elif [ $1 = "diff" ]; then
+      ret=$(diff ${files_array[$i]} ${files_array[$((i + 1))]})
+      if [ $? = 1 ]; then
+        log_msg "diff ${files_array[$i]} ${files_array[$((i + 1))]}"
+        echo "$ret"
+      fi
+    fi
+  done
+}
+alias dotfiles_install="dotfiles_func install"
+alias dotfiles_backup="dotfiles_func backup"
+alias dotfiles_diff="dotfiles_func diff"
+
+# ---------------------------------------
+# update_clean
+# ---------------------------------------
+
+function home_clean_unused() {
+  if [ -z $BH_HOME_CLEAN_UNUSED ]; then
+    log_error "\$BH_HOME_CLEAN_UNUSED is not defined"
+    return
+  fi
+    for i in "${BH_HOME_CLEAN_UNUSED[@]}"; do
+      if test -d "$HOME/$i"; then
+        rm -rf "$HOME/${i:?}" >/dev/null
+    elif test -e "$HOME/$i"; then
+        rm -f "$HOME/${i:?}" >/dev/null
+    fi
+  done
+}
+
+function update_clean() {
+  case $OSTYPE in
+  linux*) # wsl/ubu
+    local pkgs="git vim diffutils curl python3 python3-pip "
+    if [[ $(uname -r) == *"icrosoft"* ]]; then
+        apt_install $pkgs $BH_WSL_APT
+        py_install $BH_WSL_PY
+    elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then
+      apt_install $pkgs $BH_UBU_APT
+      py_install $BH_UBU_PY
+    fi
+    apt_upgrade
+    apt_autoremove
+    py_upgrade
+    home_clean_unused
+    ;;
+
+  msys*)
+    win_get_install $BH_WIN_GET  # winget (it uses --scope=user)
+    $HAS_GSUDO && win_sysupdate
+    if test -e /etc/profile.d/git-prompt.sh; then
+      py_install $BH_WIN_PY
+    else
+      local pkgs="bash pacman pacman-mirrors msys2-runtime vim diffutils curl "
+      pacman_install $pkgs $BH_MSYS_PAC
+      py_install $BH_MSYS_PY
+    fi
+    _hide_home_dotfiles
+    py_upgrade
+    home_clean_unused
+    ;;
+
+  darwin*)
+      local pkgs="git bash vim diffutils curl "
+      pkgs+="python3 python-pip "
+      brew update
+      sudo brew upgrade
+      brew install $pkgs $BH_MAC_BREW
+      py_install $BH_MAC_PY
+      py_upgrade
+      home_clean_unused
+    ;;
+  esac
+}
+
+# ---------------------------------------
+# others
 # ---------------------------------------
 
 function decompress() {
@@ -83,65 +175,10 @@ function decompress_from_url() {
   decompress $file_name $2
 }
 
-# ---------------------------------------
-# dotfiles
-# ---------------------------------------
-
-function dotfiles_func() {
-  : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
-  declare -a files_array
-  files_array=($BH_DOTFILES)
-  if [ ${#files_array[@]} -eq 0 ]; then
-    log_error "BH_DOTFILES empty"
-  fi
-  for ((i = 0; i < ${#files_array[@]}; i = i + 2)); do
-    if [ $1 = "backup" ]; then
-      cp ${files_array[$i]} ${files_array[$((i + 1))]}
-    elif [ $1 = "install" ]; then
-      cp ${files_array[$((i + 1))]} ${files_array[$i]}
-    elif [ $1 = "diff" ]; then
-      ret=$(diff ${files_array[$i]} ${files_array[$((i + 1))]})
-      if [ $? = 1 ]; then
-        log_msg "diff ${files_array[$i]} ${files_array[$((i + 1))]}"
-        echo "$ret"
-      fi
-    fi
-  done
-}
-alias dotfiles_install="dotfiles_func install"
-alias dotfiles_backup="dotfiles_func backup"
-alias dotfiles_diff="dotfiles_func diff"
-
-# ---------------------------------------
-# home
-# ---------------------------------------
-
-function home_clean_unused() {
-  if [ -z $BH_HOME_CLEAN_UNUSED ]; then
-    log_error "\$BH_HOME_CLEAN_UNUSED is not defined"
-    return
-  fi
-    for i in "${BH_HOME_CLEAN_UNUSED[@]}"; do
-      if test -d "$HOME/$i"; then
-        rm -rf "$HOME/${i:?}" >/dev/null
-    elif test -e "$HOME/$i"; then
-        rm -f "$HOME/${i:?}" >/dev/null
-    fi
-  done
-}
-
-# ---------------------------------------
-# user
-# ---------------------------------------
-
-function user_sudo_nopasswd() {
+function bash_sudo_nopasswd() {
   if ! test -d /etc/sudoers.d/; then test_and_create_dir /etc/sudoers.d/; fi
   SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
 }
-
-# ---------------------------------------
-# dir
-# ---------------------------------------
 
 function dir_sorted_by_size() {
   du -ahd 1 | sort -h
@@ -149,55 +186,4 @@ function dir_sorted_by_size() {
 
 function dir_find_duplicated_pdf() {
   find . -iname "*.pdf" -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find . -type f -size {}c -print0 | xargs -r -0 md5sum | sort | uniq -w32 --all-repeated=separate
-}
-
-# ---------------------------------------
-# update_clean
-# ---------------------------------------
-
-function update_clean() {
-
-  case $OSTYPE in
-  linux*) # wsl/ubu
-    local pkgs="git vim diffutils curl python3 python3-pip "
-    if [[ $(uname -r) == *"icrosoft"* ]]; then
-        apt_install $pkgs $BH_WSL_APT
-        py_install $BH_WSL_PY
-    elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then
-      apt_install $pkgs $BH_UBU_APT
-      py_install $BH_UBU_PY
-    fi
-    apt_upgrade
-    apt_autoremove
-    py_upgrade
-    home_clean_unused
-    ;;
-
-  msys*)
-    win_get_install $BH_WIN_GET  # winget (it uses --scope=user)
-    $HAS_GSUDO && win_sysupdate
-    if test -e /etc/profile.d/git-prompt.sh; then
-      py_install $BH_WIN_PY
-    else
-      local pkgs="bash pacman pacman-mirrors msys2-runtime vim diffutils curl "
-      pacman_install $pkgs $BH_MSYS_PAC
-      py_install $BH_MSYS_PY
-    fi
-    win_hide_home_dotfiles
-    py_upgrade
-    home_clean_unused
-    ;;
-
-  darwin*)
-      local pkgs="git bash vim diffutils curl "
-      pkgs+="python3 python-pip "
-      brew update
-      sudo brew upgrade
-      brew install $pkgs $BH_MAC_BREW
-      py_install $BH_MAC_PY
-      py_upgrade
-      home_clean_unused
-    ;;
-  esac
-
 }
