@@ -32,7 +32,7 @@ function win_is_shell_eleveated() { # return True/False
 # msys
 # ---------------------------------------
 
-function msys_fix_home() {
+function win_msys_same_home() {
   if ! test -d /mnt/; then mkdir /mnt/; fi
   echo -e "none / cygdrive binary,posix=0,noacl,user 0 0" | tee /etc/fstab
   echo -e "C:/Users /home ntfs binary,noacl,auto 1 1" | tee -a /etc/fstab

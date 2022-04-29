@@ -54,6 +54,7 @@ Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helper
 
 ### other win helpers
 
+* `win_msys_same_home`: make msys uses win home
 * `win_clean_trash`: clean trash
 * `win_open_trash`: explorer open trash
 * `win_restart_explorer`: explorer restart
@@ -61,7 +62,6 @@ Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helper
 * `win_hide_home_dotfiles`: hide dotfiles at home folder
 * `win_is_user_admin`: check if shell is admin
 * `win_is_shell_eleveated`: check if shell is elevated
-* `msys_fix_home`: make msys uses win home
 * `win_sysupdate`: update win
 * `win_sysupdate_list`: list avaliable updates
 * `win_feature_list_enabled`: list enabled features

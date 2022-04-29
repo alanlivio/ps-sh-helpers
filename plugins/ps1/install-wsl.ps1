@@ -61,8 +61,8 @@ function install_winget() {
   }
 }
 
-function wsl_fix_home() {
-  log "wsl_fix_home"
+function wsl_same_home() {
+  log "wsl_same_home"
   # fix file metadata
   # https://docs.microsoft.com/en-us/windows/wsl/wsl-config
   # https://github.com/Microsoft/WSL/issues/3138
@@ -137,7 +137,7 @@ function install_wsl() {
   # fix home user to \Users
   if (!(wsl echo '$HOME').Contains("Users")) {
     log "INFO: Configuring to same home dir as windows..."
-    wsl_fix_home
+    wsl_same_home
   }
 }
 
