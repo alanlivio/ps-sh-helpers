@@ -104,7 +104,7 @@ function update_clean() {
 
   msys*)
     win_get_install $BH_WIN_GET  # winget (it uses --scope=user)
-    $HAS_GSUDO && win_sysupdate
+    $HAS_GSUDO && win_sys_update
     if test -e /etc/profile.d/git-prompt.sh; then
       py_install $BH_WIN_PY
     else

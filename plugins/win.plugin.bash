@@ -43,10 +43,14 @@ function win_msys_same_home() {
 }
 
 # ---------------------------------------
-# sysupdate
+# sys
 # ---------------------------------------
 
-function win_sysupdate() {
+function win_sys_check() {
+  gsudo powershell -c 'sfc /scannow'
+}
+
+function win_sys_update() {
   gsudo powershell -c '
     Install-Module -Name PSWindowsUpdate -Force
     $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
@@ -56,23 +60,19 @@ function win_sysupdate() {
   }'
 }
 
-function win_sysupdate_list() {
+function win_sys_update_list() {
   gsudo powershell -c 'Get-WindowsUpdate'
 }
 
-# ---------------------------------------
-# feature
-# ---------------------------------------
-
-function win_feature_list_enabled() {
+function win_sys_feature_list_enabled() {
   gsudo powershell -c 'Get-WindowsOptionalFeature -Online | Where-Object {$_.State -eq "Enabled"}'
 }
 
-function win_feature_list_disabled() {
+function win_sys_feature_list_disabled() {
   gsudo powershell -c 'Get-WindowsOptionalFeature -Online | Where-Object {$_.State -eq "Disabled"}'
 }
 
-function win_feature_enable_ssh_server_bash() {
+function win_sys_feature_enable_ssh_server_bash() {
   local current_bash_path=$(where bash | head -1)
   gsudo powershell -c "
     Add-WindowsCapability -Online -Name OpenSSH.Client
