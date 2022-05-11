@@ -112,7 +112,7 @@ function update_clean() {
       pacman_install $pkgs $BH_MSYS_PAC
       py_install $BH_MSYS_PY
     fi
-    _hide_home_dotfiles
+    win_hide_home_dotfiles
     py_upgrade
     home_clean_unused
     ;;
