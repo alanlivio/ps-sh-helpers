@@ -45,12 +45,6 @@ Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helper
 * `gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
 * `gnome_disable_unused_apps_in_search`: remove from apps such as icedtea,brasero,etc from search
 
-### win install helpers
-
-* `win_install_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
-* `win_install_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automates the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password.
-* See others `win_install_*` at ./lib/win.bash
-
 ### win sanity helpers
 
 * `win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons)
@@ -59,21 +53,6 @@ Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helper
 * `win_sanity_password_policy`: remove unused password policy
 * `win_sanity_this_pc`: remove link folder on This PC 
 * `win_sanity_all`: run all sanity above
-
-### sys (admin) win helpers
-
-* `win_sys_check`: run sys file checker
-* `win_sys_update`: update win
-* `win_sys_update_list`: list avaliable updates
-* `win_sys_feature_list_enabled`: list enabled features
-* `win_sys_feature_list_disabled`: list disabled features
-* `win_sys_feature_enable_ssh_server_bash`: add OpenSSH.Server capability
-* `win_appx_list`:  Get-AppxPackage 
-* `win_appx_install`: Add-AppxPackage
-* `win_appx_uninstall`: Remove-AppxPackage
-
-### other win helpers
-
 * `win_msys_same_home`: make msys uses win home
 * `win_clean_trash`: clean trash
 * `win_open_trash`: explorer open trash
@@ -92,6 +71,20 @@ Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helper
 * `win_get_settings`: vscode open winget settings.json
 * `win_get_upgrade`: winget upgrade
 * `win_get_install`: winget install
+
+### win admin helpers
+
+* `win_install_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
+* `win_install_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automates the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password.
+* `win_sys_check`: run sys file checker
+* `win_sys_update`: update win
+* `win_sys_update_list`: list avaliable updates
+* `win_sys_feature_list_enabled`: list enabled features
+* `win_sys_feature_list_disabled`: list disabled features
+* `win_sys_feature_enable_ssh_server_bash`: add OpenSSH.Server capability
+* `win_appx_list`:  Get-AppxPackage 
+* `win_appx_install`: Add-AppxPackage
+* `win_appx_uninstall`: Remove-AppxPackage
 
 ### other helpers
 
