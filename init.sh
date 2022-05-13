@@ -91,14 +91,14 @@ function update_clean() {
     local pkgs="git vim diffutils curl python3 python3-pip "
     if [[ $(uname -r) == *"icrosoft"* ]]; then
         apt_install $pkgs $BH_WSL_APT
-        py_install $BH_WSL_PY
+        python_install $BH_WSL_PY
     elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then
       apt_install $pkgs $BH_UBU_APT
-      py_install $BH_UBU_PY
+      python_install $BH_UBU_PY
     fi
     apt_upgrade
     apt_autoremove
-    py_upgrade
+    python_upgrade
     home_clean_unused
     ;;
 
@@ -106,14 +106,14 @@ function update_clean() {
     win_get_install $BH_WIN_GET  # winget (it uses --scope=user)
     $HAS_GSUDO && win_sys_update
     if test -e /etc/profile.d/git-prompt.sh; then
-      py_install $BH_WIN_PY
+      python_install $BH_WIN_PY
     else
       local pkgs="bash pacman pacman-mirrors msys2-runtime vim diffutils curl "
       pacman_install $pkgs $BH_MSYS_PAC
-      py_install $BH_MSYS_PY
+      python_install $BH_MSYS_PY
     fi
     win_hide_home_dotfiles
-    py_upgrade
+    python_upgrade
     home_clean_unused
     ;;
 
@@ -123,8 +123,8 @@ function update_clean() {
       brew update
       sudo brew upgrade
       brew install $pkgs $BH_MAC_BREW
-      py_install $BH_MAC_PY
-      py_upgrade
+      python_install $BH_MAC_PY
+      python_upgrade
       home_clean_unused
     ;;
   esac

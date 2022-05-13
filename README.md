@@ -40,6 +40,17 @@ Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helper
 * `dir_find_duplicated_pdf`: list duplicated pdf files in dir recursively
 * `dir_sorted_by_size`: list dir sorted by items size
 
+### python helpers
+
+* `python_upgrade`: upgrade a list of python pkgs 
+* `python_install`: install a list of python pkgs 
+* `python_uninstall`: uninstall a list of python pkgs
+* `python_venv_create`: create a venv
+* `python_venv_load`: load a venv
+* `python_setup_install_user`: install from a pkg folder with setup.py
+* `python_setup_upload_testpypi`: upload to testpypi from a pkg folder with setup.py
+* `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py
+
 ### gnome helpers
 
 * `gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)

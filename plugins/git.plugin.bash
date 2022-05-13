@@ -269,9 +269,6 @@ function git_filter_repo_save_origin() {
   fi
 }
 
-function git_filter_repo_install() {
-  py_install git-filter-repo
-}
 
 function git_filter_repo_messages_to_lower_case() {
   git_filter_repo_save_origin
