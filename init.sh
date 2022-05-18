@@ -86,6 +86,7 @@ function home_clean_unused() {
 }
 
 function update_clean() {
+  home_clean_unused # clean for any OS
   case $OSTYPE in
   linux*) # wsl/ubu
     local pkgs="git vim diffutils curl python3 python3-pip "
@@ -99,25 +100,24 @@ function update_clean() {
     apt_upgrade
     apt_autoremove
     python_upgrade
-    home_clean_unused
     ;;
 
-  msys*)
+  msys*) # gitbas/msys2
+    win_hide_home_dotfiles
     win_get_install $BH_WIN_GET  # winget (it uses --scope=user)
+    win_get_upgrade
     $HAS_GSUDO && win_sys_update
-    if test -e /etc/profile.d/git-prompt.sh; then
+    if test -e /etc/profile.d/git-prompt.sh; then # if gitbash
       python_install $BH_WIN_PY
-    else
+    else  # if msys2
       local pkgs="bash pacman pacman-mirrors msys2-runtime vim diffutils curl "
       pacman_install $pkgs $BH_MSYS_PAC
       python_install $BH_MSYS_PY
     fi
-    win_hide_home_dotfiles
     python_upgrade
-    home_clean_unused
     ;;
 
-  darwin*)
+  darwin*) # mac
       local pkgs="git bash vim diffutils curl "
       pkgs+="python3 python-pip "
       brew update
@@ -125,7 +125,6 @@ function update_clean() {
       brew install $pkgs $BH_MAC_BREW
       python_install $BH_MAC_PY
       python_upgrade
-      home_clean_unused
     ;;
   esac
 }
