@@ -53,11 +53,8 @@ function win_sys_check() {
 function win_sys_update() {
   gsudo powershell -c '
     Install-Module -Name PSWindowsUpdate -Force
-    $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
-    if ($_ -is [string]) {
-      $_.Split("", [System.StringSplitOptions]::RemoveEmptyEntries) 
-    } 
-  }'
+    Install-WindowsUpdate -AcceptAll -IgnoreReboot
+  '
 }
 
 function win_sys_update_list() {
