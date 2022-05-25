@@ -158,7 +158,7 @@ function decompress() {
     tar -xJf $1 -C $DST
     ;;
   *)
-    log_error "$EXT is not supported compress." && exit
+    log_error "$EXT is not supported compress." && return
     ;;
   esac
 }
