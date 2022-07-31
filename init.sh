@@ -9,7 +9,6 @@ alias bashrc_reload='source $HOME/.bashrc'
 # ---------------------------------------
 
 BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
-if [[ $OSTYPE == "msys" ]]; then source "$BH_DIR/plugins/win.plugin.bash"; fi
 if type adb &>/dev/null; then source "$BH_DIR/aliases/adb.aliases.bash"; fi
 if type apt &>/dev/null; then source "$BH_DIR/plugins/apt.plugin.bash"; fi
 if type choco &>/dev/null; then source "$BH_DIR/plugins/choco.plugin.bash"; fi
@@ -19,7 +18,6 @@ if type deb &>/dev/null; then source "$BH_DIR/aliases/deb.aliases.bash"; fi
 if type docker &>/dev/null; then source "$BH_DIR/plugins/docker.plugin.bash"; fi
 if type ffmpeg &>/dev/null; then source "$BH_DIR/plugins/ffmpeg.plugin.bash"; fi
 if type flutter &>/dev/null; then source "$BH_DIR/aliases/flutter.aliases.bash"; fi
-if type gdb &>/dev/null; then source "$BH_DIR/plugins/gdb.aliases.bash"; fi
 if type ghostscript &>/dev/null; then source "$BH_DIR/plugins/ghostscript.plugin.bash"; fi
 if type git &>/dev/null; then source "$BH_DIR/plugins/git.plugin.bash"; fi
 if type gnome-shell &>/dev/null; then source "$BH_DIR/plugins/gnome.plugin.bash"; fi
@@ -27,7 +25,6 @@ if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/plugins/gst.plugin.bash
 if type gsudo &>/dev/null; then HAS_GSUDO=true; else HAS_GSUDO=false; fi
 if type lxc &>/dev/null; then source "$BH_DIR/plugins/lxc.plugin.bash"; fi
 if type meson &>/dev/null; then source "$BH_DIR/plugins/meson.plugin.bash"; fi
-if type pacman &>/dev/null; then source "$BH_DIR/plugins/pacman.plugin.bash"; fi
 if type pandoc &>/dev/null; then source "$BH_DIR/plugins/pandoc.plugin.bash"; fi
 if type pkg-config &>/dev/null; then source "$BH_DIR/plugins/pkg-config.plugin.bash"; fi
 if type pngquant &>/dev/null; then source "$BH_DIR/plugins/pngquant.plugin.bash"; fi
@@ -37,6 +34,17 @@ if type snap &>/dev/null; then source "$BH_DIR/aliases/snap.aliases.bash"; fi
 if type ssh &>/dev/null; then source "$BH_DIR/plugins/ssh.plugin.bash"; fi
 if type tesseract &>/dev/null; then source "$BH_DIR/plugins/tesseract.plugin.bash"; fi
 if type youtube-dl &>/dev/null; then source "$BH_DIR/plugins/youtube-dl.plugin.bash"; fi
+
+# ---------------------------------------
+# os helpers
+# ---------------------------------------
+if [[ $OSTYPE == "msys" ]]; then
+  source "$BH_DIR/plugins/win.plugin.bash"
+  if ! test -e /etc/profile.d/git-prompt.sh; then # if gitbash
+    echo "$BH_DIR/plugins/msys2.plugin.bash"
+    source "$BH_DIR/plugins/msys2.plugin.bash"
+  fi
+fi
 
 # ---------------------------------------
 # dotfiles
@@ -104,14 +112,14 @@ function update_clean() {
 
   msys*) # gitbas/msys2
     win_hide_home_dotfiles
-    win_get_install $BH_WIN_GET  # winget (it uses --scope=user)
-    win_get_upgrade
     $HAS_GSUDO && win_sys_update
     if test -e /etc/profile.d/git-prompt.sh; then # if gitbash
+      win_get_install $BH_WIN_GET  # winget (it uses --scope=user)
+      win_get_upgrade
       python_install $BH_WIN_PY
     else  # if msys2
       local pkgs="bash pacman pacman-mirrors msys2-runtime vim diffutils curl "
-      pacman_install $pkgs $BH_MSYS_PAC
+      msys2_install $pkgs $BH_MSYS_PAC
       python_install $BH_MSYS_PY
     fi
     python_upgrade
