@@ -1,27 +1,12 @@
+alias python_install='pip install --user --upgrade '
+alias python_uninstall='pip uninstall  '
+
 function python_upgrade() {
   local outdated=$(pip list --outdated --format=freeze --disable-pip-version-check 2>/dev/null | grep -v '^\-e' | cut -d = -f 1)
   if test "$outdated"; then
-    pip install --upgrade pip 2>/dev/null
+    python -m pip install --upgrade pip 2>/dev/null
     pip install --upgrade $outdated 2>/dev/null
   fi
-}
-
-function python_install() {
-  local pkgs_to_install=""
-  local pkgs_installed=$(pip list --format=columns --disable-pip-version-check | cut -d' ' -f1 | grep -v Package | sed '1d' | tr '\n' ' ')
-  for i in "$@"; do
-    if [[ ! $pkgs_installed =~ $i ]]; then
-      pkgs_to_install="$i $pkgs_to_install"
-    fi
-  done
-  if test ! -z "$pkgs_to_install"; then
-    log_msg "pkgs_to_install=$pkgs_to_install"
-    pip install --user --no-cache-dir --disable-pip-version-check $pkgs_to_install
-  fi
-}
-
-function python_uninstall() {
-  pip uninstall "$@"
 }
 
 function python_venv_create() {
@@ -36,10 +21,6 @@ function python_venv_load() {
   source venv/bin/activate
   if test requirements.txt; then pip install -r requirements.txt; fi
 }
-
-# ---------------------------------------
-# setup
-# ---------------------------------------
 
 function python_setup_install_user() {
   python setup.py install --user

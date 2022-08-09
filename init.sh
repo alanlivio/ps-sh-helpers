@@ -3,48 +3,43 @@
 function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
 function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
 alias bashrc_reload='source $HOME/.bashrc'
-
-# ---------------------------------------
-# command helpers
-# ---------------------------------------
-
 BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
-if type adb &>/dev/null; then source "$BH_DIR/aliases/adb.aliases.bash"; fi
-if type apt &>/dev/null; then source "$BH_DIR/plugins/apt.plugin.bash"; fi
-if type choco &>/dev/null; then source "$BH_DIR/plugins/choco.plugin.bash"; fi
-if type cmake &>/dev/null; then source "$BH_DIR/plugins/cmake.plugin.bash"; fi
-if type code &>/dev/null; then source "$BH_DIR/plugins/vscode.plugin.bash"; fi
-if type deb &>/dev/null; then source "$BH_DIR/aliases/deb.aliases.bash"; fi
-if type docker &>/dev/null; then source "$BH_DIR/plugins/docker.plugin.bash"; fi
-if type ffmpeg &>/dev/null; then source "$BH_DIR/plugins/ffmpeg.plugin.bash"; fi
-if type flutter &>/dev/null; then source "$BH_DIR/aliases/flutter.aliases.bash"; fi
-if type ghostscript &>/dev/null; then source "$BH_DIR/plugins/ghostscript.plugin.bash"; fi
-if type git &>/dev/null; then source "$BH_DIR/plugins/git.plugin.bash"; fi
-if type gnome-shell &>/dev/null; then source "$BH_DIR/plugins/gnome.plugin.bash"; fi
-if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/plugins/gst.plugin.bash"; fi
-if type gsudo &>/dev/null; then HAS_GSUDO=true; else HAS_GSUDO=false; fi
-if type lxc &>/dev/null; then source "$BH_DIR/plugins/lxc.plugin.bash"; fi
-if type meson &>/dev/null; then source "$BH_DIR/plugins/meson.plugin.bash"; fi
-if type pandoc &>/dev/null; then source "$BH_DIR/plugins/pandoc.plugin.bash"; fi
-if type pkg-config &>/dev/null; then source "$BH_DIR/plugins/pkg-config.plugin.bash"; fi
-if type pngquant &>/dev/null; then source "$BH_DIR/plugins/pngquant.plugin.bash"; fi
-if type python &>/dev/null; then source "$BH_DIR/plugins/python.plugin.bash"; fi
-if type ruby &>/dev/null; then source "$BH_DIR/plugins/ruby.plugin.bash"; fi
-if type snap &>/dev/null; then source "$BH_DIR/aliases/snap.aliases.bash"; fi
-if type ssh &>/dev/null; then source "$BH_DIR/plugins/ssh.plugin.bash"; fi
-if type tesseract &>/dev/null; then source "$BH_DIR/plugins/tesseract.plugin.bash"; fi
-if type youtube-dl &>/dev/null; then source "$BH_DIR/plugins/youtube-dl.plugin.bash"; fi
 
 # ---------------------------------------
-# os helpers
+# command aliases
+# ---------------------------------------
+if type adb &>/dev/null; then source "$BH_DIR/aliases/adb.aliases.bash"; fi
+if type apt &>/dev/null; then source "$BH_DIR/aliases/apt.aliases.bash"; fi
+if type deb &>/dev/null; then source "$BH_DIR/aliases/deb.aliases.bash"; fi
+if type flutter &>/dev/null; then source "$BH_DIR/aliases/flutter.aliases.bash"; fi
+if type pngquant &>/dev/null; then source "$BH_DIR/aliases/pngquant.aliases.bash"; fi
+if type ruby &>/dev/null; then source "$BH_DIR/aliases/ruby.aliases.bash"; fi
+if type snap &>/dev/null; then source "$BH_DIR/aliases/snap.aliases.bash"; fi
+if type code &>/dev/null; then source "$BH_DIR/aliases/vscode.aliases.bash"; fi
+if type choco &>/dev/null; then source "$BH_DIR/aliases/choco.aliases.bash"; fi
+if type cmake &>/dev/null; then source "$BH_DIR/aliases/cmake.aliases.bash"; fi
+if type ffmpeg &>/dev/null; then source "$BH_DIR/aliases/ffmpeg.aliases.bash"; fi
+if type ghostscript &>/dev/null; then source "$BH_DIR/aliases/ghostscript.aliases.bash"; fi
+if type git &>/dev/null; then source "$BH_DIR/aliases/git.aliases.bash"; fi
+if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/aliases/gst.aliases.bash"; fi
+if type lxc &>/dev/null; then source "$BH_DIR/aliases/lxc.aliases.bash"; fi
+if type meson &>/dev/null; then source "$BH_DIR/aliases/meson.aliases.bash"; fi
+if type pandoc &>/dev/null; then source "$BH_DIR/aliases/pandoc.aliases.bash"; fi
+if type pkg-config &>/dev/null; then source "$BH_DIR/aliases/pkg-config.aliases.bash"; fi
+if type ssh &>/dev/null; then source "$BH_DIR/aliases/ssh.aliases.bash"; fi
+if type tesseract &>/dev/null; then source "$BH_DIR/aliases/tesseract.aliases.bash"; fi
+if type youtube-dl &>/dev/null; then source "$BH_DIR/aliases/youtube-dl.aliases.bash"; fi
+
+# ---------------------------------------
+# os plugins
 # ---------------------------------------
 if [[ $OSTYPE == "msys" ]]; then
   source "$BH_DIR/plugins/win.plugin.bash"
   if ! test -e /etc/profile.d/git-prompt.sh; then # if gitbash
-    echo "$BH_DIR/plugins/msys2.plugin.bash"
     source "$BH_DIR/plugins/msys2.plugin.bash"
   fi
 fi
+if type gnome-shell &>/dev/null; then source "$BH_DIR/plugins/gnome.plugin.bash"; fi
 
 # ---------------------------------------
 # dotfiles
@@ -74,68 +69,6 @@ function dotfiles_func() {
 alias dotfiles_install="dotfiles_func install"
 alias dotfiles_backup="dotfiles_func backup"
 alias dotfiles_diff="dotfiles_func diff"
-
-# ---------------------------------------
-# update_clean
-# ---------------------------------------
-
-function home_clean_unused() {
-  if [ -z $BH_HOME_CLEAN_UNUSED ]; then
-    log_error "\$BH_HOME_CLEAN_UNUSED is not defined"
-    return
-  fi
-    for i in "${BH_HOME_CLEAN_UNUSED[@]}"; do
-      if test -d "$HOME/$i"; then
-        rm -rf "$HOME/${i:?}" >/dev/null
-    elif test -e "$HOME/$i"; then
-        rm -f "$HOME/${i:?}" >/dev/null
-    fi
-  done
-}
-
-function update_clean() {
-  home_clean_unused # clean for any OS
-  case $OSTYPE in
-  linux*) # wsl/ubu
-    local pkgs="git vim diffutils curl python3 python3-pip "
-    if [[ $(uname -r) == *"icrosoft"* ]]; then
-        apt_install $pkgs $BH_WSL_APT
-        python_install $BH_WSL_PY
-    elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then
-      apt_install $pkgs $BH_UBU_APT
-      python_install $BH_UBU_PY
-    fi
-    apt_upgrade
-    apt_autoremove
-    python_upgrade
-    ;;
-
-  msys*) # gitbas/msys2
-    win_hide_home_dotfiles
-    $HAS_GSUDO && win_sys_update
-    if test -e /etc/profile.d/git-prompt.sh; then # if gitbash
-      win_get_install $BH_WIN_GET  # winget (it uses --scope=user)
-      win_get_upgrade
-      python_install $BH_WIN_PY
-    else  # if msys2
-      local pkgs="bash pacman pacman-mirrors msys2-runtime vim diffutils curl "
-      msys2_install $pkgs $BH_MSYS_PAC
-      python_install $BH_MSYS_PY
-    fi
-    python_upgrade
-    ;;
-
-  darwin*) # mac
-      local pkgs="git bash vim diffutils curl "
-      pkgs+="python3 python-pip "
-      brew update
-      sudo brew upgrade
-      brew install $pkgs $BH_MAC_BREW
-      python_install $BH_MAC_PY
-      python_upgrade
-    ;;
-  esac
-}
 
 # ---------------------------------------
 # others
@@ -193,4 +126,66 @@ function dir_sorted_by_size() {
 
 function dir_find_duplicated_pdf() {
   find . -iname "*.pdf" -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find . -type f -size {}c -print0 | xargs -r -0 md5sum | sort | uniq -w32 --all-repeated=separate
+}
+
+# ---------------------------------------
+# update_clean
+# ---------------------------------------
+
+function home_clean_unused() {
+  if [ -z $BH_HOME_CLEAN_UNUSED ]; then
+    log_error "\$BH_HOME_CLEAN_UNUSED is not defined"
+    return
+  fi
+    for i in "${BH_HOME_CLEAN_UNUSED[@]}"; do
+      if test -d "$HOME/$i"; then
+        rm -rf "$HOME/${i:?}" >/dev/null
+    elif test -e "$HOME/$i"; then
+        rm -f "$HOME/${i:?}" >/dev/null
+    fi
+  done
+}
+
+function update_clean() {
+  home_clean_unused # clean for any OS
+  case $OSTYPE in
+  linux*) # wsl/ubu
+    local pkgs="git vim diffutils curl python3 python3-pip "
+    if [[ $(uname -r) == *"icrosoft"* ]]; then
+        apt_install $pkgs $BH_WSL_APT
+        python_install $BH_WSL_PY
+    elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then
+      apt_install $pkgs $BH_UBU_APT
+      python_install $BH_UBU_PY
+    fi
+    apt_upgrade
+    apt_autoremove
+    python_upgrade
+    ;;
+
+  msys*) # gitbas/msys2
+    win_hide_home_dotfiles
+    if type gsudo &>/dev/null; then win_sys_update; fi
+    if test -e /etc/profile.d/git-prompt.sh; then # if gitbash
+      win_get_install $BH_WIN_GET  # winget (it uses --scope=user)
+      win_get_upgrade
+      python_install $BH_WIN_PY
+    else  # if msys2
+      local pkgs="bash pacman pacman-mirrors msys2-runtime vim diffutils curl "
+      msys2_install $pkgs $BH_MSYS_PAC
+      python_install $BH_MSYS_PY
+    fi
+    python_upgrade
+    ;;
+
+  darwin*) # mac
+      local pkgs="git bash vim diffutils curl "
+      pkgs+="python3 python-pip "
+      brew update
+      sudo brew upgrade
+      brew install $pkgs $BH_MAC_BREW
+      python_install $BH_MAC_PY
+      python_upgrade
+    ;;
+  esac
 }

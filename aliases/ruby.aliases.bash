@@ -1,0 +1,1 @@
+alias ruby_install='gem install '

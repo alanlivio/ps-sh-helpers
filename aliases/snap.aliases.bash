@@ -1,4 +1,4 @@
-alias snapi="snap install "
-alias snapic="snap install --classic"
-alias snapie="snap install --edge"
-alias snapl="snap list"
+alias snap_install="snap install "
+alias snap_install_classic="snap install --classic"
+alias snap_install_edge="snap install --edge"
+alias snap_list="snap list"
