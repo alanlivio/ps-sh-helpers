@@ -2,12 +2,12 @@
 
 # bash-helpers
 
-Cross-OS bash helpers for installation (wsl/msys, adb, flutter, ffmpeg), setup (dark mode, clean taskbar/clutter/unused), update python/vscode pkgs, sync dotfiles, common git calls, and more. 
+Cross-OS bash helpers for installation (wsl/msys, adb, flutter, ffmpeg), setup (dark mode, clean taskbar/clutter/unused), update python/vscode packages, sync dotfiles, common git calls, and more. 
 The project logo refers to the synthetic chemical element Bohrium, which also has the initials bh.
 
 ## Install
 
-The bash-helpers project has two requirements: a `bash shell` and `git`. Particularly on windows, they can be installed using [GitForWindows](https://gitforwindows.org/) (you may install it running [install-gitforwindows-and-wt.ps1](https://github.com/alanlivio/bash-helpers/blob/master/lib/win/install-gitforwindows-and-wt.ps1) on powershell). 
+The bash-helpers project has two requirements: a `bash shell` and `git`. Particularly on windows, they can be installed using [GitForWindows](https://gitforwindows.org/) (you may install it running [install-gitforwindows-and-wt.ps1](https://github.com/alanlivio/bash-helpers/blob/master/lib/win/install-gitforwindows-and-wt.ps1) on PowerShell). 
 
 Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 ```bash
@@ -18,16 +18,16 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 ## helpers
 
-### update_clean and dotfiles helpers
+### update_clean_os  and dotfiles helpers
 
 The next helpers use variables from `~/.bashrc` to install software, clean unused files/dirs, and update repositories. 
 Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bashrc).
 
-* `update_clean` (at mac bash): install/update BH_MAC_BREW, BH_MAC_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
-* `update_clean` (at ubuntu bash): install/update BH_UBU_APT, BH_UBU_PY,  clean files/dirs from BH_HOME_CLEAN_UNUSED
-* `update_clean` (at GitBash): install/update BH_WIN_GET, BH_WIN_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
-* `update_clean` (at WSL bash): install/update BH_WSL_APT, BH_WSL_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
-* `update_clean` (at msys bash): install/update BH_MSYS_PAC, BH_MSYS_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `update_clean_os` (at mac bash): install/update BH_MAC_BREW, BH_MAC_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `update_clean_os` (at ubuntu bash): install/update BH_UBU_APT, BH_UBU_PY,  clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `update_clean_os` (at GitBash): install/update BH_WIN_GET, BH_WIN_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `update_clean_os` (at WSL bash): install/update BH_WSL_APT, BH_WSL_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `update_clean_os` (at msys bash): install/update BH_MSYS_PAC, BH_MSYS_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES
@@ -35,16 +35,16 @@ Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helper
 ### bash/dir/curl helpers
 
 * `bash_sudo_nopasswd`:  disable password when call sudo (user must be in sudores)
-* `decompress`:  decompress from multiple formats
+* `decompress`: decompress from multiple formats
 * `decompress_from_url`: fetch and decompress to folder
 * `dir_find_duplicated_pdf`: list duplicated pdf files in dir recursively
 * `dir_sorted_by_size`: list dir sorted by items size
 
 ### python helpers
 
-* `python_upgrade`: upgrade a list of python pkgs 
-* `python_install`: install a list of python pkgs 
-* `python_uninstall`: uninstall a list of python pkgs
+* `python_upgrade`: upgrade a list of python packages 
+* `python_install`: install a list of python packages 
+* `python_uninstall`: uninstall a list of python packages
 * `python_venv_create`: create a venv
 * `python_venv_load`: load a venv
 * `python_setup_install_user`: install from a pkg folder with setup.py
@@ -59,8 +59,8 @@ Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helper
 ### win sanity helpers
 
 * `win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons)
-* `win_sanity_ctx_menu`: remove unused ctx menu
-* `win_sanity_services`: remove unused ctx services
+* `win_sanity_ctx_menu`: remove unused context menu
+* `win_sanity_services`: remove unused context services
 * `win_sanity_password_policy`: remove unused password policy
 * `win_sanity_this_pc`: remove link folder on This PC 
 * `win_sanity_all`: run all sanity above
@@ -103,7 +103,7 @@ See the full helpers at plugins/ and aliases/ folders.
 
 ## References
 
-The projects bellow used as reference:
+The projects below used as reference:
 
 * <https://github.com/milianw/shell-helpers>
 * <https://github.com/wd5gnr/bashrc>
@@ -122,7 +122,7 @@ The projects bellow used as reference:
 * <https://github.com/cyberark/bash-lib>
 * <https://www.conjur.org/blog/stop-bashing-bash>
 
-And, particulary, these were reference for helpers on windows:
+And, particularly, these were references for helpers on windows:
 
 * <https://github.com/adolfintel/windows10-Privacy>
 * <https://gist.github.com/alirobe/7f3b34ad89a159e6daa1>

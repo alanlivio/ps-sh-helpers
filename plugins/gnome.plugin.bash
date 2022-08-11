@@ -1,7 +1,6 @@
 function gnome_sanity() {
   gnome_dark
   gnome_sanity
-  gnome_disable_unused_apps_in_search
 }
 
 function gnome_dark_mode() {
@@ -62,11 +61,4 @@ function gnome_sanity() {
   gsettings set org.gnome.shell.extensions.dash-to-dock autohide false
   gsettings set org.gnome.shell.extensions.dash-to-dock intellihide false
   gsettings set org.gnome.shell.extensions.dash-to-dock show-show-apps-button false
-}
-
-function gnome_disable_unused_apps_in_search() {
-  local apps_to_hide=$(find /usr/share/applications/ -iname '*im6*' -iname '*java*' -o -iname '*JB*' -o -iname '*policy*' -o -iname '*icedtea*' -o -iname '*uxterm*' -o -iname '*display-im6*' -o -iname '*unity*' -o -iname '*webbrowser-app*' -o -iname '*amazon*' -o -iname '*icedtea*' -o -iname '*xdiagnose*' -o -iname yelp.desktop -o -iname '*brasero*')
-  for i in $apps_to_hide; do
-    sudo sh -c " echo 'NoDisplay=true' >> $i"
-  done
 }
