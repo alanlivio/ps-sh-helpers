@@ -167,7 +167,8 @@ function update_clean_os() {
     win_hide_home_dotfiles
     if type gsudo &>/dev/null; then win_sys_update; fi
     if test -e /etc/profile.d/git-prompt.sh; then # if gitbash
-      win_get_install $BH_WIN_GET  # winget (it uses --scope=user)
+      local pkgs+="Python.Python.3 " # ensure python installed
+      win_get_install $pkgs $BH_WIN_GET  # winget (it uses --scope=user)
       win_get_upgrade
       python_install $BH_WIN_PY
     else  # if msys2
@@ -180,7 +181,7 @@ function update_clean_os() {
 
   darwin*) # mac
       local pkgs="git bash vim diffutils curl "
-      pkgs+="python3 python-pip "
+      pkgs+="python3 python-pip " # ensure python installed
       brew update
       sudo brew upgrade
       brew install $pkgs $BH_MAC_BREW
