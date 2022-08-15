@@ -13,6 +13,7 @@ if type apt &>/dev/null; then source "$BH_DIR/aliases/apt.aliases.bash"; fi
 if type deb &>/dev/null; then source "$BH_DIR/aliases/deb.aliases.bash"; fi
 if type flutter &>/dev/null; then source "$BH_DIR/aliases/flutter.aliases.bash"; fi
 if type pngquant &>/dev/null; then source "$BH_DIR/aliases/pngquant.aliases.bash"; fi
+if type python &>/dev/null; then source "$BH_DIR/aliases/python.aliases.bash"; fi
 if type ruby &>/dev/null; then source "$BH_DIR/aliases/ruby.aliases.bash"; fi
 if type snap &>/dev/null; then source "$BH_DIR/aliases/snap.aliases.bash"; fi
 if type code &>/dev/null; then source "$BH_DIR/aliases/vscode.aliases.bash"; fi
