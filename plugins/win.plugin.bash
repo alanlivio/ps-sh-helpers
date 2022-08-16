@@ -20,7 +20,7 @@ function win_hide_home_dotfiles() {
   powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
 }
 
-function win_is_user_admin() { # return True/False
+function win_is_user_admin() { # ex: if [ $(win_is_user_admin) = "True" ]; then win_get_install "gerardog.gsudo"; fi
   powershell -c ' (Get-LocalGroupMember "Administrators").Name -contains "$env:COMPUTERNAME\$env:USERNAME" '
 }
 

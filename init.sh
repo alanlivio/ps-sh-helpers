@@ -6,7 +6,7 @@ alias bashrc_reload='source $HOME/.bashrc'
 BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
 
 # ---------------------------------------
-# aliases command 
+# aliases command
 # ---------------------------------------
 if type adb &>/dev/null; then source "$BH_DIR/aliases/adb.aliases.bash"; fi
 if type apt &>/dev/null; then source "$BH_DIR/aliases/apt.aliases.bash"; fi
@@ -32,7 +32,7 @@ if type tesseract &>/dev/null; then source "$BH_DIR/aliases/tesseract.aliases.ba
 if type youtube-dl &>/dev/null; then source "$BH_DIR/aliases/youtube-dl.aliases.bash"; fi
 
 # ---------------------------------------
-# plugins os 
+# plugins os
 # ---------------------------------------
 if [[ $OSTYPE == "msys" ]]; then
   source "$BH_DIR/plugins/win.plugin.bash"
@@ -166,6 +166,7 @@ function update_clean_os() {
 
   msys*) # gitbas/msys2
     win_hide_home_dotfiles
+    if [ $(win_is_user_admin) = "True" ]; then win_get_install "gerardog.gsudo"; fi
     if type gsudo &>/dev/null; then win_sys_update; fi
     if test -e /etc/profile.d/git-prompt.sh; then # if gitbash
       local pkgs+="Python.Python.3 " # ensure python installed
