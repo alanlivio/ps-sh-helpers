@@ -139,9 +139,6 @@ function sanity_file_explorer() {
   
   log_2nd "disable file explorer recent files "
   Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "ShowRecent" -Value 0
-  
-  log_2nd "set file explorer open in This PC"
-  Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "LaunchTo" -Type DWord -Value 1
 }
 
 function sanity_keyboard() {
