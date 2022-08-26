@@ -185,17 +185,11 @@ function win_install_node() {
 }
 
 BH_PLATOOLS_VER="31.0.3-windows"
-BH_ANDROID_CMD_VER="8512546"
-BH_FLUTTER_VER="33.0.3"
 
 function win_install_adb() {
-  # create opt
-  local opt_dst="$BH_OPT"
-  test_and_create_dir $opt_dst
+  # android plataform tools
+  local android_sdk_dir=$(cygpath $LOCALAPPDATA/Android/Sdk)
   test_and_create_dir $android_sdk_dir
-
-  # android cmd and sdk
-  local android_sdk_dir="$opt_dst/android"
   local android_plattools_dir="$android_sdk_dir/platform-tools"
   local android_plattools_url="https://dl.google.com/android/repository/platform-tools_r${BH_PLATOOLS_VER}.zip"
   if ! test -d $android_plattools_dir; then
@@ -205,15 +199,12 @@ function win_install_adb() {
   win_path_add $(cygpath -w $android_plattools_dir)
 }
 
-function win_install_flutter() {
+BH_ANDROID_CMD_VER="8512546"
 
-  # create opt
-  local opt_dst="$BH_OPT"
-  test_and_create_dir $opt_dst
-  test_and_create_dir $android_sdk_dir
-
+function win_install_android_sdk() {
   # android cmd and sdk
-  local android_sdk_dir="$opt_dst/android"
+  local android_sdk_dir=$(cygpath $LOCALAPPDATA/Android/Sdk)
+  test_and_create_dir $android_sdk_dir
   local android_cmd_dir="$android_sdk_dir/cmdline-tools"
   local android_cmd_url="https://dl.google.com/android/repository/commandlinetools-win-${BH_ANDROID_CMD_VER}_latest.zip"
   if ! test -d $android_cmd_dir; then
@@ -222,15 +213,19 @@ function win_install_flutter() {
     win_path_add $(cygpath -w $android_cmd_dir/bin)
   fi
   if ! test -d $android_sdk_dir/platforms; then
-    $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --install 'platform-tools' 'platforms;android-29'
+    $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --install 'platform-tools' 'platforms;android-33'
     yes | $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --licenses
   fi
   win_env_add ANDROID_HOME $(cygpath -w $android_sdk_dir)
   win_env_add ANDROID_SDK_ROOT $(cygpath -w $android_sdk_dir)
   win_path_add $(cygpath -w $android_sdk_dir/platform-tools)
+}
 
-  # flutter
-  local flutter_sdk_dir="$opt_dst/flutter"
+BH_FLUTTER_VER="3.0.5"
+
+function win_install_flutter() {
+  local opt_dst="$BH_OPT"
+  local flutter_sdk_dir="$BH_OPT/flutter"
   local flutter_sdk_url="https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_${BH_FLUTTER_VER}-stable.zip"
   if ! test -d $flutter_sdk_dir; then
     # opt_dst beacuase zip extract the flutter dir

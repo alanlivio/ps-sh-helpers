@@ -2,6 +2,7 @@
 
 function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
 function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
+function test_and_create_dir() { if ! test -d "$1"; then mkdir -p $1; fi; }
 alias bashrc_reload='source $HOME/.bashrc'
 BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
 
@@ -34,13 +35,21 @@ if type youtube-dl &>/dev/null; then source "$BH_DIR/aliases/youtube-dl.aliases.
 # ---------------------------------------
 # plugins os
 # ---------------------------------------
-if [[ $OSTYPE == "msys" ]]; then
+case $OSTYPE in
+msys*)
+  BH_OPT="$HOME/AppData/Local/Programs"
   source "$BH_DIR/plugins/win.plugin.bash"
-  if ! test -e /etc/profile.d/git-prompt.sh; then # if gitbash
+  # if msys2
+  if ! test -e /etc/profile.d/git-prompt.sh; then 
     source "$BH_DIR/plugins/msys2.plugin.bash"
   fi
-fi
-if type gnome-shell &>/dev/null; then source "$BH_DIR/plugins/gnome.plugin.bash"; fi
+  ;;
+linux*)
+  BH_OPT="$HOME/opt"
+  if type gnome-shell &>/dev/null; then source "$BH_DIR/plugins/gnome.plugin.bash"; fi
+  BH_HOME_CLEAN_UNUSED+=('Documents') # sensible data in Windows
+  ;;
+esac
 
 # ---------------------------------------
 # dotfiles
