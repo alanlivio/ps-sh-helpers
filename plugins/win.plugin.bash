@@ -151,12 +151,12 @@ function win_install_miktex() {
   win_path_add $(cygpath -w $HOME/AppData/Local/Programs/MiKTeX/miktex/bin/x64/)
 }
 
-function win_install_gitforwindows_and_wt() {
-  powershell -c_script $(cygpath -w $BH_DIR/plugins/ps1/install-gitforwindows-and-wt.ps1)
+function win_install_gitbash() {
+  powershell $(cygpath -w $BH_DIR/plugins/ps1/install-gitbash.ps1)
 }
 
 function win_install_msys() {
-  powershell -c_script $(cygpath -w $BH_DIR/plugins/ps1/install-msys.ps1)
+  powershell $(cygpath -w $BH_DIR/plugins/ps1/install-msys.ps1)
 }
 
 function win_install_ghostscript() {
@@ -172,46 +172,21 @@ function win_install_cmake() {
   win_get_install Kitware.CMake
 }
 
-function win_install_pgrep() {
-  local url="https://soft.rubypdf.com/download/pdfgrep/pdfgrep-1.4.0-win32.zip"
-  local bin_dir="$BH_OPT/pdfgrep"
-  if ! test -f $bin_dir; then
-    decompress_from_url $url $bin_dir
-    if test $? != 0; then log_error "decompress_from_url failed." && return 1; fi
-  fi
-  win_path_add $(cygpath -w $bin_dir)
+function win_install_wget() {
+  win_get_install GnuWin32.Wget
 }
 
-function win_install_make() {
-  local url="https://jztkft.dl.sourceforge.net/project/ezwinports/make-4.3-without-guile-w32-bin.zip"
-  local bin_dir="$BH_OPT/make-4.3-without-guile-w32-bin"
-  if ! test -d $bin_dir; then
-    test_and_create_dir $bin_dir
-    decompress_from_url $url $bin_dir # no root dir
-    if test $? != 0; then log_error "decompress_from_url failed." && return 1; fi
-  fi
-  win_path_add $(cygpath -w $bin_dir/bin)
+function win_install_tree() {
+  GnuWin32.Tree
 }
 
-BH_FFMPEG_VER="4.4"
-function win_install_ffmpeg() {
-  local url="https://www.gyan.dev/ffmpeg/builds/packages/ffmpeg-${BH_FFMPEG_VER}-essentials_build.zip"
-  local bin_dir="$BH_OPT/ffmpeg-${BH_FFMPEG_VER}-essentials_build/bin/"
-  if ! test -d $bin_dir; then
-    decompress_from_url $url $BH_OPT/ # has root dir
-    if [[ $? != 0 || ! -d $bin_dir ]]; then log_error "decompress_from_url failed." && return 1; fi
-  fi
-  win_path_add $(cygpath -w $bin_dir)
-}
-
-BH_NODE_VER="14.17.5"
 function win_install_node() {
   winget install OpenJS.NodeJS
 }
 
-BH_FLUTTER_VER="2.2.3"
 BH_PLATOOLS_VER="31.0.3-windows"
-BH_ANDROID_CMD_VER="7583922"
+BH_ANDROID_CMD_VER="8512546"
+BH_FLUTTER_VER="33.0.3"
 
 function win_install_adb() {
   # create opt

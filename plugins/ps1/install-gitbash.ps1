@@ -11,12 +11,6 @@ function install_win_winget() {
   }
 }
 
-function install_win_wt() {
-  if (!(Get-Command 'wt' -ea 0)) {
-    winget install Microsoft.WindowsTerminal
-  }
-}
-
 function install_win_gitbash() {
   if (!(Get-Command 'git.exe' -ea 0)) {
     log "GitBash not installed. installing.."
@@ -28,5 +22,4 @@ function install_win_gitbash() {
 }
 
 install_win_winget
-install_win_wt
 install_win_gitbash
