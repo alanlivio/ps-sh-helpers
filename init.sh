@@ -7,6 +7,27 @@ alias bashrc_reload='source $HOME/.bashrc'
 BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
 
 # ---------------------------------------
+# plugins os
+# ---------------------------------------
+case $OSTYPE in
+msys*)
+  # if msys2
+  if ! test -e /etc/profile.d/git-prompt.sh; then 
+    source "$BH_DIR/plugins/msys2.plugin.bash"
+  else # if gitbash
+    BH_OPT="$HOME/AppData/Local/Programs"
+    source "$BH_DIR/plugins/win.plugin.bash"
+    alias ghostscript='gswin64c'
+  fi
+  ;;
+linux*)
+  BH_OPT="$HOME/opt"
+  if type gnome-shell &>/dev/null; then source "$BH_DIR/plugins/gnome.plugin.bash"; fi
+  BH_HOME_CLEAN_UNUSED+=('Documents') # sensible data in Windows
+  ;;
+esac
+
+# ---------------------------------------
 # aliases command
 # ---------------------------------------
 if type adb &>/dev/null; then source "$BH_DIR/aliases/adb.aliases.bash"; fi
@@ -32,24 +53,6 @@ if type ssh &>/dev/null; then source "$BH_DIR/aliases/ssh.aliases.bash"; fi
 if type tesseract &>/dev/null; then source "$BH_DIR/aliases/tesseract.aliases.bash"; fi
 if type youtube-dl &>/dev/null; then source "$BH_DIR/aliases/youtube-dl.aliases.bash"; fi
 
-# ---------------------------------------
-# plugins os
-# ---------------------------------------
-case $OSTYPE in
-msys*)
-  BH_OPT="$HOME/AppData/Local/Programs"
-  source "$BH_DIR/plugins/win.plugin.bash"
-  # if msys2
-  if ! test -e /etc/profile.d/git-prompt.sh; then 
-    source "$BH_DIR/plugins/msys2.plugin.bash"
-  fi
-  ;;
-linux*)
-  BH_OPT="$HOME/opt"
-  if type gnome-shell &>/dev/null; then source "$BH_DIR/plugins/gnome.plugin.bash"; fi
-  BH_HOME_CLEAN_UNUSED+=('Documents') # sensible data in Windows
-  ;;
-esac
 
 # ---------------------------------------
 # dotfiles
