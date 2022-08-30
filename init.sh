@@ -11,9 +11,9 @@ BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
 # ---------------------------------------
 case $OSTYPE in
 msys*)
-  # if msys2
+  # if msys
   if ! test -e /etc/profile.d/git-prompt.sh; then 
-    source "$BH_DIR/plugins/msys2.plugin.bash"
+    source "$BH_DIR/plugins/msys.plugin.bash"
   else # if gitbash
     BH_OPT="$HOME/AppData/Local/Programs"
     source "$BH_DIR/plugins/win.plugin.bash"
@@ -176,7 +176,7 @@ function update_clean_os() {
     python_upgrade
     ;;
 
-  msys*) # gitbas/msys2
+  msys*) # gitbas/msys
     win_hide_home_dotfiles
     if [ $(win_is_user_admin) = "True" ]; then win_get_install "gerardog.gsudo"; fi
     if type gsudo &>/dev/null; then win_sys_update; fi
@@ -185,9 +185,9 @@ function update_clean_os() {
       win_get_install $pkgs $BH_WIN_GET  # winget (it uses --scope=user)
       win_get_upgrade
       python_install $BH_WIN_PY
-    else  # if msys2
+    else  # if msys
       local pkgs="bash pacman pacman-mirrors msys2-runtime vim diffutils curl "
-      msys2_install $pkgs $BH_MSYS_PAC
+      msys_install $pkgs $BH_MSYS_PAC
       python_install $BH_MSYS_PY
     fi
     python_upgrade

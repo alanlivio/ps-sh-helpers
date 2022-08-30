@@ -12,8 +12,8 @@ function path_add($addPath) {
   env_add 'PATH' $newpath
 }
 
-function msys_sanity() {
-  Set-Alias -Name msysbash -Value C:\msys64\usr\bin\bash.exe # TODO: replace by $MSYS_BASH 
+function msys_use_same_home() {
+  Set-Alias -Name msysbash -Value C:\msys64\usr\bin\bash.exe
   msysbash -c 'if ! test -d /mnt/; then mkdir /mnt/; fi'
   msysbash -c 'echo none / cygdrive binary,posix=0,noacl,user 0 0 > /etc/fstab'
   # mount /Users to use in both windows and WSL
@@ -51,5 +51,5 @@ function install_msys() {
     path_add "$MSYS_HOME\mingw64\bin"
   }
 }
-
 install_msys
+msys_use_same_home

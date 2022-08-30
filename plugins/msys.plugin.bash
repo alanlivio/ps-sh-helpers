@@ -1,10 +1,10 @@
 # pacman
-alias msys2_search='pacman -Ss --noconfirm'
-alias msys2_show='pacman -Qi'
-alias msys2_list_installed='pacman -Qqe'
-alias msys2_install='pacman -Su --needed --noconfirm'
-alias msys2_install_force='pacman -Syu --noconfirm'
-alias msys2_uninstall='pacman -R --noconfirm'
+alias msys_search='pacman -Ss --noconfirm'
+alias msys_show='pacman -Qi'
+alias msys_list_installed='pacman -Qqe'
+alias msys_install='pacman -Su --needed --noconfirm'
+alias msys_install_force='pacman -Syu --noconfirm'
+alias msys_uninstall='pacman -R --noconfirm'
 
 function msys_use_same_home() {
   if ! test -d /mnt/; then mkdir /mnt/; fi

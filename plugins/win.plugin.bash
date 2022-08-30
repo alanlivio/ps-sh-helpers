@@ -155,8 +155,8 @@ function win_install_gitbash() {
   powershell $(cygpath -w $BH_DIR/plugins/ps1/install-gitbash.ps1)
 }
 
-function win_install_msys() {
-  powershell $(cygpath -w $BH_DIR/plugins/ps1/install-msys.ps1)
+function win_install_msys2() {
+  powershell $(cygpath -w $BH_DIR/plugins/ps1/install-msys2.ps1)
 }
 
 function win_install_ghostscript() {
