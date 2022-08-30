@@ -200,6 +200,7 @@ function win_install_adb() {
 }
 
 BH_ANDROID_CMD_VER="8512546"
+BH_SDK_VER="33"
 
 function win_install_android_sdk() {
   # android cmd and sdk
@@ -212,8 +213,8 @@ function win_install_android_sdk() {
     if test $? != 0; then log_error "decompress_from_url failed." && return 1; fi
     win_path_add $(cygpath -w $android_cmd_dir/bin)
   fi
-  if ! test -d $android_sdk_dir/platforms; then
-    $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --install 'platform-tools' 'platforms;android-33'
+  if ! test -d "$android_sdk_dir/platforms/android-$BH_SDK_VER"; then
+    $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --install  "platform-tools" "platforms;android-$BH_SDK_VER"
     yes | $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --licenses
   fi
   win_env_add ANDROID_HOME $(cygpath -w $android_sdk_dir)
