@@ -7,22 +7,22 @@ alias bashrc_reload='source $HOME/.bashrc'
 BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
 
 # ---------------------------------------
-# plugins os
+# os
 # ---------------------------------------
 case $OSTYPE in
 msys*)
   # if msys
   if ! test -e /etc/profile.d/git-prompt.sh; then 
-    source "$BH_DIR/plugins/msys.plugin.bash"
+    source "$BH_DIR/lib/msys.bash"
   else # if gitbash
     BH_OPT="$HOME/AppData/Local/Programs"
-    source "$BH_DIR/plugins/win.plugin.bash"
+    source "$BH_DIR/lib/win.bash"
     alias ghostscript='gswin64c'
   fi
   ;;
 linux*)
   BH_OPT="$HOME/opt"
-  if type gnome-shell &>/dev/null; then source "$BH_DIR/plugins/gnome.plugin.bash"; fi
+  if type gnome-shell &>/dev/null; then source "$BH_DIR/lib/gnome.bash"; fi
   BH_HOME_CLEAN_UNUSED+=('Documents') # sensible data in Windows
   ;;
 esac
@@ -30,28 +30,28 @@ esac
 # ---------------------------------------
 # aliases command
 # ---------------------------------------
-if type adb &>/dev/null; then source "$BH_DIR/aliases/adb.aliases.bash"; fi
-if type apt &>/dev/null; then source "$BH_DIR/aliases/apt.aliases.bash"; fi
-if type deb &>/dev/null; then source "$BH_DIR/aliases/deb.aliases.bash"; fi
-if type flutter &>/dev/null; then source "$BH_DIR/aliases/flutter.aliases.bash"; fi
-if type pngquant &>/dev/null; then source "$BH_DIR/aliases/pngquant.aliases.bash"; fi
-if type python &>/dev/null; then source "$BH_DIR/aliases/python.aliases.bash"; fi
-if type ruby &>/dev/null; then source "$BH_DIR/aliases/ruby.aliases.bash"; fi
-if type snap &>/dev/null; then source "$BH_DIR/aliases/snap.aliases.bash"; fi
-if type code &>/dev/null; then source "$BH_DIR/aliases/vscode.aliases.bash"; fi
-if type choco &>/dev/null; then source "$BH_DIR/aliases/choco.aliases.bash"; fi
-if type cmake &>/dev/null; then source "$BH_DIR/aliases/cmake.aliases.bash"; fi
-if type ffmpeg &>/dev/null; then source "$BH_DIR/aliases/ffmpeg.aliases.bash"; fi
-if type ghostscript &>/dev/null; then source "$BH_DIR/aliases/ghostscript.aliases.bash"; fi
-if type git &>/dev/null; then source "$BH_DIR/aliases/git.aliases.bash"; fi
-if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/aliases/gst.aliases.bash"; fi
-if type lxc &>/dev/null; then source "$BH_DIR/aliases/lxc.aliases.bash"; fi
-if type meson &>/dev/null; then source "$BH_DIR/aliases/meson.aliases.bash"; fi
-if type pandoc &>/dev/null; then source "$BH_DIR/aliases/pandoc.aliases.bash"; fi
-if type pkg-config &>/dev/null; then source "$BH_DIR/aliases/pkg-config.aliases.bash"; fi
-if type ssh &>/dev/null; then source "$BH_DIR/aliases/ssh.aliases.bash"; fi
-if type tesseract &>/dev/null; then source "$BH_DIR/aliases/tesseract.aliases.bash"; fi
-if type youtube-dl &>/dev/null; then source "$BH_DIR/aliases/youtube-dl.aliases.bash"; fi
+if type adb &>/dev/null; then source "$BH_DIR/lib/commands/adb.bash"; fi
+if type apt &>/dev/null; then source "$BH_DIR/lib/commands/apt.bash"; fi
+if type deb &>/dev/null; then source "$BH_DIR/lib/commands/deb.bash"; fi
+if type flutter &>/dev/null; then source "$BH_DIR/lib/commands/flutter.bash"; fi
+if type pngquant &>/dev/null; then source "$BH_DIR/lib/commands/pngquant.bash"; fi
+if type python &>/dev/null; then source "$BH_DIR/lib/commands/python.bash"; fi
+if type ruby &>/dev/null; then source "$BH_DIR/lib/commands/ruby.bash"; fi
+if type snap &>/dev/null; then source "$BH_DIR/lib/commands/snap.bash"; fi
+if type code &>/dev/null; then source "$BH_DIR/lib/commands/vscode.bash"; fi
+if type choco &>/dev/null; then source "$BH_DIR/lib/commands/choco.bash"; fi
+if type cmake &>/dev/null; then source "$BH_DIR/lib/commands/cmake.bash"; fi
+if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/commands/ffmpeg.bash"; fi
+if type ghostscript &>/dev/null; then source "$BH_DIR/lib/commands/ghostscript.bash"; fi
+if type git &>/dev/null; then source "$BH_DIR/lib/commands/git.bash"; fi
+if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/lib/commands/gst.bash"; fi
+if type lxc &>/dev/null; then source "$BH_DIR/lib/commands/lxc.bash"; fi
+if type meson &>/dev/null; then source "$BH_DIR/lib/commands/meson.bash"; fi
+if type pandoc &>/dev/null; then source "$BH_DIR/lib/commands/pandoc.bash"; fi
+if type pkg-config &>/dev/null; then source "$BH_DIR/lib/commands/pkg-config.bash"; fi
+if type ssh &>/dev/null; then source "$BH_DIR/lib/commands/ssh.bash"; fi
+if type tesseract &>/dev/null; then source "$BH_DIR/lib/commands/tesseract.bash"; fi
+if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/commands/youtube-dl.bash"; fi
 
 
 # ---------------------------------------
