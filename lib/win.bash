@@ -116,24 +116,23 @@ function win_path_show_as_list() {
 
 function win_path_add() {
   local dir=$(cygpath -w $@)
+  local dircyg=$(cygpath $@)
+  # export in win 
   powershell -c ' 
     function win_path_add($addDir) {
-      $currentpath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
-      $regexAddPath = [regex]::Escape($addDir)
-      $arrPath = $currentpath -split ";" | Sort-Object -Unique | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
-      $newpath = ($arrPath + $addDir) -join ";"
+      $currentPath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
+      $addDirEsc = [regex]::Escape($addDir)
+      if ([string]::IsNullOrEmpty($currentPath)){
+        $newpath = $addDir
+      } elseif ($currentPath -Match "$addDirEsc\\?"){
+        return 
+      } else{
+        $newpath = "$currentPath;$addDir"
+      }
       [System.Environment]::SetEnvironmentVariable("PATH", $newpath, "user")
     }; win_path_add ' \"$dir\"
-}
-
-function win_path_rm() {
-  local dir=$(cygpath -w $@)
-  powershell -c ' 
-    function win_path_rm($remDir) {
-      $currentpath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
-      $newpath = ($currentpath.Split(";") | Where-Object { $_ -ne "$remDir" }) -join ";"
-      [System.Environment]::SetEnvironmentVariable("PATH", $newpath, "user")
-    }; win_path_rm ' \"$dir\"
+    # export in bash (it will reolad from win in new shell)
+    if [[ ":$PATH:" != *":$dircyg:"* ]]; then export PATH=${PATH}:$dircyg; fi
 }
 
 # ---------------------------------------
@@ -219,7 +218,6 @@ function win_install_android_sdk() {
   fi
   win_env_add ANDROID_HOME $(cygpath -w $android_sdk_dir)
   win_env_add ANDROID_SDK_ROOT $(cygpath -w $android_sdk_dir)
-  win_path_add $(cygpath -w $android_sdk_dir/platform-tools)
 }
 
 BH_FLUTTER_VER="3.0.5"
