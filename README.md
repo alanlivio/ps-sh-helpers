@@ -20,14 +20,14 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 ### update_clean_os  and dotfiles helpers
 
-The next helpers use variables from `~/.bashrc` to install software, clean unused files/dirs, and update repositories. 
+The next helpers use variables from `~/.bashrc`.
 Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bashrc).
 
-* `update_clean_os` (at mac bash): install/update BH_MAC_BREW, BH_MAC_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
-* `update_clean_os` (at ubuntu bash): install/update BH_UBU_APT, BH_UBU_PY,  clean files/dirs from BH_HOME_CLEAN_UNUSED
-* `update_clean_os` (at GitBash): install/update BH_WIN_GET, BH_WIN_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
-* `update_clean_os` (at WSL bash): install/update BH_WSL_APT, BH_WSL_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
-* `update_clean_os` (at msys bash): install/update BH_MSYS_PAC, BH_MSYS_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `update_clean_os` (at mac bash): install BH_MAC_BREW, BH_MAC_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `update_clean_os` (at ubuntu bash): install BH_UBU_APT, BH_UBU_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `update_clean_os` (at GitBash): install BH_WIN_GET, BH_WIN_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `update_clean_os` (at WSL bash): install BH_WSL_APT, BH_WSL_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
+* `update_clean_os` (at msys bash): install BH_MSYS_PAC, BH_MSYS_PY, clean files/dirs from BH_HOME_CLEAN_UNUSED
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES

@@ -171,9 +171,6 @@ function update_clean_os() {
       apt_install $pkgs $BH_UBU_APT
       python_install $BH_UBU_PY
     fi
-    apt_upgrade
-    apt_autoremove
-    python_upgrade
     ;;
 
   msys*) # gitbas/msys
@@ -183,7 +180,6 @@ function update_clean_os() {
     if test -e /etc/profile.d/git-prompt.sh; then # if gitbash
       local pkgs+="Python.Python.3 " # ensure python installed
       win_get_install $pkgs $BH_WIN_GET  # winget (it uses --scope=user)
-      win_get_upgrade
       python_install $BH_WIN_PY
     else  # if msys
       local pkgs="bash pacman pacman-mirrors msys2-runtime vim diffutils curl "
@@ -196,11 +192,8 @@ function update_clean_os() {
   darwin*) # mac
       local pkgs="git bash vim diffutils curl "
       pkgs+="python3 python-pip " # ensure python installed
-      brew update
-      sudo brew upgrade
       brew install $pkgs $BH_MAC_BREW
       python_install $BH_MAC_PY
-      python_upgrade
     ;;
   esac
 }
