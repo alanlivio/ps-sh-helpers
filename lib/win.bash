@@ -159,8 +159,8 @@ function win_install_cmake() {
   win_get_install Kitware.CMake
 }
 
-function win_install_wget_tree_make() {
-  win_get_install GnuWin32.Wget GnuWin32.Make GnuWin32.Wget
+function win_install_make() {
+  win_get_install GnuWin32.Make
   win_path_add "$PROGRAMFILES (x86)\GnuWin32\bin"
 }
 
