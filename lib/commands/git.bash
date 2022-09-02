@@ -122,14 +122,6 @@ function git_partial_commit_continue() {
   git difftool -y stash
 }
 
-function git_github_check_ssh() {
-  ssh -T git@github.com
-}
-
-function git_github_fix() {
-  echo -e "Host github.com\\n  Hostname ssh.github.com\\n  Port 443" | tee $HOME/.ssh/config
-}
-
 function git_github_setup() {
   : ${1?"Usage: ${FUNCNAME[0]} <github-name>"}
   NAME=$(basename "$1" ".${1##*.}")
