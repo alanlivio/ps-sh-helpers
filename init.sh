@@ -12,7 +12,7 @@ BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
 case $OSTYPE in
 msys*)
   # if msys
-  if ! test -e /etc/profile.d/git-prompt.sh; then 
+  if ! test -e /etc/profile.d/git-prompt.sh; then
     source "$BH_DIR/lib/msys.bash"
   else # if gitbash
     BH_OPT="$HOME/AppData/Local/Programs"
@@ -52,7 +52,6 @@ if type pkg-config &>/dev/null; then source "$BH_DIR/lib/commands/pkg-config.bas
 if type ssh &>/dev/null; then source "$BH_DIR/lib/commands/ssh.bash"; fi
 if type tesseract &>/dev/null; then source "$BH_DIR/lib/commands/tesseract.bash"; fi
 if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/commands/youtube-dl.bash"; fi
-
 
 # ---------------------------------------
 # dotfiles
@@ -94,37 +93,45 @@ function decompress() {
   if [ $# -eq 1 ]; then DST=.; else DST=$2; fi
   case $EXT in
   tgz)
-    tar -xzf $1 -C $DST
+    ret=$(tar -xzf $1 -C $DST)
     ;;
-  gz) # consider tar.gz
-    tar -xf $1 -C $DST
+  gz)
+    ret=$(tar -xf $1 -C $DST)
     ;;
-  bz2) # consider tar.bz2
-    tar -xjf $1 -C $DST
+  bz2)
+    ret=$(tar -xjf $1 -C $DST)
     ;;
   zip)
-    unzip $1 -d $DST
+    ret=$(unzip $1 -d $DST)
     ;;
   zst)
-    tar --use-compress-program=unzstd -xvf $1 -C $DST
+    ret=$(tar --use-compress-program=unzstd -xvf $1 -C $DST)
     ;;
   xz)
-    tar -xJf $1 -C $DST
+    ret=$(tar -xJf $1 -C $DST)
     ;;
   *)
     log_error "$EXT is not supported compress." && return
+    return
     ;;
   esac
+  if [ $? != 0 ] || ! [ -f $file_name ]; then
+    log_error "decompress $1 failed "
+    return
+  fi
 }
 
 function decompress_from_url() {
   : ${2?"Usage: ${FUNCNAME[0]} <URL> <dir>"}
   local file_name="/tmp/$(basename $1)"
-
   if test ! -f $file_name; then
     curl -O $1 --create-dirs --output-dir /tmp/
   fi
-  echo "extracting $file_name to $2"
+  if [ $? != 0 ] || ! [ -f $file_name ]; then
+    log_error "fetching $1 failed "
+    return
+  fi
+  log_msg "extracting $(basename $1) to $2"
   decompress $file_name $2
 }
 
