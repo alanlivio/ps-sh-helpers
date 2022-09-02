@@ -152,7 +152,7 @@ function dir_find_duplicated_pdf() {
 # update_clean_os
 # ---------------------------------------
 
-function home_clean_unused() {
+function home_cleanup() {
   if [ -z $BH_HOME_CLEAN_UNUSED ]; then
     log_error "\$BH_HOME_CLEAN_UNUSED is not defined"
     return
@@ -164,10 +164,13 @@ function home_clean_unused() {
         rm -f "$HOME/${i:?}" >/dev/null
     fi
   done
+  case $OSTYPE in
+  msys*) # gitbas/msys
+    win_hide_home_dotfiles ;;
+  esac
 }
 
 function update_clean_os() {
-  home_clean_unused # clean for any OS
   case $OSTYPE in
   linux*) # wsl/ubu
     local pkgs="git vim diffutils curl python3 python3-pip "
@@ -181,7 +184,6 @@ function update_clean_os() {
     ;;
 
   msys*) # gitbas/msys
-    win_hide_home_dotfiles
     if [ $(win_is_user_admin) = "True" ]; then win_get_install "gerardog.gsudo"; fi
     if type gsudo &>/dev/null; then win_sys_update; fi
     if test -e /etc/profile.d/git-prompt.sh; then # if gitbash
