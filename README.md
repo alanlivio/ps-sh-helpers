@@ -1,4 +1,4 @@
-<h1 align="center"><img src="docs/mkdocs/logo.svg" width="250" onerror='this.style.display="none"'/></h1>
+<h1 align="center"><img src="logo.svg" width="250" onerror='this.style.display="none"'/></h1>
 
 # bash-helpers
 
