@@ -1,5 +1,4 @@
 function log() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
-
 function install_win_winget() {
   if (!(Get-Command 'winget.exe' -ea 0)) {
     log "install_win_winget"
