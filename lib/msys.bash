@@ -6,7 +6,7 @@ alias msys_install='pacman -Su --needed --noconfirm'
 alias msys_install_force='pacman -Syu --noconfirm'
 alias msys_uninstall='pacman -R --noconfirm'
 
-function msys_use_same_home() {
+function msys_same_home() {
   if ! test -d /mnt/; then mkdir /mnt/; fi
   echo -e "none / cygdrive binary,posix=0,noacl,user 0 0" | tee /etc/fstab
   echo -e "C:/Users /home ntfs binary,noacl,auto 1 1" | tee -a /etc/fstab
