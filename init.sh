@@ -21,9 +21,8 @@ msys*)
   fi
   ;;
 linux*)
-  BH_OPT="$HOME/opt"
   if type gnome-shell &>/dev/null; then source "$BH_DIR/lib/gnome.bash"; fi
-  BH_HOME_CLEAN_UNUSED+=('Documents') # sensible data in Windows
+  BH_OPT="$HOME/opt"
   ;;
 esac
 
@@ -184,7 +183,6 @@ function update_clean_os() {
     ;;
 
   msys*) # gitbas/msys
-    if [ $(win_is_user_admin) = "True" ]; then win_get_install "gerardog.gsudo"; fi
     if type gsudo &>/dev/null; then win_sys_update; fi
     if test -e /etc/profile.d/git-prompt.sh; then # if gitbash
       local pkgs+="Python.Python.3 " # ensure python installed

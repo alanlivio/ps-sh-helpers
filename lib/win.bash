@@ -1,4 +1,5 @@
 alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
+alias gsudo='/c/Program\ Files\ \(x86\)/gsudo/gsudo.exe'
 
 function win_clean_trash() {
   powershell -c 'Clear-RecycleBin -Confirm:$false 2> $null'
@@ -239,7 +240,9 @@ function win_install_gsudo() {
 }
 
 function win_install_wsl() {
-  gsudo powershell $(cygpath -w $BH_DIR/lib/ps1/install-wsl.ps1)
+  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/install-wsl.ps1)\'
+}
+
 }
 
 function win_install_docker() {
@@ -288,19 +291,19 @@ function win_sanity_ui() {
 }
 
 function win_sanity_ctx_menu() {
-  gsudo powershell $(cygpath -w $BH_DIR/lib/ps1/sanity-cxt-menu.ps1)
+  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity-cxt-menu.ps1)\'
 }
 
 function win_sanity_services() {
-  gsudo powershell $(cygpath -w $BH_DIR/lib/ps1/sanity-services.ps1)
+  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity-services.ps1)\'
 }
 
 function win_sanity_password_policy() {
-  gsudo powershell $(cygpath -w $BH_DIR/lib/ps1/sanity-password-policy.ps1)
+  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity-password-policy.ps1)\'
 }
 
 function win_sanity_this_pc() {
-  gsudo powershell $(cygpath -w $BH_DIR/lib/ps1/sanity-this-pc.ps1)
+  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity-this-pc.ps1)\'
 }
 
 function win_sanity_all() {
