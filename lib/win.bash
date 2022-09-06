@@ -120,7 +120,7 @@ function win_path_add() {
   local dir=$(cygpath -w $@)
   local dircyg=$(cygpath $@)
   # export in win 
-  powershell -command "$(cygpath -w $BH_DIR/lib/ps1/path_add.ps1) \"$dir\" "
+  powershell -command "$(cygpath -w $BH_DIR/lib/ps1/path_add.ps1)" \'$dir\'
   # export in bash (it will reolad from win in new shell)
   if [[ ":$PATH:" != *":$dircyg:"* ]]; then export PATH=${PATH}:$dircyg; fi
 }
