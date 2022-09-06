@@ -47,10 +47,8 @@ function wsl_same_home() {
 # - https://ubuntu.com/wsl
 
 log "install_wsl"
-$target_distro="Canonical.Ubuntu.2204"
-$target_cmd="ubuntu2204.exe"
-
-
+$target_distro = "Canonical.Ubuntu.2204"
+$target_cmd = "ubuntu2204.exe"
 
 install_winget
   

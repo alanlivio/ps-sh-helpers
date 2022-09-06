@@ -11,15 +11,12 @@ function install_win_winget() {
   }
 }
 
-function install_win_gitbash() {
-  if (!(Get-Command 'git.exe' -ea 0)) {
-    log "GitBash not installed. installing.."
-    log "make sure to check 'Add GitBash Profile To Windows Terminal'"
-    winget install Git.Git -i
-    # gitbash do not use your home dir by default, to fix that run in powershell:
-    [Environment]::SetEnvironmentVariable("HOME", "${env:userprofile}")
-  }
-}
-
 install_win_winget
-install_win_gitbash
+
+if (!(Get-Command 'git.exe' -ea 0)) {
+  log "GitBash not installed. installing.."
+  log "make sure to check 'Add GitBash Profile To Windows Terminal'"
+  winget install Git.Git -i
+  # gitbash do not use your home dir by default, to fix that run in powershell:
+  [Environment]::SetEnvironmentVariable("HOME", "${env:userprofile}")
+}
