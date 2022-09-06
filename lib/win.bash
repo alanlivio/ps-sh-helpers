@@ -21,7 +21,8 @@ function win_hide_home_dotfiles() {
   powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
 }
 
-function win_is_user_admin() { # ex: if [ $(win_is_user_admin) = "True" ]; then win_get_install "gerardog.gsudo"; fi
+function win_is_user_admin() { 
+  # ex: if [ $(win_is_user_admin) = "True" ]; then ...
   powershell -c ' (Get-LocalGroupMember "Administrators").Name -contains "$env:COMPUTERNAME\$env:USERNAME" '
 }
 
@@ -243,6 +244,8 @@ function win_install_wsl() {
   gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/install-wsl.ps1)\'
 }
 
+function win_wsl_fix_home() {
+  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/wsl-fix-home.ps1)\'
 }
 
 function win_install_docker() {
