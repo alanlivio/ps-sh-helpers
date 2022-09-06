@@ -216,4 +216,4 @@ function win_sanity_services() {  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps
 function win_sanity_password_policy() {  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity_password_policy.ps1)\'; }
 function win_sanity_this_pc() {  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity_this_pc.ps1)\'; }
 
-function win_wsl_fix_home() {  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/wsl_same_home.ps1)\'; }
+function win_wsl_use_same_home() {  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/wsl_use_same_home.ps1)\'; }

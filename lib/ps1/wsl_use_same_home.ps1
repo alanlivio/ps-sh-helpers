@@ -11,7 +11,7 @@ function wsl_terminate() {
     wsl -t (wsl_get_default)
 }  
 
-log "wsl_fix_home"
+log "wsl_use_same_home"
 log "target wsl is $(wsl_get_default)"
 log "terminate wsl"
 wsl_terminate
