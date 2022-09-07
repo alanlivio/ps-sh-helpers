@@ -1,8 +1,8 @@
 param([string]$addDir)
 
-function log() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
+function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
-log "adding to PATH ... $addDir"
+log_msg "adding to PATH ... $addDir"
 $addDirEsc = [regex]::Escape($addDir)
 $currentPath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
 if ([string]::IsNullOrEmpty($currentPath)) {

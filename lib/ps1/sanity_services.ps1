@@ -1,5 +1,5 @@
-function log() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
-function log_2nd() { Write-Host -ForegroundColor DarkYellow "-- >" ($args -join " ") }
+function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
+function log_msg_2nd() { Write-Host -ForegroundColor DarkYellow "-- >" ($args -join " ") }
 
 function reg_new_path ($path) {
   if (-not (Test-Path $path)) {
@@ -8,28 +8,28 @@ function reg_new_path ($path) {
 }
 
 function service_disable($name) {
-  log "disabling service $name"
+  log_msg "disabling service $name"
   Get-Service -Name $name | Stop-Service -WarningAction SilentlyContinue
   Get-Service -Name $name | Set-Service -StartupType Disabled -ea 0
 }
 
 function feature_disable($featurename) {
-  log "disabling feature $featurename"
+  log_msg "disabling feature $featurename"
   dism.exe /online /quiet /disable-feature /featurename:$featurename /norestart
 }
 
-log "sanity_services"
+log_msg "sanity_services"
 
-log_2nd "disabling Lockscreen "
+log_msg_2nd "disabling Lockscreen "
 reg_new_path "HKLM:\Software\Policies\Microsoft\Windows\Personalization"
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Personalization" -Name "NoLockScreen" -Value 1
-Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\System" -Name "DisableLogonBackgroundImage" -Value 1
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\System" -Name "DisableLog_msgonBackgroundImage" -Value 1
 
-log_2nd "disabling Autorun for all drives"
+log_msg_2nd "disabling Autorun for all drives"
 reg_new_path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
 Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoDriveTypeAutoRun" -Value 255
 
-log_2nd "disabling Windows Timeline "
+log_msg_2nd "disabling Windows Timeline "
 Set-ItemProperty -Path 'HKLM:\Software\Policies\Microsoft\Windows\System' -Name 'EnableActivityFeed' -Value 0
 
 feature_disable Printing-XPSServices-Features

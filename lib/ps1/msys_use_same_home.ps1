@@ -1,7 +1,7 @@
-function log() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
+function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 $MSYS_HOME = "C:\msys64"
 if (!(Test-Path $MSYS_HOME)) {
-    log "msys not exist at $MSYS_HOME"
+    log_msg "msys not exist at $MSYS_HOME"
     return
 }
 Set-Alias msysbash "$MSYS_HOME\usr\bin\bash.exe"

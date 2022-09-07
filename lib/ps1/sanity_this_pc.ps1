@@ -1,11 +1,11 @@
-function log() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
+function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
 function explorer_restart() {
-  log "explorer_restart"
+  log_msg "explorer_restart"
   Stop-Process -ProcessName explorer -ea 0 | Out-Null
 }
 
-log "sanity_ctx_menu"
+log_msg "sanity_ctx_menu"
 if (!(Test-Path "HKCR:")) { 
   New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null 
 }

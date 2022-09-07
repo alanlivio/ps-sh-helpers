@@ -1,6 +1,6 @@
-function log() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
+function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
-log "sanity_password_policy"
+log_msg "sanity_password_policy"
 $tmpfile = New-TemporaryFile
 secedit /export /cfg $tmpfile /quiet
   (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile

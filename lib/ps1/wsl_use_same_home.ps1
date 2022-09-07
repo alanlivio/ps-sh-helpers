@@ -1,4 +1,4 @@
-function log() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
+function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
 function wsl_get_default() {
     [System.Text.Encoding]::Unicode.GetString([System.Text.Encoding]::UTF8.GetBytes((wsl -l))) -split '\s\s+' | ForEach-Object {
@@ -11,18 +11,18 @@ function wsl_terminate() {
     wsl -t (wsl_get_default)
 }  
 
-log "wsl_use_same_home"
-log "target wsl is $(wsl_get_default)"
-log "terminate wsl"
+log_msg "wsl_use_same_home"
+log_msg "target wsl is $(wsl_get_default)"
+log_msg "terminate wsl"
 wsl_terminate
 
 if ((wsl echo '$HOME').Contains("Users")) {
-    log "WSL already use windows UserProfile as home."
+    log_msg "WSL already use windows UserProfile as home."
     return
 }
 
 
-log "fix file metadata"
+log_msg "fix file metadata"
 # https://docs.microsoft.com/en-us/windows/wsl/wsl-config
 # https://github.com/Microsoft/WSL/issues/3138
 # https://devblogs.microsoft.com/commandline/chmod-chown-wsl-improvements/
@@ -35,17 +35,17 @@ wsl -u root bash -c 'echo "options=\"metadata,uid=1000,gid=1000,umask=0022,fmask
 wsl -u root bash -c 'if ! test -d /Users; then sudo ln -s /mnt/c/Users /Users; fi'
 wsl -u root bash -c 'if ! test -d /c; then sudo ln -s /mnt/c/ /c; fi'
 
-log "enable sudoer"
+log_msg "enable sudoer"
 wsl -u root usermod -aG sudo "$env:UserName"
 wsl -u root usermod -aG root "$env:UserName"
 
-log "change default dir to /mnt/c/Users/"
+log_msg "change default dir to /mnt/c/Users/"
 wsl -u root skill -KILL -u $env:UserName
 wsl -u root usermod -d /mnt/c/Users/$env:UserName $env:UserName
 
-log "create a link /home/user at /mnt/c/Users/user"
+log_msg "create a link /home/user at /mnt/c/Users/user"
 wsl -u root rm -rf /home/$env:UserName
 wsl -u root ln -s /mnt/c/Users/$env:UserName /home/$env:UserName
 
-log "Changing file /home/user permissions "
+log_msg "Changing file /home/user permissions "
 wsl -u root chown $env:UserName:$env:UserName /mnt/c/Users/$env:UserName/*
