@@ -5,7 +5,7 @@ alias gsudo='/c/Program\ Files\ \(x86\)/gsudo/gsudo.exe'
 # home/sys/path
 # ---------------------------------------
 
-function win_hide_home_dotfiles() { owershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'; }
+function win_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'; }
 
 function win_is_user_admin() {
   # ex: if [ $(win_is_user_admin) = "True" ]; then ...

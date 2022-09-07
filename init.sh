@@ -11,13 +11,13 @@ BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
 # ---------------------------------------
 case $OSTYPE in
 msys*)
+  source "$BH_DIR/lib/win.bash"
   # if msys
-  if ! test -e /etc/profile.d/git-prompt.sh; then
-    source "$BH_DIR/lib/msys.bash"
-  else # if gitbash
+  if test -e /etc/profile.d/git-prompt.sh; then # if gitbash
     BH_OPT="$HOME/AppData/Local/Programs"
-    source "$BH_DIR/lib/win.bash"
     alias ghostscript='gswin64c'
+  else
+    source "$BH_DIR/lib/msys.bash"
   fi
   ;;
 linux*)
