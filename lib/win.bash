@@ -211,7 +211,7 @@ function win_install_winget() {  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1
 function win_install_wsl() {  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/install_wsl.ps1)\'; }
 
 function win_sanity_ui() {  powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity_ui.ps1)\'; }
-function win_sanity_ctx_menu() {  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity_cxt_menu.ps1)\'; }
+function win_sanity_ctx_menu() {  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity_ctx_menu.ps1)\'; }
 function win_sanity_services() {  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity_services.ps1)\'; }
 function win_sanity_password_policy() {  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity_password_policy.ps1)\'; }
 function win_sanity_this_pc() {  gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity_this_pc.ps1)\'; }

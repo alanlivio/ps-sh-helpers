@@ -2,12 +2,12 @@
 
 # bash-helpers
 
-Cross-OS bash helpers for installation (wsl/msys, adb, flutter, ffmpeg), setup (dark mode, clean taskbar/clutter/unused), update python/vscode packages, sync dotfiles, common git calls, and more. 
-The project logo refers to the synthetic chemical element Bohrium, which also has the initials bh.
+Multi-bash (ubu, msys, gitbash, wsl) helpers to easy install software/python/vscode packages, setup os (dark mode, clean taskbar/clutter/unused), sync dotfiles, manage git repos, and more. 
+The project logo refers to the synthetic chemical element Bohrium, which also has the initials BH.
 
 ## Install
 
-The bash-helpers project has two requirements: a `bash shell` and `git`. Particularly on windows, they can be installed using [GitForWindows](https://gitforwindows.org/) (you may install it running [install_gitbash.ps1](https://github.com/alanlivio/bash-helpers/blob/master/lib/ps1/install_gitbash.ps1) on PowerShell). 
+The bash-helpers project has two requirements: a `bash shell` and `git`. Particularly on windows, they can be installed using [GitForWindows](https://gitforwindows.org/) (you may install it running [install_gitbash.ps1](lib/ps1/install_gitbash.ps1) on PowerShell). 
 
 Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 ```bash
@@ -20,71 +20,70 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 ### using BH_* variables
 
-The next helpers use variables from `~/.bashrc`. Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bashrc).
+The next helpers use variables from `~/.bashrc`. Please see an example at [skel/.bashrc](skel/.bashrc).
 
-* `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES
-* `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES
-* `dotfiles_install`: restore files/dirs defined in BH_DOTFILES
+* `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
+* `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
+* `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.
 * `home_cleanup`: remove home files/dirs from BH_HOME_CLEAN_UNUSED and, at win, hide dotfiles.
-* `update_clean_os` (at GitBash): install BH_WIN_GET, BH_WIN_PY
-* `update_clean_os` (at mac bash): install BH_MAC_BREW, BH_MAC_PY
-* `update_clean_os` (at msys bash): install BH_MSYS_PAC, BH_MSYS_PY
-* `update_clean_os` (at ubuntu bash): install BH_UBU_APT, BH_UBU_PY
-* `update_clean_os` (at WSL bash): install BH_WSL_APT, BH_WSL_PY
+* `update_clean_os` (at GitBash): install BH_WIN_GET, BH_WIN_PY.
+* `update_clean_os` (at mac bash): install BH_MAC_BREW, BH_MAC_PY.
+* `update_clean_os` (at msys bash): install BH_MSYS_PAC, BH_MSYS_PY.
+* `update_clean_os` (at ubuntu bash): install BH_UBU_APT, BH_UBU_PY.
+* `update_clean_os` (at WSL bash): install BH_WSL_APT, BH_WSL_PY.
 
 ### bash/dir/curl helpers
 
-* `bash_sudo_nopasswd`:  disable password when calling sudo (user must be in sudores)
-* `decompress_from_url`: fetch and decompress to a given folder
-* `decompress`: decompress from multiple formats
-* `dir_find_duplicated_pdf`: list duplicated pdf files in dir recursively
-* `dir_sorted_by_size`: list dir sorted by items size
+* `bash_sudo_nopasswd`:  disable password when calling sudo (user must be in sudores).
+* `decompress_from_url`: fetch and decompress to a given folder.
+* `decompress`: decompress from multiple formats to a given folder.
+* `dir_find_duplicated_pdf`: list duplicated pdf files in dir recursively.
+* `dir_sorted_by_size`: list dir sorted by item size.
 
 ### gnome helpers
 
-* `gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
+* `gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire).
 
 ### win helpers
 
-* `win_env_add`: add variable to ENV
-* `win_env_show`: show ENV
-* `win_get_install`: winget install
-* `win_get_list`: winget list
-* `win_get_settings`: vscode open winget settings.json
-* `win_get_upgrade`: winget upgrade
-* `win_hide_home_dotfiles`: hide dotfiles at home folder`win_is_shell_eleveated`check if the shell is elevated`win_is_user_admin`check if the shell is admin
-* `win_open_tmp`:  explorer open win temp dir
-* `win_open_trash`: explorer open trash
-* `win_path_add`: add dir to PATH
-* `win_path_rm`: remove dir from PATH
-* `win_path_show_as_list`:  show PATH as list
+* `win_env_add`: add variable to ENV.
+* `win_env_show`: show ENV.
+* `win_get_install`: winget install a given package.
+* `win_get_list`: winget list packages.
+* `win_get_settings`: vscode open winget settings.json.
+* `win_get_upgrade`: winget upgrade packages.
+* `win_hide_home_dotfiles`: hide dotfiles at home folder.
+* `win_is_shell_eleveated`: check if the shell is elevated.
+* `win_is_user_admin`check if the user is admin.
+* `win_open_tmp`:  explorer open win temp dir.
+* `win_open_trash`: explorer open trash.
+* `win_path_add`: add dir to PATH. It is a wrapper to [path_add.ps1](lib/ps1/path_add.ps1).
+* `win_path_show_as_list`: show PATH as list.
 * `win_path_show`: show PATH string
-* `win_restart_explorer`: explorer restart
-* `win_sanity_all`: run all sanity above
-* `win_sanity_ctx_menu`: remove unused context menu
-* `win_sanity_password_policy`: remove password policy requirement
-* `win_sanity_services`: remove unused context services
-* `win_sanity_this_pc`: remove link folder on This PC 
-* `win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons)
-* `win_sys_update`: update win
+* `win_sanity_ctx_menu`: remove unused context menu. It is a wrapper to [sanity_ctx_menu.ps1](lib/ps1/sanity_ctx_menu.ps1)
+* `win_sanity_password_policy`: remove password policy requirement. It is a wrapper to [path_add.ps1](lib/ps1/anity_password_policy.ps1).
+* `win_sanity_services`: remove unused context services. It is a wrapper to [sanity_services.ps1](lib/ps1/sanity_services.ps1)
+* `win_sanity_this_pc`: remove link folders on This PC. It is a wrapper to [sanity_this_pc.ps1](lib/ps1/sanity_this_pc.ps1).
+* `win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons). It is a wrapper to [sanity_ui.ps1](lib/ps1/sanity_ui.ps1).
+* `win_sys_update`: update win.
 
 ### win setup of MSYS2/WSL helpers
 
-* `win_install_wsl` (at windows GitBash): to install WSL/Ubuntu automating the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password.
-* `win_wsl_same_home`: make use uses win home
-* `win_install_msys` (at windows GitBash): to install [MSYS2](https://www.msys2.org/) useful to build GNU-based win32 applications
-* `win_msys_same_home`: make MSYS2 uses win home
+* `win_install_wsl` (at windows GitBash): to install WSL/Ubuntu automating the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password. It is a wrapper to [install_wsl.ps1](lib/ps1/install_wsl.ps1).
+* `win_wsl_use_same_home`: make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/sanity_ui.ps1).
+* `win_install_msys` (at windows GitBash): to install [MSYS2](https://www.msys2.org/) useful to build GNU-based win32 applications. It is a wrapper to [install_msys.ps1](lib/ps1/install_msys.ps1).
+* `win_msys_use_same_home`: make MSYS2 uses win home. It is a wrapper to [msys_use_same_home.ps1](lib/ps1/msys_use_same_home.ps1).
 
 ### python helpers
 
-* `python_upgrade`: upgrade a given list of python packages 
-* `python_install`: install a given list of python packages 
-* `python_uninstall`: uninstall a given list of python packages
-* `python_venv_create`: create a venv
-* `python_venv_load`: load a venv
-* `python_setup_install_user`: install from a pkg folder with setup.py
-* `python_setup_upload_testpypi`: upload to testpypi from a pkg folder with setup.py
-* `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py
+* `python_upgrade`: upgrade a given list of python packages.
+* `python_install`: install a given list of python packages.
+* `python_uninstall`: uninstall a given list of python packages.
+* `python_venv_create`: create a venv.
+* `python_venv_load`: load a venv.
+* `python_setup_install_user`: install from a pkg folder with setup.py.
+* `python_setup_upload_testpypi`: upload to testpypi from a pkg folder with setup.py.
+* `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py.
 
 ### other helpers
 
