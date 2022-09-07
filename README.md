@@ -22,80 +22,69 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 The next helpers use variables from `~/.bashrc`. Please see an example at [skel/.bashrc](https://github.com/alanlivio/bash-helpers/blob/master/skel/.bashrc).
 
-* `update_clean_os` (at mac bash): install BH_MAC_BREW, BH_MAC_PY
-* `update_clean_os` (at ubuntu bash): install BH_UBU_APT, BH_UBU_PY
-* `update_clean_os` (at GitBash): install BH_WIN_GET, BH_WIN_PY
-* `update_clean_os` (at WSL bash): install BH_WSL_APT, BH_WSL_PY
-* `update_clean_os` (at msys bash): install BH_MSYS_PAC, BH_MSYS_PY
-* `home_cleanup`: clean files/dirs from BH_HOME_CLEAN_UNUSED. At win, hide dotfile.
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES
+* `home_cleanup`: remove home files/dirs from BH_HOME_CLEAN_UNUSED and, at win, hide dotfiles.
+* `update_clean_os` (at GitBash): install BH_WIN_GET, BH_WIN_PY
+* `update_clean_os` (at mac bash): install BH_MAC_BREW, BH_MAC_PY
+* `update_clean_os` (at msys bash): install BH_MSYS_PAC, BH_MSYS_PY
+* `update_clean_os` (at ubuntu bash): install BH_UBU_APT, BH_UBU_PY
+* `update_clean_os` (at WSL bash): install BH_WSL_APT, BH_WSL_PY
 
 ### bash/dir/curl helpers
 
-* `bash_sudo_nopasswd`:  disable password when call sudo (user must be in sudores)
+* `bash_sudo_nopasswd`:  disable password when calling sudo (user must be in sudores)
+* `decompress_from_url`: fetch and decompress to a given folder
 * `decompress`: decompress from multiple formats
-* `decompress_from_url`: fetch and decompress to folder
 * `dir_find_duplicated_pdf`: list duplicated pdf files in dir recursively
 * `dir_sorted_by_size`: list dir sorted by items size
 
+### gnome helpers
+
+* `gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
+
+### win helpers
+
+* `win_env_add`: add variable to ENV
+* `win_env_show`: show ENV
+* `win_get_install`: winget install
+* `win_get_list`: winget list
+* `win_get_settings`: vscode open winget settings.json
+* `win_get_upgrade`: winget upgrade
+* `win_hide_home_dotfiles`: hide dotfiles at home folder`win_is_shell_eleveated`check if the shell is elevated`win_is_user_admin`check if the shell is admin
+* `win_open_tmp`:  explorer open win temp dir
+* `win_open_trash`: explorer open trash
+* `win_path_add`: add dir to PATH
+* `win_path_rm`: remove dir from PATH
+* `win_path_show_as_list`:  show PATH as list
+* `win_path_show`: show PATH string
+* `win_restart_explorer`: explorer restart
+* `win_sanity_all`: run all sanity above
+* `win_sanity_ctx_menu`: remove unused context menu
+* `win_sanity_password_policy`: remove password policy requirement
+* `win_sanity_services`: remove unused context services
+* `win_sanity_this_pc`: remove link folder on This PC 
+* `win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons)
+* `win_sys_update`: update win
+
+### win setup of MSYS2/WSL helpers
+
+* `win_install_wsl` (at windows GitBash): to install WSL/Ubuntu automating the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password.
+* `win_wsl_same_home`: make use uses win home
+* `win_install_msys` (at windows GitBash): to install [MSYS2](https://www.msys2.org/) useful to build GNU-based win32 applications
+* `win_msys_same_home`: make MSYS2 uses win home
+
 ### python helpers
 
-* `python_upgrade`: upgrade a list of python packages 
-* `python_install`: install a list of python packages 
-* `python_uninstall`: uninstall a list of python packages
+* `python_upgrade`: upgrade a given list of python packages 
+* `python_install`: install a given list of python packages 
+* `python_uninstall`: uninstall a given list of python packages
 * `python_venv_create`: create a venv
 * `python_venv_load`: load a venv
 * `python_setup_install_user`: install from a pkg folder with setup.py
 * `python_setup_upload_testpypi`: upload to testpypi from a pkg folder with setup.py
 * `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py
-
-### gnome helpers
-
-* `gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire)
-* `gnome_disable_unused_apps_in_search`: remove from apps such as icedtea,brasero,etc from search
-
-### win sanity helpers
-
-* `win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons)
-* `win_sanity_ctx_menu`: remove unused context menu
-* `win_sanity_services`: remove unused context services
-* `win_sanity_password_policy`: remove unused password policy
-* `win_sanity_this_pc`: remove link folder on This PC 
-* `win_sanity_all`: run all sanity above
-* `win_msys_same_home`: make msys uses win home
-* `win_clean_trash`: clean trash
-* `win_open_trash`: explorer open trash
-* `win_restart_explorer`: explorer restart
-* `win_open_tmp`:  explorer open win tmp
-* `win_hide_home_dotfiles`: hide dotfiles at home folder
-* `win_is_user_admin`: check if shell is admin
-* `win_is_shell_eleveated`: check if shell is elevated
-* `win_env_show`: show ENV
-* `win_env_add`: add variable to ENV
-* `win_path_show`: show PATH string
-* `win_path_show_as_list`:  show PATH as list
-* `win_path_add`: add dir to PATH
-* `win_path_rm`: remove dir from PATH
-* `win_get_list`: winget list
-* `win_get_settings`: vscode open winget settings.json
-* `win_get_upgrade`: winget upgrade
-* `win_get_install`: winget install
-
-### win admin helpers
-
-* `win_install_msys` (at windows GitBash): to install msys (Cygwin-based) with bash to build GNU-based win32 applications
-* `win_install_wsl` (at windows GitBash): to install WSL/Ubuntu (version 2, fixed home). This helper automates the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password.
-* `win_sys_check`: run sys file checker
-* `win_sys_update`: update win
-* `win_sys_update_list`: list avaliable updates
-* `win_sys_feature_list_enabled`: list enabled features
-* `win_sys_feature_list_disabled`: list disabled features
-* `win_sys_feature_enable_ssh_server_bash`: add OpenSSH.Server capability
-* `win_appx_list`:  Get-AppxPackage 
-* `win_appx_install`: Add-AppxPackage
-* `win_appx_uninstall`: Remove-AppxPackage
 
 ### other helpers
 

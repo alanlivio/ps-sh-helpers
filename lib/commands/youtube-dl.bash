@@ -12,5 +12,5 @@ function youtube-dl_video480_from_txt() {
 
 function youtube-dl_audio() {
   : ${1?"Usage: ${FUNCNAME[0]} <txt_file>"}
-  youtube-dl "$1" $YOUTUBEDL_ARGS --extract-audio --embed-thumbnail --audio-quality 7 --output "%(title)s.%(ext)s" --add-metadata
+  youtube-dl "$1" $YOUTUBEDL_ARGS --extract-audio --audio-quality 7 --output "%(title)s.%(ext)s" --add-metadata
 }
