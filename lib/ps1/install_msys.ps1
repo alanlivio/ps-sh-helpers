@@ -18,9 +18,13 @@ function install_win_gsudo() {
 Set-Alias gsudo 'C:\Program Files (x86)\gsudo\gsudo'
 
 log "install_msys"
-$MSYS_HOME = "C:\msys64"
 install_win_gsudo
 install_win_winget
+
+$MSYS_HOME = "C:\msys64"
 if (-not (Test-Path $MSYS_HOME)) {
-   gsudo winget install --scope=machine msys2.msys2
+  gsudo winget install --scope=machine msys2.msys2
+}
+else{
+  log "$MSYS_HOME already exist"
 }
