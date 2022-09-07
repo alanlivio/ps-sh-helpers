@@ -4,6 +4,7 @@ if (!(Test-Path $MSYS_HOME)) {
     log_msg "msys not exist at $MSYS_HOME"
     return
 }
+log_msg "setup msys to use same home"
 Set-Alias msysbash "$MSYS_HOME\usr\bin\bash.exe"
 msysbash -c 'echo none / cygdrive binary,posix=0,noacl,user 0 0 > /etc/fstab'
 msysbash -c 'echo C:/Users/ /Users ntfs binary,noacl,auto 1 1 >>  /etc/fstab'
