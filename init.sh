@@ -34,6 +34,9 @@ if type apt &>/dev/null; then source "$BH_DIR/lib/commands/apt.bash"; fi
 if type deb &>/dev/null; then source "$BH_DIR/lib/commands/deb.bash"; fi
 if type flutter &>/dev/null; then source "$BH_DIR/lib/commands/flutter.bash"; fi
 if type pngquant &>/dev/null; then source "$BH_DIR/lib/commands/pngquant.bash"; fi
+if type pdflatex &>/dev/null; then source "$BH_DIR/lib/commands/pdflatex.bash"; fi
+if type wget &>/dev/null; then source "$BH_DIR/lib/commands/wget.bash"; fi
+if type zip &>/dev/null; then source "$BH_DIR/lib/commands/zip.bash"; fi
 if type python &>/dev/null; then source "$BH_DIR/lib/commands/python.bash"; fi
 if type ruby &>/dev/null; then source "$BH_DIR/lib/commands/ruby.bash"; fi
 if type snap &>/dev/null; then source "$BH_DIR/lib/commands/snap.bash"; fi
