@@ -11,7 +11,7 @@ BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
 # ---------------------------------------
 case $OSTYPE in
 msys*)
-  source "$BH_DIR/lib/win.bash"
+  source "$BH_DIR/win.bash"
   # if msys
   if test -e /etc/profile.d/git-prompt.sh; then # if gitbash
     BH_OPT="$HOME/AppData/Local/Programs"
@@ -29,31 +29,31 @@ esac
 # ---------------------------------------
 # aliases command
 # ---------------------------------------
-if type adb &>/dev/null; then source "$BH_DIR/lib/commands/adb.bash"; fi
-if type apt &>/dev/null; then source "$BH_DIR/lib/commands/apt.bash"; fi
-if type deb &>/dev/null; then source "$BH_DIR/lib/commands/deb.bash"; fi
-if type flutter &>/dev/null; then source "$BH_DIR/lib/commands/flutter.bash"; fi
-if type pngquant &>/dev/null; then source "$BH_DIR/lib/commands/pngquant.bash"; fi
-if type pdflatex &>/dev/null; then source "$BH_DIR/lib/commands/pdflatex.bash"; fi
-if type wget &>/dev/null; then source "$BH_DIR/lib/commands/wget.bash"; fi
-if type zip &>/dev/null; then source "$BH_DIR/lib/commands/zip.bash"; fi
-if type python &>/dev/null; then source "$BH_DIR/lib/commands/python.bash"; fi
-if type ruby &>/dev/null; then source "$BH_DIR/lib/commands/ruby.bash"; fi
-if type snap &>/dev/null; then source "$BH_DIR/lib/commands/snap.bash"; fi
-if type code &>/dev/null; then source "$BH_DIR/lib/commands/vscode.bash"; fi
-if type choco &>/dev/null; then source "$BH_DIR/lib/commands/choco.bash"; fi
-if type cmake &>/dev/null; then source "$BH_DIR/lib/commands/cmake.bash"; fi
-if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/commands/ffmpeg.bash"; fi
-if type ghostscript &>/dev/null; then source "$BH_DIR/lib/commands/ghostscript.bash"; fi
-if type git &>/dev/null; then source "$BH_DIR/lib/commands/git.bash"; fi
-if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/lib/commands/gst.bash"; fi
-if type lxc &>/dev/null; then source "$BH_DIR/lib/commands/lxc.bash"; fi
-if type meson &>/dev/null; then source "$BH_DIR/lib/commands/meson.bash"; fi
-if type pandoc &>/dev/null; then source "$BH_DIR/lib/commands/pandoc.bash"; fi
-if type pkg-config &>/dev/null; then source "$BH_DIR/lib/commands/pkg-config.bash"; fi
-if type ssh &>/dev/null; then source "$BH_DIR/lib/commands/ssh.bash"; fi
-if type tesseract &>/dev/null; then source "$BH_DIR/lib/commands/tesseract.bash"; fi
-if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/commands/youtube-dl.bash"; fi
+if type adb &>/dev/null; then source "$BH_DIR/lib/adb.bash"; fi
+if type apt &>/dev/null; then source "$BH_DIR/lib/apt.bash"; fi
+if type deb &>/dev/null; then source "$BH_DIR/lib/deb.bash"; fi
+if type flutter &>/dev/null; then source "$BH_DIR/lib/flutter.bash"; fi
+if type pngquant &>/dev/null; then source "$BH_DIR/lib/pngquant.bash"; fi
+if type pdflatex &>/dev/null; then source "$BH_DIR/lib/pdflatex.bash"; fi
+if type wget &>/dev/null; then source "$BH_DIR/lib/wget.bash"; fi
+if type zip &>/dev/null; then source "$BH_DIR/lib/zip.bash"; fi
+if type python &>/dev/null; then source "$BH_DIR/lib/python.bash"; fi
+if type ruby &>/dev/null; then source "$BH_DIR/lib/ruby.bash"; fi
+if type snap &>/dev/null; then source "$BH_DIR/lib/snap.bash"; fi
+if type code &>/dev/null; then source "$BH_DIR/lib/vscode.bash"; fi
+if type choco &>/dev/null; then source "$BH_DIR/lib/choco.bash"; fi
+if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.bash"; fi
+if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/ffmpeg.bash"; fi
+if type ghostscript &>/dev/null; then source "$BH_DIR/lib/ghostscript.bash"; fi
+if type git &>/dev/null; then source "$BH_DIR/lib/git.bash"; fi
+if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/lib/gst.bash"; fi
+if type lxc &>/dev/null; then source "$BH_DIR/lib/lxc.bash"; fi
+if type meson &>/dev/null; then source "$BH_DIR/lib/meson.bash"; fi
+if type pandoc &>/dev/null; then source "$BH_DIR/lib/pandoc.bash"; fi
+if type pkg-config &>/dev/null; then source "$BH_DIR/lib/pkg-config.bash"; fi
+if type ssh &>/dev/null; then source "$BH_DIR/lib/ssh.bash"; fi
+if type tesseract &>/dev/null; then source "$BH_DIR/lib/tesseract.bash"; fi
+if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/youtube-dl.bash"; fi
 
 # ---------------------------------------
 # dotfiles

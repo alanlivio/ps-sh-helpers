@@ -1,16 +1,8 @@
-function git_log_oneline() {
-  git log --oneline
-}
-
-function git_log_oneline_graph() {
-  git log --oneline --graph --decorate --all
-}
-
-function git_count() {
+function git_count_commits() {
   git rev-list --all --count
 }
 
-function git_count_by_user() {
+function git_count_commits_by_user() {
   git shortlog -s -n
 }
 
