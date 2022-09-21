@@ -18,25 +18,28 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 ## helpers
 
-### using BH_* variables
+### home/dotfiles/packges/user helpers
 
-The next helpers use variables from `~/.bashrc`. Please see an example at [skel/.bashrc](skel/.bashrc).
+The next helpers use using BH_* variables from `~/.bashrc`. Please see an example at [skel/.bashrc](skel/.bashrc).
 
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.
-* `home_cleanup`: remove home files/dirs from BH_HOME_CLEAN_UNUSED and, at win, hide dotfiles.
-* `update_clean_os` (at GitBash): install BH_WIN_GET, BH_WIN_PY.
-* `update_clean_os` (at mac bash): install BH_MAC_BREW, BH_MAC_PY.
-* `update_clean_os` (at msys bash): install BH_MSYS_PAC, BH_MSYS_PY.
-* `update_clean_os` (at ubuntu bash): install BH_UBU_APT, BH_UBU_PY.
-* `update_clean_os` (at WSL bash): install BH_WSL_APT, BH_WSL_PY.
+* `home_cleanup`: remove home files/dirs from BH_HOME_CLEAN_UNUSED and, at win, hide dotfiles at home.
+* `pkgs_install` (at GitBash): install BH_WIN_GET, BH_WIN_PY.
+* `pkgs_install` (at mac bash): install BH_MAC_BREW, BH_MAC_PY.
+* `pkgs_install` (at msys bash): install BH_MSYS_PAC, BH_MSYS_PY.
+* `pkgs_install` (at ubuntu bash): install BH_UBU_APT, BH_UBU_PY.
+* `pkgs_install` (at WSL bash): install BH_WSL_APT, BH_WSL_PY.
+* `user_sudo_nopasswd`:  disable password when calling sudo (user must be in sudores).
 
-### bash/dir/curl helpers
+### decompress helpers
 
-* `bash_sudo_nopasswd`:  disable password when calling sudo (user must be in sudores).
 * `decompress_from_url`: fetch and decompress to a given folder.
 * `decompress`: decompress from multiple formats to a given folder.
+
+### dir helpers
+
 * `dir_find_duplicated_pdf`: list duplicated pdf files in dir recursively.
 * `dir_sorted_by_size`: list dir sorted by item size.
 
@@ -79,15 +82,15 @@ The next helpers use variables from `~/.bashrc`. Please see an example at [skel/
 * `python_upgrade`: upgrade a given list of python packages.
 * `python_install`: install a given list of python packages.
 * `python_uninstall`: uninstall a given list of python packages.
-* `python_venv_create`: create a venv.
-* `python_venv_load`: load a venv.
+* `venv_create`: create a venv.
+* `venv_activate_install`: load a venv.
 * `python_setup_install_user`: install from a pkg folder with setup.py.
 * `python_setup_upload_testpypi`: upload to testpypi from a pkg folder with setup.py.
 * `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py.
 
 ### other helpers
 
-See the full helpers at plugins/ and aliases/ folders.
+See the full helpers at lib/ folder.
 
 ## References
 

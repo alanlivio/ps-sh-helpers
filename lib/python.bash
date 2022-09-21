@@ -9,14 +9,14 @@ function python_upgrade() {
   fi
 }
 
-function python_venv_create() {
+function venv_create() {
   deactivate
   if test -d ./venv/bin/; then rm -r ./venv; fi
   python -m venv venv
   if test requirements.txt; then pip install -r requirements.txt; fi
 }
 
-function python_venv_load() {
+function venv_activate_install() {
   deactivate
   source venv/bin/activate
   if test requirements.txt; then pip install -r requirements.txt; fi

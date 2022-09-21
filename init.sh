@@ -28,7 +28,7 @@ linux*)
 esac
 
 # ---------------------------------------
-# aliases command
+# load .bash for commands
 # ---------------------------------------
 if type adb &>/dev/null; then source "$BH_DIR/lib/adb.bash"; fi
 if type apt &>/dev/null; then source "$BH_DIR/lib/apt.bash"; fi
@@ -57,36 +57,7 @@ if type tesseract &>/dev/null; then source "$BH_DIR/lib/tesseract.bash"; fi
 if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/youtube-dl.bash"; fi
 
 # ---------------------------------------
-# dotfiles
-# ---------------------------------------
-
-function dotfiles_func() {
-  : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
-  declare -a files_array
-  files_array=($BH_DOTFILES)
-  if [ ${#files_array[@]} -eq 0 ]; then
-    log_error "BH_DOTFILES empty"
-  fi
-  for ((i = 0; i < ${#files_array[@]}; i = i + 2)); do
-    if [ $1 = "backup" ]; then
-      cp ${files_array[$i]} ${files_array[$((i + 1))]}
-    elif [ $1 = "install" ]; then
-      cp ${files_array[$((i + 1))]} ${files_array[$i]}
-    elif [ $1 = "diff" ]; then
-      ret=$(diff ${files_array[$i]} ${files_array[$((i + 1))]})
-      if [ $? = 1 ]; then
-        log_msg "diff ${files_array[$i]} ${files_array[$((i + 1))]}"
-        echo "$ret"
-      fi
-    fi
-  done
-}
-alias dotfiles_install="dotfiles_func install"
-alias dotfiles_backup="dotfiles_func backup"
-alias dotfiles_diff="dotfiles_func diff"
-
-# ---------------------------------------
-# others
+# some commands
 # ---------------------------------------
 
 function decompress() {
@@ -138,7 +109,7 @@ function decompress_from_url() {
   decompress $file_name $2
 }
 
-function bash_sudo_nopasswd() {
+function user_sudo_nopasswd() {
   if ! test -d /etc/sudoers.d/; then test_and_create_dir /etc/sudoers.d/; fi
   SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
 }
@@ -152,8 +123,33 @@ function dir_find_duplicated_pdf() {
 }
 
 # ---------------------------------------
-# update_clean_os
+# home/dotfiles
 # ---------------------------------------
+
+function dotfiles_func() {
+  : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
+  declare -a files_array
+  files_array=($BH_DOTFILES)
+  if [ ${#files_array[@]} -eq 0 ]; then
+    log_error "BH_DOTFILES empty"
+  fi
+  for ((i = 0; i < ${#files_array[@]}; i = i + 2)); do
+    if [ $1 = "backup" ]; then
+      cp ${files_array[$i]} ${files_array[$((i + 1))]}
+    elif [ $1 = "install" ]; then
+      cp ${files_array[$((i + 1))]} ${files_array[$i]}
+    elif [ $1 = "diff" ]; then
+      ret=$(diff ${files_array[$i]} ${files_array[$((i + 1))]})
+      if [ $? = 1 ]; then
+        log_msg "diff ${files_array[$i]} ${files_array[$((i + 1))]}"
+        echo "$ret"
+      fi
+    fi
+  done
+}
+alias dotfiles_install="dotfiles_func install"
+alias dotfiles_backup="dotfiles_func backup"
+alias dotfiles_diff="dotfiles_func diff"
 
 function home_cleanup() {
   if [ -z $BH_HOME_CLEAN_UNUSED ]; then
@@ -173,7 +169,11 @@ function home_cleanup() {
   esac
 }
 
-function update_clean_os() {
+# ---------------------------------------
+# pkgs_install
+# ---------------------------------------
+
+function pkgs_install() {
   case $OSTYPE in
   linux*) # wsl/ubu
     local pkgs="git vim diffutils curl python3 python3-pip "
