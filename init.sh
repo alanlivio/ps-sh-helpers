@@ -13,11 +13,9 @@ case $OSTYPE in
 msys*)
   BH_OPT="$HOME/AppData/Local/Programs"
   source "$BH_DIR/win.bash"
-  if test -e /etc/profile.d/git-prompt.sh; then
-    # if gitbash
+  if test -e /etc/profile.d/git-prompt.sh; then # if gitbash
     alias ghostscript='gswin64c'
-  else
-    # if msys
+  else # if msys
     source "$BH_DIR/lib/msys.bash"
   fi
   ;;
@@ -57,7 +55,95 @@ if type tesseract &>/dev/null; then source "$BH_DIR/lib/tesseract.bash"; fi
 if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/youtube-dl.bash"; fi
 
 # ---------------------------------------
-# some commands
+# home/dotfiles/pkgs helpers
+# ---------------------------------------
+
+function dotfiles_func() {
+  : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
+  declare -a files_array
+  files_array=($BH_DOTFILES)
+  if [ ${#files_array[@]} -eq 0 ]; then
+    log_error "BH_DOTFILES empty"
+  fi
+  for ((i = 0; i < ${#files_array[@]}; i = i + 2)); do
+    if [ $1 = "backup" ]; then
+      cp ${files_array[$i]} ${files_array[$((i + 1))]}
+    elif [ $1 = "install" ]; then
+      cp ${files_array[$((i + 1))]} ${files_array[$i]}
+    elif [ $1 = "diff" ]; then
+      ret=$(diff ${files_array[$i]} ${files_array[$((i + 1))]})
+      if [ $? = 1 ]; then
+        log_msg "diff ${files_array[$i]} ${files_array[$((i + 1))]}"
+        echo "$ret"
+      fi
+    fi
+  done
+}
+alias dotfiles_install="dotfiles_func install"
+alias dotfiles_backup="dotfiles_func backup"
+alias dotfiles_diff="dotfiles_func diff"
+
+function home_cleanup() {
+  if [ -z $BH_HOME_CLEAN_UNUSED ]; then
+    log_error "\$BH_HOME_CLEAN_UNUSED is not defined"
+    return
+  fi
+    for i in "${BH_HOME_CLEAN_UNUSED[@]}"; do
+      if test -d "$HOME/$i"; then
+        rm -rf "$HOME/${i:?}" >/dev/null
+    elif test -e "$HOME/$i"; then
+        rm -f "$HOME/${i:?}" >/dev/null
+    fi
+  done
+  case $OSTYPE in
+  msys*) # gitbas/msys
+    win_hide_home_dotfiles ;;
+  esac
+}
+
+function pkgs_install() {
+  case $OSTYPE in
+  linux*)
+    local pkgs="git vim diffutils curl python3 python3-pip "
+    if [[ $(uname -r) == *"WSL"* ]]; then # wsl
+      log_msg "install BH_WSL_APT=$BH_WSL_APT"
+      apt_install $pkgs $BH_WSL_APT
+      log_msg "install BH_WSL_PY=$BH_WSL_PY"
+      python_install $BH_WSL_PY
+    elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then #ubu
+      log_msg "install BH_UB pkgs"
+      apt_install $pkgs $BH_UBU_APT
+      python_install $BH_UBU_PY
+    fi
+    ;;
+  msys*)
+    if test -e /etc/profile.d/git-prompt.sh; then # gitbash
+      log_msg "install BH_WIN_GET=$BH_WIN_GET"
+      win_get_install $pkgs $BH_WIN_GET  # winget (it uses --scope=user)
+      log_msg "install BH_WIN_PY=$BH_WIN_PY"
+      python_install $BH_WIN_PY
+    else  # msys
+      log_msg "install BH_MSYS pkgs"
+      local pkgs="bash pacman pacman-mirrors msys2-runtime vim diffutils curl "
+      log_msg "install BH_MSYS_PAC=$BH_MSYS_PAC"
+      msys_install $pkgs $BH_MSYS_PAC
+      log_msg "install BH_MSYS_PY=$BH_MSYS_PY"
+      python_install $BH_MSYS_PY
+    fi
+    ;;
+  darwin*) # mac
+      log_msg "install BH_MAC pkgs"
+      local pkgs="git bash vim diffutils curl "
+      log_msg "install BH_MAC_BREW=$BH_MAC_BREW"
+      brew install $pkgs $BH_MAC_BREW
+      log_msg "install BH_MAC_PY=$BH_MAC_PY"
+      python_install $BH_MAC_PY
+    ;;
+  esac
+}
+
+# ---------------------------------------
+# decompress/dir/use commands
 # ---------------------------------------
 
 function decompress() {
@@ -120,91 +206,4 @@ function dir_sorted_by_size() {
 
 function dir_find_duplicated_pdf() {
   find . -iname "*.pdf" -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find . -type f -size {}c -print0 | xargs -r -0 md5sum | sort | uniq -w32 --all-repeated=separate
-}
-
-# ---------------------------------------
-# home/dotfiles
-# ---------------------------------------
-
-function dotfiles_func() {
-  : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
-  declare -a files_array
-  files_array=($BH_DOTFILES)
-  if [ ${#files_array[@]} -eq 0 ]; then
-    log_error "BH_DOTFILES empty"
-  fi
-  for ((i = 0; i < ${#files_array[@]}; i = i + 2)); do
-    if [ $1 = "backup" ]; then
-      cp ${files_array[$i]} ${files_array[$((i + 1))]}
-    elif [ $1 = "install" ]; then
-      cp ${files_array[$((i + 1))]} ${files_array[$i]}
-    elif [ $1 = "diff" ]; then
-      ret=$(diff ${files_array[$i]} ${files_array[$((i + 1))]})
-      if [ $? = 1 ]; then
-        log_msg "diff ${files_array[$i]} ${files_array[$((i + 1))]}"
-        echo "$ret"
-      fi
-    fi
-  done
-}
-alias dotfiles_install="dotfiles_func install"
-alias dotfiles_backup="dotfiles_func backup"
-alias dotfiles_diff="dotfiles_func diff"
-
-function home_cleanup() {
-  if [ -z $BH_HOME_CLEAN_UNUSED ]; then
-    log_error "\$BH_HOME_CLEAN_UNUSED is not defined"
-    return
-  fi
-    for i in "${BH_HOME_CLEAN_UNUSED[@]}"; do
-      if test -d "$HOME/$i"; then
-        rm -rf "$HOME/${i:?}" >/dev/null
-    elif test -e "$HOME/$i"; then
-        rm -f "$HOME/${i:?}" >/dev/null
-    fi
-  done
-  case $OSTYPE in
-  msys*) # gitbas/msys
-    win_hide_home_dotfiles ;;
-  esac
-}
-
-# ---------------------------------------
-# pkgs_install
-# ---------------------------------------
-
-function pkgs_install() {
-  case $OSTYPE in
-  linux*) # wsl/ubu
-    local pkgs="git vim diffutils curl python3 python3-pip "
-    if [[ $(uname -r) == *"icrosoft"* ]]; then
-        apt_install $pkgs $BH_WSL_APT
-        python_install $BH_WSL_PY
-    elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then
-      apt_install $pkgs $BH_UBU_APT
-      python_install $BH_UBU_PY
-    fi
-    ;;
-
-  msys*) # gitbas/msys
-    if type gsudo &>/dev/null; then win_sys_update; fi
-    if test -e /etc/profile.d/git-prompt.sh; then # if gitbash
-      local pkgs+="Python.Python.3 " # ensure python installed
-      win_get_install $pkgs $BH_WIN_GET  # winget (it uses --scope=user)
-      python_install $BH_WIN_PY
-    else  # if msys
-      local pkgs="bash pacman pacman-mirrors msys2-runtime vim diffutils curl "
-      msys_install $pkgs $BH_MSYS_PAC
-      python_install $BH_MSYS_PY
-    fi
-    python_upgrade
-    ;;
-
-  darwin*) # mac
-      local pkgs="git bash vim diffutils curl "
-      pkgs+="python3 python-pip " # ensure python installed
-      brew install $pkgs $BH_MAC_BREW
-      python_install $BH_MAC_PY
-    ;;
-  esac
 }
