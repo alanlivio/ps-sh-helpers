@@ -15,8 +15,6 @@ msys*)
   source "$BH_DIR/win.bash"
   if test -e /etc/profile.d/git-prompt.sh; then # if gitbash
     alias ghostscript='gswin64c'
-  else # if msys
-    source "$BH_DIR/lib/msys.bash"
   fi
   ;;
 linux*)
