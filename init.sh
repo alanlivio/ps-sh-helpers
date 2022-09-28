@@ -33,7 +33,7 @@ if type apt &>/dev/null; then source "$BH_DIR/lib/apt.bash"; fi
 if type deb &>/dev/null; then source "$BH_DIR/lib/deb.bash"; fi
 if type flutter &>/dev/null; then source "$BH_DIR/lib/flutter.bash"; fi
 if type pngquant &>/dev/null; then source "$BH_DIR/lib/pngquant.bash"; fi
-if type pdflatex &>/dev/null; then source "$BH_DIR/lib/pdflatex.bash"; fi
+if type latexmk &>/dev/null; then source "$BH_DIR/lib/latex.bash"; fi
 if type wget &>/dev/null; then source "$BH_DIR/lib/wget.bash"; fi
 if type zip &>/dev/null; then source "$BH_DIR/lib/zip.bash"; fi
 if type python &>/dev/null; then source "$BH_DIR/lib/python.bash"; fi
