@@ -38,7 +38,7 @@ function win_is_shell_eleveated() { # return True/False
   powershell -c '(New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)'
 }
 
-function win_sys_update() {
+function win_sys_upgrade() {
   gsudo powershell -c '
     Install-Module -Name PSWindowsUpdate -Force
     Install-WindowsUpdate -AcceptAll -IgnoreReboot

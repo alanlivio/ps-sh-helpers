@@ -61,7 +61,7 @@ The next helpers use using BH_* variables from `~/.bashrc`. Please see an exampl
 * `win_sanity_services`: remove unused context services. It is a wrapper to [sanity_services.ps1](lib/ps1/sanity_services.ps1)
 * `win_sanity_this_pc`: remove link folders on This PC. It is a wrapper to [sanity_this_pc.ps1](lib/ps1/sanity_this_pc.ps1).
 * `win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons). It is a wrapper to [sanity_ui.ps1](lib/ps1/sanity_ui.ps1).
-* `win_sys_update`: update win.
+* `win_sys_upgrade`: update win.
 
 ### win helpers for setup of MSYS2/WSL
 
