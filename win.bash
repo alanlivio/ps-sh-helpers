@@ -122,21 +122,9 @@ function win_install_ghostscript() {
   win_path_add $(cygpath -w '/c/Program Files/gs/gs9.55.0/bin')
 }
 
-function win_install_vscode() {
-  win_get_install Microsoft.VisualStudioCode
-}
-
-function win_install_cmake() {
-  win_get_install Kitware.CMake
-}
-
 function win_install_make() {
   win_get_install GnuWin32.Make
   win_path_add "$PROGRAMFILES (x86)\GnuWin32\bin"
-}
-
-function win_install_node() {
-  winget install OpenJS.NodeJS
 }
 
 BH_PLATOOLS_VER="31.0.3-windows"
@@ -190,23 +178,12 @@ function win_install_flutter() {
   win_path_add $(cygpath -w $flutter_sdk_dir/bin)
 }
 
-function win_install_tesseract() {
-  if ! type tesseract.exe &>/dev/null; then
-    win_get_install tesseract
-    win_path_add 'C:\Program Files\Tesseract-OCR'
-  fi
-}
-
 function win_install_java() {
   if ! type java.exe &>/dev/null; then
     win_get_install ojdkbuild.ojdkbuild
     local javahome=$(powershell -c '$(get-command java).Source.replace("\bin\java.exe", "")')
     env_add "JAVA_HOME" "$javahome"
   fi
-}
-
-function win_install_gsudo() {
-  win_get_install gsudo
 }
 
 function win_install_docker() {
