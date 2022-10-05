@@ -127,53 +127,46 @@ function win_install_make() {
   win_path_add "$PROGRAMFILES (x86)\GnuWin32\bin"
 }
 
-BH_AD_PLT_VER="33.0.3-windows"
+function win_install_android_sdkmanager_and_platform_tools() {
+  # create SDK_HOME
+  local ad_sdk_home=$(cygpath $BH_BIN/Android/Sdk)
+  test_and_create_dir $ad_sdk_home
 
-function win_install_adb() {
-  # android plataform tools
-  local android_sdk_dir=$(cygpath $BH_BIN/Android/Sdk)
-  test_and_create_dir $android_sdk_dir
-  local android_plattools_dir="$android_sdk_dir/platform-tools"
-  local android_plattools_url="https://dl.google.com/android/repository/platform-tools_r${BH_AD_PLT_VER}.zip"
-  if ! test -d $android_plattools_dir; then
-    decompress_from_url $android_plattools_url $android_sdk_dir
-    if test $? != 0; then log_error "decompress_from_url failed." && exit; fi
-    win_path_add $(cygpath -w $android_plattools_dir)
-  else
-    log_msg "$android_plattools_dir exist. skipping."
-  fi
-}
-
-BH_AD_CMD_VER="8512546"
-BH_AD_SDK_VER="33"
-
-function win_install_android_sdk() {
   # android Command-line tools (sdkmanager)
   # https://developer.android.com/studio#command-tools
-  local android_sdk_dir=$(cygpath $BH_BIN/Android/Sdk)
-  test_and_create_dir $android_sdk_dir
-  local android_cmd_dir="$android_sdk_dir/cmdline-tools"
-  local android_cmd_url="https://dl.google.com/android/repository/commandlinetools-win-${BH_AD_CMD_VER}_latest.zip"
-  if ! test -d $android_cmd_dir; then
-    decompress_from_url $android_cmd_url $android_sdk_dir
-    if test $? != 0; then log_error "decompress_from_url failed." && exit; fi
-    win_path_add $(cygpath -w $android_cmd_dir/bin)
+  local ad_cmd_ver="8512546"
+  local ad_cmd_dir="$ad_sdk_home/cmdline-tools/latest"
+  local ad_cmd_url="https://dl.google.com/android/repository/commandlinetools-win-${ad_cmd_ver}_latest.zip"
+  if ! test -d $ad_cmd_dir; then
+    # It is expected be at <sdk>/cmdline-tools/latest. othersie, `sdkmanager.bat --update`` gives:
+    #    Error: Could not determine SDK root.
+    #    Error: Either specify it explicitly with --sdk_root= or move this package into its expected location: <sdk>\cmdline-tools\latest\
+    # Here, we extract and then rename the folder
+    decompress_from_url $ad_cmd_url "$ad_sdk_home/cmdline-tools/"
+    mv -f "$ad_sdk_home/cmdline-tools/cmdline-tools" $ad_cmd_dir
+    if test $? != 0; then
+      log_error "decompress_from_url failed."
+      return 1
+    fi
+    win_path_add $(cygpath -w $ad_cmd_dir/bin)
+    win_env_add ANDROID_HOME $(cygpath -w $ad_sdk_home)
+    # install platform-tools
+    sdkmanager.bat "platform-tools"
+    # list installed
   else
-    log_msg "$android_cmd_dir exist. skipping."
+    log_msg "$ad_cmd_dir exist. skipping."
   fi
-  # android SDK (sdkmanager)
-  # https://developer.android.com/studio#command-tools
-  if ! test -d "$android_sdk_dir/platforms/android-$BH_AD_SDK_VER"; then
-    $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --install  "platform-tools" "platforms;android-$BH_AD_SDK_VER"
-    yes | $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --licenses
-    win_env_add ANDROID_HOME $(cygpath -w $android_sdk_dir)
-    win_env_add ANDROID_SDK_ROOT $(cygpath -w $android_sdk_dir)
-  else
-    log_msg ""$android_sdk_dir/platforms/android-$BH_AD_SDK_VER" exist. skipping."
-  fi
+  sdkmanager.bat --list_installed
 }
 
-BH_FLUTTER_VER="3.0.5"
+function win_install_android_sdk() {
+  if ! type sdkmanager.bat >/dev/null; then win_install_android_cmd_tools; fi
+  local android_sdk_ver="33"
+  yes | sdkmanager.bat "platforms;android-$android_sdk_ver"
+  sdkmanager.bat --list_installed
+}
+
+BH_FLUTTER_VER="3.3.3"
 
 function win_install_flutter() {
   local dst="$BH_BIN"
@@ -182,9 +175,14 @@ function win_install_flutter() {
   if ! test -d $flutter_sdk_dir; then
     # to dst because zip extract to dst/flutter/
     decompress_from_url $flutter_sdk_url $dst
-    if test $? != 0; then log_error "decompress_from_url failed." && exit; fi
+    if test $? != 0; then
+      log_error "decompress_from_url failed."
+      return 1
+    fi
+    win_path_add $(cygpath -w $flutter_sdk_dir/bin)
+  else
+    log_msg "$flutter_sdk_dir exist. skipping."
   fi
-  win_path_add $(cygpath -w $flutter_sdk_dir/bin)
 }
 
 function win_install_java() {
