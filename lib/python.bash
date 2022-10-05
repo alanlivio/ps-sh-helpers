@@ -1,4 +1,4 @@
-alias python_install='pip install --user --upgrade '
+alias python_install='pip install '
 alias python_uninstall='pip uninstall  '
 
 function python_upgrade_outdated() {
