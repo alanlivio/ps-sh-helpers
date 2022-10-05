@@ -11,17 +11,16 @@ BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
 # ---------------------------------------
 case $OSTYPE in
 msys*)
-  BH_OPT="$HOME/AppData/Local/Programs"
   source "$BH_DIR/win.bash"
   if test -e /etc/profile.d/git-prompt.sh; then # if gitbash
     alias ghostscript='gswin64c'
   fi
   ;;
 linux*)
-  BH_OPT="$HOME/opt"
   if type gnome-shell &>/dev/null; then source "$BH_DIR/lib/gnome.bash"; fi
   ;;
 esac
+if [ -z "${BH_BIN}" ]; then BH_BIN="$HOME/bin"; fi
 
 # ---------------------------------------
 # load .bash for commands

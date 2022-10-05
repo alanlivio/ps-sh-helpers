@@ -127,53 +127,62 @@ function win_install_make() {
   win_path_add "$PROGRAMFILES (x86)\GnuWin32\bin"
 }
 
-BH_PLATOOLS_VER="31.0.3-windows"
+BH_AD_PLT_VER="33.0.3-windows"
 
 function win_install_adb() {
   # android plataform tools
-  local android_sdk_dir=$(cygpath $LOCALAPPDATA/Android/Sdk)
+  local android_sdk_dir=$(cygpath $BH_BIN/Android/Sdk)
   test_and_create_dir $android_sdk_dir
   local android_plattools_dir="$android_sdk_dir/platform-tools"
-  local android_plattools_url="https://dl.google.com/android/repository/platform-tools_r${BH_PLATOOLS_VER}.zip"
+  local android_plattools_url="https://dl.google.com/android/repository/platform-tools_r${BH_AD_PLT_VER}.zip"
   if ! test -d $android_plattools_dir; then
     decompress_from_url $android_plattools_url $android_sdk_dir
-    if test $? != 0; then log_error "decompress_from_url failed." && return 1; fi
+    if test $? != 0; then log_error "decompress_from_url failed." && exit; fi
+    win_path_add $(cygpath -w $android_plattools_dir)
+  else
+    log_msg "$android_plattools_dir exist. skipping."
   fi
-  win_path_add $(cygpath -w $android_plattools_dir)
 }
 
-BH_ANDROID_CMD_VER="8512546"
-BH_SDK_VER="33"
+BH_AD_CMD_VER="8512546"
+BH_AD_SDK_VER="33"
 
 function win_install_android_sdk() {
-  # android cmd and sdk
-  local android_sdk_dir=$(cygpath $LOCALAPPDATA/Android/Sdk)
+  # android Command-line tools (sdkmanager)
+  # https://developer.android.com/studio#command-tools
+  local android_sdk_dir=$(cygpath $BH_BIN/Android/Sdk)
   test_and_create_dir $android_sdk_dir
   local android_cmd_dir="$android_sdk_dir/cmdline-tools"
-  local android_cmd_url="https://dl.google.com/android/repository/commandlinetools-win-${BH_ANDROID_CMD_VER}_latest.zip"
+  local android_cmd_url="https://dl.google.com/android/repository/commandlinetools-win-${BH_AD_CMD_VER}_latest.zip"
   if ! test -d $android_cmd_dir; then
     decompress_from_url $android_cmd_url $android_sdk_dir
-    if test $? != 0; then log_error "decompress_from_url failed." && return 1; fi
+    if test $? != 0; then log_error "decompress_from_url failed." && exit; fi
     win_path_add $(cygpath -w $android_cmd_dir/bin)
+  else
+    log_msg "$android_cmd_dir exist. skipping."
   fi
-  if ! test -d "$android_sdk_dir/platforms/android-$BH_SDK_VER"; then
-    $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --install  "platform-tools" "platforms;android-$BH_SDK_VER"
+  # android SDK (sdkmanager)
+  # https://developer.android.com/studio#command-tools
+  if ! test -d "$android_sdk_dir/platforms/android-$BH_AD_SDK_VER"; then
+    $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --install  "platform-tools" "platforms;android-$BH_AD_SDK_VER"
     yes | $android_cmd_dir/bin/sdkmanager.bat --sdk_root="$android_sdk_dir" --licenses
+    win_env_add ANDROID_HOME $(cygpath -w $android_sdk_dir)
+    win_env_add ANDROID_SDK_ROOT $(cygpath -w $android_sdk_dir)
+  else
+    log_msg ""$android_sdk_dir/platforms/android-$BH_AD_SDK_VER" exist. skipping."
   fi
-  win_env_add ANDROID_HOME $(cygpath -w $android_sdk_dir)
-  win_env_add ANDROID_SDK_ROOT $(cygpath -w $android_sdk_dir)
 }
 
 BH_FLUTTER_VER="3.0.5"
 
 function win_install_flutter() {
-  local opt_dst="$BH_OPT"
-  local flutter_sdk_dir="$BH_OPT/flutter"
+  local dst="$BH_BIN"
+  local flutter_sdk_dir="$BH_BIN/flutter"
   local flutter_sdk_url="https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_${BH_FLUTTER_VER}-stable.zip"
   if ! test -d $flutter_sdk_dir; then
-    # opt_dst beacuase zip extract the flutter dir
-    decompress_from_url $flutter_sdk_url $opt_dst
-    if test $? != 0; then log_error "decompress_from_url failed." && return 1; fi
+    # to dst because zip extract to dst/flutter/
+    decompress_from_url $flutter_sdk_url $dst
+    if test $? != 0; then log_error "decompress_from_url failed." && exit; fi
   fi
   win_path_add $(cygpath -w $flutter_sdk_dir/bin)
 }
