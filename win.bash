@@ -1,5 +1,4 @@
-alias ls='ls --color=auto --hide=ntuser* --hide=NTUSER* --hide=AppData --hide=IntelGraphicsProfiles* --hide=MicrosoftEdgeBackups'
-alias gsudo='/c/Program\ Files\ \(x86\)/gsudo/gsudo.exe'
+alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
 
 # ---------------------------------------
 # msys2
