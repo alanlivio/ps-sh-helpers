@@ -1,21 +1,5 @@
 function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
-function install_win_winget() {
-  if (!(Get-Command 'winget.exe' -ea 0)) {
-    log_msg "install_win_winget"
-    $repoName = "microsoft/winget-cli"
-    $releasesUri = "https://api.github.com/repos/$repoName/releases/latest"
-    $url = (Invoke-WebRequest $releasesUri | ConvertFrom-Json).assets | Where-Object name -like *.msixbundle | Select-Object -ExpandProperty browser_download_url
-    Invoke-WebRequest $url -OutFile "${env:tmp}\tmp.msixbundle"
-    Add-AppPackage -path "${env:tmp}\tmp.msixbundle"
-  }
-}
-function install_win_gsudo() {
-  if (!(Get-Command 'gsudo.exe' -ea 0)) {
-    log_msg "install_win_gsudo"
-    path_add 'C:\Program Files (x86)\gsudo'
-  }
-}
-Set-Alias gsudo 'C:\Program Files (x86)\gsudo\gsudo'
+
 function wsl_get_default() {
   [System.Text.Encoding]::Unicode.GetString([System.Text.Encoding]::UTF8.GetBytes((wsl -l))) -split '\s\s+' | ForEach-Object {
     if ($_.Contains('(')) {
@@ -24,14 +8,22 @@ function wsl_get_default() {
   }
 }
 
+if (!(Get-Command 'winget.exe' -ea 0)) {
+  log_msg "winget is required"
+  return
+}
+
+if (!(Get-Command 'gsudo.exe' -ea 0)) {
+  log_msg "install_win_gsudo"
+  path_add 'C:\Program Files (x86)\gsudo'
+  Set-Alias gsudo 'C:\Program Files (x86)\gsudo\gsudo'
+}
 
 # this automate the process describred in :
 # - https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
 log_msg "install_wsl"
 $target_distro = "Canonical.Ubuntu.2204"
 $target_cmd = "ubuntu2204.exe"
-
-install_winget
   
 # enable wsl feature (require restart)
 if (!(Get-Command 'wsl.exe' -ea 0)) {
