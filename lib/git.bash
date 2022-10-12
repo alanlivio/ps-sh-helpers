@@ -1,3 +1,12 @@
+function git_speedup(){
+  # https://github.com/Vigorpush/git-speedup/blob/master/gitspeedup.sh  
+  # git repack -a -d --depth=250 --window=250 
+  git config --global core.preloadindex true
+  git config --global core.fscache true
+  git config --global gc.auto 256
+  git config --global core.ignoreStat true
+}
+
 function git_count_commits() {
   git rev-list --all --count
 }

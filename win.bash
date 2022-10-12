@@ -23,19 +23,27 @@ function msys2_same_home() {
 }
 
 # ---------------------------------------
-# home/sys/path
+# explorer
 # ---------------------------------------
 
-function win_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'; }
+function win_explorer_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'; }
 
-function win_is_user_admin() {
-  # ex: if [ $(win_is_user_admin) = "True" ]; then ...
+# ---------------------------------------
+# user
+# ---------------------------------------
+
+function win_user_is_user_admin() { # return True/False
+  # ex: if [ $(win_user_is_user_admin) = "True" ]; then ...
   powershell -c ' (Get-LocalGroupMember "Administrators").Name -contains "$env:COMPUTERNAME\$env:USERNAME" '
 }
 
-function win_is_shell_eleveated() { # return True/False
+function win_user_shell_is_eleveated() { # return True/False
   powershell -c '(New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)'
 }
+
+# ---------------------------------------
+# sys/env/path
+# ---------------------------------------
 
 function win_sys_upgrade() {
   gsudo powershell -c '
