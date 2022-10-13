@@ -1,8 +1,6 @@
 function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
 log_msg "installing msys"
-install_win_gsudo
-install_win_winget
 
 if (!(Get-Command 'winget.exe' -ea 0)) {
   log_msg "winget is required"
@@ -11,7 +9,7 @@ if (!(Get-Command 'winget.exe' -ea 0)) {
 
 if (!(Get-Command 'gsudo.exe' -ea 0)) {
   log_msg "install_win_gsudo"
-  path_add 'C:\Program Files (x86)\gsudo'
+  winget install gsudo
   Set-Alias gsudo 'C:\Program Files (x86)\gsudo\gsudo'
 }
 
