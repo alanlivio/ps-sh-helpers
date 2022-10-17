@@ -1,4 +1,10 @@
+# ---------------------------------------
+# aliases
+# ---------------------------------------
 alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
+alias winget='winget.exe'
+alias powershell='powershell.exe'
+alias explorer='explorer.exe'
 
 # ---------------------------------------
 # msys2
@@ -26,7 +32,7 @@ function msys2_same_home() {
 # explorer
 # ---------------------------------------
 
-function win_explorer_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'; }
+function win_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'; }
 
 # ---------------------------------------
 # user
@@ -118,7 +124,7 @@ function win_install_miktex() {
 
 function win_install_ghostscript() {
   win_get_install ArtifexSoftware.GhostScript
-  win_path_add $(cygpath -w '/c/Program Files/gs/gs9.55.0/bin')
+  win_path_add $(cygpath -w '/c/Program Files/gs/gs10.00.0//bin')
 }
 
 function win_install_make() {

@@ -13,6 +13,7 @@ if [ -z "${BH_BIN}" ]; then BH_BIN="$HOME/bin"; fi
 case $OSTYPE in
 msys*)
   source "$BH_DIR/win.bash"
+  alias ghostscript='gswin64.exe'
   ;;
 linux*)
   source "$BH_DIR/ubu.bash"
