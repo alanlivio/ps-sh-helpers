@@ -2,7 +2,7 @@
 
 # bash-helpers
 
-Multi-bash (ubu, msys, gitbash, wsl) helpers to easy install software/python/vscode packages, setup os (dark mode, clean taskbar/clutter/unused), sync dotfiles, manage git repos, and more. 
+Multi-bash (win msys/gitbash/wsl, ubu, mac,) helpers to easy install packages, setup os (dark mode, clean taskbar/clutter/unused), sync dotfiles, manage git repos, and more. 
 The project logo refers to the synthetic chemical element Bohrium, which also has the initials BH.
 
 ## Install
