@@ -16,6 +16,7 @@ msys*)
   ;;
 linux*)
   source "$BH_DIR/ubu.bash"
+  if [[ $(uname -r) == *"WSL"* ]]; then source "$BH_DIR/win.bash"; fi
   ;;
 darwin*) 
   source "$BH_DIR/mac.bash"
