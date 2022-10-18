@@ -41,10 +41,11 @@ alias snap_install_classic="snap install --classic"
 alias snap_install_edge="snap install --edge"
 alias snap_list="snap list"
 
-if type gnome-shell &>/dev/null; then
-  # ---------------------------------------
-  # gnome-shell
-  # ---------------------------------------
+# ---------------------------------------
+# gnome settings
+# ---------------------------------------
+
+if type gsettings &>/dev/null; then
 
   function gnome_sanity() {
     gnome_dark
@@ -63,7 +64,6 @@ if type gnome-shell &>/dev/null; then
     gsettings set org.gnome.desktop.background picture-uri ''
     gsettings set org.gnome.desktop.background primary-color "#000000"
     gsettings set org.gnome.desktop.background secondary-color "#000000"
-
     # gnome search
     gsettings set org.gnome.desktop.search-providers sort-order "[]"
     gsettings set org.gnome.desktop.search-providers disable-external false
@@ -88,26 +88,29 @@ if type gnome-shell &>/dev/null; then
     # sound
     gsettings set org.gnome.desktop.sound event-sounds false
     gsettings set org.gnome.desktop.wm.preferences num-workspaces 1
-    # gedit
-    gsettings set org.gnome.gedit.preferences.editor bracket-matching true
-    gsettings set org.gnome.gedit.preferences.editor display-line-numbers true
-    gsettings set org.gnome.gedit.preferences.editor display-right-margin true
-    gsettings set org.gnome.gedit.preferences.editor scheme 'classic'
-    gsettings set org.gnome.gedit.preferences.editor wrap-last-split-mode 'word'
-    gsettings set org.gnome.gedit.preferences.editor wrap-mode 'word'
-    # workspaces
-    gsettings set org.gnome.mutter dynamic-workspaces false
     # nautilus
     gsettings set org.gnome.nautilus.list-view default-zoom-level 'small'
+    gsettings set org.gnome.nautilus.list-view default-visible-columns "['name', 'size']"
     gsettings set org.gnome.nautilus.list-view use-tree-view true
     gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view'
     gsettings set org.gnome.nautilus.window-state maximized false
     gsettings set org.gnome.nautilus.window-state sidebar-width 180
+    # gedit
+    if grep -q gedit <<<$(gsettings list-schemas); then
+      gsettings set org.gnome.gedit.preferences.editor bracket-matching true
+      gsettings set org.gnome.gedit.preferences.editor display-line-numbers true
+      gsettings set org.gnome.gedit.preferences.editor display-right-margin true
+      gsettings set org.gnome.gedit.preferences.editor scheme 'classic'
+      gsettings set org.gnome.gedit.preferences.editor wrap-last-split-mode 'word'
+      gsettings set org.gnome.gedit.preferences.editor wrap-mode 'word'
+    fi
     # dock
-    gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 24
-    gsettings set org.gnome.shell.extensions.dash-to-dock dock-position 'BOTTOM'
-    gsettings set org.gnome.shell.extensions.dash-to-dock autohide false
-    gsettings set org.gnome.shell.extensions.dash-to-dock intellihide false
-    gsettings set org.gnome.shell.extensions.dash-to-dock show-show-apps-button false
+    if grep -q dash-to-dock <<<$(gsettings list-schemas); then
+      gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 24
+      gsettings set org.gnome.shell.extensions.dash-to-dock dock-position 'BOTTOM'
+      gsettings set org.gnome.shell.extensions.dash-to-dock autohide false
+      gsettings set org.gnome.shell.extensions.dash-to-dock intellihide false
+      gsettings set org.gnome.shell.extensions.dash-to-dock show-show-apps-button false
+    fi
   }
 fi
