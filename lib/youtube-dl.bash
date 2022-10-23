@@ -1,7 +1,7 @@
 YOUTUBEDL_ARGS="--download-archive .downloaded.txt --no-warnings --add-metadata --no-post-overwrites --ignore-errors "
 
 function youtube-dl_video480() {
-  : ${1?"Usage: ${FUNCNAME[0]} <txt_file>"}
+  : ${1?"Usage: ${FUNCNAME[0]} <uld>"}
   youtube-dl "$1" -f 'best[height<=480]' $YOUTUBEDL_ARGS
 }
 
@@ -12,5 +12,5 @@ function youtube-dl_video480_from_txt() {
 
 function youtube-dl_audio() {
   : ${1?"Usage: ${FUNCNAME[0]} <txt_file>"}
-  youtube-dl "$1" $YOUTUBEDL_ARGS --extract-audio --audio-quality 7 --output "%(title)s.%(ext)s" --add-metadata
+  youtube-dl "$1" --extract-audio $YOUTUBEDL_ARGS
 }
