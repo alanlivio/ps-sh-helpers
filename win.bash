@@ -5,6 +5,7 @@ alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I IntelGraphicsPro
 alias winget='winget.exe'
 alias powershell='powershell.exe'
 alias explorer='explorer.exe'
+alias explorer_restart='powershell.exe "Stop-Process -ProcessName explorer -ea 0 | Out-Null"'
 
 # ---------------------------------------
 # msys2
