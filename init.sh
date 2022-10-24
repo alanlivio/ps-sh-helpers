@@ -17,10 +17,11 @@ msys*)
   ;;
 linux*)
   source "$BH_DIR/ubu.bash"
-  if [[ $(uname -r) == *"WSL"* ]]; then source "$BH_DIR/win.bash"; fi
+  if [[ -n $WSL_DISTRO_NAME ]]; then source "$BH_DIR/win.bash"; fi
   ;;
-darwin*) 
+darwin*)
   source "$BH_DIR/mac.bash"
+  ;;
 esac
 
 if type adb &>/dev/null; then source "$BH_DIR/lib/adb.bash"; fi

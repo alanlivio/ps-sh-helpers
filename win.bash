@@ -35,19 +35,6 @@ function msys2_same_home() {
 function win_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'; }
 
 # ---------------------------------------
-# user
-# ---------------------------------------
-
-function win_user_is_user_admin() { # return True/False
-  # ex: if [ $(win_user_is_user_admin) = "True" ]; then ...
-  powershell -c ' (Get-LocalGroupMember "Administrators").Name -contains "$env:COMPUTERNAME\$env:USERNAME" '
-}
-
-function win_user_shell_is_eleveated() { # return True/False
-  powershell -c '(New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)'
-}
-
-# ---------------------------------------
 # sys/env/path
 # ---------------------------------------
 
@@ -80,19 +67,15 @@ function win_path_show_as_list() {
 # winget
 # ---------------------------------------
 
-function win_get_list() {
-  winget list
-}
-
-function win_get_settings() {
+function winget_settings() {
   winget settings
 }
 
-function win_get_upgrade() {
+function winget_upgrade_all() {
   winget upgrade --all --silent
 }
 
-function win_get_install() {
+function winget_install() {
   local pkgs_to_install=""
   for i in "$@"; do
     if [[ $(winget list --id $i) =~ "No installed"* ]]; then
@@ -102,7 +85,7 @@ function win_get_install() {
   if test ! -z "$pkgs_to_install"; then
     echo "pkgs_to_install=$pkgs_to_install"
     for pkg in $pkgs_to_install; do
-      winget install $pkg
+      winget install --accept-package-agreements $pkg
     done
   fi
 }
@@ -112,17 +95,17 @@ function win_get_install() {
 # ---------------------------------------
 
 function win_install_miktex() {
-  win_get_install ChristianSchenk.MiKTeX
+  winget_install ChristianSchenk.MiKTeX
   win_path_add $(cygpath -w $HOME/AppData/Local/Programs/MiKTeX/miktex/bin/x64/)
 }
 
 function win_install_ghostscript() {
-  win_get_install ArtifexSoftware.GhostScript
+  winget_install ArtifexSoftware.GhostScript
   win_path_add $(cygpath -w '/c/Program Files/gs/gs10.00.0//bin')
 }
 
 function win_install_make() {
-  win_get_install GnuWin32.Make
+  winget_install GnuWin32.Make
   win_path_add "$PROGRAMFILES (x86)\GnuWin32\bin"
 }
 
@@ -189,7 +172,6 @@ function win_install_flutter() {
 # ---------------------------------------
 
 function win_install_msys2() { gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/install_msys2.ps1)\'; }
-function win_install_winget_latest() { powershell $(cygpath -w $BH_DIR/lib/ps1/install_winget_latest.ps1); }
 function win_install_wsl() { gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/install_wsl.ps1)\'; }
 
 # ---------------------------------------
