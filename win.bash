@@ -111,12 +111,6 @@ function win_get_install() {
 # install
 # ---------------------------------------
 
-function win_install_python() {
-  winget install Python.Python.3 --source winget -i
-  win_path_add $(cygpath -w $HOME/AppData/Local/Programs/Python/Python310/Scripts/)
-  win_path_add $(cygpath -w $HOME/AppData/Roaming/Python/Python310/Scripts/)
-}
-
 function win_install_miktex() {
   win_get_install ChristianSchenk.MiKTeX
   win_path_add $(cygpath -w $HOME/AppData/Local/Programs/MiKTeX/miktex/bin/x64/)
@@ -188,20 +182,6 @@ function win_install_flutter() {
   else
     log_msg "$flutter_sdk_dir exist. skipping."
   fi
-}
-
-function win_install_java() {
-  if ! type java.exe &>/dev/null; then
-    win_get_install ojdkbuild.ojdkbuild
-    local javahome=$(powershell -c '$(get-command java).Source.replace("\bin\java.exe", "")')
-    env_add "JAVA_HOME" "$javahome"
-  fi
-}
-
-function win_install_docker() {
-  gsudo powershell -c Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V") -All
-  gsudo powershell -c Enable-WindowsOptionalFeature -Online -FeatureName $("Containers") -All
-  win_get_install Docker.DockerDesktop
 }
 
 # ---------------------------------------
