@@ -72,18 +72,9 @@ function winget_upgrade_all() {
 }
 
 function winget_install() {
-  local pkgs_to_install=""
   for i in "$@"; do
-    if [[ $(winget list --id $i) =~ "No installed"* ]]; then
-      pkgs_to_install="$i $pkgs_to_install"
-    fi
+    winget list $i >/dev/null || winget install --accept-package-agreements --accept-source-agreements --silent $pkg
   done
-  if test ! -z "$pkgs_to_install"; then
-    echo "pkgs_to_install=$pkgs_to_install"
-    for pkg in $pkgs_to_install; do
-      winget install --accept-package-agreements $pkg
-    done
-  fi
 }
 
 # ---------------------------------------

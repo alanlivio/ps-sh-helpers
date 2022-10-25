@@ -1,10 +1,13 @@
-alias python_install='pip install '
-alias python_uninstall='pip uninstall  '
+function python_install() {
+  for i in "$@"; do
+    pip show $i >/dev/null || pip install $i
+  done
+}
 
 function python_upgrade_outdated() {
   local outdated=$(pip list --outdated --format=freeze --disable-pip-version-check 2>/dev/null | grep -v '^\-e' | cut -d = -f 1)
   if test "$outdated"; then
-    python -m pip install --upgrade pip 2>/dev/null
+    pip install --upgrade pip 2>/dev/null
     pip install --upgrade $outdated 2>/dev/null
   fi
 }

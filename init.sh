@@ -98,9 +98,9 @@ function pkgs_install() {
   linux*)
     local pkgs="git vim diffutils curl python3 python3-pip "
     if [[ $(uname -r) == *"WSL"* ]]; then # wsl
-      log_msg "install BH_WSL_APT=$BH_WSL_APT"
+      log_msg "apt_install BH_WSL_APT=$BH_WSL_APT"
       apt_install $pkgs $BH_WSL_APT
-      log_msg "install BH_WSL_PY=$BH_WSL_PY"
+      log_msg "python_install BH_WSL_PY=$BH_WSL_PY"
       python_install $BH_WSL_PY
     elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then #ubu
       log_msg "install BH_UB pkgs"
@@ -110,25 +110,25 @@ function pkgs_install() {
     ;;
   msys*)
     if test -e /etc/profile.d/git-prompt.sh; then # gitbash
-      log_msg "install BH_WIN_GET=$BH_WIN_GET"
-      winget_install $pkgs $BH_WIN_GET  # winget (it uses --scope=user)
-      log_msg "install BH_WIN_PY=$BH_WIN_PY"
+      # log_msg "winget_install BH_WIN_GET=$BH_WIN_GET"
+      # winget_install $pkgs $BH_WIN_GET
+      log_msg "python_install BH_WIN_PY=$BH_WIN_PY"
       python_install $BH_WIN_PY
     else  # msys
       log_msg "install BH_MSYS pkgs"
       local pkgs="bash pacman pacman-mirrors msys2-runtime vim diffutils curl "
-      log_msg "install BH_MSYS_PAC=$BH_MSYS_PAC"
-      msys_install $pkgs $BH_MSYS_PAC
-      log_msg "install BH_MSYS_PY=$BH_MSYS_PY"
+      log_msg "msys2_install BH_MSYS_PAC=$BH_MSYS_PAC"
+      msys2_install $pkgs $BH_MSYS_PAC
+      log_msg "python_install BH_MSYS_PY=$BH_MSYS_PY"
       python_install $BH_MSYS_PY
     fi
     ;;
   darwin*) # mac
       log_msg "install BH_MAC pkgs"
       local pkgs="git bash vim diffutils curl "
-      log_msg "install BH_MAC_BREW=$BH_MAC_BREW"
+      log_msg "brew_install BH_MAC_BREW=$BH_MAC_BREW"
       brew install $pkgs $BH_MAC_BREW
-      log_msg "install BH_MAC_PY=$BH_MAC_PY"
+      log_msg "python_install BH_MAC_PY=$BH_MAC_PY"
       python_install $BH_MAC_PY
     ;;
   esac

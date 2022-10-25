@@ -26,11 +26,11 @@ The next helpers use using BH_* variables from `~/.bashrc`. Please see an exampl
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.
-* `pkgs_install` (at GitBash): install BH_WIN_GET, BH_WIN_PY.
-* `pkgs_install` (at mac bash): install BH_MAC_BREW, BH_MAC_PY.
-* `pkgs_install` (at msys bash): install BH_MSYS_PAC, BH_MSYS_PY.
-* `pkgs_install` (at ubuntu bash): install BH_UBU_APT, BH_UBU_PY.
-* `pkgs_install` (at WSL bash): install BH_WSL_APT, BH_WSL_PY.
+* `pkgs_install` (at GitBash): install pkgs from BH_WIN_GET and BH_WIN_PY.
+* `pkgs_install` (at mac bash): install pkgs from BH_MAC_BREW and BH_MAC_PY.
+* `pkgs_install` (at msys bash): install pkgs from BH_MSYS_PAC and BH_MSYS_PY.
+* `pkgs_install` (at ubuntu bash): install pkgs from BH_UBU_APT and BH_UBU_PY.
+* `pkgs_install` (at WSL bash): install pkgs from BH_WSL_APT and BH_WSL_PY.
 
 ### decompress/dir/user helpers
 
@@ -50,7 +50,7 @@ env/path:
 * `win_path_show`: show PATH string
 
 winget:
-* `winget_install`: winget install a given package.
+* `winget_install`: winget install packages if not installed.
 * `winget_list`: winget list packages.
 * `winget_upgrade_all`: winget upgrade all packages.
 
@@ -68,24 +68,30 @@ sanity:
 * `win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons). It is a wrapper to [sanity_ui.ps1](lib/ps1/sanity_ui.ps1).
 * `win_sys_upgrade`: update win.
 
-### win helpers for setup of MSYS2/WSL
-
+setup WSL:
 * `win_install_wsl` (at windows GitBash): to install WSL/Ubuntu automating the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password. It is a wrapper to [install_wsl.ps1](lib/ps1/install_wsl.ps1).
 * `win_wsl_use_same_home`: make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/sanity_ui.ps1).
+
+setup of MSYS2:
 * `win_install_msys` (at windows GitBash): to install [MSYS2](https://www.msys2.org/) useful to build GNU-based win32 applications. It is a wrapper to [install_msys.ps1](lib/ps1/install_msys.ps1).
 * `win_msys_use_same_home`: make MSYS2 uses win home. It is a wrapper to [msys_use_same_home.ps1](lib/ps1/msys_use_same_home.ps1).
 
-### other helpers
+### python helpers
 
-* `gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire).
-* `python_upgrade`: upgrade a given list of python packages.
-* `python_install`: install a given list of python packages.
-* `python_uninstall`: uninstall a given list of python packages.
+* `python_upgrade`: upgrade all packages.
+* `python_install`: install packages if not installed.
 * `venv_create`: create a venv.
 * `venv_activate_install`: load a venv.
 * `python_setup_install_user`: install from a pkg folder with setup.py.
 * `python_setup_upload_testpypi`: upload to testpypi from a pkg folder with setup.py.
 * `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py.
+
+### ubu helpers
+
+* `deb_install_url` (at ubuntu bash): fetch and install deb package.
+* `gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire).
+
+### others helpers
 
 See the full helpers at lib/ folder.
 
