@@ -44,10 +44,10 @@ The next helpers use using BH_* variables from `~/.bashrc`. Please see an exampl
 
 * `win_env_add`: add variable to ENV.
 * `win_env_show`: show ENV.
-* `win_get_install`: winget install a given package.
-* `win_get_list`: winget list packages.
-* `win_get_settings`: vscode open winget settings.json.
-* `win_get_upgrade`: winget upgrade packages.
+* `winget_install`: winget install a given package.
+* `winget_list`: winget list packages.
+* `winget_settings`: vscode open winget settings.json.
+* `winget_upgrade`: winget upgrade packages.
 * `win_hide_home_dotfiles`: hide dotfiles at home folder.
 * `win_is_shell_eleveated`: check if the shell is elevated.
 * `win_is_user_admin`check if the user is admin.

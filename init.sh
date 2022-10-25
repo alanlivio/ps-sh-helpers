@@ -111,7 +111,7 @@ function pkgs_install() {
   msys*)
     if test -e /etc/profile.d/git-prompt.sh; then # gitbash
       log_msg "install BH_WIN_GET=$BH_WIN_GET"
-      win_get_install $pkgs $BH_WIN_GET  # winget (it uses --scope=user)
+      winget_install $pkgs $BH_WIN_GET  # winget (it uses --scope=user)
       log_msg "install BH_WIN_PY=$BH_WIN_PY"
       python_install $BH_WIN_PY
     else  # msys
