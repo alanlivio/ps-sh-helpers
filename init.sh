@@ -89,7 +89,7 @@ function home_cleanup() {
   done
   case $OSTYPE in
   msys*) # gitbas/msys
-    win_hide_home_dotfiles ;;
+    explorer_hide_home_dotfiles ;;
   esac
 }
 

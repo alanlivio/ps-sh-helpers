@@ -42,20 +42,25 @@ The next helpers use using BH_* variables from `~/.bashrc`. Please see an exampl
 
 ### win helpers
 
+env/path:
 * `win_env_add`: add variable to ENV.
 * `win_env_show`: show ENV.
-* `winget_install`: winget install a given package.
-* `winget_list`: winget list packages.
-* `winget_settings`: vscode open winget settings.json.
-* `winget_upgrade`: winget upgrade packages.
-* `win_hide_home_dotfiles`: hide dotfiles at home folder.
-* `win_is_shell_eleveated`: check if the shell is elevated.
-* `win_is_user_admin`check if the user is admin.
-* `win_open_tmp`:  explorer open win temp dir.
-* `win_open_trash`: explorer open trash.
 * `win_path_add`: add dir to PATH. It is a wrapper to [path_add.ps1](lib/ps1/path_add.ps1).
 * `win_path_show_as_list`: show PATH as list.
 * `win_path_show`: show PATH string
+
+winget:
+* `winget_install`: winget install a given package.
+* `winget_list`: winget list packages.
+* `winget_upgrade_all`: winget upgrade all packages.
+
+explorer:
+* `explorer_hide_home_dotfiles`: hide dotfiles at home folder.
+* `win_open_tmp`:  explorer open win temp dir.
+* `win_open_trash`: explorer open trash.
+
+
+sanity:
 * `win_sanity_ctx_menu`: remove unused context menu. It is a wrapper to [sanity_ctx_menu.ps1](lib/ps1/sanity_ctx_menu.ps1)
 * `win_sanity_password_policy`: remove password policy requirement. It is a wrapper to [path_add.ps1](lib/ps1/sanity_password_policy.ps1).
 * `win_sanity_services`: remove unused context services. It is a wrapper to [sanity_services.ps1](lib/ps1/sanity_services.ps1)

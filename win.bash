@@ -1,11 +1,9 @@
 # ---------------------------------------
-# aliases
+# essentials aliases
 # ---------------------------------------
 alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
 alias winget='winget.exe'
 alias powershell='powershell.exe'
-alias explorer='explorer.exe'
-alias explorer_restart='powershell.exe "Stop-Process -ProcessName explorer -ea 0 | Out-Null"'
 
 # ---------------------------------------
 # msys2
@@ -32,8 +30,9 @@ function msys2_same_home() {
 # ---------------------------------------
 # explorer
 # ---------------------------------------
-
-function win_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'; }
+function explorer() { explorer.exe $(cygpath -w $1); }
+function explorer_restart() { powershell.exe "Stop-Process -ProcessName explorer -ea 0 | Out-Null"; }
+function explorer_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'; }
 
 # ---------------------------------------
 # sys/env/path
@@ -67,10 +66,6 @@ function win_path_show_as_list() {
 # ---------------------------------------
 # winget
 # ---------------------------------------
-
-function winget_settings() {
-  winget settings
-}
 
 function winget_upgrade_all() {
   winget upgrade --all --silent
