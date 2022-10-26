@@ -4,7 +4,7 @@
 alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
 alias winget='winget.exe'
 alias powershell='powershell.exe'
-
+BH_PS1_DIR="$BH_DIR/lib/ps1/"
 # ---------------------------------------
 # msys2
 # ---------------------------------------
@@ -158,8 +158,8 @@ function win_install_flutter() {
 # install from ps1 scripts
 # ---------------------------------------
 
-function win_install_msys2() { gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/install_msys2.ps1)\'; }
-function win_install_wsl() { gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/install_wsl.ps1)\'; }
+function win_install_msys2() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/install_msys2.ps1)\'; }
+function win_install_wsl() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/install_wsl.ps1)\'; }
 
 # ---------------------------------------
 # others from ps1 scripts
@@ -169,15 +169,15 @@ function win_path_add() {
   local dir=$(cygpath -w $@)
   local dircyg=$(cygpath $@)
   # export in win
-  powershell -command "$(cygpath -w $BH_DIR/lib/ps1/path_add.ps1)" \'$dir\'
+  powershell -command "$(cygpath -w $BH_PS1_DIR/path_add.ps1)" \'$dir\'
   # export in bash (it will reolad from win in new shell)
   if [[ ":$PATH:" != *":$dircyg:"* ]]; then export PATH=${PATH}:$dircyg; fi
 }
 
-function win_msys2_use_same_home() { gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/msys2_use_same_home.ps1)\'; }
-function win_sanity_ctx_menu() { gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity_ctx_menu.ps1)\'; }
-function win_sanity_password_policy() { gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity_password_policy.ps1)\'; }
-function win_sanity_services() { gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity_services.ps1)\'; }
-function win_sanity_this_pc() { gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity_this_pc.ps1)\'; }
-function win_sanity_ui() { powershell \'$(cygpath -w $BH_DIR/lib/ps1/sanity_ui.ps1)\'; }
-function win_wsl_use_same_home() { gsudo powershell \'$(cygpath -w $BH_DIR/lib/ps1/wsl_use_same_home.ps1)\'; }
+function win_msys2_use_same_home() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/msys2_use_same_home.ps1)\'; }
+function win_sanity_ctx_menu() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ctx_menu.ps1)\'; }
+function win_sanity_password_policy() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_password_policy.ps1)\'; }
+function win_sanity_services() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_services.ps1)\'; }
+function win_sanity_this_pc() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_this_pc.ps1)\'; }
+function win_sanity_ui() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ui.ps1)\'; }
+function win_wsl_use_same_home() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/wsl_use_same_home.ps1)\'; }
