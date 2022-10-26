@@ -140,27 +140,27 @@ function pkgs_install() {
 
 function decompress() {
   : ${1?"Usage: ${FUNCNAME[0]} <zip-name> [dir-name]"}
-  local EXT=${1##*.}
-  local DST
-  if [ $# -eq 1 ]; then DST=.; else DST=$2; fi
-  case $EXT in
+  local extension=${1##*.}
+  local dest
+  if [ $# -eq 1 ]; then dest=.; else dest=$2; fi
+  case $extension in
   tgz)
-    ret=$(tar -xzf $1 -C $DST)
+    ret=$(tar -xzf $1 -C $dest)
     ;;
   gz)
-    ret=$(tar -xf $1 -C $DST)
+    ret=$(tar -xf $1 -C $dest)
     ;;
   bz2)
-    ret=$(tar -xjf $1 -C $DST)
+    ret=$(tar -xjf $1 -C $dest)
     ;;
   zip)
-    ret=$(unzip $1 -d $DST)
+    ret=$(unzip $1 -d $dest)
     ;;
   zst)
-    ret=$(tar --use-compress-program=unzstd -xvf $1 -C $DST)
+    ret=$(tar --use-compress-program=unzstd -xvf $1 -C $dest)
     ;;
   xz)
-    ret=$(tar -xJf $1 -C $DST)
+    ret=$(tar -xJf $1 -C $dest)
     ;;
   *)
     log_error "$EXT is not supported compress." && return
