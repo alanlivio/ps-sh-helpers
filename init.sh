@@ -26,7 +26,6 @@ esac
 
 if type adb &>/dev/null; then source "$BH_DIR/lib/adb.bash"; fi
 if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.bash"; fi
-if type code &>/dev/null; then source "$BH_DIR/lib/code.bash"; fi
 if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/ffmpeg.bash"; fi
 if type flutter &>/dev/null; then source "$BH_DIR/lib/flutter.bash"; fi
 if type ghostscript &>/dev/null; then source "$BH_DIR/lib/ghostscript.bash"; fi
