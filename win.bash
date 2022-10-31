@@ -31,8 +31,12 @@ function msys2_same_home() {
 # explorer
 # ---------------------------------------
 function explorer() { explorer.exe $(cygpath -w $1); }
+
 function explorer_restart() { powershell.exe "Stop-Process -ProcessName explorer -ea 0 | Out-Null"; }
+
 function explorer_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'; }
+
+function explorer_open_startup() { powershell -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs\Startup'; }
 
 # ---------------------------------------
 # sys/env/path
