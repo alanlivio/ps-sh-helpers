@@ -10,15 +10,14 @@ linux*)
   BH_HOME_CLEAN_UNUSED+=('Documents') # sensible data in Windows
   ;;
 esac
+
 # pkgs_install() at ubu
-BH_UBU_SNAP="vscode "
 BH_UBU_APT="python "
 BH_UBU_PY="autopep8 "
 # pkgs_install() at mac
 BH_MAC_BREW="vscode "
 BH_MAC_PY="autopep8 "
 # pkgs_install() at win
-BH_WIN_CHOCO="gsudo "
 BH_WIN_GET="Microsoft.WindowsTerminal "
 BH_WIN_PY="autopep8 "
 # pkgs_install() at wsl
