@@ -54,7 +54,7 @@ function win_upgrade() {
 # ---------------------------------------
 
 function win_env_show() {
-  powershell -c 'Get-ChildItem Env:'
+  powershell -c '[System.Environment]::GetEnvironmentVariables()'
 }
 
 function win_env_add() {
