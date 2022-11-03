@@ -45,9 +45,9 @@ The next helpers use using BH_* variables from `~/.bashrc`. Please see an exampl
 env/path:
 * `win_env_add`: add variable to ENV.
 * `win_env_show`: show ENV.
-* `win_path_add`: add dir to PATH. It is a wrapper to [path_add.ps1](lib/ps1/path_add.ps1).
 * `win_path_show_as_list`: show PATH as list.
 * `win_path_show`: show PATH string
+* `win_path_add`: add dir to PATH. It is a wrapper to [path_add.ps1](lib/ps1/path_add.ps1).
 
 winget:
 * `winget_install`: winget install packages if not installed.
@@ -56,8 +56,9 @@ winget:
 
 explorer:
 * `explorer_hide_home_dotfiles`: hide dotfiles at home folder.
-* `win_open_tmp`:  explorer open win temp dir.
-* `win_open_trash`: explorer open trash.
+* `explorer_restart`: restart explorer.
+* `explorer_open_recycle_bin`: explorer open trash folder.
+* `explorer_open_startup`: explorer open user start programs folder.
 
 sanity:
 * `win_sanity_ctx_menu`: remove unused context menu. It is a wrapper to [sanity_ctx_menu.ps1](lib/ps1/sanity_ctx_menu.ps1)

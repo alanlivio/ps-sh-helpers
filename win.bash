@@ -38,6 +38,8 @@ function explorer_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:use
 
 function explorer_open_startup() { powershell -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs\Startup'; }
 
+function explorer_open_recycle_bin() { powershell -c 'explorer shell:RecycleBinFolder'; }
+
 # ---------------------------------------
 # win upgrade
 # ---------------------------------------
@@ -62,6 +64,10 @@ function win_env_add() {
   powershell -c "[System.Environment]::SetEnvironmentVariable('$1', '$2', 'user')"
 }
 
+# ---------------------------------------
+# path add
+# ---------------------------------------
+
 function win_path_show() {
   powershell -c '(Get-ChildItem Env:Path).Value'
 }
@@ -71,11 +77,7 @@ function win_path_show_as_list() {
   for i in "${!ADDR[@]}"; do echo ${ADDR[$i]}; done
 }
 
-# ---------------------------------------
-# path add (ps1 script)
-# ---------------------------------------
-
-function win_path_add() {
+function win_path_add() { # using ps1 script
   local dir=$(cygpath -w $@)
   local dircyg=$(cygpath $@)
   # export in win
