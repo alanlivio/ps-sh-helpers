@@ -59,7 +59,6 @@ explorer:
 * `win_open_tmp`:  explorer open win temp dir.
 * `win_open_trash`: explorer open trash.
 
-
 sanity:
 * `win_sanity_ctx_menu`: remove unused context menu. It is a wrapper to [sanity_ctx_menu.ps1](lib/ps1/sanity_ctx_menu.ps1)
 * `win_sanity_password_policy`: remove password policy requirement. It is a wrapper to [path_add.ps1](lib/ps1/sanity_password_policy.ps1).
@@ -68,13 +67,20 @@ sanity:
 * `win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons). It is a wrapper to [sanity_ui.ps1](lib/ps1/sanity_ui.ps1).
 * `win_sys_upgrade`: update win.
 
-setup WSL:
+install WSL:
 * `win_install_wsl` (at windows GitBash): to install WSL/Ubuntu automating the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password. It is a wrapper to [install_wsl.ps1](lib/ps1/install_wsl.ps1).
 * `win_wsl_use_same_home`: make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/sanity_ui.ps1).
 
-setup of MSYS2:
+install MSYS2:
 * `win_install_msys` (at windows GitBash): to install [MSYS2](https://www.msys2.org/) useful to build GNU-based win32 applications. It is a wrapper to [install_msys.ps1](lib/ps1/install_msys.ps1).
 * `win_msys_use_same_home`: make MSYS2 uses win home. It is a wrapper to [msys_use_same_home.ps1](lib/ps1/msys_use_same_home.ps1).
+
+others installers:
+
+* `win_install_ssh_client`: enable [openssh client](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse?tabs=powershell).
+* `win_install_android_sdkmanager_and_platform_tools`: install android [sdkmanager](https://developer.android.com/studio/command-line/sdkmanager) and [platform tools (adb)] (https://developer.android.com/studio/command-line/adb).
+* `win_install_flutter`: install [flutter sdk](https://docs.flutter.dev/get-started/install/windows).
+
 
 ### python helpers
 

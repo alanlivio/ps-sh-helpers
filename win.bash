@@ -39,15 +39,19 @@ function explorer_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:use
 function explorer_open_startup() { powershell -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs\Startup'; }
 
 # ---------------------------------------
-# sys/env/path
+# win upgrade
 # ---------------------------------------
 
-function win_sys_upgrade() {
+function win_upgrade() {
   gsudo powershell -c '
     Install-Module -Name PSWindowsUpdate -Force
     Install-WindowsUpdate -AcceptAll -IgnoreReboot
   '
 }
+
+# ---------------------------------------
+# env
+# ---------------------------------------
 
 function win_env_show() {
   powershell -c 'Get-ChildItem Env:'
@@ -68,6 +72,19 @@ function win_path_show_as_list() {
 }
 
 # ---------------------------------------
+# path add (ps1 script)
+# ---------------------------------------
+
+function win_path_add() {
+  local dir=$(cygpath -w $@)
+  local dircyg=$(cygpath $@)
+  # export in win
+  powershell -command "$(cygpath -w $BH_PS1_DIR/path_add.ps1)" \'$dir\'
+  # export in bash (it will reolad from win in new shell)
+  if [[ ":$PATH:" != *":$dircyg:"* ]]; then export PATH=${PATH}:$dircyg; fi
+}
+
+# ---------------------------------------
 # winget
 # ---------------------------------------
 
@@ -85,6 +102,12 @@ function winget_install() {
 # install
 # ---------------------------------------
 
+function win_install_ssh_client() {
+  gsudo powershell -c '
+    Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
+  '
+}
+
 function win_install_miktex() {
   winget_install ChristianSchenk.MiKTeX
   win_path_add $(cygpath -w $HOME/AppData/Local/Programs/MiKTeX/miktex/bin/x64/)
@@ -92,7 +115,7 @@ function win_install_miktex() {
 
 function win_install_ghostscript() {
   winget_install ArtifexSoftware.GhostScript
-  win_path_add $(cygpath -w '/c/Program Files/gs/gs10.00.0//bin')
+  win_path_add $(cygpath -w '/c/Program Files/gs/gs10.00.0/bin')
 }
 
 function win_install_make() {
@@ -141,7 +164,7 @@ function win_install_android_sdk() {
 
 BH_FLUTTER_VER="3.3.3"
 
-function win_install_flutter() {
+function win_install_flutter()  {
   local dst="$BH_BIN"
   local flutter_sdk_dir="$BH_BIN/flutter"
   local flutter_sdk_url="https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_${BH_FLUTTER_VER}-stable.zip"
@@ -159,29 +182,20 @@ function win_install_flutter() {
 }
 
 # ---------------------------------------
-# install from ps1 scripts
+# install wsl/msys2 (ps1 scripts)
 # ---------------------------------------
 
 function win_install_msys2() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/install_msys2.ps1)\'; }
-function win_install_wsl() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/install_wsl.ps1)\'; }
-
-# ---------------------------------------
-# others from ps1 scripts
-# ---------------------------------------
-
-function win_path_add() {
-  local dir=$(cygpath -w $@)
-  local dircyg=$(cygpath $@)
-  # export in win
-  powershell -command "$(cygpath -w $BH_PS1_DIR/path_add.ps1)" \'$dir\'
-  # export in bash (it will reolad from win in new shell)
-  if [[ ":$PATH:" != *":$dircyg:"* ]]; then export PATH=${PATH}:$dircyg; fi
-}
-
 function win_msys2_use_same_home() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/msys2_use_same_home.ps1)\'; }
+function win_install_wsl() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/install_wsl.ps1)\'; }
+function win_wsl_use_same_home() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/wsl_use_same_home.ps1)\'; }
+
+# ---------------------------------------
+# sanity (ps1 scripts)
+# ---------------------------------------
+
 function win_sanity_ctx_menu() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ctx_menu.ps1)\'; }
 function win_sanity_password_policy() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_password_policy.ps1)\'; }
 function win_sanity_services() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_services.ps1)\'; }
 function win_sanity_this_pc() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_this_pc.ps1)\'; }
 function win_sanity_ui() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ui.ps1)\'; }
-function win_wsl_use_same_home() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/wsl_use_same_home.ps1)\'; }
