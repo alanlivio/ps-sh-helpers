@@ -1,10 +1,10 @@
-function python_install() {
+function pip_install() {
   for i in "$@"; do
     pip show $i >/dev/null || pip install $i
   done
 }
 
-function python_upgrade_outdated() {
+function pip_upgrade_outdated() {
   local outdated=$(pip list --outdated --format=freeze --disable-pip-version-check 2>/dev/null | grep -v '^\-e' | cut -d = -f 1)
   if test "$outdated"; then
     pip install --upgrade pip 2>/dev/null

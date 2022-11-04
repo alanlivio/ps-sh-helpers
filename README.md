@@ -87,8 +87,8 @@ others installers:
 
 ### python helpers
 
-* `python_upgrade`: upgrade all packages.
-* `python_install`: install packages if not installed.
+* `pip_install`: install packages if not installed.
+* `pip_upgrade_outdated`: upgrade outdated packages.
 * `venv_create`: create a venv.
 * `venv_activate_install`: load a venv.
 * `python_setup_install_user`: install from a pkg folder with setup.py.
