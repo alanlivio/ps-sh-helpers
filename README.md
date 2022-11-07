@@ -91,7 +91,7 @@ others installers:
 * `pip_upgrade_outdated`: upgrade outdated packages.
 * `venv_create`: create a venv.
 * `venv_activate_install`: load a venv.
-* `python_setup_install_user`: install from a pkg folder with setup.py.
+* `python_setup_install`: install from a pkg folder with setup.py.
 * `python_setup_upload_testpypi`: upload to testpypi from a pkg folder with setup.py.
 * `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py.
 

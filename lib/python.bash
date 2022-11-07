@@ -25,8 +25,8 @@ function venv_activate_install() {
   if test requirements.txt; then pip install -r requirements.txt; fi
 }
 
-function python_setup_install_user() {
-  python setup.py install --user
+function python_setup_install() {
+  python setup.py install
 }
 
 function python_setup_upload_testpypi() {
