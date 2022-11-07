@@ -26,11 +26,11 @@ The next helpers use using BH_* variables from `~/.bashrc`. Please see an exampl
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.
-* `pkgs_install` (at GitBash): install pkgs from BH_WIN_GET and BH_WIN_PY.
-* `pkgs_install` (at mac bash): install pkgs from BH_MAC_BREW and BH_MAC_PY.
-* `pkgs_install` (at msys bash): install pkgs from BH_MSYS_PAC and BH_MSYS_PY.
-* `pkgs_install` (at ubuntu bash): install pkgs from BH_UBU_APT and BH_UBU_PY.
-* `pkgs_install` (at WSL bash): install pkgs from BH_WSL_APT and BH_WSL_PY.
+* `pkgs_install` (at GitBash): install pkgs from BH_WIN_GET and BH_WIN_PIP.
+* `pkgs_install` (at mac bash): install pkgs from BH_MAC_BREW and BH_MAC_PIP.
+* `pkgs_install` (at msys bash): install pkgs from BH_MSYS_PAC and BH_MSYS_PIP.
+* `pkgs_install` (at ubuntu bash): install pkgs from BH_UBU_APT and BH_UBU_PIP.
+* `pkgs_install` (at WSL bash): install pkgs from BH_WSL_APT and BH_WSL_PIP.
 
 ### decompress/dir/user helpers
 
