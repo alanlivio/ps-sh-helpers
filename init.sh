@@ -3,7 +3,6 @@
 function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
 function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
 function test_and_create_dir() { if ! test -d "$1"; then mkdir -p $1; fi; }
-alias bashrc_reload='source $HOME/.bashrc'
 BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
 if [ -z "${BH_BIN}" ]; then BH_BIN="$HOME/bin"; fi
 
@@ -44,6 +43,15 @@ if type tesseract &>/dev/null; then source "$BH_DIR/lib/tesseract.bash"; fi
 if type wget &>/dev/null; then source "$BH_DIR/lib/wget.bash"; fi
 if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/youtube-dl.bash"; fi
 if type zip &>/dev/null; then source "$BH_DIR/lib/zip.bash"; fi
+
+# ---------------------------------------
+# bashrc
+# ---------------------------------------
+alias bashrc_reload='source $HOME/.bashrc'
+
+function bashrc_setup_prompt() {
+  echo 'export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n$ "' >>$HOME/.bashrc
+}
 
 # ---------------------------------------
 # home/dotfiles/pkgs helpers
