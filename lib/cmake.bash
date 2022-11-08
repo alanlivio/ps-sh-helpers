@@ -5,11 +5,8 @@ CMAKE_ARGS_CONFIG="
   -DSTATIC_LINKING=OFF 
   -DBUILD_SHARED_LIBS=ON 
   "
-function cmake_args_default() {
-  echo $CMAKE_ARGS_CONFIG
-}
 
-function cmake_configure() {
+function cmake_configure_debug() {
   if test -e CMakeLists.txt; then
     cmake -B $CMAKE_DIR -G Ninja $CMAKE_ARGS_CONFIG -DCMAKE_BUILD_TYPE=Debug $@
   else
