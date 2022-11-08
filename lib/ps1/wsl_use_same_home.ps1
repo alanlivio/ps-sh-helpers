@@ -21,7 +21,6 @@ if ((wsl echo '$HOME').Contains("Users")) {
     return
 }
 
-
 log_msg "fix file metadata"
 # https://docs.microsoft.com/en-us/windows/wsl/wsl-config
 # https://github.com/Microsoft/WSL/issues/3138
