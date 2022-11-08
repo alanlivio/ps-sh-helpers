@@ -31,7 +31,7 @@ if (!(Get-Command 'wsl.exe' -ea 0)) {
   }
   log_msg "Windows features for WSL not enabled, enabling..."
   gsudo dism.exe /online /quiet /enable-feature /featurename:$featurename /all/norestart Microsoft-Windows-Subsystem-Linux
-  log_msg "restart windows and run win_install_wsl again"
+  log_msg "restart windows and run wsl_install again"
   return
 }
 

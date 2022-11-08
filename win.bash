@@ -101,6 +101,29 @@ function winget_install() {
 }
 
 # ---------------------------------------
+# win sanity (ps1 scripts)
+# ---------------------------------------
+
+function win_sanity_ctx_menu() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ctx_menu.ps1)\'; }
+function win_sanity_password_policy() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_password_policy.ps1)\'; }
+function win_sanity_services() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_services.ps1)\'; }
+function win_sanity_this_pc() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_this_pc.ps1)\'; }
+function win_sanity_ui() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ui.ps1)\'; }
+
+# ---------------------------------------
+# msys2 (ps1 scripts)
+# ---------------------------------------
+
+function msys2_install() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/msys2_install.ps1)\'; }
+function msys2_use_same_home() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/msys2_use_same_home.ps1)\'; }
+
+# ---------------------------------------
+# wsl (ps1 scripts)
+# ---------------------------------------
+function wsl_install() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/wsl_install.ps1)\'; }
+function win_wsl_use_same_home() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/wsl_use_same_home.ps1)\'; }
+
+# ---------------------------------------
 # install
 # ---------------------------------------
 
@@ -182,22 +205,3 @@ function win_install_flutter()  {
     log_msg "$flutter_sdk_dir exist. skipping."
   fi
 }
-
-# ---------------------------------------
-# install wsl/msys2 (ps1 scripts)
-# ---------------------------------------
-
-function win_install_msys2() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/install_msys2.ps1)\'; }
-function win_msys2_use_same_home() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/msys2_use_same_home.ps1)\'; }
-function win_install_wsl() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/install_wsl.ps1)\'; }
-function win_wsl_use_same_home() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/wsl_use_same_home.ps1)\'; }
-
-# ---------------------------------------
-# sanity (ps1 scripts)
-# ---------------------------------------
-
-function win_sanity_ctx_menu() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ctx_menu.ps1)\'; }
-function win_sanity_password_policy() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_password_policy.ps1)\'; }
-function win_sanity_services() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_services.ps1)\'; }
-function win_sanity_this_pc() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_this_pc.ps1)\'; }
-function win_sanity_ui() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ui.ps1)\'; }

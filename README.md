@@ -28,7 +28,7 @@ The next helpers use using BH_* variables from `~/.bashrc`. Please see an exampl
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.
 * `pkgs_install` (at GitBash): install pkgs from BH_WIN_GET and BH_WIN_PIP.
 * `pkgs_install` (at mac bash): install pkgs from BH_MAC_BREW and BH_MAC_PIP.
-* `pkgs_install` (at msys bash): install pkgs from BH_MSYS_PAC and BH_MSYS_PIP.
+* `pkgs_install` (at msys bash): install pkgs from BH_MSYS2_PAC and BH_MSYS2_PIP.
 * `pkgs_install` (at ubuntu bash): install pkgs from BH_UBU_APT and BH_UBU_PIP.
 * `pkgs_install` (at WSL bash): install pkgs from BH_WSL_APT and BH_WSL_PIP.
 
@@ -68,15 +68,15 @@ sanity:
 * `win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons). It is a wrapper to [sanity_ui.ps1](lib/ps1/sanity_ui.ps1).
 * `win_sys_upgrade`: update win.
 
-install WSL:
-* `win_install_wsl` (at windows GitBash): to install WSL/Ubuntu automating the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password. It is a wrapper to [install_wsl.ps1](lib/ps1/install_wsl.ps1).
+WSL:
+* `wsl_install` (at windows GitBash): to install WSL/Ubuntu automating the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password. It is a wrapper to [wsl_install.ps1](lib/ps1/wsl_install.ps1).
 * `win_wsl_use_same_home`: make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/sanity_ui.ps1).
 
-install MSYS2:
-* `win_install_msys` (at windows GitBash): to install [MSYS2](https://www.msys2.org/) useful to build GNU-based win32 applications. It is a wrapper to [install_msys.ps1](lib/ps1/install_msys.ps1).
-* `win_msys_use_same_home`: make MSYS2 uses win home. It is a wrapper to [msys_use_same_home.ps1](lib/ps1/msys_use_same_home.ps1).
+MSYS2:
+* `msys2_win_install` (at windows GitBash): to install [MSYS2](https://www.msys2.org/) useful to build GNU-based win32 applications. It is a wrapper to [msys2_install.ps1](lib/ps1/msys2_install.ps1).
+* `msys2_use_same_home`: make MSYS2 uses win home. It is a wrapper to [msys2_use_same_home.ps1](lib/ps1/msys2_use_same_home.ps1).
 
-others installers:
+others:
 
 * `win_install_make`: winget install [gnumake](https://github.com/microsoft/winget-pkgs/tree/master/manifests/g/GnuWin32/Make) and add it to PATH.
 * `win_install_miktex`: winget install [miktex](https://github.com/microsoft/winget-pkgs/tree/master/manifests/c/ChristianSchenk/MiKTeX) and add it to PATH.
