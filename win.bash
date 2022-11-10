@@ -69,6 +69,10 @@ function win_path_add() { # using ps1 script
 # winget
 # ---------------------------------------
 
+function winget_show_with_versions() {
+  winget show --versions $1
+}
+
 function winget_upgrade_all() {
   winget upgrade --all --silent
 }
