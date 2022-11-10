@@ -15,8 +15,8 @@ if (!(Get-Command 'gsudo.exe' -ea 0)) {
 
 $MSYS_HOME = "C:\msys64"
 if (-not (Test-Path $MSYS_HOME)) {
-  gsudo winget install --scope=machine msys2.msys2
+  gsudo winget install msys2.msys2
 }
-else{
+else {
   log_msg "$MSYS_HOME already exist"
 }

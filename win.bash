@@ -5,27 +5,6 @@ alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I IntelGraphicsPro
 alias winget='winget.exe'
 alias powershell='powershell.exe'
 BH_PS1_DIR="$BH_DIR/lib/ps1/"
-# ---------------------------------------
-# msys2
-# ---------------------------------------
-
-# pacman
-alias msys2_search='pacman -Ss --noconfirm'
-alias msys2_show='pacman -Qi'
-alias msys2_list_installed='pacman -Qqe'
-alias msys2_install='pacman -Su --needed --noconfirm'
-alias msys2_install_force='pacman -Syu --noconfirm'
-alias msys2_uninstall='pacman -R --noconfirm'
-
-function msys2_same_home() {
-  if ! test -d /mnt/; then mkdir /mnt/; fi
-  echo -e "none / cygdrive binary,posix=0,noacl,user 0 0" | tee /etc/fstab
-  echo -e "C:/Users /home ntfs binary,noacl,auto 1 1" | tee -a /etc/fstab
-  echo -e "C:/Users /Users ntfs binary,noacl,auto 1 1" | tee -a /etc/fstab
-  # use /mnt/c/ like in WSL
-  echo -e "/c /mnt/c none bind" | tee -a /etc/fstab
-  echo -e 'db_home: windows >> /etc/nsswitch.conf' | tee -a /etc/nsswitch.conf
-}
 
 # ---------------------------------------
 # explorer
@@ -101,7 +80,7 @@ function winget_install() {
 }
 
 # ---------------------------------------
-# win sanity (ps1 scripts)
+# win sanity
 # ---------------------------------------
 
 function win_sanity_ctx_menu() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ctx_menu.ps1)\'; }
@@ -111,17 +90,29 @@ function win_sanity_this_pc() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sani
 function win_sanity_ui() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ui.ps1)\'; }
 
 # ---------------------------------------
-# msys2 (ps1 scripts)
+# msys2
 # ---------------------------------------
 
-function msys2_install() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/msys2_install.ps1)\'; }
+# ---------------------------------------
+# msys2
+# ---------------------------------------
+
+alias msys2_search='pacman -Ss --noconfirm'
+alias msys2_show='pacman -Qi'
+alias msys2_list_installed='pacman -Qqe'
+alias msys2_install='pacman -Su --needed --noconfirm'
+alias msys2_install_force='pacman -Syu --noconfirm'
+alias msys2_uninstall='pacman -R --noconfirm'
 function msys2_use_same_home() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/msys2_use_same_home.ps1)\'; }
 
+function win_install_msys2() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/msys2_install.ps1)\'; }
+
 # ---------------------------------------
-# wsl (ps1 scripts)
+# wsl
 # ---------------------------------------
-function wsl_install() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/wsl_install.ps1)\'; }
-function win_wsl_use_same_home() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/wsl_use_same_home.ps1)\'; }
+function wsl_use_same_home() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/wsl_use_same_home.ps1)\'; }
+
+function win_install_wsl() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/wsl_install.ps1)\'; }
 
 # ---------------------------------------
 # install
