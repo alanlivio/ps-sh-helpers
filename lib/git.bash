@@ -1,10 +1,6 @@
-function git_speedup(){
-  # https://github.com/Vigorpush/git-speedup/blob/master/gitspeedup.sh  
-  # git repack -a -d --depth=250 --window=250 
-  git config --global core.preloadindex true
-  git config --global core.fscache true
-  git config --global gc.auto 256
-  git config --global core.ignoreStat true
+function git_github_fix() {
+  echo -e "Host github.com\\n  Hostname ssh.github.com\\n  Port 443" | tee $HOME/.ssh/config
+  ssh -T git@github.com
 }
 
 function git_count_commits() {
@@ -261,7 +257,6 @@ function git_filter_repo_save_origin() {
     BH_FILTER_REPO_LAST_ORIGIN=$(git remote get-url origin)
   fi
 }
-
 
 function git_filter_repo_messages_to_lower_case() {
   git_filter_repo_save_origin
