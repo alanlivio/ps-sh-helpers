@@ -72,10 +72,6 @@ WSL:
 * `win_install_wsl` (at windows GitBash): to install WSL/Ubuntu automating the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password. It is a wrapper to [wsl_install.ps1](lib/ps1/wsl_install.ps1).
 * `wsl_use_same_home`: make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/wsl_use_same_home.ps1).
 
-MSYS2:
-* `win_install_msys2` (at windows GitBash): to install [MSYS2](https://www.msys2.org/) useful to build GNU-based win32 applications. It is a wrapper to [msys2_install.ps1](lib/ps1/msys2_install.ps1).
-* `msys2_use_same_home`: make MSYS2 uses win home. It is a wrapper to [msys2_use_same_home.ps1](lib/ps1/msys2_use_same_home.ps1).
-
 others:
 
 * `win_install_make`: winget install [gnumake](https://github.com/microsoft/winget-pkgs/tree/master/manifests/g/GnuWin32/Make) and add it to PATH.
