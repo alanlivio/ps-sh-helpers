@@ -1,6 +1,7 @@
 function git_github_fix() {
   echo -e "Host github.com\\n  Hostname ssh.github.com\\n  Port 443" | tee $HOME/.ssh/config
   ssh -T git@github.com
+  ssh-keyscan -t rsa github.com >>~/.ssh/known_hosts
 }
 
 function git_count_commits() {
