@@ -6,17 +6,17 @@ alias winget='winget.exe'
 alias powershell='powershell.exe'
 BH_PS1_DIR="$BH_DIR/lib/ps1/"
 
-# ---------------------------------------
-# explorer
-# ---------------------------------------
+# ########################
+# hide_home
+# ########################
+function win_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'; }
+
+# ########################
+# explorer open
+# ########################
 function explorer() { explorer.exe $(cygpath -w $1); }
-
 function explorer_restart() { powershell.exe "Stop-Process -ProcessName explorer -ea 0 | Out-Null"; }
-
-function explorer_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'; }
-
 function explorer_open_startup() { powershell -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs\Startup'; }
-
 function explorer_open_recycle_bin() { powershell -c 'explorer shell:RecycleBinFolder'; }
 
 # ---------------------------------------

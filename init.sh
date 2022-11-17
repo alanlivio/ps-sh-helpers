@@ -83,21 +83,26 @@ alias dotfiles_backup="dotfiles_func backup"
 alias dotfiles_diff="dotfiles_func diff"
 
 function home_cleanup() {
-  if [ -z $BH_HOME_CLEAN_UNUSED ]; then
-    log_error "\$BH_HOME_CLEAN_UNUSED is not defined"
-    return
-  fi
-    for i in "${BH_HOME_CLEAN_UNUSED[@]}"; do
+  if [ -n "$BH_HOME_RM_UNUSED" ]; then
+    for i in "${BH_HOME_RM_UNUSED[@]}"; do
       if test -d "$HOME/$i"; then
         rm -rf "$HOME/${i:?}" >/dev/null
     elif test -e "$HOME/$i"; then
         rm -f "$HOME/${i:?}" >/dev/null
     fi
   done
-  case $OSTYPE in
-  msys*) # gitbas/msys
-    explorer_hide_home_dotfiles ;;
-  esac
+  fi
+  if [[ $OSTYPE == "msys"* ]]; then
+    win_hide_home_dotfiles
+    if [ -n "$BH_HOME_WIN_HIDE_UNUSED" ]; then 
+      local list=$(printf '"%s"' "${BH_HOME_WIN_HIDE_UNUSED[@]}"| sed 's/""/","/g')
+      powershell -c '
+        $list =' "$list" ' 
+        $nodes = Get-ChildItem ${env:userprofile} | Where-Object {$_.name -In $list}
+        $nodes | ForEach-Object { $_.Attributes += "Hidden" }
+      '
+    fi
+  fi
 }
 
 function pkgs_install() {

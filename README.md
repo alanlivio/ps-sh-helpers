@@ -22,7 +22,7 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 The next helpers use using BH_* variables from `~/.bashrc`. Please see an example at [skel/.bashrc](skel/.bashrc).
 
-* `home_cleanup`: remove home files/dirs from BH_HOME_CLEAN_UNUSED and, at win, hide dotfiles at home.
+* `home_cleanup`: remove home files/dirs from BH_HOME_CLEAN_UNUSED. At win, hide dotfiles and from BH_HOME_WIN_HIDE_UNUSED at home.
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.

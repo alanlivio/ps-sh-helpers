@@ -1,13 +1,12 @@
 source $HOME/.bh/init.sh
 
-# pkgs_install() clean folder
-BH_HOME_CLEAN_UNUSED=('Images' 'Movies' 'Public' 'Templates' 'Tracing' 'Videos' 'Pictures' '.cache')
+# home_clean
 case $OSTYPE in
 msys*)
-  BH_HOME_CLEAN_UNUSED+=('Application Data' 'Cookies' 'Local Settings' 'Start Menu' '3D Objects' 'Contacts' 'Favorites' 'Links' 'MicrosoftEdgeBackups' 'My Documents' 'NetHood' 'PrintHood' 'Recent' 'Saved Games' 'Searches' 'SendTo')
+  BH_HOME_WIN_HIDE_UNUSED=('Cookies' 'Picutres' '3D Objects' 'Contacts' 'Favorites' 'Links' 'MicrosoftEdgeBackups' 'NetHood' 'PrintHood' 'Recent' 'Saved Games' 'Searches' 'SendTo' 'ansel' 'Intel' 'IntelGraphicsProfiles' 'MicrosoftEdgeBackups')
   ;;
 linux*)
-  BH_HOME_CLEAN_UNUSED+=('Documents') # sensible data in Windows
+  BH_HOME_RM_UNUSED=('Videos' 'Pictures' 'Documents')
   ;;
 esac
 
@@ -26,6 +25,6 @@ BH_WSL_PY="autopep8 "
 # pkgs_install() at msys
 BH_MSYS_PAC="python "
 BH_MSYS_PY="autopep8 "
-# dotfiles_backp()
+# dotfiles_backup()
 BH_DOTFILES_BKP_DIR="$HOME/Backup/dotfiles"
 BH_DOTFILES="$HOME/.bashrc $BH_DOTFILES_BKP_DIR/.bashrc "
