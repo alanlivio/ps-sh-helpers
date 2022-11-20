@@ -5,6 +5,7 @@ function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
 function test_and_create_dir() { if ! test -d "$1"; then mkdir -p $1; fi; }
 BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
 if [ -z "${BH_BIN}" ]; then BH_BIN="$HOME/bin"; fi
+alias return_1_if_last_command_fail='if [ $? != 0 ]; then return 1; fi'
 
 # ########################
 # load .bash files
@@ -175,27 +176,23 @@ function decompress() {
     ret=$(tar -xJf $1 -C $dest)
     ;;
   *)
-    log_error "$EXT is not supported compress." && return
-    return
+    log_error "$EXT is not supported compress."; return 1
     ;;
   esac
   if [ $? != 0 ] || ! [ -f $file_name ]; then
-    log_error "decompress $1 failed "
-    return
+    log_error "decompress $1 failed "; return 1
   fi
 }
 
 function decompress_from_url() {
   : ${2?"Usage: ${FUNCNAME[0]} <URL> <dir>"}
   local file_name="/tmp/$(basename $1)"
-  if test ! -f $file_name; then
+  if test ! -s $file_name; then
+    log_msg "fetching $1 to /tmp/"
     curl -O $1 --create-dirs --output-dir /tmp/
   fi
-  if [ $? != 0 ] || ! [ -f $file_name ]; then
-    log_error "fetching $1 failed "
-    return
-  fi
-  log_msg "extracting $(basename $1) to $2"
+  return_1_if_last_command_fail
+  log_msg "extracting $file_name to $2"
   decompress $file_name $2
 }
 
