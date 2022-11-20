@@ -189,7 +189,7 @@ function decompress_from_url() {
   local file_name="/tmp/$(basename $1)"
   if test ! -s $file_name; then
     log_msg "fetching $1 to /tmp/"
-    curl -O $1 --create-dirs --output-dir /tmp/
+    curl -LJ $1 --create-dirs --output $file_name
   fi
   return_1_if_last_command_fail
   log_msg "extracting $file_name to $2"
