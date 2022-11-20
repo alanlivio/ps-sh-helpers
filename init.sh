@@ -196,6 +196,16 @@ function decompress_from_url() {
   decompress $file_name $2
 }
 
+function decompress_from_url_one_file_and_move_to_bin(){
+  : ${2?"Usage: ${FUNCNAME[0]} <URL> <bin_file_to_be_installed>]"}
+  decompress_from_url $1 /tmp/
+  return_1_if_last_command_fail
+  local dir_name="/tmp/$(basename $1)" # XXX.zip
+  dir_name="${dir_name%.*}" # XXX
+  log_msg "coping $dir_name/$2 to $BH_BIN"
+  cp $dir_name/$2 $BH_BIN
+}
+
 function user_sudo_nopasswd() {
   if ! test -d /etc/sudoers.d/; then test_and_create_dir /etc/sudoers.d/; fi
   SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
