@@ -52,6 +52,10 @@ $pkgs = @(
 log_msg_2nd "uninstall startmenu unused apps "
 appx_uninstall @pkgs
 
+New-PSDrive -Name HKLM -PSProvider Registry -Root HKEY_LOCAL_MACHINE -ea 0 | Out-Null 
+New-PSDrive -Name HKCU -PSProvider Registry -Root HKEY_CURRENT_USER  -ea 0 | Out-Null
+New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT   -ea 0 | Out-Null
+
 log_msg_2nd "disable taskbar search button"
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name SearchboxTaskbarMode -Value 0
 log_msg_2nd "disable taskbar button"
@@ -97,6 +101,7 @@ Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer
 log_msg "sanity_keyboard"
 
 log_msg_2nd "disable Accessibility Keys Prompts"
+
 New-Item -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Force | Out-Null
 Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Name 'Flags' -Type String -Value '506'
 New-Item -Path "HKCU:\Control Panel\Accessibility\ToggleKeys" -Force | Out-Null

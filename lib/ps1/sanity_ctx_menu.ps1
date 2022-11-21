@@ -7,9 +7,10 @@ function explorer_restart() {
 }
 
 log_msg "disable_ctx_menu_unused"
-if (!(Test-Path "HKCR:")) { 
-  New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null 
-}
+New-PSDrive -Name HKLM -PSProvider Registry -Root HKEY_LOCAL_MACHINE -ea 0 | Out-Null 
+New-PSDrive -Name HKCU -PSProvider Registry -Root HKEY_CURRENT_USER  -ea 0 | Out-Null
+New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT   -ea 0 | Out-Null
+
 $regs = @(
   # git
   "HKCR:\Directory\shell\git_gui"

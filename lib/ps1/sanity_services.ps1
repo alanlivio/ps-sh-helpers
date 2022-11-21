@@ -19,6 +19,9 @@ function feature_disable($featurename) {
 }
 
 log_msg "sanity_services"
+New-PSDrive -Name HKLM -PSProvider Registry -Root HKEY_LOCAL_MACHINE -ea 0 | Out-Null 
+New-PSDrive -Name HKCU -PSProvider Registry -Root HKEY_CURRENT_USER  -ea 0 | Out-Null
+New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT   -ea 0 | Out-Null
 
 log_msg_2nd "disabling Lockscreen "
 reg_new_path "HKLM:\Software\Policies\Microsoft\Windows\Personalization"
