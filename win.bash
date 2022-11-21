@@ -31,6 +31,21 @@ function win_upgrade() {
 }
 
 #########################
+# regedit
+#########################
+
+function regedit_open_path() {
+  powershell -c "
+    reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit\ /v Lastkey /d 'Computer\\$1' /t REG_SZ /f
+    regedit.exe
+  "
+}
+
+function regedit_open_shell_folders(){
+  regedit_open_path 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders'
+}
+
+#########################
 # env
 #########################
 
