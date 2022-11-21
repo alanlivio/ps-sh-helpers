@@ -1,27 +1,27 @@
-# ########################
+#########################
 # essentials aliases
-# ########################
+#########################
 alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
 alias winget='winget.exe'
 alias powershell='powershell.exe'
 BH_PS1_DIR="$BH_DIR/lib/ps1/"
 
-# ########################
+#########################
 # hide_home
-# ########################
+#########################
 function win_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'; }
 
-# ########################
+#########################
 # explorer open
-# ########################
+#########################
 function explorer() { explorer.exe $(cygpath -w $1); }
 function explorer_restart() { powershell.exe "Stop-Process -ProcessName explorer -ea 0 | Out-Null"; }
 function explorer_open_startup() { powershell -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs\Startup'; }
 function explorer_open_recycle_bin() { powershell -c 'explorer shell:RecycleBinFolder'; }
 
-# ########################
+#########################
 # win upgrade
-# ########################
+#########################
 
 function win_upgrade() {
   gsudo powershell -c '
@@ -30,9 +30,9 @@ function win_upgrade() {
   '
 }
 
-# ########################
+#########################
 # env
-# ########################
+#########################
 
 function win_env_show() {
   powershell -c '[System.Environment]::GetEnvironmentVariables()'
@@ -43,9 +43,9 @@ function win_env_add() {
   powershell -c "[System.Environment]::SetEnvironmentVariable('$1', '$2', 'user')"
 }
 
-# ########################
+#########################
 # path add
-# ########################
+#########################
 
 function win_path_show() {
   powershell -c '(Get-ChildItem Env:Path).Value'
@@ -65,9 +65,9 @@ function win_path_add() { # using ps1 script
   if [[ ":$PATH:" != *":$dircyg:"* ]]; then export PATH=${PATH}:$dircyg; fi
 }
 
-# ########################
+#########################
 # winget
-# ########################
+#########################
 
 function winget_show_with_versions() {
   winget show --versions $1
@@ -83,9 +83,9 @@ function winget_install() {
   done
 }
 
-# ########################
+#########################
 # win sanity
-# ########################
+#########################
 
 function win_sanity_ctx_menu() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ctx_menu.ps1)\'; }
 function win_sanity_password_policy() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_password_policy.ps1)\'; }
@@ -93,9 +93,9 @@ function win_sanity_services() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/san
 function win_sanity_this_pc() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_this_pc.ps1)\'; }
 function win_sanity_ui() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ui.ps1)\'; }
 
-# ########################
+#########################
 # msys2
-# ########################
+#########################
 
 alias msys2_search='pacman -Ss --noconfirm'
 alias msys2_show='pacman -Qi'
@@ -108,16 +108,16 @@ alias msys2_uninstall='pacman -R --noconfirm'
     echo db_home: windows >>/etc/nsswitch.conf
 }
 
-# ########################
+#########################
 # wsl
-# ########################
+#########################
 function wsl_use_same_home() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/wsl_use_same_home.ps1)\'; }
 
 function win_install_wsl() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/wsl_install.ps1)\'; }
 
-# ########################
+#########################
 # install
-# ########################
+#########################
 
 function win_install_ssh_client() {
   gsudo powershell -c '

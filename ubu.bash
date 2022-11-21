@@ -1,6 +1,6 @@
-# ########################
+#########################
 # apt
-# ########################
+#########################
 
 alias apt_upgrade="sudo apt -y update; sudo apt -y upgrade"
 alias apt_update="sudo apt -y update"
@@ -32,18 +32,18 @@ function deb_install_url() {
   sudo dpkg -i /tmp/$deb_name
 }
 
-# ########################
+#########################
 # snap
-# ########################
+#########################
 
 alias snap_install="snap install "
 alias snap_install_classic="snap install --classic"
 alias snap_install_edge="snap install --edge"
 alias snap_list="snap list"
 
-# ########################
+#########################
 # gnome settings
-# ########################
+#########################
 
 if type gsettings &>/dev/null; then
 
