@@ -88,15 +88,15 @@ function home_cleanup() {
     for i in "${BH_HOME_RM_UNUSED[@]}"; do
       if test -d "$HOME/$i"; then
         rm -rf "$HOME/${i:?}" >/dev/null
-    elif test -e "$HOME/$i"; then
+      elif test -e "$HOME/$i"; then
         rm -f "$HOME/${i:?}" >/dev/null
-    fi
-  done
+      fi
+    done
   fi
   if [[ $OSTYPE == "msys"* ]]; then
     win_hide_home_dotfiles
-    if [ -n "$BH_HOME_WIN_HIDE_UNUSED" ]; then 
-      local list=$(printf '"%s"' "${BH_HOME_WIN_HIDE_UNUSED[@]}"| sed 's/""/","/g')
+    if [ -n "$BH_HOME_WIN_HIDE_UNUSED" ]; then
+      local list=$(printf '"%s"' "${BH_HOME_WIN_HIDE_UNUSED[@]}" | sed 's/""/","/g')
       powershell -c '
         $list =' "$list" ' 
         $nodes = Get-ChildItem ${env:userprofile} | Where-Object {$_.name -In $list}
@@ -109,38 +109,34 @@ function home_cleanup() {
 function pkgs_install() {
   case $OSTYPE in
   linux*)
-    local pkgs="git vim diffutils curl python3 python3-pip "
     if [[ $(uname -r) == *"WSL"* ]]; then # wsl
       log_msg "apt_install BH_WSL_APT=$BH_WSL_APT"
-      apt_install $pkgs $BH_WSL_APT
+      apt_install $min_pkgs $BH_WSL_APT
       log_msg "pip_install BH_WSL_PIP=$BH_WSL_PIP"
       pip_install $BH_WSL_PIP
     elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then #ubu
-      log_msg "install BH_UB pkgs"
-      apt_install $pkgs $BH_UBU_APT
+      log_msg "apt_install BH_UBU_APT=$BH_UBU_APT"
+      apt_install $min_pkgs $BH_UBU_APT
+      log_msg "pip_install BH_WIN_PIP=$BH_WIN_PIP"
       pip_install $BH_UBU_PIP
     fi
     ;;
   msys*)
     if test -e /etc/profile.d/git-prompt.sh; then # gitbash
-      # log_msg "winget_install BH_WIN_GET=$BH_WIN_GET"
-      # winget_install $pkgs $BH_WIN_GET
+      log_msg "winget_install BH_WIN_GET=$BH_WIN_GET"
+      winget_install $BH_WIN_GET
       log_msg "pip_install BH_WIN_PIP=$BH_WIN_PIP"
       pip_install $BH_WIN_PIP
     else  # msys
-      log_msg "install BH_MSYS pkgs"
-      local pkgs="bash pacman pacman-mirrors msys2-runtime vim diffutils curl "
       log_msg "msys2_install BH_MSYS_PAC=$BH_MSYS_PAC"
-      msys2_install $pkgs $BH_MSYS_PAC
+      msys2_install $BH_MSYS_PAC
       log_msg "pip_install BH_MSYS_PIP=$BH_MSYS_PIP"
       pip_install $BH_MSYS_PIP
     fi
     ;;
   darwin*) # mac
-      log_msg "install BH_MAC pkgs"
-      local pkgs="git bash vim diffutils curl "
       log_msg "brew_install BH_MAC_BREW=$BH_MAC_BREW"
-      brew install $pkgs $BH_MAC_BREW
+      brew install $BH_MAC_BREW
       log_msg "pip_install BH_MAC_PIP=$BH_MAC_PIP"
       pip_install $BH_MAC_PIP
     ;;
@@ -176,11 +172,13 @@ function decompress() {
     ret=$(tar -xJf $1 -C $dest)
     ;;
   *)
-    log_error "$EXT is not supported compress."; return 1
+    log_error "$EXT is not supported compress."
+                                                 return 1
     ;;
   esac
   if [ $? != 0 ] || ! [ -f $file_name ]; then
-    log_error "decompress $1 failed "; return 1
+    log_error "decompress $1 failed "
+                                       return 1
   fi
 }
 
@@ -196,7 +194,7 @@ function decompress_from_url() {
   decompress $file_name $2
 }
 
-function decompress_from_url_one_file_and_move_to_bin(){
+function decompress_from_url_one_file_and_move_to_bin() {
   : ${2?"Usage: ${FUNCNAME[0]} <URL> <bin_file_to_be_installed>]"}
   decompress_from_url $1 /tmp/
   return_1_if_last_command_fail
