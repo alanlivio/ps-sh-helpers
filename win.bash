@@ -112,16 +112,14 @@ function win_sanity_ui() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ui
 # msys2
 #########################
 
-alias msys2_search='pacman -Ss --noconfirm'
+alias msys2_search='pacman -s --noconfirm'
 alias msys2_show='pacman -Qi'
 alias msys2_list_installed='pacman -Qqe'
-alias msys2_install='pacman -Su --needed --noconfirm'
-alias msys2_install_force='pacman -Syu --noconfirm'
+alias msys2_install='pacman -S --noconfirm'
 alias msys2_uninstall='pacman -R --noconfirm'
 
-  function msys2_use_same_home() {
-    echo db_home: windows >>/etc/nsswitch.conf
-}
+function win_install_msys2() {  winget_install msys2.msys2; }
+function msys2_use_same_home() {  echo db_home: windows >>/etc/nsswitch.conf; }
 
 #########################
 # wsl
