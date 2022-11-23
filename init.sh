@@ -55,7 +55,7 @@ function bashrc_setup_prompt() {
 }
 
 #########################
-# home/dotfiles/pkgs helpers
+# home
 #########################
 
 function dotfiles_func() {
@@ -83,6 +83,10 @@ alias dotfiles_install="dotfiles_func install"
 alias dotfiles_backup="dotfiles_func backup"
 alias dotfiles_diff="dotfiles_func diff"
 
+#########################
+# dotfiles
+#########################
+
 function home_cleanup() {
   if [ -n "$BH_HOME_RM_UNUSED" ]; then
     for i in "${BH_HOME_RM_UNUSED[@]}"; do
@@ -105,6 +109,10 @@ function home_cleanup() {
     fi
   fi
 }
+
+#########################
+# pkgs_install
+#########################
 
 function pkgs_install() {
   case $OSTYPE in
@@ -144,7 +152,7 @@ function pkgs_install() {
 }
 
 #########################
-# decompress/dir/use commands
+# decompress
 #########################
 
 function decompress() {
@@ -188,8 +196,8 @@ function decompress_from_url() {
   if test ! -s $file_name; then
     log_msg "fetching $1 to /tmp/"
     curl -LJ $1 --create-dirs --output $file_name
+    return_1_if_last_command_fail
   fi
-  return_1_if_last_command_fail
   log_msg "extracting $file_name to $2"
   decompress $file_name $2
 }
