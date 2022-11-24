@@ -41,7 +41,7 @@ function regedit_open_path() {
   "
 }
 
-function regedit_open_shell_folders(){
+function regedit_open_shell_folders() {
   regedit_open_path 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders'
 }
 
@@ -93,9 +93,18 @@ function winget_upgrade_all() {
 }
 
 function winget_install() {
+  local pkgs_to_install=""
   for i in "$@"; do
-    winget list $i >/dev/null || winget install --accept-package-agreements --accept-source-agreements --silent $pkg
+    if [[ $(winget list --id $i) =~ "No installed"* ]]; then
+      pkgs_to_install="$i $pkgs_to_install"
+    fi
   done
+  if test ! -z "$pkgs_to_install"; then
+    echo "pkgs_to_install=$pkgs_to_install"
+    for pkg in $pkgs_to_install; do
+      winget install --accept-package-agreements --accept-source-agreements --silent $pkg
+    done
+  fi
 }
 
 #########################
