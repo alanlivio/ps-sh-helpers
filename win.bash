@@ -108,12 +108,18 @@ function winget_install() {
 }
 
 #########################
-# win sanity
+# services
+#########################
+
+function services_reset_startup() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/services_reset_startup.ps1)\'; }
+function services_disable_unused() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/services_disable_unused.ps1)\'; }
+
+#########################
+# sanity
 #########################
 
 function win_sanity_ctx_menu() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ctx_menu.ps1)\'; }
 function win_sanity_password_policy() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_password_policy.ps1)\'; }
-function win_sanity_services() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_services.ps1)\'; }
 function win_sanity_this_pc() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_this_pc.ps1)\'; }
 function win_sanity_ui() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ui.ps1)\'; }
 
