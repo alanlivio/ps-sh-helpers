@@ -2,12 +2,12 @@
 
 # bash-helpers
 
-Multi-bash (win msys/gitbash/wsl, ubu, mac,) helpers to easy install packages, setup os (dark mode, clean taskbar/clutter/unused), sync dotfiles, manage git repos, and more. 
+Multi-bash (win msys/gitbash/wsl, ubu, mac,) helpers to easy install packages, setup os (dark mode, clean taskbar/clutter/unused), sync dotfiles, manage git repos, and more.
 The project logo refers to the synthetic chemical element Bohrium, which also has the initials BH.
 
 ## Install
 
-The bash-helpers project has two requirements: a `bash shell` and `git`. Particularly on windows, they can be installed using [GitForWindows](https://gitforwindows.org/) (you may install it running [install_gitbash.ps1](lib/ps1/install_gitbash.ps1) on PowerShell). 
+The bash-helpers project has two requirements: a `bash shell` and `git`. Particularly on windows, they can be installed using [GitForWindows](https://gitforwindows.org/) (you may install it running [install_gitbash.ps1](lib/ps1/install_gitbash.ps1) on PowerShell).
 
 Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 ```bash
@@ -18,11 +18,11 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 ## helpers
 
-### home/dotfiles/pkgs helpers
+### OS-independent
 
-The next helpers use using BH_* variables from `~/.bashrc`. Please see an example at [skel/.bashrc](skel/.bashrc).
+home/dotfiles/pkgs (use BH_ vars from `~/.bashrc`, see an examples at [skel/.bashrc](skel/.bashrc)):
 
-* `home_cleanup`: remove home files/dirs from BH_HOME_CLEAN_UNUSED. At win, hide dotfiles and from BH_HOME_WIN_HIDE_UNUSED at home.
+* `home_cleanup`: remove home files/dirs from BH_HOME_CLEAN_UNUSED. At win, hide dotfiles and BH_HOME_WIN_HIDE_UNUSED at home.
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.
@@ -32,7 +32,7 @@ The next helpers use using BH_* variables from `~/.bashrc`. Please see an exampl
 * `pkgs_install` (at ubuntu bash): install pkgs from BH_UBU_APT and BH_UBU_PIP.
 * `pkgs_install` (at WSL bash): install pkgs from BH_WSL_APT and BH_WSL_PIP.
 
-### decompress/dir/user helpers
+decompress/dir/user:
 
 * `decompress_from_url`: fetch and decompress to a given folder.
 * `decompress`: decompress from multiple formats to a given folder.
@@ -40,7 +40,32 @@ The next helpers use using BH_* variables from `~/.bashrc`. Please see an exampl
 * `dir_sorted_by_size`: list dir sorted by item size.
 * `user_sudo_nopasswd`:  disable password when calling sudo (user must be in sudores).
 
-### win helpers
+python:
+
+* `pip_install`: install packages if not installed.
+* `pip_upgrade_outdated`: upgrade outdated packages.
+* `venv_create`: create a venv.
+* `venv_activate_install`: load a venv.
+* `python_setup_install`: install from a pkg folder with setup.py.
+* `python_setup_upload_testpypi`: upload to testpypi from a pkg folder with setup.py.
+* `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py.
+
+others:
+
+See the .bash files at [lib/](lib) folder for other commands.
+
+### ubu
+
+* `deb_install_url`: fetch and install deb package.
+* `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire).
+
+### mac
+
+* `mac_install_brew`: install brew package managet
+* `mac_brew_install`: install a brew package
+* `mac_brew_upgrade`: upgrade brew packages
+
+### win
 
 env/path:
 * `win_env_add`: add variable to ENV.
@@ -80,25 +105,6 @@ others:
 * `win_install_ssh_client`: install [openssh client](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse?tabs=powershell).
 * `win_install_android_sdkmanager_and_platform_tools`: install android [sdkmanager](https://developer.android.com/studio/command-line/sdkmanager) and [platform tools (adb)] (https://developer.android.com/studio/command-line/adb), and add them to PATH.
 * `win_install_flutter`: install [flutter sdk](https://docs.flutter.dev/get-started/install/windows) and add it to PATH.
-
-### python helpers
-
-* `pip_install`: install packages if not installed.
-* `pip_upgrade_outdated`: upgrade outdated packages.
-* `venv_create`: create a venv.
-* `venv_activate_install`: load a venv.
-* `python_setup_install`: install from a pkg folder with setup.py.
-* `python_setup_upload_testpypi`: upload to testpypi from a pkg folder with setup.py.
-* `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py.
-
-### ubu helpers
-
-* `deb_install_url` (at ubuntu bash): fetch and install deb package.
-* `gnome_sanity` (at ubuntu bash): enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire).
-
-### others helpers
-
-See the full helpers at lib/ folder.
 
 ## References
 
