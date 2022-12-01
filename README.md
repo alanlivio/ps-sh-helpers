@@ -2,12 +2,12 @@
 
 # bash-helpers
 
-Multi-bash (win msys/gitbash/wsl, ubu, mac,) helpers to easy install packages, setup os (dark mode, clean taskbar/clutter/unused), sync dotfiles, manage git repos, and more.
-The project logo refers to the synthetic chemical element Bohrium, which also has the initials BH.
+Multi-bash (win msys/gitbash/wsl, ubu, mac,) helpers to easily install packages, setup os (dark mode, clean taskbar/clutter/unused), sync dotfiles, manage git repos, and more.
+The project logo refers to the synthetic chemical element Bohrium, which also has BH's initials.
 
 ## Install
 
-The bash-helpers project has two requirements: a `bash shell` and `git`. Particularly on windows, they can be installed using [GitForWindows](https://gitforwindows.org/) (you may install it running [install_gitbash.ps1](lib/ps1/install_gitbash.ps1) on PowerShell).
+The bash-helpers project has two requirements: a `bash shell` and `git`. On win, they can be installed using [GitForWindows](https://gitforwindows.org/) (you may install it running [install_gitbash.ps1](lib/ps1/install_gitbash.ps1) on PowerShell).
 
 Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 ```bash
@@ -20,9 +20,9 @@ Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
 
 ### OS-independent
 
-home/dotfiles/pkgs (use BH_ vars from `~/.bashrc`, see an examples at [skel/.bashrc](skel/.bashrc)):
+home/dotfiles/pkgs (use BH_ vars from `~/.bashrc`, see examples at [skel/.bashrc](skel/.bashrc)):
 
-* `home_cleanup`: remove home files/dirs from BH_HOME_CLEAN_UNUSED. At win, hide dotfiles and BH_HOME_WIN_HIDE_UNUSED at home.
+* `home_cleanup`: remove home files/dirs from BH_HOME_CLEAN_UNUSED. On win, hide dotfiles and BH_HOME_WIN_HIDE_UNUSED at home.
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.
@@ -52,16 +52,16 @@ python:
 
 others:
 
-See the .bash files at [lib/](lib) folder for other commands.
+See the .bash files in [lib/](lib) folder for other commands.
 
 ### ubu
 
-* `deb_install_url`: fetch and install deb package.
+* `deb_install_url`: fetch and install a deb package.
 * `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire).
 
 ### mac
 
-* `mac_install_brew`: install brew package managet
+* `mac_install_brew`: install brew package manager
 * `mac_brew_install`: install a brew package
 * `mac_brew_upgrade`: upgrade brew packages
 
@@ -70,7 +70,7 @@ See the .bash files at [lib/](lib) folder for other commands.
 env/path:
 * `win_env_add`: add variable to ENV.
 * `win_env_show`: show ENV.
-* `win_path_show_as_list`: show PATH as list.
+* `win_path_show_as_list`: show PATH as a list.
 * `win_path_show`: show PATH string
 * `win_path_add`: add dir to PATH. It is a wrapper to [path_add.ps1](lib/ps1/path_add.ps1).
 
@@ -83,19 +83,20 @@ explorer:
 * `explorer_hide_home_dotfiles`: hide dotfiles at home folder.
 * `explorer_restart`: restart explorer.
 * `explorer_open_recycle_bin`: explorer open trash folder.
-* `explorer_open_startup`: explorer open user start programs folder.
+* `explorer_open_startup`: explorer open the user start programs folder.
 
 sanity:
 * `win_sanity_ctx_menu`: remove unused context menu. It is a wrapper to [sanity_ctx_menu.ps1](lib/ps1/sanity_ctx_menu.ps1)
 * `win_sanity_password_policy`: remove password policy requirement. It is a wrapper to [path_add.ps1](lib/ps1/sanity_password_policy.ps1).
 * `win_sanity_services`: remove unused context services. It is a wrapper to [sanity_services.ps1](lib/ps1/sanity_services.ps1)
 * `win_sanity_this_pc`: remove link folders on This PC. It is a wrapper to [sanity_this_pc.ps1](lib/ps1/sanity_this_pc.ps1).
-* `win_sanity_ui` (at gitbash): enable dark mode, disable animations, clean taskbar (e.g. small icons). It is a wrapper to [sanity_ui.ps1](lib/ps1/sanity_ui.ps1).
+* `win_sanity_ui` (at gitbash): enable dark mode, disable animations, and clean taskbar (e.g. small icons). It is a wrapper to [sanity_ui.ps1](lib/ps1/sanity_ui.ps1).
 * `win_sys_upgrade`: update win.
 
-WSL:
-* `win_install_wsl` (at windows GitBash): to install WSL/Ubuntu automating the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you need to configure your username/password. It is a wrapper to [wsl_install.ps1](lib/ps1/wsl_install.ps1).
+wsl:
+* `win_install_wsl` (at windows GitBash): to install WSL/Ubuntu automating the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you must configure your username/password. It is a wrapper to [wsl_install.ps1](lib/ps1/wsl_install.ps1).
 * `wsl_use_same_home`: make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/wsl_use_same_home.ps1).
+* `wsl_code_from_win`: open vscode in windows environment instead of wsl (useful with use wsl default bash).
 
 others:
 
@@ -127,7 +128,7 @@ The projects below used as reference:
 * <https://github.com/cyberark/bash-lib>
 * <https://www.conjur.org/blog/stop-bashing-bash>
 
-And, particularly, these were references for helpers on windows:
+and, particularly, these were references for helpers on windows:
 
 * <https://github.com/adolfintel/windows10-Privacy>
 * <https://gist.github.com/alirobe/7f3b34ad89a159e6daa1>
