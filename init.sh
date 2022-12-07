@@ -16,7 +16,7 @@ msys*)
   alias ghostscript='gswin64.exe'
   ;;
 linux*)
-  source "$BH_DIR/ubu.bash"
+  source "$BH_DIR/linux.bash"
   if [[ -n $WSL_DISTRO_NAME ]]; then source "$BH_DIR/win.bash"; fi
   ;;
 darwin*)
@@ -102,7 +102,7 @@ function home_cleanup() {
     if [ -n "$BH_HOME_WIN_HIDE_UNUSED" ]; then
       local list=$(printf '"%s"' "${BH_HOME_WIN_HIDE_UNUSED[@]}" | sed 's/""/","/g')
       powershell -c '
-        $list =' "$list" ' 
+        $list =' "$list" '
         $nodes = Get-ChildItem ${env:userprofile} | Where-Object {$_.name -In $list}
         $nodes | ForEach-Object { $_.Attributes += "Hidden" }
       '

@@ -36,10 +36,12 @@ function deb_install_from_url() {
 # snap
 #########################
 
-alias snap_install="snap install "
-alias snap_install_classic="snap install --classic"
-alias snap_install_edge="snap install --edge"
-alias snap_list="snap list"
+if type snap &>/dev/null; then
+  alias snap_install="snap install "
+  alias snap_install_classic="snap install --classic"
+  alias snap_install_edge="snap install --edge"
+  alias snap_list="snap list"
+fi
 
 #########################
 # gnome settings

@@ -2,7 +2,7 @@
 
 # bash-helpers
 
-Multi-bash (win msys/gitbash/wsl, ubu, mac,) helpers to easily install packages, setup os (dark mode, clean taskbar/clutter/unused), sync dotfiles, manage git repos, and more.
+Multi-bash (win msys/gitbash/wsl, ubu, mac) helpers to easily install packages, setup os (dark mode, clean taskbar/clutter/unused), sync dotfiles, manage git repos, and more.
 The project logo refers to the synthetic chemical element Bohrium, which also has BH's initials.
 
 ## Install
@@ -25,7 +25,7 @@ home/dotfiles/pkgs (use BH_ vars from `~/.bashrc`, see examples at [skel/.bashrc
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.
-* `pkgs_install` (at GitBash): install pkgs from BH_WIN_GET and BH_WIN_PIP.
+* `pkgs_install` (at gitbash): install pkgs from BH_WIN_GET and BH_WIN_PIP.
 * `pkgs_install` (at mac bash): install pkgs from BH_MAC_BREW and BH_MAC_PIP.
 * `pkgs_install` (at msys bash): install pkgs from BH_MSYS2_PAC and BH_MSYS2_PIP.
 * `pkgs_install` (at ubuntu bash): install pkgs from BH_UBU_APT and BH_UBU_PIP.
@@ -53,10 +53,10 @@ others:
 
 See the .bash files in [lib/](lib) folder for other commands.
 
-### ubu
+### linux
 
 * `deb_install_url`: fetch and install a deb package.
-* `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g. small icons), uninstall pre-installed and not used apps (e.g. weather, news, calendar, solitaire).
+* `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g., small icons), uninstall pre-installed and not used apps (e.g., weather, news, calendar, solitaire).
 
 ### mac
 
@@ -89,13 +89,13 @@ sanity:
 * `win_sanity_password_policy`: remove password policy requirement. It is a wrapper to [path_add.ps1](lib/ps1/sanity_password_policy.ps1).
 * `win_sanity_services`: remove unused context services. It is a wrapper to [sanity_services.ps1](lib/ps1/sanity_services.ps1)
 * `win_sanity_this_pc`: remove link folders on This PC. It is a wrapper to [sanity_this_pc.ps1](lib/ps1/sanity_this_pc.ps1).
-* `win_sanity_ui` (at gitbash): enable dark mode, disable animations, and clean taskbar (e.g. small icons). It is a wrapper to [sanity_ui.ps1](lib/ps1/sanity_ui.ps1).
+* `win_sanity_ui` (at gitbash): enable dark mode, disable animations, and clean taskbar (e.g., small icons). It is a wrapper to [sanity_ui.ps1](lib/ps1/sanity_ui.ps1).
 * `win_sys_upgrade`: update win.
 
 wsl:
-* `win_install_wsl` (at windows GitBash): to install WSL/Ubuntu automating the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting windows and running it again. When the Ubuntu app starts, you must configure your username/password. It is a wrapper to [wsl_install.ps1](lib/ps1/wsl_install.ps1).
-* `wsl_use_same_home`: make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/wsl_use_same_home.ps1).
-* `wsl_code_from_win`: open vscode in windows environment instead of wsl (useful with use wsl default bash).
+* `win_install_wsl` (at gitbash): to install WSL/Ubuntu automating the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting win and running it again. When the Ubuntu app starts, you must configure your username/password. It is a wrapper to [wsl_install.ps1](lib/ps1/wsl_install.ps1).
+* `wsl_use_same_home` (at gitbash): make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/wsl_use_same_home.ps1).
+* `wsl_code_from_win` (at wsl): open vscode in win environment instead of wsl (useful with use wsl default bash).
 
 others:
 
