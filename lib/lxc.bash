@@ -37,7 +37,7 @@ function lxc_share_dir_remove() {
   lxc config device remove $1 $2
 }
 
-function lxc_login_as_ubu_user() {
+function lxc_login_as_ubuntu_user() {
   : ${2?"Usage: ${FUNCNAME[0]} <lxc_name>"}
   lxc exec $1 -- sudo --user ubuntu --login
 }
