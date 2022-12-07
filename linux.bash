@@ -1,4 +1,16 @@
 #########################
+# linux
+#########################
+
+function linux_mem_disk_cpu() {
+  MEMORY=$(free -m 2>/dev/null | awk 'NR==2{printf "%.2f%%\t\t", $3*100/$2 }')
+  DISK=$(df -h 2>/dev/null | awk '$NF=="/"{printf "%s\t\t", $4}')
+  CPU=$(top -bn1 2>/dev/null | grep load | awk '{printf "%.2f%%\t\t\n", $(NF-2)}')
+  printf "Memory\t\tDisk\t\tCPU\n"
+  echo "$MEMORY$DISK$CPU"
+}
+
+#########################
 # apt
 #########################
 
