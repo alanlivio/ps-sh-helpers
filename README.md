@@ -7,9 +7,8 @@ The project logo refers to the synthetic chemical element Bohrium, which also ha
 
 ## Install
 
-The bash-helpers project has two requirements: a `bash shell` and `git`. On win, they can be installed using [GitForWindows](https://gitforwindows.org/) (you may install it running [install_gitbash.ps1](lib/ps1/install_gitbash.ps1) on PowerShell).
-
-Then, on the ubu/mac/GitForWindows `bash shell` with `git`, run:
+The bash-helpers project has two requirements: a `bash shell` and `git`. On win, you can use [GitForWindows](https://gitforwindows.org/) which install `gitabash`.
+So, run on a `bash shell` with `git`,:
 ```bash
   git clone https://github.com/alanlivio/bash-helpers ~/.bh &&\
     echo "source ~/.bh/init.sh" >> ~/.bashrc &&\
