@@ -51,18 +51,23 @@ python:
 
 others:
 
-See the .bash files in [lib/](lib) folder for other commands.
+See more  OS-independent helpers  [lib/](lib) folder.
 
 ### linux
 
+* `linux_mem_disk_cpu`: show used mem, disk, and cpu.
 * `deb_install_url`: fetch and install a deb package.
 * `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g., small icons), uninstall pre-installed and not used apps (e.g., weather, news, calendar, solitaire).
+
+See more linux helpers in [linux.bash](linux.bash).
 
 ### mac
 
 * `mac_install_brew`: install brew package manager
 * `mac_brew_install`: install a brew package
 * `mac_brew_upgrade`: upgrade brew packages
+
+See more mac helpers in [mac.bash](mac.bash).
 
 ### win
 
@@ -97,7 +102,7 @@ wsl:
 * `wsl_use_same_home` (at gitbash): make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/wsl_use_same_home.ps1).
 * `wsl_code_from_win` (at wsl): open vscode in win environment instead of wsl (useful with use wsl default bash).
 
-others:
+install others:
 
 * `win_install_make`: winget install [gnumake](https://github.com/microsoft/winget-pkgs/tree/master/manifests/g/GnuWin32/Make) and add it to PATH.
 * `win_install_miktex`: winget install [miktex](https://github.com/microsoft/winget-pkgs/tree/master/manifests/c/ChristianSchenk/MiKTeX) and add it to PATH.
@@ -105,6 +110,10 @@ others:
 * `win_install_ssh_client`: install [openssh client](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse?tabs=powershell).
 * `win_install_android_sdkmanager_and_platform_tools`: install android [sdkmanager](https://developer.android.com/studio/command-line/sdkmanager) and [platform tools (adb)] (https://developer.android.com/studio/command-line/adb), and add them to PATH.
 * `win_install_flutter`: install [flutter sdk](https://docs.flutter.dev/get-started/install/windows) and add it to PATH.
+
+others:
+
+See more win helpers in [win](win.bash).
 
 ## References
 
