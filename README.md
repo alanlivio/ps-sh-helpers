@@ -31,12 +31,14 @@ home/dotfiles/pkgs (use BH_ vars from `~/.bashrc`, see examples at [skel/.bashrc
 * `pkgs_install` (at ubuntu bash): install pkgs from BH_UBU_APT and BH_UBU_PIP.
 * `pkgs_install` (at WSL bash): install pkgs from BH_WSL_APT and BH_WSL_PIP.
 
-decompress/dir/user:
+decompress/folder/user:
 
 * `decompress_from_url`: fetch and decompress to a given folder.
 * `decompress`: decompress from multiple formats to a given folder.
-* `dir_find_duplicated_pdf`: list duplicated pdf files in dir recursively.
-* `dir_sorted_by_size`: list dir sorted by item size.
+* `folder_count_files`: count files in current folder
+* `folder_count_files_recursive`: count files in current and sub folder
+* `folder_find_duplicated_pdf`: list duplicated pdf files in dir recursively.
+* `folder_sorted_by_size`: list dir sorted by item size.
 * `user_sudo_nopasswd`:  disable password when calling sudo (user must be in sudores).
 
 python:

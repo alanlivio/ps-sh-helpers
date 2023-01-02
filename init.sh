@@ -152,7 +152,7 @@ function pkgs_install() {
 }
 
 #########################
-# decompress
+# decompress/folder/user
 #########################
 
 function decompress() {
@@ -212,15 +212,23 @@ function decompress_from_url_one_file_and_move_to_bin() {
   cp $dir_name/$2 $BH_BIN
 }
 
-function user_sudo_nopasswd() {
-  if ! test -d /etc/sudoers.d/; then test_and_create_dir /etc/sudoers.d/; fi
-  SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
+function folder_count_files(){
+  find . -maxdepth 1 -type f | wc -l
 }
 
-function dir_sorted_by_size() {
+function folder_count_files_recusive(){
+  find . -maxdepth 1 -type f | wc -l
+}
+
+function folder_list_sorted_by_size() {
   du -ahd 1 | sort -h
 }
 
-function dir_find_duplicated_pdf() {
+function folder_find_duplicated_pdf() {
   find . -iname "*.pdf" -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find . -type f -size {}c -print0 | xargs -r -0 md5sum | sort | uniq -w32 --all-repeated=separate
+}
+
+function user_sudo_nopasswd() {
+  if ! test -d /etc/sudoers.d/; then test_and_create_dir /etc/sudoers.d/; fi
+  SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
 }
