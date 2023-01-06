@@ -89,7 +89,8 @@ explorer:
 * `explorer_hide_home_dotfiles`: hide dotfiles at home folder.
 * `explorer_restart`: restart explorer.
 * `explorer_open_recycle_bin`: explorer open trash folder.
-* `explorer_open_startup`: explorer open the user start programs folder.
+* `explorer_open_startmenu_user`: explorer open start menu folder for current user.
+* `explorer_open_startmenu_all`: explorer open start menu folder for all users.
 
 sanity:
 * `win_sanity_ctx_menu`: remove unused context menu. It is a wrapper to [sanity_ctx_menu.ps1](lib/ps1/sanity_ctx_menu.ps1)

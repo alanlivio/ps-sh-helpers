@@ -16,7 +16,8 @@ function win_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:userprof
 #########################
 function explorer() { explorer.exe $(cygpath -w $1); }
 function explorer_restart() { powershell.exe "Stop-Process -ProcessName explorer -ea 0 | Out-Null"; }
-function explorer_open_startup() { powershell -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs\Startup'; }
+function explorer_open_startmenu_user() { powershell -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs'; }
+function explorer_open_startmenu_all() { powershell -c 'explorer ${env:programdata}\Microsoft\Windows\Start Menu\Programs'; }
 function explorer_open_recycle_bin() { powershell -c 'explorer shell:RecycleBinFolder'; }
 
 #########################
