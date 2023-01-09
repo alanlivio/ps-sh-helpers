@@ -2,7 +2,23 @@
 # linux
 #########################
 
-function linux_mem_disk_cpu() {
+function linux_product_name() {
+  sudo dmidecode -s system-product-name
+}
+
+function linux_hostname() {
+  hostnamectl
+}
+
+function linux_list_gpu() {
+  lspci -nn | grep -E 'VGA|Display'
+}
+
+function linux_initd_services_list() {
+  service --status-all
+}
+
+function linux_show_mem_disk_cpu() {
   MEMORY=$(free -m 2>/dev/null | awk 'NR==2{printf "%.2f%%\t\t", $3*100/$2 }')
   DISK=$(df -h 2>/dev/null | awk '$NF=="/"{printf "%s\t\t", $4}')
   CPU=$(top -bn1 2>/dev/null | grep load | awk '{printf "%.2f%%\t\t\n", $(NF-2)}')
@@ -54,6 +70,7 @@ if type snap &>/dev/null; then
   alias snap_install_edge="snap install --edge"
   alias snap_list="snap list"
 fi
+
 
 #########################
 # gnome settings
