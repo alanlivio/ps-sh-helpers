@@ -152,6 +152,18 @@ function pkgs_install() {
 }
 
 #########################
+# arp
+#########################
+
+function arp_list(){
+  if [[ $OSTYPE == "msys"* ]]; then
+    arp //a
+  else
+    arp -a
+  fi
+}
+
+#########################
 # decompress/folder/user
 #########################
 
