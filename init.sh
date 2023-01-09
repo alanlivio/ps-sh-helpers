@@ -224,6 +224,11 @@ function decompress_from_url_one_file_and_move_to_bin() {
   cp $dir_name/$2 $BH_BIN
 }
 
+function pdf_info(){
+  : ${1?"Usage: ${FUNCNAME[0]} <pdf file>"}
+  pdfinfo $1
+}
+
 function folder_count_files(){
   find . -maxdepth 1 -type f | wc -l
 }
