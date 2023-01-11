@@ -71,17 +71,11 @@ if type snap &>/dev/null; then
   alias snap_list="snap list"
 fi
 
-
 #########################
 # gnome settings
 #########################
 
 if type gsettings &>/dev/null; then
-
-  function gnome_sanity() {
-    gnome_dark
-    gnome_sanity
-  }
 
   function gnome_dark_mode() {
     gsettings set org.gnome.desktop.interface cursor-theme 'DMZ-Black'
@@ -98,7 +92,6 @@ if type gsettings &>/dev/null; then
     # gnome search
     gsettings set org.gnome.desktop.search-providers sort-order "[]"
     gsettings set org.gnome.desktop.search-providers disable-external false
-    gsettings set org.gnome.desktop.search-providers disabled "['org.gnome.Calculator.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.clocks.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Software.desktop']"
     # animation
     gsettings set org.gnome.desktop.interface enable-animations false
     # desktop
@@ -126,22 +119,11 @@ if type gsettings &>/dev/null; then
     gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view'
     gsettings set org.gnome.nautilus.window-state maximized false
     gsettings set org.gnome.nautilus.window-state sidebar-width 180
-    # gedit
-    if grep -q gedit <<<$(gsettings list-schemas); then
-      gsettings set org.gnome.gedit.preferences.editor bracket-matching true
-      gsettings set org.gnome.gedit.preferences.editor display-line-numbers true
-      gsettings set org.gnome.gedit.preferences.editor display-right-margin true
-      gsettings set org.gnome.gedit.preferences.editor scheme 'classic'
-      gsettings set org.gnome.gedit.preferences.editor wrap-last-split-mode 'word'
-      gsettings set org.gnome.gedit.preferences.editor wrap-mode 'word'
-    fi
-    # dock
-    if grep -q dash-to-dock <<<$(gsettings list-schemas); then
-      gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 24
-      gsettings set org.gnome.shell.extensions.dash-to-dock dock-position 'BOTTOM'
-      gsettings set org.gnome.shell.extensions.dash-to-dock autohide false
-      gsettings set org.gnome.shell.extensions.dash-to-dock intellihide false
-      gsettings set org.gnome.shell.extensions.dash-to-dock show-show-apps-button false
-    fi
   }
+
+  function gnome_sanity() {
+    gnome_dark_mode
+    gnome_sanity
+  }
+
 fi
