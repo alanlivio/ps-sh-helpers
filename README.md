@@ -53,7 +53,7 @@ python:
 
 others:
 
-See more  OS-independent helpers  [lib/](lib) folder.
+See more OS-independent helpers  [lib/os_any.bash](lib/os_any.bash) folder.
 
 ### linux
 
@@ -61,7 +61,7 @@ See more  OS-independent helpers  [lib/](lib) folder.
 * `deb_install_url`: fetch and install a deb package.
 * `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g., small icons), uninstall pre-installed and not used apps (e.g., weather, news, calendar, solitaire).
 
-See more linux helpers in [linux.bash](linux.bash).
+See more linux helpers in [lib/os_linux.bash](lib/os_linux.bash).
 
 ### mac
 
@@ -69,7 +69,7 @@ See more linux helpers in [linux.bash](linux.bash).
 * `mac_brew_install`: install a brew package
 * `mac_brew_upgrade`: upgrade brew packages
 
-See more mac helpers in [mac.bash](mac.bash).
+See more mac helpers in [lib/os_mac.bash](lib/os_mac.bash).
 
 ### win
 
@@ -116,7 +116,7 @@ install others:
 
 others:
 
-See more win helpers in [win](win.bash).
+See more win helpers in [lib/os_win.bash](lib/os_win.bash).
 
 ## References
 

@@ -1,251 +1,49 @@
 #!/bin/bash
 
-function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
-function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
-function test_and_create_dir() { if ! test -d "$1"; then mkdir -p $1; fi; }
-BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
+BH_LIB="$(dirname "${BASH_SOURCE[0]}")/lib"
 if [ -z "${BH_BIN}" ]; then BH_BIN="$HOME/bin"; fi
-alias return_1_if_last_command_fail='if [ $? != 0 ]; then return 1; fi'
 
 #########################
-# load .bash files
+# load os_*.bash files
 #########################
+
+source "$BH_LIB/os_any.bash"
+
 case $OSTYPE in
 msys*)
-  source "$BH_DIR/win.bash"
+  source "$BH_LIB/os_win.bash"
   alias ghostscript='gswin64.exe'
   ;;
 linux*)
-  source "$BH_DIR/linux.bash"
-  if [[ -n $WSL_DISTRO_NAME ]]; then source "$BH_DIR/win.bash"; fi
+  source "$BH_LIB/os_linux.bash"
+  if [[ -n $WSL_DISTRO_NAME ]]; then source "$BH_LIB/os_win.bash"; fi
   ;;
 darwin*)
-  source "$BH_DIR/mac.bash"
+  source "$BH_LIB/os_mac.bash"
   ;;
 esac
 
-if type adb &>/dev/null; then source "$BH_DIR/lib/adb.bash"; fi
-if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.bash"; fi
-if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/ffmpeg.bash"; fi
-if type flutter &>/dev/null; then source "$BH_DIR/lib/flutter.bash"; fi
-if type ghostscript &>/dev/null; then source "$BH_DIR/lib/ghostscript.bash"; fi
-if type git &>/dev/null; then source "$BH_DIR/lib/git.bash"; fi
-if type gst-launch-1.0 &>/dev/null; then source "$BH_DIR/lib/gst.bash"; fi
-if type latexmk &>/dev/null; then source "$BH_DIR/lib/latex.bash"; fi
-if type lxc &>/dev/null; then source "$BH_DIR/lib/lxc.bash"; fi
-if type meson &>/dev/null; then source "$BH_DIR/lib/meson.bash"; fi
-if type pandoc &>/dev/null; then source "$BH_DIR/lib/pandoc.bash"; fi
-if type pkg-config &>/dev/null; then source "$BH_DIR/lib/pkg-config.bash"; fi
-if type pngquant &>/dev/null; then source "$BH_DIR/lib/pngquant.bash"; fi
-if type python &>/dev/null; then source "$BH_DIR/lib/python.bash"; fi
-if type ruby &>/dev/null; then source "$BH_DIR/lib/ruby.bash"; fi
-if type ssh &>/dev/null; then source "$BH_DIR/lib/ssh.bash"; fi
-if type tesseract &>/dev/null; then source "$BH_DIR/lib/tesseract.bash"; fi
-if type wget &>/dev/null; then source "$BH_DIR/lib/wget.bash"; fi
-if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/youtube-dl.bash"; fi
-if type zip &>/dev/null; then source "$BH_DIR/lib/zip.bash"; fi
-
 #########################
-# bashrc
-#########################
-alias bashrc_reload='source $HOME/.bashrc'
-
-function bashrc_setup_prompt() {
-  echo 'export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n$ "' >>$HOME/.bashrc
-}
-
-#########################
-# home
+# load <tool>.bash files
 #########################
 
-function dotfiles_func() {
-  : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
-  declare -a files_array
-  files_array=($BH_DOTFILES)
-  if [ ${#files_array[@]} -eq 0 ]; then
-    log_error "BH_DOTFILES empty"
-  fi
-  for ((i = 0; i < ${#files_array[@]}; i = i + 2)); do
-    if [ $1 = "backup" ]; then
-      cp ${files_array[$i]} ${files_array[$((i + 1))]}
-    elif [ $1 = "install" ]; then
-      cp ${files_array[$((i + 1))]} ${files_array[$i]}
-    elif [ $1 = "diff" ]; then
-      ret=$(diff ${files_array[$i]} ${files_array[$((i + 1))]})
-      if [ $? = 1 ]; then
-        log_msg "diff ${files_array[$i]} ${files_array[$((i + 1))]}"
-        echo "$ret"
-      fi
-    fi
-  done
-}
-alias dotfiles_install="dotfiles_func install"
-alias dotfiles_backup="dotfiles_func backup"
-alias dotfiles_diff="dotfiles_func diff"
-
-#########################
-# dotfiles
-#########################
-
-function home_cleanup() {
-  if [ -n "$BH_HOME_RM_UNUSED" ]; then
-    for i in "${BH_HOME_RM_UNUSED[@]}"; do
-      if test -d "$HOME/$i"; then
-        rm -rf "$HOME/${i:?}" >/dev/null
-      elif test -e "$HOME/$i"; then
-        rm -f "$HOME/${i:?}" >/dev/null
-      fi
-    done
-  fi
-  if [[ $OSTYPE == "msys"* ]]; then
-    win_hide_home_dotfiles
-    if [ -n "$BH_HOME_WIN_HIDE_UNUSED" ]; then
-      local list=$(printf '"%s"' "${BH_HOME_WIN_HIDE_UNUSED[@]}" | sed 's/""/","/g')
-      powershell -c '
-        $list =' "$list" '
-        $nodes = Get-ChildItem ${env:userprofile} | Where-Object {$_.name -In $list}
-        $nodes | ForEach-Object { $_.Attributes += "Hidden" }
-      '
-    fi
-  fi
-}
-
-#########################
-# pkgs_install
-#########################
-
-function pkgs_install() {
-  case $OSTYPE in
-  linux*)
-    if [[ $(uname -r) == *"WSL"* ]]; then # wsl
-      log_msg "apt_install BH_WSL_APT=$BH_WSL_APT"
-      apt_install $min_pkgs $BH_WSL_APT
-      log_msg "pip_install BH_WSL_PIP=$BH_WSL_PIP"
-      pip_install $BH_WSL_PIP
-    elif [[ $(lsb_release -d | awk '{print $2}') == Ubuntu ]]; then #ubu
-      log_msg "apt_install BH_UBU_APT=$BH_UBU_APT"
-      apt_install $min_pkgs $BH_UBU_APT
-      log_msg "pip_install BH_WIN_PIP=$BH_WIN_PIP"
-      pip_install $BH_UBU_PIP
-    fi
-    ;;
-  msys*)
-    if test -e /etc/profile.d/git-prompt.sh; then # gitbash
-      log_msg "winget_install BH_WIN_GET=$BH_WIN_GET"
-      winget_install $BH_WIN_GET
-      log_msg "pip_install BH_WIN_PIP=$BH_WIN_PIP"
-      pip_install $BH_WIN_PIP
-    else  # msys
-      log_msg "msys2_install BH_MSYS_PAC=$BH_MSYS_PAC"
-      msys2_install $BH_MSYS_PAC
-      log_msg "pip_install BH_MSYS_PIP=$BH_MSYS_PIP"
-      pip_install $BH_MSYS_PIP
-    fi
-    ;;
-  darwin*) # mac
-      log_msg "brew_install BH_MAC_BREW=$BH_MAC_BREW"
-      brew install $BH_MAC_BREW
-      log_msg "pip_install BH_MAC_PIP=$BH_MAC_PIP"
-      pip_install $BH_MAC_PIP
-    ;;
-  esac
-}
-
-#########################
-# arp
-#########################
-
-function arp_list(){
-  if [[ $OSTYPE == "msys"* ]]; then
-    arp //a
-  else
-    arp -a
-  fi
-}
-
-#########################
-# decompress/folder/user
-#########################
-
-function decompress() {
-  : ${1?"Usage: ${FUNCNAME[0]} <zip-name> [dir-name]"}
-  local extension=${1##*.}
-  local dest
-  if [ $# -eq 1 ]; then dest=.; else dest=$2; fi
-  case $extension in
-  tgz)
-    ret=$(tar -xzf $1 -C $dest)
-    ;;
-  gz)
-    ret=$(tar -xf $1 -C $dest)
-    ;;
-  bz2)
-    ret=$(tar -xjf $1 -C $dest)
-    ;;
-  zip)
-    ret=$(unzip $1 -d $dest)
-    ;;
-  zst)
-    ret=$(tar --use-compress-program=unzstd -xvf $1 -C $dest)
-    ;;
-  xz)
-    ret=$(tar -xJf $1 -C $dest)
-    ;;
-  *)
-    log_error "$EXT is not supported compress."
-                                                 return 1
-    ;;
-  esac
-  if [ $? != 0 ] || ! [ -f $file_name ]; then
-    log_error "decompress $1 failed "
-                                       return 1
-  fi
-}
-
-function decompress_from_url() {
-  : ${2?"Usage: ${FUNCNAME[0]} <URL> <dir>"}
-  local file_name="/tmp/$(basename $1)"
-  if test ! -s $file_name; then
-    log_msg "fetching $1 to /tmp/"
-    curl -LJ $1 --create-dirs --output $file_name
-    return_1_if_last_command_fail
-  fi
-  log_msg "extracting $file_name to $2"
-  decompress $file_name $2
-}
-
-function decompress_from_url_one_file_and_move_to_bin() {
-  : ${2?"Usage: ${FUNCNAME[0]} <URL> <bin_file_to_be_installed>]"}
-  decompress_from_url $1 /tmp/
-  return_1_if_last_command_fail
-  local dir_name="/tmp/$(basename $1)" # XXX.zip
-  dir_name="${dir_name%.*}" # XXX
-  log_msg "coping $dir_name/$2 to $BH_BIN"
-  cp $dir_name/$2 $BH_BIN
-}
-
-function pdf_info(){
-  : ${1?"Usage: ${FUNCNAME[0]} <pdf file>"}
-  pdfinfo $1
-}
-
-function folder_count_files(){
-  find . -maxdepth 1 -type f | wc -l
-}
-
-function folder_count_files_recusive(){
-  find . -maxdepth 1 -type f | wc -l
-}
-
-function folder_list_sorted_by_size() {
-  du -ahd 1 | sort -h
-}
-
-function folder_find_duplicated_pdf() {
-  find . -iname "*.pdf" -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find . -type f -size {}c -print0 | xargs -r -0 md5sum | sort | uniq -w32 --all-repeated=separate
-}
-
-function user_sudo_nopasswd() {
-  if ! test -d /etc/sudoers.d/; then test_and_create_dir /etc/sudoers.d/; fi
-  SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
-}
+if type adb &>/dev/null; then source "$BH_LIB/adb.bash"; fi
+if type cmake &>/dev/null; then source "$BH_LIB/cmake.bash"; fi
+if type ffmpeg &>/dev/null; then source "$BH_LIB/ffmpeg.bash"; fi
+if type flutter &>/dev/null; then source "$BH_LIB/flutter.bash"; fi
+if type ghostscript &>/dev/null; then source "$BH_LIB/ghostscript.bash"; fi
+if type git &>/dev/null; then source "$BH_LIB/git.bash"; fi
+if type gst-launch-1.0 &>/dev/null; then source "$BH_LIB/gst.bash"; fi
+if type latexmk &>/dev/null; then source "$BH_LIB/latex.bash"; fi
+if type lxc &>/dev/null; then source "$BH_LIB/lxc.bash"; fi
+if type meson &>/dev/null; then source "$BH_LIB/meson.bash"; fi
+if type pandoc &>/dev/null; then source "$BH_LIB/pandoc.bash"; fi
+if type pkg-config &>/dev/null; then source "$BH_LIB/pkg-config.bash"; fi
+if type pngquant &>/dev/null; then source "$BH_LIB/pngquant.bash"; fi
+if type python &>/dev/null; then source "$BH_LIB/python.bash"; fi
+if type ruby &>/dev/null; then source "$BH_LIB/ruby.bash"; fi
+if type ssh &>/dev/null; then source "$BH_LIB/ssh.bash"; fi
+if type tesseract &>/dev/null; then source "$BH_LIB/tesseract.bash"; fi
+if type wget &>/dev/null; then source "$BH_LIB/wget.bash"; fi
+if type youtube-dl &>/dev/null; then source "$BH_LIB/youtube-dl.bash"; fi
+if type zip &>/dev/null; then source "$BH_LIB/zip.bash"; fi
