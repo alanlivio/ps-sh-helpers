@@ -60,7 +60,7 @@ function home_cleanup() {
     done
   fi
   if [[ $OSTYPE == "msys"* ]]; then
-    win_hide_home_dotfiles
+    explorer_hide_home_dotfiles
     if [ -n "$BH_HOME_WIN_HIDE_UNUSED" ]; then
       local list=$(printf '"%s"' "${BH_HOME_WIN_HIDE_UNUSED[@]}" | sed 's/""/","/g')
       powershell -c '
