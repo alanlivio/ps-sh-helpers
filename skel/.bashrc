@@ -3,10 +3,10 @@ source $HOME/.bh/init.sh
 # home_clean
 case $OSTYPE in
 msys*)
-  BH_HOME_WIN_HIDE_UNUSED=('Cookies' 'Picutres' '3D Objects' 'Contacts' 'Favorites' 'Links' 'MicrosoftEdgeBackups' 'NetHood' 'PrintHood' 'Recent' 'Saved Games' 'Searches' 'SendTo' 'ansel' 'Intel' 'IntelGraphicsProfiles' 'MicrosoftEdgeBackups')
+  BH_HOME_UNUSED_WIN_HIDE=('Cookies' 'Picutres' '3D Objects' 'Contacts' 'Favorites' 'Links' 'MicrosoftEdgeBackups' 'NetHood' 'PrintHood' 'Recent' 'Saved Games' 'Searches' 'SendTo' 'ansel' 'Intel' 'IntelGraphicsProfiles' 'MicrosoftEdgeBackups')
   ;;
 linux*)
-  BH_HOME_RM_UNUSED=('Videos' 'Pictures' 'Documents')
+  BH_HOME_UNUSED_CLEAN=('Videos' 'Pictures' 'Documents')
   ;;
 esac
 

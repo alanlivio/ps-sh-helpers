@@ -21,7 +21,7 @@ So, run on a `bash shell` with `git`,:
 
 home/dotfiles/pkgs (use BH_ vars from `~/.bashrc`, see examples at [skel/.bashrc](skel/.bashrc)):
 
-* `home_cleanup`: remove home files/dirs from BH_HOME_CLEAN_UNUSED. On win, hide dotfiles and BH_HOME_WIN_HIDE_UNUSED at home.
+* `home_cleanup`: remove home files/dirs from BH_HOME_UNUSED_CLEAN. On win, hide dotfiles and BH_HOME_UNUSED_WIN_HIDE at home.
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.

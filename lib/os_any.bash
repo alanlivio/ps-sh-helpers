@@ -50,8 +50,8 @@ alias dotfiles_diff="dotfiles_func diff"
 #########################
 
 function home_cleanup() {
-  if [ -n "$BH_HOME_RM_UNUSED" ]; then
-    for i in "${BH_HOME_RM_UNUSED[@]}"; do
+  if [ -n "$BH_HOME_UNUSED_CLEAN" ]; then
+    for i in "${BH_HOME_UNUSED_CLEAN[@]}"; do
       if test -d "$HOME/$i"; then
         rm -rf "$HOME/${i:?}" >/dev/null
       elif test -e "$HOME/$i"; then
@@ -61,8 +61,8 @@ function home_cleanup() {
   fi
   if [[ $OSTYPE == "msys"* ]]; then
     explorer_hide_home_dotfiles
-    if [ -n "$BH_HOME_WIN_HIDE_UNUSED" ]; then
-      local list=$(printf '"%s"' "${BH_HOME_WIN_HIDE_UNUSED[@]}" | sed 's/""/","/g')
+    if [ -n "$BH_HOME_UNUSED_WIN_HIDE" ]; then
+      local list=$(printf '"%s"' "${BH_HOME_UNUSED_WIN_HIDE[@]}" | sed 's/""/","/g')
       powershell -c '
         $list =' "$list" '
         $nodes = Get-ChildItem ${env:userprofile} | Where-Object {$_.name -In $list}
