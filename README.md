@@ -17,9 +17,9 @@ So, run on a `bash shell` with `git`,:
 
 ## helpers
 
-### OS-independent
+### OS-any
 
-home/dotfiles/pkgs (use BH_ vars from `~/.bashrc`, see examples at [skel/.bashrc](skel/.bashrc)):
+home/dotfiles/pkgs helpers using `BH_*` vars from `~/.bashrc`, see examples at [skel/.bashrc](skel/.bashrc):
 
 * `home_cleanup`: remove home files/dirs from BH_HOME_UNUSED_CLEAN. On win, hide dotfiles and BH_HOME_UNUSED_WIN_HIDE at home.
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
@@ -40,18 +40,6 @@ decompress/folder/user:
 * `folder_find_duplicated_pdf`: list duplicated pdf files in dir recursively.
 * `folder_sorted_by_size`: list dir sorted by item size.
 * `user_sudo_nopasswd`:  disable password when calling sudo (user must be in sudores).
-
-python:
-
-* `pip_install`: install packages if not installed.
-* `pip_upgrade_outdated`: upgrade outdated packages.
-* `venv_create`: create a venv.
-* `venv_activate_install`: load a venv.
-* `python_setup_install`: install from a pkg folder with setup.py.
-* `python_setup_upload_testpypi`: upload to testpypi from a pkg folder with setup.py.
-* `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py.
-
-others:
 
 See more OS-independent helpers  [lib/os_any.bash](lib/os_any.bash) folder.
 
@@ -114,9 +102,22 @@ install others:
 * `win_install_android_sdkmanager_and_platform_tools`: install android [sdkmanager](https://developer.android.com/studio/command-line/sdkmanager) and [platform tools (adb)] (https://developer.android.com/studio/command-line/adb), and add them to PATH.
 * `win_install_flutter`: install [flutter sdk](https://docs.flutter.dev/get-started/install/windows) and add it to PATH.
 
-others:
 
 See more win helpers in [lib/os_win.bash](lib/os_win.bash).
+
+### commands helpers
+
+python:
+
+* `pip_install`: install packages if not installed.
+* `pip_upgrade_outdated`: upgrade outdated packages.
+* `venv_create`: create a venv.
+* `venv_activate_install`: load a venv.
+* `python_setup_install`: install from a pkg folder with setup.py.
+* `python_setup_upload_testpypi`: upload to testpypi from a pkg folder with setup.py.
+* `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py.
+
+See others commands at: See more at: [adb.bash](lib/adb.bash), [ffmpeg.bash](lib/ffmpeg.bash), [ghostscript.bash](lib/ghostscript.bash), [gst.bash](lib/gst.bash), [lxc.bash](lib/lxc.bash), [pandoc.bash](lib/pandoc.bash), [pngquant.bash](lib/pngquant.bash), [python.bash](lib/python.bash), [ssh.bash](lib/ssh.bash), [wget.bash](lib/wget.bash), [zip.bash](lib/zip.bash), [cmake.bash](lib/cmake.bash), [flutter.bash](lib/flutter.bash), [git.bash](lib/git.bash), [latex.bash](lib/latex.bash), [meson.bash](lib/meson.bash), [pkg-config.bash](lib/pkg-config.bash), [ruby.bash](lib/ruby.bash), [tesseract.bash](lib/tesseract.bash), [youtube-dl.bash](lib/youtube-dl.bash).
 
 ## References
 
