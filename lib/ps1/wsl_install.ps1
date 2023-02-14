@@ -1,4 +1,4 @@
-# this scropt automate the process from  https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
+# this script automate the process from https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
 
 function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
@@ -50,4 +50,4 @@ if (!(wsl_get_default).Contains("Ubuntu") || !(wsl cat /etc/wsl.conf).Contains($
   log_msg "$target_distro is not configured, running it and setup your user as win ($env:username)..."
   Invoke-Expression "$target_cmd"
   wsl --set-default $target_distro
-}  
+}
