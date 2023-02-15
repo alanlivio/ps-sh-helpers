@@ -5,7 +5,7 @@
 function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
 function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
 function test_and_create_dir() { if ! test -d "$1"; then mkdir -p $1; fi; }
-alias return_1_if_last_command_fail='if [ $? != 0 ]; then return 1; fi'
+alias return_if_last_command_fail='if [ $? != 0 ]; then log_error ${FUNCNAME[0]} fail; return 1; fi'
 
 #########################
 # bashrc
@@ -158,10 +158,7 @@ function decompress() {
                                                  return 1
     ;;
   esac
-  if [ $? != 0 ] || ! [ -f $file_name ]; then
-    log_error "decompress $1 failed "
-                                       return 1
-  fi
+  if [ $? != 0 ] || ! [ -f $file_name ]; then log_error "decompress $1 failed "; return 1; fi
 }
 
 function decompress_from_url() {
@@ -170,7 +167,7 @@ function decompress_from_url() {
   if test ! -s $file_name; then
     log_msg "fetching $1 to /tmp/"
     curl -LJ $1 --create-dirs --output $file_name
-    return_1_if_last_command_fail
+    return_if_last_command_fail
   fi
   log_msg "extracting $file_name to $2"
   decompress $file_name $2
@@ -179,7 +176,7 @@ function decompress_from_url() {
 function decompress_from_url_one_file_and_move_to_bin() {
   : ${2?"Usage: ${FUNCNAME[0]} <URL> <bin_file_to_be_installed>]"}
   decompress_from_url $1 /tmp/
-  return_1_if_last_command_fail
+  return_if_last_command_fail
   local dir_name="/tmp/$(basename $1)" # XXX.zip
   dir_name="${dir_name%.*}" # XXX
   log_msg "coping $dir_name/$2 to $BH_BIN"

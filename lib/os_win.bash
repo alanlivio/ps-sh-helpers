@@ -167,7 +167,7 @@ function win_install_make() {
 
 function win_install_bat() {
   decompress_from_url_one_file_and_move_to_bin https://github.com/sharkdp/bat/releases/download/v0.22.1/bat-v0.22.1-x86_64-pc-windows-gnu.zip bat.exe
-  return_1_if_last_command_fail
+  return_if_last_command_fail
   win_path_add "$BH_BIN"
 }
 
