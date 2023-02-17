@@ -4,6 +4,9 @@
 
 function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
 function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
+function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
+function log_run() { log_msg "$*"; eval "$*";}
+
 function test_and_create_dir() { if ! test -d "$1"; then mkdir -p $1; fi; }
 alias return_if_last_command_fail='if [ $? != 0 ]; then log_error ${FUNCNAME[0]} fail; return 1; fi'
 
