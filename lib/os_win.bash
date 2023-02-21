@@ -71,7 +71,7 @@ function win_path_add() { # using ps1 script
   local dir=$(cygpath -w $@)
   local dircyg=$(cygpath $@)
   # export in win
-  powershell -command "$(cygpath -w $BH_PS1_DIR/path_add.ps1)" \'$dir\'
+  powershell -c "$(cygpath -w $BH_PS1_DIR/path_add.ps1)" \'$dir\'
   # export in bash (it will reolad from win in new shell)
   if [[ ":$PATH:" != *":$dircyg:"* ]]; then export PATH=${PATH}:$dircyg; fi
 }
@@ -144,10 +144,15 @@ function wsl_code_from_win() { powershell.exe -c '& code ' "$@"; }
 # install
 #########################
 
+function win_add_slink_at_bin(){
+  local link="$BH_BIN/$(basename $(cygpath $1))"
+  link="$(cygpath -w $link)"
+  local target="$(cygpath -w $1)"
+  gsudo powershell.exe -c  "New-Item -ItemType SymbolicLink -Path"  \'$link\' " -Target " \'$target\'
+}
+
 function win_install_ssh_client() {
-  gsudo powershell -c '
-    Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
-  '
+  gsudo powershell -c 'Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0'
 }
 
 function win_install_miktex() {
