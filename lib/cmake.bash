@@ -55,7 +55,7 @@ function cmake_uninstall() {
       fi
     done <$manifest
   else
-    log_error "$manifest does not exist"
+    log_error "$manifest does not exist" && return 1
   fi
 }
 
@@ -63,7 +63,7 @@ function cmake_clean_retain_objs() {
   if test -d CMakeFiles; then
     find . -maxdepth 1 -not -name '.' -not -name CMakeFiles -exec rm -rf {} \;
   else
-    log_error "there is no CMakeFiles dir"
+    log_error "there is no CMakeFiles dir" && return 1
   fi
 }
 

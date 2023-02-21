@@ -27,9 +27,7 @@ function dotfiles_func() {
   : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
   declare -a files_array
   files_array=($BH_DOTFILES)
-  if [ ${#files_array[@]} -eq 0 ]; then
-    log_error "BH_DOTFILES empty"
-  fi
+  if [ ${#files_array[@]} -eq 0 ]; then log_error "BH_DOTFILES empty" && return 1; fi
   for ((i = 0; i < ${#files_array[@]}; i = i + 2)); do
     if [ $1 = "backup" ]; then
       cp ${files_array[$i]} ${files_array[$((i + 1))]}

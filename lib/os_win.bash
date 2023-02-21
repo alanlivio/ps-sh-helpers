@@ -129,8 +129,8 @@ alias msys2_list_installed='pacman -Qqe'
 alias msys2_install='pacman -S --noconfirm'
 alias msys2_uninstall='pacman -R --noconfirm'
 
-function win_install_msys2() {  winget_install msys2.msys2; }
-function msys2_use_same_home() {  echo db_home: windows >>/etc/nsswitch.conf; }
+function win_install_msys2() { winget_install msys2.msys2; }
+function msys2_use_same_home() { echo db_home: windows >>/etc/nsswitch.conf; }
 
 #########################
 # wsl
@@ -144,11 +144,11 @@ function wsl_code_from_win() { powershell.exe -c '& code ' "$@"; }
 # install
 #########################
 
-function win_add_slink_at_bin(){
+function win_add_slink_at_bin() {
   local link="$BH_BIN/$(basename $(cygpath $1))"
   link="$(cygpath -w $link)"
   local target="$(cygpath -w $1)"
-  gsudo powershell.exe -c  "New-Item -ItemType SymbolicLink -Path"  \'$link\' " -Target " \'$target\'
+  gsudo powershell.exe -c "New-Item -ItemType SymbolicLink -Path" \'$link\' " -Target " \'$target\'
 }
 
 function win_install_ssh_client() {
@@ -193,10 +193,7 @@ function win_install_android_sdkmanager_and_platform_tools() {
     # Here, we extract and then rename the folder
     decompress_from_url $ad_cmd_url "$ad_sdk_home/cmdline-tools/"
     mv -f "$ad_sdk_home/cmdline-tools/cmdline-tools" $ad_cmd_dir
-    if test $? != 0; then
-      log_error "decompress_from_url failed."
-      return 1
-    fi
+    if test $? != 0; then log_error "decompress_from_url failed." && return 1; fi
     win_path_add $(cygpath -w $ad_cmd_dir/bin)
     win_env_add ANDROID_HOME $(cygpath -w $ad_sdk_home)
     # install platform-tools
@@ -217,17 +214,14 @@ function win_install_android_sdk() {
 
 BH_FLUTTER_VER="3.3.3"
 
-function win_install_flutter()  {
+function win_install_flutter() {
   local dst="$BH_BIN"
   local flutter_sdk_dir="$BH_BIN/flutter"
   local flutter_sdk_url="https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_${BH_FLUTTER_VER}-stable.zip"
   if ! test -d $flutter_sdk_dir; then
     # to dst because zip extract to dst/flutter/
     decompress_from_url $flutter_sdk_url $dst
-    if test $? != 0; then
-      log_error "decompress_from_url failed."
-      return 1
-    fi
+    if test $? != 0; then log_error "decompress_from_url failed." && return 1; fi
     win_path_add $(cygpath -w $flutter_sdk_dir/bin)
   else
     log_msg "$flutter_sdk_dir exist. skipping."

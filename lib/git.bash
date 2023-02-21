@@ -50,13 +50,11 @@ function git_branch_all_remotes_checkout_and_reset_hard() {
     log_msg "updating ${remote#origin/}"
     git checkout "${remote#origin/}"
     if test $? != 0; then
-      log_error "cannot goes to ${remote#origin/} because there are local changes"
-      exit
+      log_error "cannot goes to ${remote#origin/} because there are local changes" && return 1
     fi
     git pull --all
     if test $? != 0; then
-      log_error "cannot pull ${remote#origin/} because there are local changes"
-      exit
+      log_error "cannot pull ${remote#origin/} because there are local changes" && return 1
     fi
   done
   log_msg "returning to branch $CURRENT"
