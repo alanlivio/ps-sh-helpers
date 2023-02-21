@@ -5,7 +5,7 @@
 function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
 function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
 function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
-function log_run() { log_msg "$*"; eval "$*";}
+function log_run() { log_msg "$*" && eval "$*"; }
 
 function test_and_create_dir() { if ! test -d "$1"; then mkdir -p $1; fi; }
 alias return_if_last_command_fail='if [ $? != 0 ]; then log_error ${FUNCNAME[0]} fail; return 1; fi'
@@ -100,7 +100,7 @@ function pkgs_install() {
       winget_install $BH_WIN_GET
       log_msg "pip_install BH_WIN_PIP=$BH_WIN_PIP"
       pip_install $BH_WIN_PIP
-    else  # msys
+    else # msys
       log_msg "msys2_install BH_MSYS_PAC=$BH_MSYS_PAC"
       msys2_install $BH_MSYS_PAC
       log_msg "pip_install BH_MSYS_PIP=$BH_MSYS_PIP"
@@ -108,10 +108,10 @@ function pkgs_install() {
     fi
     ;;
   darwin*) # mac
-      log_msg "brew_install BH_MAC_BREW=$BH_MAC_BREW"
-      brew install $BH_MAC_BREW
-      log_msg "pip_install BH_MAC_PIP=$BH_MAC_PIP"
-      pip_install $BH_MAC_PIP
+    log_msg "brew_install BH_MAC_BREW=$BH_MAC_BREW"
+    brew install $BH_MAC_BREW
+    log_msg "pip_install BH_MAC_PIP=$BH_MAC_PIP"
+    pip_install $BH_MAC_PIP
     ;;
   esac
 }
@@ -134,34 +134,22 @@ function arp_list() {
 
 function decompress() {
   : ${1?"Usage: ${FUNCNAME[0]} <zip-name> [dir-name]"}
-  local extension=${1##*.}
+  local filename=$(basename $1)
+  local filename_noext="${filename%.*}"
   local dest
   if [ $# -eq 1 ]; then dest=.; else dest=$2; fi
-  case $extension in
-  tgz)
-    ret=$(tar -xzf $1 -C $dest)
-    ;;
-  gz)
-    ret=$(tar -xf $1 -C $dest)
-    ;;
-  bz2)
-    ret=$(tar -xjf $1 -C $dest)
-    ;;
-  zip)
-    ret=$(unzip $1 -d $dest)
-    ;;
-  zst)
-    ret=$(tar --use-compress-program=unzstd -xvf $1 -C $dest)
-    ;;
-  xz)
-    ret=$(tar -xJf $1 -C $dest)
-    ;;
-  *)
-    log_error "$EXT is not supported compress."
-                                                 return 1
-    ;;
+  case $filename in
+  *.tar.bz2 | *.tbz | *.tbz2) ret=$(tar -xzf $1 -C $dest) ;;
+  *.gz | *.Z) ret=$(gunzip $1 >$dest/$filename_noext) ;;
+  *bz2) ret=$(tar -xjf $1 -C $dest) ;;
+  *.zip) ret=$(unzip $1 -d $dest) ;;
+  *.zst) ret=$(tar --use-compress-program=unzstd -xvf $1 -C $dest) ;;
+  *.xz) ret=$(tar -xJf $1 -C $dest) ;;
+  *) log_error "$EXT is not supported compress." && return 1 ;;
   esac
-  if [ $? != 0 ] || ! [ -f $file_name ]; then log_error "decompress $1 failed "; return 1; fi
+  if [ $? != 0 ] || ! [ -f $file_name ]; then
+    log_error "decompress $1 failed " && return 1
+  fi
 }
 
 function decompress_from_url() {
@@ -181,7 +169,7 @@ function decompress_from_url_one_file_and_move_to_bin() {
   decompress_from_url $1 /tmp/
   return_if_last_command_fail
   local dir_name="/tmp/$(basename $1)" # XXX.zip
-  dir_name="${dir_name%.*}" # XXX
+  dir_name="${dir_name%.*}"            # XXX
   log_msg "coping $dir_name/$2 to $BH_BIN"
   cp $dir_name/$2 $BH_BIN
 }
