@@ -123,6 +123,7 @@ See others commands at: See more at: [adb.bash](lib/adb.bash), [ffmpeg.bash](lib
 
 The projects below used as reference:
 
+* <https://github.com/client9/shlib>
 * <https://github.com/milianw/shell-helpers>
 * <https://github.com/wd5gnr/bashrc>
 * <https://github.com/martinburger/bash-common-helpers>
