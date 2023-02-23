@@ -143,6 +143,8 @@ The projects below used as reference:
 
 and, particularly, these were references for helpers on windows:
 
+* <https://github.com/awesome-windows11/windows11>
+* <https://github.com/99natmar99/Windows-11-Fixer>
 * <https://github.com/adolfintel/windows10-Privacy>
 * <https://gist.github.com/alirobe/7f3b34ad89a159e6daa1>
 * <https://github.com/RanzigeButter/fyWin10/blob/master/fyWin10.ps1>
