@@ -1,8 +1,11 @@
+alias python_clean_cache='find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf'
+
 function pip_install() {
   for i in "$@"; do
     pip show $i >/dev/null || pip install $i
   done
 }
+
 
 function pip_upgrade_outdated() {
   local outdated=$(pip list --outdated --format=freeze --disable-pip-version-check 2>/dev/null | grep -v '^\-e' | cut -d = -f 1)
@@ -10,19 +13,6 @@ function pip_upgrade_outdated() {
     pip install --upgrade pip 2>/dev/null
     pip install --upgrade $outdated 2>/dev/null
   fi
-}
-
-function venv_create() {
-  deactivate
-  if test -d ./venv/bin/; then rm -r ./venv; fi
-  python -m venv venv
-  if test requirements.txt; then pip install -r requirements.txt; fi
-}
-
-function venv_activate_install() {
-  deactivate
-  source venv/bin/activate
-  if test requirements.txt; then pip install -r requirements.txt; fi
 }
 
 function python_setup_install() {
