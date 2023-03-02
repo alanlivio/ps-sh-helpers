@@ -117,7 +117,7 @@ python:
 * `python_setup_upload_testpypi`: upload to testpypi from a pkg folder with setup.py.
 * `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py.
 
-See others commands at: See more at: [adb.bash](lib/adb.bash), [ffmpeg.bash](lib/ffmpeg.bash), [ghostscript.bash](lib/ghostscript.bash), [gst.bash](lib/gst.bash), [lxc.bash](lib/lxc.bash), [pandoc.bash](lib/pandoc.bash), [pngquant.bash](lib/pngquant.bash), [python.bash](lib/python.bash), [ssh.bash](lib/ssh.bash), [wget.bash](lib/wget.bash), [zip.bash](lib/zip.bash), [cmake.bash](lib/cmake.bash), [flutter.bash](lib/flutter.bash), [git.bash](lib/git.bash), [latex.bash](lib/latex.bash), [meson.bash](lib/meson.bash), [pkg-config.bash](lib/pkg-config.bash), [ruby.bash](lib/ruby.bash), [tesseract.bash](lib/tesseract.bash), [youtube-dl.bash](lib/youtube-dl.bash).
+See others commands at: See more at: [adb.bash](lib/adb.bash), [ffmpeg.bash](lib/ffmpeg.bash), [ghostscript.bash](lib/ghostscript.bash), [lxc.bash](lib/lxc.bash), [pandoc.bash](lib/pandoc.bash), [python.bash](lib/python.bash), [ssh.bash](lib/ssh.bash), [wget.bash](lib/wget.bash), [zip.bash](lib/zip.bash), [cmake.bash](lib/cmake.bash), [flutter.bash](lib/flutter.bash), [git.bash](lib/git.bash), [latex.bash](lib/latex.bash), [meson.bash](lib/meson.bash), [youtube-dl.bash](lib/youtube-dl.bash).
 
 ## References
 
