@@ -9,7 +9,7 @@ function wsl_get_default() {
 }
 function wsl_terminate() {
     wsl -t (wsl_get_default)
-}  
+}
 
 log_msg "setup wsl to use same home"
 log_msg "target wsl is $(wsl_get_default)"
@@ -30,9 +30,6 @@ wsl -u root bash -c 'echo "enabled=true" >> /etc/wsl.conf'
 wsl -u root bash -c 'echo "root=/mnt" >> /etc/wsl.conf'
 wsl -u root bash -c 'echo "mountFsTab=false" >> /etc/wsl.conf'
 wsl -u root bash -c 'echo "options=\"metadata,uid=1000,gid=1000,umask=0022,fmask=11\"" >> /etc/wsl.conf'
-# useful links /Users and /c
-wsl -u root bash -c 'if ! test -d /Users; then sudo ln -s /mnt/c/Users /Users; fi'
-wsl -u root bash -c 'if ! test -d /c; then sudo ln -s /mnt/c/ /c; fi'
 
 log_msg "enable sudoer"
 wsl -u root usermod -aG sudo "$env:UserName"
