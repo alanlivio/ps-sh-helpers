@@ -14,7 +14,7 @@ msys*)
   alias ghostscript='gswin64.exe'
   ;;
 linux*)
-  source "$BH_LIB/os_linux.bash"
+  source "$BH_LIB/os_ubu.bash"
   if [[ -n $WSL_DISTRO_NAME ]]; then source "$BH_LIB/os_win.bash"; fi
   ;;
 darwin*)

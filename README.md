@@ -49,7 +49,7 @@ See more OS-independent helpers  [lib/os_any.bash](lib/os_any.bash) folder.
 * `deb_install_url`: fetch and install a deb package.
 * `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g., small icons), uninstall pre-installed and not used apps (e.g., weather, news, calendar, solitaire).
 
-See more linux helpers in [lib/os_linux.bash](lib/os_linux.bash).
+See more linux helpers in [lib/os_ubu.bash](lib/os_ubu.bash).
 
 ### mac
 
