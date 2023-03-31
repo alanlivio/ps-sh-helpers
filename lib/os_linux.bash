@@ -44,6 +44,7 @@ function apt_fixes() {
   sudo apt install -f --fix-broken
   sudo apt-get update --fix-missing
   sudo apt dist-upgrade
+  sudo apt autoremove -y
 }
 
 alias deb_install='sudo dpkg -i'
