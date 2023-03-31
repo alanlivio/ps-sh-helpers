@@ -12,7 +12,6 @@ case $OSTYPE in
 msys*)
   source "$BH_LIB/os_win.bash"
   alias ghostscript='gswin64.exe'
-  alias python='python.exe'
   ;;
 linux*)
   source "$BH_LIB/os_linux.bash"
