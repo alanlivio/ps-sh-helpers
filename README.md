@@ -121,28 +121,19 @@ See others commands at: See more at: [adb.bash](lib/adb.bash), [ffmpeg.bash](lib
 
 ## References
 
-The projects below used as reference:
+`bash-helpers` use the follow projects  as references: 
 
-* <https://github.com/client9/shlib>
+* <https://github.com/Bash-it/bash-it>
 * <https://github.com/milianw/shell-helpers>
 * <https://github.com/wd5gnr/bashrc>
 * <https://github.com/martinburger/bash-common-helpers>
 * <https://github.com/jonathantneal/git-bash-helpers>
-* <https://github.com/Bash-it/bash-it>
 * <https://github.com/donnemartin/dev-setup>
 * <https://github.com/aspiers/shell-env>
 * <https://github.com/nafigator/bash-helpers>
-* <https://github.com/martinburger/bash-common-helpers>
 * <https://github.com/TiSiE/BASH.helpers>
-* <https://jonlabelle.com/snippets/view/shell/bash-date-helper-functions>
-* <https://jonlabelle.com/snippets/tag/bash>
 * <https://github.com/midwire/bash.env>
 * <https://github.com/e-picas/bash-library>
-* <https://github.com/cyberark/bash-lib>
-* <https://www.conjur.org/blog/stop-bashing-bash>
-
-and, particularly, these were references for helpers on windows:
-
 * <https://github.com/awesome-windows11/windows11>
 * <https://github.com/99natmar99/Windows-11-Fixer>
 * <https://github.com/adolfintel/windows10-Privacy>
