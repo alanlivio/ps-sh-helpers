@@ -121,7 +121,7 @@ See others commands at: See more at: [adb.bash](lib/adb.bash), [ffmpeg.bash](lib
 
 ## References
 
-`bash-helpers` use the follow projects  as references: 
+This tool takes inspiration from:
 
 * <https://github.com/Bash-it/bash-it>
 * <https://github.com/milianw/shell-helpers>

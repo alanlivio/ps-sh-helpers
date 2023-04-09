@@ -6,15 +6,6 @@ function pip_install() {
   done
 }
 
-
-function pip_upgrade_outdated() {
-  local outdated=$(pip list --outdated --format=freeze --disable-pip-version-check 2>/dev/null | grep -v '^\-e' | cut -d = -f 1)
-  if test "$outdated"; then
-    pip install --upgrade pip 2>/dev/null
-    pip install --upgrade $outdated 2>/dev/null
-  fi
-}
-
 function python_setup_install() {
   python setup.py install
 }
