@@ -142,7 +142,7 @@ function git_tag_move_to_head_and_push() {
   git push --force --tags
 }
 
-alias _git_filter_repo_test_and_msg='if [ $? -eq 0 ]; then log_msg "fiter-repo succeeded. check if you agree and run git_filter_repo_finish to push"; fi'
+alias _git_filter_repo_test_and_msg='if [ $? -eq 0 ]; then log_msg "fiter-repo succeeded. check if you agree and run git_filter_repo_finish_push to push"; fi'
 alias _git_filter_repo_save_origin='if [[ -n $(git remote get-url origin) ]]; then BH_FILTER_REPO_LAST_ORIGIN=$(git remote get-url origin); fi'
 
 function git_filter_repo_messages_to_lower_case() {
@@ -169,20 +169,20 @@ function git_filter_repo_user_rename_to_current() {
 function git_filter_repo_user_rename_as_mailmap() {
   _git_filter_repo_save_origin
   : ${1?"Usage: ${FUNCNAME[0]} <mailmap>. See more at 'https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html#:~:text=User%20and%20email%20based%20filtering'"}
-  git filter-repo --mailmap $1
+  git filter-repo --mailmap $1 --force
   _git_filter_repo_test_and_msg
 }
 
 function git_filter_repo_delete_file_bigger_than_50M() {
   _git_filter_repo_save_origin
-  git filter-repo --strip-blobs-bigger-than 50M
+  git filter-repo --strip-blobs-bigger-than 50M --force
   _git_filter_repo_test_and_msg
 }
 
 function git_filter_repo_delete_file() {
   : ${1?"Usage: ${FUNCNAME[0]} <filename>"}
   _git_filter_repo_save_origin
-  git filter-repo --use-base-name --invert-paths --path "$1"
+  git filter-repo --use-base-name --invert-paths --path "$1" --force
   _git_filter_repo_test_and_msg
 }
 
