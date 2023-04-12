@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
-BH_LIB="$(dirname "${BASH_SOURCE[0]}")/lib"
+BH_LIB="$BH_DIR/lib"
 if [ -z "${BH_BIN}" ]; then BH_BIN="$HOME/bin"; fi
 
 #########################
@@ -30,7 +30,6 @@ esac
 if type adb &>/dev/null; then source "$BH_LIB/adb.bash"; fi
 if type cmake &>/dev/null; then source "$BH_LIB/cmake.bash"; fi
 if type ffmpeg &>/dev/null; then source "$BH_LIB/ffmpeg.bash"; fi
-if type flutter &>/dev/null; then source "$BH_LIB/flutter.bash"; fi
 if type gs &>/dev/null; then source "$BH_LIB/gs.bash"; fi
 if type git &>/dev/null; then source "$BH_LIB/git.bash"; fi
 if type lxc &>/dev/null; then source "$BH_LIB/lxc.bash"; fi
