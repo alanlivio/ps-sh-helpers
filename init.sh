@@ -34,12 +34,10 @@ if type ffmpeg &>/dev/null; then source "$BH_LIB/ffmpeg.bash"; fi
 if type flutter &>/dev/null; then source "$BH_LIB/flutter.bash"; fi
 if type gs &>/dev/null; then source "$BH_LIB/gs.bash"; fi
 if type git &>/dev/null; then source "$BH_LIB/git.bash"; fi
-if type latexmk &>/dev/null; then source "$BH_LIB/latex.bash"; fi
 if type lxc &>/dev/null; then source "$BH_LIB/lxc.bash"; fi
 if type meson &>/dev/null; then source "$BH_LIB/meson.bash"; fi
 if type pandoc &>/dev/null; then source "$BH_LIB/pandoc.bash"; fi
 if type python &>/dev/null; then source "$BH_LIB/python.bash"; fi
-if type ssh &>/dev/null; then source "$BH_LIB/ssh.bash"; fi
 if type wget &>/dev/null; then source "$BH_LIB/wget.bash"; fi
 if type youtube-dl &>/dev/null; then source "$BH_LIB/youtube-dl.bash"; fi
 if type zip &>/dev/null; then source "$BH_LIB/zip.bash"; fi
