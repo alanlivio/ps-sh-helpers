@@ -135,7 +135,13 @@ function msys2_use_same_home() { echo db_home: windows >>/etc/nsswitch.conf; }
 
 function win_install_wsl() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/wsl_install.ps1)\'; }
 function wsl_use_same_home() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/wsl_use_same_home.ps1)\'; }
-function wsl_code_from_win() { powershell -c '& code ' "$@"; }
+function wsl_code_from_win() {
+  if [ "$#" -ne 0 ]; then
+    powershell -c '& code ' "$@";
+  else
+    powershell -c '& code .';
+  fi
+}
 
 #########################
 # install
