@@ -1,26 +1,20 @@
 #########################
-# log
+# basic
 #########################
 
 function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
 function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
 function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
 function log_run() { log_msg "$*" && eval "$*"; }
-
 function test_and_create_dir() { if ! test -d "$1"; then mkdir -p $1; fi; }
 alias return_if_last_command_fail='if [ $? != 0 ]; then log_error ${FUNCNAME[0]} fail; return 1; fi'
-
-#########################
-# bashrc
-#########################
 alias bashrc_reload='source $HOME/.bashrc'
-
-function bashrc_setup_prompt() {
-  echo 'export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \n$ "' >>$HOME/.bashrc
-}
+alias folder_count_files='find . -maxdepth 1 -type f | wc -l'
+alias folder_count_files_recusive='find . -maxdepth 1 -type f | wc -l'
+alias folder_list_sorted_by_size='du -ahd 1 | sort -h'
 
 #########################
-# home
+# dotfiles
 #########################
 
 function dotfiles_func() {
@@ -45,10 +39,6 @@ function dotfiles_func() {
 alias dotfiles_install="dotfiles_func install"
 alias dotfiles_backup="dotfiles_func backup"
 alias dotfiles_diff="dotfiles_func diff"
-
-#########################
-# dotfiles
-#########################
 
 function home_cleanup() {
   if [ -n "$BH_HOME_UNUSED_CLEAN" ]; then
@@ -170,30 +160,4 @@ function decompress_from_url_one_file_and_move_to_bin() {
   dir_name="${dir_name%.*}"            # XXX
   log_msg "coping $dir_name/$2 to $BH_BIN"
   cp $dir_name/$2 $BH_BIN
-}
-
-function pdf_info() {
-  : ${1?"Usage: ${FUNCNAME[0]} <pdf file>"}
-  pdfinfo $1
-}
-
-function folder_count_files() {
-  find . -maxdepth 1 -type f | wc -l
-}
-
-function folder_count_files_recusive() {
-  find . -maxdepth 1 -type f | wc -l
-}
-
-function folder_list_sorted_by_size() {
-  du -ahd 1 | sort -h
-}
-
-function folder_find_duplicated_pdf() {
-  find . -iname "*.pdf" -not -empty -type f -printf "%s\n" | sort -rn | uniq -d | xargs -I{} -n1 find . -type f -size {}c -print0 | xargs -r -0 md5sum | sort | uniq -w32 --all-repeated=separate
-}
-
-function user_sudo_nopasswd() {
-  if ! test -d /etc/sudoers.d/; then test_and_create_dir /etc/sudoers.d/; fi
-  SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
 }

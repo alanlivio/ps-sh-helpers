@@ -39,7 +39,7 @@ function regedit_open_shell_folders() {
 }
 
 #########################
-# env
+# env & path
 #########################
 
 function win_env_show() {
@@ -50,10 +50,6 @@ function win_env_add() {
   : ${2?"Usage: ${FUNCNAME[0]} <varname> <value>"}
   powershell -c "[System.Environment]::SetEnvironmentVariable('$1', '$2', 'user')"
 }
-
-#########################
-# path add
-#########################
 
 function win_path_show() {
   powershell -c '(Get-ChildItem Env:Path).Value'
@@ -125,9 +121,7 @@ alias msys2_show='pacman -Qi'
 alias msys2_list_installed='pacman -Qqe'
 alias msys2_install='pacman -S --noconfirm'
 alias msys2_uninstall='pacman -R --noconfirm'
-
-function win_install_msys2() { winget_install msys2.msys2; }
-function msys2_use_same_home() { echo db_home: windows >>/etc/nsswitch.conf; }
+alias msys2_use_same_home='echo db_home: windows >>/etc/nsswitch.conf'
 
 #########################
 # wsl

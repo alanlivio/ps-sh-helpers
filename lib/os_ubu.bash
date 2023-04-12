@@ -1,29 +1,14 @@
 #########################
-# linux
+# basic
 #########################
 
-function linux_product_name() {
-  sudo dmidecode -s system-product-name
-}
+alias linux_product_name='sudo dmidecode -s system-product-name'
+alias linux_list_gpu="lspci -nn | grep -E 'VGA|Display'"
+alias linux_initd_services_list='service --status-all'
 
-function linux_hostname() {
-  hostnamectl
-}
-
-function linux_list_gpu() {
-  lspci -nn | grep -E 'VGA|Display'
-}
-
-function linux_initd_services_list() {
-  service --status-all
-}
-
-function linux_show_mem_disk_cpu() {
-  MEMORY=$(free -m 2>/dev/null | awk 'NR==2{printf "%.2f%%\t\t", $3*100/$2 }')
-  DISK=$(df -h 2>/dev/null | awk '$NF=="/"{printf "%s\t\t", $4}')
-  CPU=$(top -bn1 2>/dev/null | grep load | awk '{printf "%.2f%%\t\t\n", $(NF-2)}')
-  printf "Memory\t\tDisk\t\tCPU\n"
-  echo "$MEMORY$DISK$CPU"
+function user_sudo_nopasswd() {
+  if ! test -d /etc/sudoers.d/; then test_and_create_dir /etc/sudoers.d/; fi
+  SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
 }
 
 #########################
@@ -60,17 +45,6 @@ function deb_install_from_url() {
   fi
   sudo dpkg -i /tmp/$deb_name
 }
-
-#########################
-# snap
-#########################
-
-if type snap &>/dev/null; then
-  alias snap_install="snap install "
-  alias snap_install_classic="snap install --classic"
-  alias snap_install_edge="snap install --edge"
-  alias snap_list="snap list"
-fi
 
 #########################
 # gnome settings
