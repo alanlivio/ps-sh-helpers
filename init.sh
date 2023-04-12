@@ -1,5 +1,6 @@
 #!/bin/bash
 
+BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
 BH_LIB="$(dirname "${BASH_SOURCE[0]}")/lib"
 if [ -z "${BH_BIN}" ]; then BH_BIN="$HOME/bin"; fi
 
@@ -7,18 +8,18 @@ if [ -z "${BH_BIN}" ]; then BH_BIN="$HOME/bin"; fi
 # load os_*.bash files
 #########################
 
-source "$BH_LIB/os_any.bash"
+source "$BH_DIR/os_any.bash"
 case $OSTYPE in
 msys*)
-  source "$BH_LIB/os_win.bash"
+  source "$BH_DIR/os_win.bash"
   alias ghostscript='gswin64.exe'
   ;;
 linux*)
-  source "$BH_LIB/os_ubu.bash"
-  if [[ -n $WSL_DISTRO_NAME ]]; then source "$BH_LIB/os_win.bash"; fi
+  source "$BH_DIR/os_ubu.bash"
+  if [[ -n $WSL_DISTRO_NAME ]]; then source "$BH_DIR/os_win.bash"; fi
   ;;
 darwin*)
-  source "$BH_LIB/os_mac.bash"
+  source "$BH_DIR/os_mac.bash"
   ;;
 esac
 
