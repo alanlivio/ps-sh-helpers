@@ -37,19 +37,17 @@ decompress/folder/user:
 * `decompress`: decompress from multiple formats to a given folder.
 * `folder_count_files`: count files in current folder
 * `folder_count_files_recursive`: count files in current and sub folder
-* `folder_find_duplicated_pdf`: list duplicated pdf files in dir recursively.
 * `folder_sorted_by_size`: list dir sorted by item size.
 * `user_sudo_nopasswd`:  disable password when calling sudo (user must be in sudores).
 
-See more OS-independent helpers  [lib/os_any.bash](lib/os_any.bash) folder.
+See more OS-independent helpers  [os_any.bash](os_any.bash) folder.
 
 ### linux
 
-* `linux_mem_disk_cpu`: show used mem, disk, and cpu.
 * `deb_install_url`: fetch and install a deb package.
 * `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g., small icons), uninstall pre-installed and not used apps (e.g., weather, news, calendar, solitaire).
 
-See more linux helpers in [lib/os_ubu.bash](lib/os_ubu.bash).
+See more linux helpers in [os_ubu.bash](os_ubu.bash).
 
 ### mac
 
@@ -57,7 +55,7 @@ See more linux helpers in [lib/os_ubu.bash](lib/os_ubu.bash).
 * `mac_brew_install`: install a brew package
 * `mac_brew_upgrade`: upgrade brew packages
 
-See more mac helpers in [lib/os_mac.bash](lib/os_mac.bash).
+See more mac helpers in [os_mac.bash](os_mac.bash).
 
 ### win
 
@@ -93,17 +91,7 @@ wsl:
 * `wsl_use_same_home` (at gitbash): make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/wsl_use_same_home.ps1).
 * `wsl_code_from_win` (at wsl): open vscode in win environment instead of wsl (useful with use wsl default bash).
 
-install others:
-
-* `win_install_make`: winget install [gnumake](https://github.com/microsoft/winget-pkgs/tree/master/manifests/g/GnuWin32/Make) and add it to PATH.
-* `win_install_miktex`: winget install [miktex](https://github.com/microsoft/winget-pkgs/tree/master/manifests/c/ChristianSchenk/MiKTeX) and add it to PATH.
-* `win_install_ghostscript`: winget install [ghostscript](https://github.com/microsoft/winget-pkgs/tree/master/manifests/a/ArtifexSoftware/GhostScript) and add it to PATH.
-* `win_install_ssh_client`: install [openssh client](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse?tabs=powershell).
-* `win_install_android_sdkmanager_and_platform_tools`: install android [sdkmanager](https://developer.android.com/studio/command-line/sdkmanager) and [platform tools (adb)] (https://developer.android.com/studio/command-line/adb), and add them to PATH.
-* `win_install_flutter`: install [flutter sdk](https://docs.flutter.dev/get-started/install/windows) and add it to PATH.
-
-
-See more win helpers in [lib/os_win.bash](lib/os_win.bash).
+See more win helpers in [os_win.bash](os_win.bash).
 
 ### commands helpers
 
@@ -117,7 +105,18 @@ python:
 * `python_setup_upload_testpypi`: upload to testpypi from a pkg folder with setup.py.
 * `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py.
 
-See others commands at: See more at: [adb.bash](lib/adb.bash), [ffmpeg.bash](lib/ffmpeg.bash), [ghostscript.bash](lib/ghostscript.bash), [lxc.bash](lib/lxc.bash), [pandoc.bash](lib/pandoc.bash), [python.bash](lib/python.bash), [ssh.bash](lib/ssh.bash), [wget.bash](lib/wget.bash), [zip.bash](lib/zip.bash), [cmake.bash](lib/cmake.bash), [flutter.bash](lib/flutter.bash), [git.bash](lib/git.bash), [latex.bash](lib/latex.bash), [meson.bash](lib/meson.bash), [youtube-dl.bash](lib/youtube-dl.bash).
+See others commands at: 
+* [adb.bash](lib/adb.bash)
+* [cmake.bash](lib/cmake.bash)
+* [ffmpeg.bash](lib/ffmpeg.bash)
+* [git.bash](lib/git.bash)
+* [gs.bash](lib/gs.bash)
+* [lxc.bash](lib/lxc.bash)
+* [meson.bash](lib/meson.bash)
+* [pandoc.bash](lib/pandoc.bash)
+* [python.bash](lib/python.bash)
+* [wget.bash](lib/wget.bash)
+* [youtube-dl.bash](lib/youtube-dl.bash).
 
 ## References
 
