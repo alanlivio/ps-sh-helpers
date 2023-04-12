@@ -12,7 +12,7 @@ source "$BH_DIR/os_any.bash"
 case $OSTYPE in
 msys*)
   source "$BH_DIR/os_win.bash"
-  alias ghostscript='gswin64.exe'
+  alias gs='gswin64.exe'
   ;;
 linux*)
   source "$BH_DIR/os_ubu.bash"
@@ -32,7 +32,7 @@ if type cmake &>/dev/null; then source "$BH_LIB/cmake.bash"; fi
 if type docker &>/dev/null; then source "$BH_LIB/docker.bash"; fi
 if type ffmpeg &>/dev/null; then source "$BH_LIB/ffmpeg.bash"; fi
 if type flutter &>/dev/null; then source "$BH_LIB/flutter.bash"; fi
-if type ghostscript &>/dev/null; then source "$BH_LIB/ghostscript.bash"; fi
+if type gs &>/dev/null; then source "$BH_LIB/gs.bash"; fi
 if type git &>/dev/null; then source "$BH_LIB/git.bash"; fi
 if type latexmk &>/dev/null; then source "$BH_LIB/latex.bash"; fi
 if type lxc &>/dev/null; then source "$BH_LIB/lxc.bash"; fi
