@@ -10,7 +10,7 @@ BH_PS1_DIR="$BH_DIR/lib/ps1/"
 # explorer open
 #########################
 function explorer_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'; }
-function explorer_restart() { powershell.exe "Stop-Process -ProcessName explorer -ea 0 | Out-Null"; }
+function explorer_restart() { powershell "Stop-Process -ProcessName explorer -ea 0 | Out-Null"; }
 function explorer_open_startmenu() { powershell -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs'; }
 function explorer_open_startmenu_all_users() { powershell -c 'explorer ${env:programdata}\Microsoft\Windows\Start Menu\Programs'; }
 function explorer_open_recycle_bin() { powershell -c 'explorer shell:RecycleBinFolder'; }
@@ -20,10 +20,7 @@ function explorer_open_recycle_bin() { powershell -c 'explorer shell:RecycleBinF
 #########################
 
 function win_upgrade() {
-  gsudo powershell -c '
-    Install-Module -Name PSWindowsUpdate -Force
-    Install-WindowsUpdate -AcceptAll -IgnoreReboot
-  '
+  gsudo powershell.exe -c 'Install-Module -Name PSWindowsUpdate -Force; Install-WindowsUpdate -AcceptAll -IgnoreReboot'
 }
 
 #########################
@@ -107,17 +104,17 @@ function winget_install() {
 # services
 #########################
 
-function services_reset_startup() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/services_reset_startup.ps1)\'; }
-function services_disable_unused() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/services_disable_unused.ps1)\'; }
+function services_reset_startup() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/services_reset_startup.ps1)\'; }
+function services_disable_unused() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/services_disable_unused.ps1)\'; }
 
 #########################
 # sanity
 #########################
 
-function win_sanity_ctx_menu() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ctx_menu.ps1)\'; }
-function win_sanity_password_policy() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_password_policy.ps1)\'; }
-function win_sanity_this_pc() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_this_pc.ps1)\'; }
-function win_sanity_ui() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/sanity_ui.ps1)\'; }
+function win_sanity_ctx_menu() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/sanity_ctx_menu.ps1)\'; }
+function win_sanity_password_policy() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/sanity_password_policy.ps1)\'; }
+function win_sanity_this_pc() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/sanity_this_pc.ps1)\'; }
+function win_sanity_ui() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/sanity_ui.ps1)\'; }
 
 #########################
 # msys2
@@ -136,9 +133,9 @@ function msys2_use_same_home() { echo db_home: windows >>/etc/nsswitch.conf; }
 # wsl
 #########################
 
-function win_install_wsl() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/wsl_install.ps1)\'; }
-function wsl_use_same_home() { gsudo powershell \'$(cygpath -w $BH_PS1_DIR/wsl_use_same_home.ps1)\'; }
-function wsl_code_from_win() { powershell.exe -c '& code ' "$@"; }
+function win_install_wsl() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/wsl_install.ps1)\'; }
+function wsl_use_same_home() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/wsl_use_same_home.ps1)\'; }
+function wsl_code_from_win() { powershell -c '& code ' "$@"; }
 
 #########################
 # install
@@ -148,11 +145,11 @@ function win_add_slink_at_bin() {
   local link="$BH_BIN/$(basename $(cygpath $1))"
   link="$(cygpath -w $link)"
   local target="$(cygpath -w $1)"
-  gsudo powershell.exe -c "New-Item -ItemType SymbolicLink -Path" \'$link\' " -Target " \'$target\'
+  gsudo powershell.exe.exe -c "New-Item -ItemType SymbolicLink -Path" \'$link\' " -Target " \'$target\'
 }
 
 function win_install_ssh_client() {
-  gsudo powershell -c 'Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0'
+  gsudo powershell.exe -c 'Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0'
 }
 
 function win_install_miktex() {
