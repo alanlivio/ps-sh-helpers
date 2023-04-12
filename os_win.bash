@@ -141,38 +141,6 @@ function wsl_code_from_win() {
 # install
 #########################
 
-function win_add_slink_at_bin() {
-  local link="$BH_BIN/$(basename $(cygpath $1))"
-  link="$(cygpath -w $link)"
-  local target="$(cygpath -w $1)"
-  gsudo powershell.exe.exe -c "New-Item -ItemType SymbolicLink -Path" \'$link\' " -Target " \'$target\'
-}
-
-function win_install_ssh_client() {
-  gsudo powershell.exe -c 'Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0'
-}
-
-function win_install_miktex() {
-  winget_install ChristianSchenk.MiKTeX
-  win_path_add $(cygpath -w $HOME/AppData/Local/Programs/MiKTeX/miktex/bin/x64/)
-}
-
-function win_install_ghostscript() {
-  winget_install ArtifexSoftware.GhostScript
-  win_path_add $(cygpath -w '/c/Program Files/gs/gs10.00.0/bin')
-}
-
-function win_install_make() {
-  winget_install GnuWin32.Make
-  win_path_add "$PROGRAMFILES (x86)\GnuWin32\bin"
-}
-
-function win_install_bat() {
-  decompress_from_url_one_file_and_move_to_bin https://github.com/sharkdp/bat/releases/download/v0.22.1/bat-v0.22.1-x86_64-pc-windows-gnu.zip bat.exe
-  return_if_last_command_fail
-  win_path_add "$BH_BIN"
-}
-
 function win_install_android_sdkmanager_and_platform_tools() {
   # create SDK_HOME
   local ad_sdk_home=$(cygpath $BH_BIN/Android/Sdk)
