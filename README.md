@@ -60,8 +60,8 @@ See more mac helpers in [os_mac.bash](os_mac.bash).
 ### win
 
 env/path:
-* `win_env_add`: add variable to ENV.
-* `win_env_show`: show ENV.
+* `win_env_add`: add variable to env variables.
+* `win_env_show`: show env variables.
 * `win_path_show_as_list`: show PATH as a list.
 * `win_path_show`: show PATH string
 * `win_path_add`: add dir to PATH. It is a wrapper to [path_add.ps1](lib/ps1/path_add.ps1).

@@ -1,14 +1,16 @@
 #########################
 # essentials aliases
 #########################
+
 alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
 alias winget='winget.exe'
 alias powershell='powershell.exe'
-BH_PS1_DIR="$BH_DIR/lib/ps1/"
+BH_LIB_PS1="$BH_DIR/lib/ps1/"
 
 #########################
 # explorer open
 #########################
+
 function explorer_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'; }
 function explorer_restart() { powershell "Stop-Process -ProcessName explorer -ea 0 | Out-Null"; }
 function explorer_open_startmenu() { powershell -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs'; }
@@ -64,7 +66,7 @@ function win_path_add() { # using ps1 script
   local dir=$(cygpath -w $@)
   local dircyg=$(cygpath $@)
   # export in win
-  powershell -c "$(cygpath -w $BH_PS1_DIR/path_add.ps1)" \'$dir\'
+  powershell -c "$(cygpath -w $BH_LIB_PS1/path_add.ps1)" \'$dir\'
   # export in bash (it will reolad from win in new shell)
   if [[ ":$PATH:" != *":$dircyg:"* ]]; then export PATH=${PATH}:$dircyg; fi
 }
@@ -72,10 +74,6 @@ function win_path_add() { # using ps1 script
 #########################
 # winget
 #########################
-
-function winget_show_with_versions() {
-  winget show --versions $1
-}
 
 function winget_upgrade_all() {
   winget upgrade --all --silent
@@ -100,17 +98,17 @@ function winget_install() {
 # services
 #########################
 
-function services_reset_startup() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/services_reset_startup.ps1)\'; }
-function services_disable_unused() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/services_disable_unused.ps1)\'; }
+function services_reset_startup() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/services_reset_startup.ps1)\'; }
+function services_disable_unused() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/services_disable_unused.ps1)\'; }
 
 #########################
 # sanity
 #########################
 
-function win_sanity_ctx_menu() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/sanity_ctx_menu.ps1)\'; }
-function win_sanity_password_policy() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/sanity_password_policy.ps1)\'; }
-function win_sanity_this_pc() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/sanity_this_pc.ps1)\'; }
-function win_sanity_ui() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/sanity_ui.ps1)\'; }
+function win_sanity_ctx_menu() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/sanity_ctx_menu.ps1)\'; }
+function win_sanity_password_policy() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/sanity_password_policy.ps1)\'; }
+function win_sanity_this_pc() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/sanity_this_pc.ps1)\'; }
+function win_sanity_ui() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/sanity_ui.ps1)\'; }
 
 #########################
 # msys2
@@ -127,12 +125,12 @@ alias msys2_use_same_home='echo db_home: windows >>/etc/nsswitch.conf'
 # wsl
 #########################
 
-function win_install_wsl() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/wsl_install.ps1)\'; }
-function wsl_use_same_home() { gsudo powershell.exe \'$(cygpath -w $BH_PS1_DIR/wsl_use_same_home.ps1)\'; }
+function win_install_wsl() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/wsl_install.ps1)\'; }
+function wsl_use_same_home() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/wsl_use_same_home.ps1)\'; }
 function wsl_code_from_win() {
   if [ "$#" -ne 0 ]; then
-    powershell -c '& code ' "$@";
+    powershell -c '& code ' "$@"
   else
-    powershell -c '& code .';
+    powershell -c '& code .'
   fi
 }
