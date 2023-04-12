@@ -50,17 +50,6 @@ function home_cleanup() {
       fi
     done
   fi
-  if [[ $OSTYPE == "msys"* ]]; then
-    explorer_hide_home_dotfiles
-    if [ -n "$BH_HOME_UNUSED_WIN_HIDE" ]; then
-      local list=$(printf '"%s"' "${BH_HOME_UNUSED_WIN_HIDE[@]}" | sed 's/""/","/g')
-      powershell -c '
-        $list =' "$list" '
-        $nodes = Get-ChildItem ${env:userprofile} | Where-Object {$_.name -In $list}
-        $nodes | ForEach-Object { $_.Attributes += "Hidden" }
-      '
-    fi
-  fi
 }
 
 #########################

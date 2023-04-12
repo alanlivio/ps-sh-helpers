@@ -1,5 +1,5 @@
 #########################
-# essentials aliases
+# basic
 #########################
 
 alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
@@ -7,21 +7,27 @@ alias winget='winget.exe'
 alias powershell='powershell.exe'
 BH_LIB_PS1="$BH_DIR/lib/ps1/"
 
-#########################
-# explorer open
-#########################
+function home_win_hide_dotfiles_and_unusued() {
+  powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
+  if [ -n "$BH_HOME_WIN_HIDE_UNUSED" ]; then
+    local to_hide=$(printf '"%s"' "${BH_HOME_WIN_HIDE_UNUSED[@]}" | sed 's/""/","/g')
+    powershell -c '
+      $list =' "$to_hide" '
+      $nodes = Get-ChildItem ${env:userprofile} | Where-Object {$_.name -In $list}
+      $nodes | ForEach-Object { $_.Attributes += "Hidden" }
+    '
+  fi
+}
 
-function explorer_hide_home_dotfiles() { powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'; }
-function explorer_restart() { powershell "Stop-Process -ProcessName explorer -ea 0 | Out-Null"; }
 function explorer_open_startmenu() { powershell -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs'; }
 function explorer_open_startmenu_all_users() { powershell -c 'explorer ${env:programdata}\Microsoft\Windows\Start Menu\Programs'; }
 function explorer_open_recycle_bin() { powershell -c 'explorer shell:RecycleBinFolder'; }
 
 #########################
-# win upgrade
+# win update
 #########################
 
-function win_upgrade() {
+function win_update_install() {
   gsudo powershell.exe -c 'Install-Module -Name PSWindowsUpdate -Force; Install-WindowsUpdate -AcceptAll -IgnoreReboot'
 }
 
@@ -113,13 +119,14 @@ function win_sanity_ui() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/sanit
 #########################
 # msys2
 #########################
-
-alias msys2_search='pacman -s --noconfirm'
-alias msys2_show='pacman -Qi'
-alias msys2_list_installed='pacman -Qqe'
-alias msys2_install='pacman -S --noconfirm'
-alias msys2_uninstall='pacman -R --noconfirm'
-alias msys2_use_same_home='echo db_home: windows >>/etc/nsswitch.conf'
+if type pacman &>/dev/null; then
+  alias msys2_search='pacman -s --noconfirm'
+  alias msys2_show='pacman -Qi'
+  alias msys2_list_installed='pacman -Qqe'
+  alias msys2_install='pacman -S --noconfirm'
+  alias msys2_uninstall='pacman -R --noconfirm'
+  alias msys2_use_same_home='echo db_home: windows >>/etc/nsswitch.conf'
+fi
 
 #########################
 # wsl
