@@ -29,7 +29,6 @@ esac
 
 if type adb &>/dev/null; then source "$BH_LIB/adb.bash"; fi
 if type cmake &>/dev/null; then source "$BH_LIB/cmake.bash"; fi
-if type docker &>/dev/null; then source "$BH_LIB/docker.bash"; fi
 if type ffmpeg &>/dev/null; then source "$BH_LIB/ffmpeg.bash"; fi
 if type flutter &>/dev/null; then source "$BH_LIB/flutter.bash"; fi
 if type gs &>/dev/null; then source "$BH_LIB/gs.bash"; fi
@@ -40,4 +39,3 @@ if type pandoc &>/dev/null; then source "$BH_LIB/pandoc.bash"; fi
 if type python &>/dev/null; then source "$BH_LIB/python.bash"; fi
 if type wget &>/dev/null; then source "$BH_LIB/wget.bash"; fi
 if type youtube-dl &>/dev/null; then source "$BH_LIB/youtube-dl.bash"; fi
-if type zip &>/dev/null; then source "$BH_LIB/zip.bash"; fi
