@@ -17,3 +17,5 @@ function python_setup_upload_pip() {
   twine check dist/*
   twine upload dist/* -u $PYPI_USER -p "$PYPI_PASS"
 }
+
+alias conda_create_from_enviroment_yml="conda env create -f environment.yml"
