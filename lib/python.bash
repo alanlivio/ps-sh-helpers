@@ -1,11 +1,5 @@
 alias python_clean_cache='find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf'
 
-function pip_install() {
-  for i in "$@"; do
-    pip show $i >/dev/null || pip install $i
-  done
-}
-
 function python_setup_install() {
   python setup.py install
 }

@@ -25,11 +25,7 @@ home/dotfiles/pkgs helpers using `BH_*` vars from `~/.bashrc`, see examples at [
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.
-* `pkgs_install` (at gitbash): install pkgs from BH_WIN_GET and BH_WIN_PIP.
-* `pkgs_install` (at mac bash): install pkgs from BH_MAC_BREW and BH_MAC_PIP.
-* `pkgs_install` (at msys bash): install pkgs from BH_MSYS2_PAC and BH_MSYS2_PIP.
-* `pkgs_install` (at ubuntu bash): install pkgs from BH_UBU_APT and BH_UBU_PIP.
-* `pkgs_install` (at WSL bash): install pkgs from BH_WSL_APT and BH_WSL_PIP.
+* `pkgs_install`: install pkgs from BH_PKGS_WINGET, BH_PKGS_BREW, BH_PKGS_MSYS2, and BH_PKGS_APT, if winget, brew, pacman, and apt installed, respectively.
 
 decompress/folder/user:
 
