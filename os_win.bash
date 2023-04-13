@@ -24,12 +24,21 @@ function explorer_open_startmenu_all_users() { powershell -c 'explorer ${env:pro
 function explorer_open_recycle_bin() { powershell -c 'explorer shell:RecycleBinFolder'; }
 
 #########################
-# win update
+# win upgrade & services
 #########################
 
-function win_update_install() {
-  gsudo powershell.exe -c 'Install-Module -Name PSWindowsUpdate -Force; Install-WindowsUpdate -AcceptAll -IgnoreReboot'
-}
+function win_upgrade() { gsudo powershell.exe -c 'Install-Module -Name PSWindowsUpdate -Force; Install-WindowsUpdate -AcceptAll -IgnoreReboot';  }
+function win_services_reset_startup() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/services_reset_startup.ps1)\'; }
+function win_services_disable_unused() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/services_disable_unused.ps1)\'; }
+
+#########################
+# win sanity
+#########################
+
+function win_sanity_ctx_menu() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/sanity_ctx_menu.ps1)\'; }
+function win_sanity_password_policy() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/sanity_password_policy.ps1)\'; }
+function win_sanity_this_pc() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/sanity_this_pc.ps1)\'; }
+function win_sanity_ui() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/sanity_ui.ps1)\'; }
 
 #########################
 # regedit
@@ -99,22 +108,6 @@ function winget_install() {
     done
   fi
 }
-
-#########################
-# services
-#########################
-
-function services_reset_startup() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/services_reset_startup.ps1)\'; }
-function services_disable_unused() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/services_disable_unused.ps1)\'; }
-
-#########################
-# sanity
-#########################
-
-function win_sanity_ctx_menu() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/sanity_ctx_menu.ps1)\'; }
-function win_sanity_password_policy() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/sanity_password_policy.ps1)\'; }
-function win_sanity_this_pc() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/sanity_this_pc.ps1)\'; }
-function win_sanity_ui() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/sanity_ui.ps1)\'; }
 
 #########################
 # msys2
