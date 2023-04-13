@@ -17,7 +17,7 @@ alias folder_list_sorted_by_size='du -ahd 1 | sort -h'
 # dotfiles
 #########################
 
-function dotfiles_func() {
+function _dotfiles_func() {
   : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
   declare -a files_array
   files_array=($BH_DOTFILES)
@@ -36,9 +36,13 @@ function dotfiles_func() {
     fi
   done
 }
-alias dotfiles_install="dotfiles_func install"
-alias dotfiles_backup="dotfiles_func backup"
-alias dotfiles_diff="dotfiles_func diff"
+alias dotfiles_install="_dotfiles_func install"
+alias dotfiles_backup="_dotfiles_func backup"
+alias dotfiles_diff="_dotfiles_func diff"
+
+#########################
+# clean
+#########################
 
 function home_cleanup() {
   if [ -n "$BH_HOME_UNUSED_CLEAN" ]; then
@@ -50,6 +54,10 @@ function home_cleanup() {
       fi
     done
   fi
+}
+
+function latex_clean() {
+  rm -rf _markdown* *.markdown.lua *.aux *.dvi *.log *.lox *.out *.lol *.pdf *.synctex.gz _minted-* *.bbl *.blg *.lot *.lof *.toc *.lol *.fdb_latexmk *.fls *.bcf
 }
 
 #########################
@@ -149,12 +157,4 @@ function ssh_send_to_server_authorized_pub_key() {
 function ssh_send_to_server_priv_key() {
   : ${1?"Usage: ${FUNCNAME[0]} <user@server>"}
   ssh "$1" sh -c 'cat - > ~/.ssh/id_rsa;chmod 600 $HOME/.ssh/id_rsa' <$HOME/.ssh/id_rsa
-}
-
-#########################
-# clean
-#########################
-
-function latex_clean() {
-  rm -rf _markdown* *.markdown.lua *.aux *.dvi *.log *.lox *.out *.lol *.pdf *.synctex.gz _minted-* *.bbl *.blg *.lot *.lof *.toc *.lol *.fdb_latexmk *.fls *.bcf
 }
