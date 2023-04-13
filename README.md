@@ -2,12 +2,13 @@
 
 # bash-helpers
 
-Multi-bash (win msys/gitbash/wsl, ubu, mac) helpers to easily install packages, setup os (dark mode, clean taskbar/clutter/unused), sync dotfiles, manage git repos, and more.
+Template to create multi-OS bash helpers (win msys/gitbash/wsl, ubu, mac). Useful to you organize your helpers in `OS-dependent` or `command-dependent`. The `OS-dependent` are loaded from `os_*.bash` files after testing `$OSTYPE` and may focus on OS setup (install pkgs, dark mode, clean taskbar/clutter/unused). The `command-dependent` are loaded from `lib/*.bash` after testing `type <command>`. 
 The project logo refers to the synthetic chemical element Bohrium, which also has BH's initials.
 
 ## Install
 
-The bash-helpers project has two requirements: a `bash shell` and `git`. On win, you can use [GitForWindows](https://gitforwindows.org/) which install `gitabash`.
+The bash-helpers project has two requirements: a `bash shell` and `git`. On win, you can use [GitForWindows](https://gitforwindows.org), which installs `gitabash`.
+
 So, run on a `bash shell` with `git`,:
 ```bash
   git clone https://github.com/alanlivio/bash-helpers ~/.bh &&\
@@ -15,17 +16,17 @@ So, run on a `bash shell` with `git`,:
     source ~/.bashrc
 ```
 
-## helpers
+## OS-dependent samples
 
-### OS-any
+### os_any
 
 home/dotfiles/pkgs helpers using `BH_*` vars from `~/.bashrc`, see examples at [skel/.bashrc](skel/.bashrc):
 
+* `pkgs_install`: install pkgs from BH_PKGS_WINGET, BH_PKGS_BREW, BH_PKGS_MSYS2, and BH_PKGS_APT, if winget, brew, pacman, and apt installed, respectively.
 * `home_cleanup`: remove home files/dirs from BH_HOME_UNUSED_CLEAN. On win, hide dotfiles and BH_HOME_UNUSED_WIN_HIDE at home.
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.
-* `pkgs_install`: install pkgs from BH_PKGS_WINGET, BH_PKGS_BREW, BH_PKGS_MSYS2, and BH_PKGS_APT, if winget, brew, pacman, and apt installed, respectively.
 
 decompress/folder/user:
 
@@ -38,14 +39,14 @@ decompress/folder/user:
 
 See more OS-independent helpers  [os_any.bash](os_any.bash) folder.
 
-### linux
+### os_ubu
 
-* `deb_install_url`: fetch and install a deb package.
 * `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g., small icons), uninstall pre-installed and not used apps (e.g., weather, news, calendar, solitaire).
+* `deb_install_url`: fetch and install a deb package.
 
 See more linux helpers in [os_ubu.bash](os_ubu.bash).
 
-### mac
+### os_mac
 
 * `mac_install_brew`: install brew package manager
 * `mac_brew_install`: install a brew package
@@ -53,7 +54,7 @@ See more linux helpers in [os_ubu.bash](os_ubu.bash).
 
 See more mac helpers in [os_mac.bash](os_mac.bash).
 
-### win
+### os_win
 
 env/path:
 * `win_env_add`: add variable to env variables.
@@ -71,7 +72,7 @@ explorer:
 * `explorer_hide_home_dotfiles`: hide dotfiles at home folder.
 * `explorer_restart`: restart explorer.
 * `explorer_open_recycle_bin`: explorer open trash folder.
-* `explorer_open_startmenu_user`: explorer open start menu folder for current user.
+* `explorer_open_startmenu_user`: explorer opens start menu folder for the  current user.
 * `explorer_open_startmenu_all`: explorer open start menu folder for all users.
 
 sanity:
@@ -89,9 +90,9 @@ wsl:
 
 See more win helpers in [os_win.bash](os_win.bash).
 
-### commands helpers
+## command-dependent samples
 
-python:
+### python
 
 * `pip_install`: install packages if not installed.
 * `pip_upgrade_outdated`: upgrade outdated packages.
@@ -100,6 +101,8 @@ python:
 * `python_setup_install`: install from a pkg folder with setup.py.
 * `python_setup_upload_testpypi`: upload to testpypi from a pkg folder with setup.py.
 * `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py.
+
+### others
 
 See others commands at: 
 * [adb.bash](lib/adb.bash)
