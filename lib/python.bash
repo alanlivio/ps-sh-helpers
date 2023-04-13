@@ -1,5 +1,9 @@
 alias python_clean_cache='find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf'
 
+function python_check_tensorflow() {
+  python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
+}
+
 function python_setup_install() {
   python setup.py install
 }
