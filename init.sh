@@ -2,10 +2,9 @@
 
 BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
 BH_LIB="$BH_DIR/lib"
-if [ -z "${BH_BIN}" ]; then BH_BIN="$HOME/bin"; fi
 
 #########################
-# load os_*.bash files
+# load os_<name>.bash files
 #########################
 
 source "$BH_DIR/os_any.bash"
@@ -24,7 +23,7 @@ darwin*)
 esac
 
 #########################
-# load <tool>.bash files
+# load <command>.bash files
 #########################
 
 if type adb &>/dev/null; then source "$BH_LIB/adb.bash"; fi
