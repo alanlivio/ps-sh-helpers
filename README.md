@@ -9,7 +9,7 @@ The project logo refers to the synthetic chemical element Bohrium, which also ha
 
 The bash-helpers project has two requirements: a `bash shell` and `git`. On win, you can use [GitForWindows](https://gitforwindows.org), which installs `gitabash`.
 
-So, run on a `bash shell` with `git`,:
+So, run on a `bash shell` with `git`:
 ```bash
   git clone https://github.com/alanlivio/bash-helpers ~/.bh &&\
     echo "source ~/.bh/init.sh" >> ~/.bashrc &&\
@@ -69,11 +69,11 @@ winget:
 * `winget_upgrade_all`: winget upgrade all packages.
 
 explorer:
-* `explorer_hide_home_dotfiles`: hide dotfiles at home folder.
+* `explorer_hide_home_dotfiles`: hide dotfiles at the home folder.
 * `explorer_restart`: restart explorer.
 * `explorer_open_recycle_bin`: explorer open trash folder.
-* `explorer_open_startmenu_user`: explorer opens start menu folder for the  current user.
-* `explorer_open_startmenu_all`: explorer open start menu folder for all users.
+* `explorer_open_startmenu_user`: explorer opens the start menu folder for the current user.
+* `explorer_open_startmenu_all`: explorer open the start menu folder for all users.
 
 sanity:
 * `win_sanity_ctx_menu`: remove unused context menu. It is a wrapper to [sanity_ctx_menu.ps1](lib/ps1/sanity_ctx_menu.ps1)
@@ -85,7 +85,7 @@ sanity:
 
 wsl:
 * `wsl_use_same_home` (at gitbash): make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/wsl_use_same_home.ps1).
-* `wsl_code_from_win` (at wsl): open vscode in win environment instead of wsl (useful with use wsl default bash).
+* `wsl_code_from_win` (at wsl): open the vscode in win environment instead of wsl .
 
 See more win helpers in [os_win.bash](os_win.bash).
 
@@ -93,14 +93,14 @@ See more win helpers in [os_win.bash](os_win.bash).
 
 ### python
 
-* `python_check_tensorflow`: check tensorflow GPU  support.
+* `python_check_tensorflow`: check tensorflow GPU support.
 * `python_setup_install`: install from a pkg folder with setup.py.
 * `python_setup_upload_testpypi`: upload to testpypi from a pkg folder with setup.py.
 * `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py.
 
 ### others
 
-See others commands at: 
+See others commands at:
 * [adb.bash](lib/adb.bash)
 * [cmake.bash](lib/cmake.bash)
 * [ffmpeg.bash](lib/ffmpeg.bash)
