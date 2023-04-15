@@ -84,7 +84,6 @@ sanity:
 * `win_sys_upgrade`: update win.
 
 wsl:
-* `win_install_wsl` (at gitbash): to install WSL/Ubuntu automating the process described in [Microsoft WSL Tutorial](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install). After running it, it requires restarting win and running it again. When the Ubuntu app starts, you must configure your username/password. It is a wrapper to [wsl_install.ps1](lib/ps1/wsl_install.ps1).
 * `wsl_use_same_home` (at gitbash): make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/wsl_use_same_home.ps1).
 * `wsl_code_from_win` (at wsl): open vscode in win environment instead of wsl (useful with use wsl default bash).
 

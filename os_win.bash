@@ -125,7 +125,6 @@ fi
 # wsl
 #########################
 
-function win_install_wsl() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/wsl_install.ps1)\'; }
 function wsl_use_same_home() { gsudo powershell.exe \'$(cygpath -w $BH_LIB_PS1/wsl_use_same_home.ps1)\'; }
 function wsl_code_from_win() {
   if [ "$#" -ne 0 ]; then
