@@ -7,14 +7,14 @@ The project logo refers to the synthetic chemical element Bohrium, which also ha
 
 ## Install
 
-The bash-helpers project has two requirements: a `bash shell` and `git`. On win, you can use [GitForWindows](https://gitforwindows.org), which installs `gitabash`.
-
-So, run on a `bash shell` with `git`:
+The bash-helpers project has two requirements: a `bash shell` and `git`. So, run on a `bash shell` with `git`:
 ```bash
   git clone https://github.com/alanlivio/bash-helpers ~/.bh &&\
     echo "source ~/.bh/init.sh" >> ~/.bashrc &&\
     source ~/.bashrc
 ```
+
+On win, you run the above command at `gitabash` installed with [GitForWindows](https://gitforwindows.org). If you also use WSL, you can share the same BH repo by doing a symbolic link to it with: `ln -s /mnt/c/<user>/.bh ~/.bh`.
 
 ## OS-dependent samples
 
@@ -32,8 +32,8 @@ decompress/folder/user:
 
 * `decompress_from_url`: fetch and decompress to a given folder.
 * `decompress`: decompress from multiple formats to a given folder.
-* `folder_count_files`: count files in current folder
-* `folder_count_files_recursive`: count files in current and sub folder
+* `folder_count_files`: count files in the current folder
+* `folder_count_files_recursive`: count files in the current and subfolder
 * `folder_sorted_by_size`: list dir sorted by item size.
 * `user_sudo_nopasswd`:  disable password when calling sudo (user must be in sudores).
 
@@ -44,7 +44,7 @@ See more OS-independent helpers  [os_any.bash](os_any.bash) folder.
 * `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g., small icons), uninstall pre-installed and not used apps (e.g., weather, news, calendar, solitaire).
 * `deb_install_url`: fetch and install a deb package.
 
-See more linux helpers in [os_ubu.bash](os_ubu.bash).
+See more ubu/linux helpers in [os_ubu.bash](os_ubu.bash).
 
 ### os_mac
 
@@ -73,19 +73,19 @@ explorer:
 * `explorer_restart`: restart explorer.
 * `explorer_open_recycle_bin`: explorer open trash folder.
 * `explorer_open_startmenu_user`: explorer opens the start menu folder for the current user.
-* `explorer_open_startmenu_all`: explorer open the start menu folder for all users.
+`explorer_open_startmenu_all`explorer opens the start menu folder for all users.
 
 sanity:
 * `win_sanity_ctx_menu`: remove unused context menu. It is a wrapper to [sanity_ctx_menu.ps1](lib/ps1/sanity_ctx_menu.ps1)
 * `win_sanity_password_policy`: remove password policy requirement. It is a wrapper to [path_add.ps1](lib/ps1/sanity_password_policy.ps1).
 * `win_sanity_services`: remove unused context services. It is a wrapper to [sanity_services.ps1](lib/ps1/sanity_services.ps1)
 * `win_sanity_this_pc`: remove link folders on This PC. It is a wrapper to [sanity_this_pc.ps1](lib/ps1/sanity_this_pc.ps1).
-* `win_sanity_ui` (at gitbash): enable dark mode, disable animations, and clean taskbar (e.g., small icons). It is a wrapper to [sanity_ui.ps1](lib/ps1/sanity_ui.ps1).
+* `win_sanity_ui`: enable dark mode, disable animations, and clean taskbar (e.g., small icons). It is a wrapper to [sanity_ui.ps1](lib/ps1/sanity_ui.ps1).
 * `win_sys_upgrade`: update win.
 
 wsl:
 * `wsl_use_same_home` (at gitbash): make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/wsl_use_same_home.ps1).
-* `wsl_code_from_win` (at wsl): open the vscode in win environment instead of wsl .
+* `wsl_code_from_win` (at wsl): open the vscode in win environment instead of wsl.
 
 See more win helpers in [os_win.bash](os_win.bash).
 
@@ -100,7 +100,7 @@ See more win helpers in [os_win.bash](os_win.bash).
 
 ### others
 
-See others commands at:
+See other commands at:
 * [adb.bash](lib/adb.bash)
 * [cmake.bash](lib/cmake.bash)
 * [ffmpeg.bash](lib/ffmpeg.bash)
