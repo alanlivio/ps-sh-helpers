@@ -12,10 +12,14 @@ case $OSTYPE in
 msys*)
   source "$BH_DIR/os_win.bash"
   alias gs='gswin64.exe'
+  alias winpath='cygpath -m'
   ;;
 linux*)
   source "$BH_DIR/os_ubu.bash"
-  if [[ -n $WSL_DISTRO_NAME ]]; then source "$BH_DIR/os_win.bash"; fi
+  if [[ -n $WSL_DISTRO_NAME ]]; then
+    alias winpath='wslpath -m'
+    source "$BH_DIR/os_win.bash";
+  fi
   ;;
 darwin*)
   source "$BH_DIR/os_mac.bash"
