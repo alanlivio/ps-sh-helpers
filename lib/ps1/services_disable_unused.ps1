@@ -1,31 +1,50 @@
+# based on https://github.com/W4RH4WK/Debloat-Windows-10/blob/master/scripts/disable-services.ps1
+
 function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
-function log_msg_2nd() { Write-Host -ForegroundColor DarkYellow "-- >" ($args -join " ") }
 
-function reg_new_path ($path) {
-  if (-not (Test-Path $path)) {
-    New-Item -Path $path -ItemType Directory -Force | Out-Null
-  }
-}
-
-function service_disable($name) {
-  log_msg "disabling service $name"
-  Get-Service -Name $name | Stop-Service -WarningAction SilentlyContinue
-  Get-Service -Name $name | Set-Service -StartupType Disabled -ea 0
-}
+#########################
+# features
+#########################
 
 function feature_disable($featurename) {
   log_msg "disabling feature $featurename"
   dism.exe /online /quiet /disable-feature /featurename:$featurename /norestart
 }
 
-feature_disable Printing-XPSServices-Features
+$features = @(
+  "Printing-XPSServices-Features"
+)
+foreach ($item in $features) {
+  service_disable $item
+}
 
-$services = @("*diagnosticshub.standardcollector.service*" # Diagnostics Hub
-  "*MapsBroker*" # Downloaded Maps Manager
-  "*TrkWks*" # Distributed Link Tracking Client
-  "*XblAuthManager*" # Xbox Live Auth Manager
-  "*XboxNetApiSvc*" # Xbox Live Networking Service
-  "*XblGameSave*" # Xbox Live Game Save
+#########################
+# services
+#########################
+
+function service_disable($name) {
+  log_msg "disabling service $name"
+  Get-Service -Name $name | Stop-Service -WarningAction SilentlyContinue
+  Get-Service -Name $name | Set-Service -StartupType Disabled -Confirm:$false
+}
+
+$services = @(
+  "diagnosticshub.standardcollector.service" # Diagnostics Hub
+  "DiagTrack"                                # Diagnostics Tracking Service
+  "dmwappushservice"                         # WAP Push Message Routing Service (see known issues)
+  "lfsvc"                                    # Geolocation Service
+  "MapsBroker"                               # Downloaded Maps Manager
+  "NetTcpPortSharing"                        # Net.Tcp Port Sharing Service
+  "RemoteAccess"                             # Routing and Remote Access
+  "RemoteRegistry"                           # Remote Registry
+  "SharedAccess"                             # Internet Connection Sharing (ICS)
+  "TrkWks"                                   # Distributed Link Tracking Client
+  "WMPNetworkSvc"                            # Windows Media Player Network Sharing Service
+  "WSearch"                                  # Windows Search
+  "XblAuthManager"                           # Xbox Live Auth Manager
+  "XblGameSave"                              # Xbox Live Game Save Service
+  "XboxNetApiSvc"                            # Xbox Live Networking Service
+  "ndu"                                      # Windows Network Data Usage Monitor
 )
 foreach ($item in $services) {
   service_disable $item

@@ -130,9 +130,4 @@ This project takes inspiration from:
 * <https://github.com/e-picas/bash-library>
 * <https://github.com/awesome-windows11/windows11>
 * <https://github.com/99natmar99/Windows-11-Fixer>
-* <https://github.com/adolfintel/windows10-Privacy>
-* <https://gist.github.com/alirobe/7f3b34ad89a159e6daa1>
-* <https://github.com/RanzigeButter/fyWin10/blob/master/fyWin10.ps1>
-* <https://github.com/madbomb122/Win10Script/blob/master/Win10-Menu.ps1>
-* <https://github.com/Sycnex/windows10Debloater/blob/master/windows10Debloater.ps1>
 * <https://github.com/W4RH4WK/Debloat-windows-10/tree/master/scripts>
