@@ -19,9 +19,14 @@ function home_win_hide_dotfiles_and_unusued() {
   fi
 }
 
-function explorer_open_startmenu() { powershell -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs'; }
-function explorer_open_startmenu_all_users() { powershell -c 'explorer ${env:programdata}\Microsoft\Windows\Start Menu\Programs'; }
-function explorer_open_recycle_bin() { powershell -c 'explorer shell:RecycleBinFolder'; }
+#########################
+# start
+#########################
+
+alias start='wslview' # from apt install wslu
+function start_startmenu() { powershell -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs'; }
+function start_startmenu_all_users() { powershell -c 'explorer ${env:programdata}\Microsoft\Windows\Start Menu\Programs'; }
+function start_recycle_bin() { powershell -c 'explorer shell:RecycleBinFolder'; }
 
 #########################
 # win upgrade & services
