@@ -21,7 +21,7 @@ On win, you run the above command at `gitabash` installed with [GitForWindows](h
 ### os_any
 
 * `pkgs_install`: install pkgs from BH_PKGS_WINGET, BH_PKGS_BREW, BH_PKGS_MSYS2, and BH_PKGS_APT, if winget, brew, pacman, and apt installed, respectively.
-* `home_cleanup`: remove home files/dirs from BH_HOME_UNUSED_CLEAN.
+* `unused_clean`: remove files/dirs defined in BH_UNUSED_CLEAN.
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.

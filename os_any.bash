@@ -44,13 +44,13 @@ alias dotfiles_diff="_dotfiles_func diff"
 # clean
 #########################
 
-function home_cleanup() {
-  if [ -n "$BH_HOME_UNUSED_CLEAN" ]; then
-    for i in "${BH_HOME_UNUSED_CLEAN[@]}"; do
-      if test -d "$HOME/$i"; then
-        rm -rf "$HOME/${i:?}" >/dev/null
-      elif test -e "$HOME/$i"; then
-        rm -f "$HOME/${i:?}" >/dev/null
+function unused_clean() {
+  if [ -n "$BH_UNUSED_CLEAN" ]; then
+    for i in "${BH_UNUSED_CLEAN[@]}"; do
+      if test -d "$i"; then
+        rm -rf "${i:?}" >/dev/null
+      elif test -e "$i"; then
+        rm -f "${i:?}" >/dev/null
       fi
     done
   fi

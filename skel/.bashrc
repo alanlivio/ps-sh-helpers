@@ -6,7 +6,7 @@ msys*)
   BH_HOME_UNUSED_WIN_HIDE=('Cookies' 'Picutres' '3D Objects' 'Contacts' 'Favorites' 'Links' 'MicrosoftEdgeBackups' 'NetHood' 'PrintHood' 'Recent' 'Saved Games' 'Searches' 'SendTo' 'ansel' 'Intel' 'IntelGraphicsProfiles' 'MicrosoftEdgeBackups')
   ;;
 linux*)
-  BH_HOME_UNUSED_CLEAN=('Videos' 'Pictures' 'Documents')
+  BH_UNUSED_CLEAN=('~/Videos' '~/Pictures' '~/Documents')
   ;;
 esac
 
