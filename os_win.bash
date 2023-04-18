@@ -7,7 +7,7 @@ alias winget='winget.exe'
 alias powershell='powershell.exe'
 BH_LIB_PS1="$BH_DIR/lib/ps1/"
 
-function home_win_hide_dotfiles_and_unusued() {
+function win_hide_dotfiles_and_unusued() {
   powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
   if [ -n "$BH_HOME_WIN_HIDE_UNUSED" ]; then
     local to_hide=$(printf '"%s"' "${BH_HOME_WIN_HIDE_UNUSED[@]}" | sed 's/""/","/g')
@@ -18,6 +18,7 @@ function home_win_hide_dotfiles_and_unusued() {
     '
   fi
 }
+function win_upgrade() { gsudo powershell.exe -c 'Install-Module -Name PSWindowsUpdate -Force; Install-WindowsUpdate -AcceptAll -IgnoreReboot';  }
 
 #########################
 # start
@@ -28,13 +29,6 @@ function start_startmenu() { powershell -c 'explorer ${env:appdata}\Microsoft\Wi
 function start_startmenu_all_users() { powershell -c 'explorer ${env:programdata}\Microsoft\Windows\Start Menu\Programs'; }
 function start_recycle_bin() { powershell -c 'explorer shell:RecycleBinFolder'; }
 
-#########################
-# win upgrade & services
-#########################
-
-function win_upgrade() { gsudo powershell.exe -c 'Install-Module -Name PSWindowsUpdate -Force; Install-WindowsUpdate -AcceptAll -IgnoreReboot';  }
-function win_services_reset_startup() { gsudo $(winpath $BH_LIB_PS1/services_reset_startup.ps1); }
-function win_services_disable_unused() { gsudo $(winpath $BH_LIB_PS1/services_disable_unused.ps1); }
 
 #########################
 # win sanity
@@ -44,6 +38,7 @@ function win_sanity_ctx_menu() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sa
 function win_sanity_password_policy() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_password_policy.ps1)\'; }
 function win_sanity_this_pc() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_this_pc.ps1)\'; }
 function win_sanity_ui() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_ui.ps1)\'; }
+function win_sanity_unused_services() { gsudo $(winpath $BH_LIB_PS1/services_disable_unused.ps1); }
 
 #########################
 # regedit

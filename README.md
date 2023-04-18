@@ -20,16 +20,11 @@ On win, you run the above command at `gitabash` installed with [GitForWindows](h
 
 ### os_any
 
-home/dotfiles/pkgs helpers using `BH_*` vars from `~/.bashrc`, see examples at [skel/.bashrc](skel/.bashrc):
-
 * `pkgs_install`: install pkgs from BH_PKGS_WINGET, BH_PKGS_BREW, BH_PKGS_MSYS2, and BH_PKGS_APT, if winget, brew, pacman, and apt installed, respectively.
-* `home_cleanup`: remove home files/dirs from BH_HOME_UNUSED_CLEAN. On win, hide dotfiles and BH_HOME_UNUSED_WIN_HIDE at home.
+* `home_cleanup`: remove home files/dirs from BH_HOME_UNUSED_CLEAN.
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.
-
-decompress/folder/user:
-
 * `decompress_from_url`: fetch and decompress to a given folder.
 * `decompress`: decompress from multiple formats to a given folder.
 * `folder_count_files`: count files in the current folder
@@ -37,6 +32,7 @@ decompress/folder/user:
 * `folder_sorted_by_size`: list dir sorted by item size.
 * `user_sudo_nopasswd`:  disable password when calling sudo (user must be in sudores).
 
+Some of the above helpers use `BH_*` vars from `~/.bashrc`, see examples at [skel/.bashrc](skel/.bashrc).
 See more OS-independent helpers  [os_any.bash](os_any.bash) folder.
 
 ### os_ubu
@@ -56,36 +52,26 @@ See more mac helpers in [os_mac.bash](os_mac.bash).
 
 ### os_win
 
-env/path:
+* `start_open_recycle_bin`: explorer open trash folder.
+* `start_open_startmenu_all`explorer opens the start menu folder for all users.
+* `start_open_startmenu_user`: explorer opens the start menu folder for the current user.
+* `start` (from gitbash or wsl): call cmd start or explorer.
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.
+* `win_hide_dotfiles_and_unusued`: hide dotfiles and others from BH_HOME_UNUSED_WIN_HIDE at home.
+* `win_path_add`: add dir to PATH. It is a wrapper to [path_add.ps1](lib/ps1/path_add.ps1).
 * `win_path_show_as_list`: show PATH as a list.
 * `win_path_show`: show PATH string
-* `win_path_add`: add dir to PATH. It is a wrapper to [path_add.ps1](lib/ps1/path_add.ps1).
-
-winget:
-* `winget_install`: winget install packages if not installed.
-* `winget_list`: winget list packages.
-* `winget_upgrade_all`: winget upgrade all packages.
-
-explorer:
-* `explorer_hide_home_dotfiles`: hide dotfiles at the home folder.
-* `explorer_restart`: restart explorer.
-* `explorer_open_recycle_bin`: explorer open trash folder.
-* `explorer_open_startmenu_user`: explorer opens the start menu folder for the current user.
-`explorer_open_startmenu_all`explorer opens the start menu folder for all users.
-
-sanity:
 * `win_sanity_ctx_menu`: remove unused context menu. It is a wrapper to [sanity_ctx_menu.ps1](lib/ps1/sanity_ctx_menu.ps1)
 * `win_sanity_password_policy`: remove password policy requirement. It is a wrapper to [path_add.ps1](lib/ps1/sanity_password_policy.ps1).
 * `win_sanity_services`: remove unused context services. It is a wrapper to [sanity_services.ps1](lib/ps1/sanity_services.ps1)
 * `win_sanity_this_pc`: remove link folders on This PC. It is a wrapper to [sanity_this_pc.ps1](lib/ps1/sanity_this_pc.ps1).
 * `win_sanity_ui`: enable dark mode, disable animations, and clean taskbar (e.g., small icons). It is a wrapper to [sanity_ui.ps1](lib/ps1/sanity_ui.ps1).
-* `win_sys_upgrade`: update win.
-
-wsl:
-* `wsl_use_same_home` (at gitbash): make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/wsl_use_same_home.ps1).
+* `winget_install`: winget install packages if not installed.
+* `winget_list`: winget list packages.
+* `winget_upgrade_all`: winget upgrade all packages.
 * `wsl_code_from_win` (at wsl): open the vscode in win environment instead of wsl.
+* `wsl_use_same_home` (at gitbash): make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/wsl_use_same_home.ps1).
 
 See more win helpers in [os_win.bash](os_win.bash).
 
