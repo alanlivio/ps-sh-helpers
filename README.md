@@ -58,7 +58,7 @@ See more mac helpers in [os_mac.bash](os_mac.bash).
 * `start` (from gitbash or wsl): call cmd start or explorer.
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.
-* `win_hide_dotfiles_and_unusued`: hide dotfiles and others from BH_HOME_UNUSED_WIN_HIDE at home.
+* `win_hide_dotfiles_and_unusued`: hide dotfiles and others defined in BH_WIN_HIDE_HOME at home.
 * `win_path_add`: add dir to PATH. It is a wrapper to [path_add.ps1](lib/ps1/path_add.ps1).
 * `win_path_show_as_list`: show PATH as a list.
 * `win_path_show`: show PATH string
