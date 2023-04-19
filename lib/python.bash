@@ -22,4 +22,5 @@ function python_setup_upload_pip() {
   twine upload dist/* -u $PYPI_USER -p "$PYPI_PASS"
 }
 
-alias conda_create_from_enviroment_yml="conda env create -f environment.yml"
+alias conda_env_create_from_enviroment_yml="conda env create -f environment.yml"
+alias conda_env_update_fromenviroment_yml="conda env update --file environment.yml --prune"
