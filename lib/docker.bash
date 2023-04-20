@@ -1,0 +1,1 @@
+alias docker_prune="docker container prune; docker image prune -a"
