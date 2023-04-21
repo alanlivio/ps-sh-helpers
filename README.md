@@ -79,7 +79,6 @@ See more win helpers in [os_win.bash](os_win.bash).
 
 ### python
 
-
 * `python_clean_cache`: clean cache
 * `python_check_tensorflow`: check tensorflow GPU support.
 * `python_setup_install`: install from a pkg folder with setup.py.
@@ -87,20 +86,30 @@ See more win helpers in [os_win.bash](os_win.bash).
 * `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py.
 * `conda_env_create_from_enviroment_yml`: create using environment.yml
 * `conda_env_update_fromenviroment_yml`: update using environment.yml
+
+See more win helpers in [lib/python.bash](lib/python.bash).
+
+### docker
+
+
+* `docker_prune`: clean unused images and containers
+* `docker_run_at_same_folder`: run, from a image, a command line using the current folder as the working folder
+
+See more win helpers in [lib/docker.bash](lib/docker.bash).
+
 ### others
 
 See other commands at:
-* [adb.bash](lib/adb.bash)
-* [cmake.bash](lib/cmake.bash)
-* [ffmpeg.bash](lib/ffmpeg.bash)
-* [git.bash](lib/git.bash)
-* [gs.bash](lib/gs.bash)
-* [lxc.bash](lib/lxc.bash)
-* [meson.bash](lib/meson.bash)
-* [pandoc.bash](lib/pandoc.bash)
-* [python.bash](lib/python.bash)
-* [wget.bash](lib/wget.bash)
-* [youtube-dl.bash](lib/youtube-dl.bash).
+* [lib/adb.bash](lib/adb.bash)
+* [lib/cmake.bash](lib/cmake.bash)
+* [lib/ffmpeg.bash](lib/ffmpeg.bash)
+* [lib/git.bash](lib/git.bash)
+* [lib/gs.bash](lib/gs.bash)
+* [lib/lxc.bash](lib/lxc.bash)
+* [lib/meson.bash](lib/meson.bash)
+* [lib/pandoc.bash](lib/pandoc.bash)
+* [lib/wget.bash](lib/wget.bash)
+* [lib/youtube-dl.bash](lib/youtube-dl.bash).
 
 ## References
 
