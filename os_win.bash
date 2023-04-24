@@ -38,7 +38,7 @@ function win_sanity_ctx_menu() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sa
 function win_sanity_password_policy() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_password_policy.ps1)\'; }
 function win_sanity_this_pc() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_this_pc.ps1)\'; }
 function win_sanity_ui() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_ui.ps1)\'; }
-function win_sanity_unused_services() { gsudo $(winpath $BH_LIB_PS1/services_disable_unused.ps1); }
+function win_sanity_unused_services() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_unused_services.ps1)\'; }
 
 #########################
 # regedit

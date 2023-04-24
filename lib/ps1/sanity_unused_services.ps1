@@ -15,7 +15,7 @@ $features = @(
   "Printing-XPSServices-Features"
 )
 foreach ($item in $features) {
-  service_disable $item
+  feature_disable $item
 }
 
 #########################
@@ -34,12 +34,9 @@ $services = @(
   "dmwappushservice"                         # WAP Push Message Routing Service (see known issues)
   "lfsvc"                                    # Geolocation Service
   "MapsBroker"                               # Downloaded Maps Manager
-  "NetTcpPortSharing"                        # Net.Tcp Port Sharing Service
   "RemoteAccess"                             # Routing and Remote Access
   "RemoteRegistry"                           # Remote Registry
-  "SharedAccess"                             # Internet Connection Sharing (ICS)
   "TrkWks"                                   # Distributed Link Tracking Client
-  "WMPNetworkSvc"                            # Windows Media Player Network Sharing Service
   "WSearch"                                  # Windows Search
   "XblAuthManager"                           # Xbox Live Auth Manager
   "XblGameSave"                              # Xbox Live Game Save Service

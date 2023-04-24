@@ -64,7 +64,7 @@ See more mac helpers in [os_mac.bash](os_mac.bash).
 * `win_path_show`: show PATH string
 * `win_sanity_ctx_menu`: remove unused context menu. It is a wrapper to [sanity_ctx_menu.ps1](lib/ps1/sanity_ctx_menu.ps1)
 * `win_sanity_password_policy`: remove password policy requirement. It is a wrapper to [path_add.ps1](lib/ps1/sanity_password_policy.ps1).
-* `win_sanity_services`: remove unused context services. It is a wrapper to [sanity_services.ps1](lib/ps1/sanity_services.ps1)
+* `win_sanity_unused_services`: remove unused context services. It is a wrapper to [sanity_unused_services.ps1](lib/ps1/sanity_unused_services.ps1)
 * `win_sanity_this_pc`: remove link folders on This PC. It is a wrapper to [sanity_this_pc.ps1](lib/ps1/sanity_this_pc.ps1).
 * `win_sanity_ui`: enable dark mode, disable animations, and clean taskbar (e.g., small icons). It is a wrapper to [sanity_ui.ps1](lib/ps1/sanity_ui.ps1).
 * `winget_install`: winget install packages if not installed.
