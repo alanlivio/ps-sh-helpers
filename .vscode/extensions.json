@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "ms-vscode.powershell",
+    "foxundermoon.shell-format",
+    "timonwong.shellcheck"
+  ]
+}
