@@ -7,7 +7,7 @@ alias winget='winget.exe'
 alias powershell='powershell.exe'
 BH_LIB_PS1="$BH_DIR/lib/ps1/"
 
-function win_hide_home_dotfiles() {
+function home_win_hide_files() {
   powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
   if [ -n "$BH_WIN_HIDE_HOME" ]; then
     local to_hide=$(printf '"%s"' "${BH_WIN_HIDE_HOME[@]}" | sed 's/""/","/g')

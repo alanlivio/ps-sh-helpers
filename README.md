@@ -21,7 +21,7 @@ On win, you run the above command at `gitabash` installed with [GitForWindows](h
 ### os_any
 
 * `pkgs_install`: install pkgs from BH_PKGS_WINGET, BH_PKGS_BREW, BH_PKGS_MSYS2, and BH_PKGS_APT, if winget, brew, pacman, and apt installed, respectively.
-* `unused_clean`: remove files/dirs defined in BH_UNUSED_CLEAN.
+* `home_clean`: remove files/dirs defined in BH_HOME_CLEAN.
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.
@@ -52,13 +52,13 @@ See more mac helpers in [os_mac.bash](os_mac.bash).
 
 ### os_win
 
+* `home_win_hide_files`: hide dotfiles and others defined in BH_WIN_HIDE_HOME at home.
 * `start_open_recycle_bin`: explorer open trash folder.
 * `start_open_startmenu_all`explorer opens the start menu folder for all users.
 * `start_open_startmenu_user`: explorer opens the start menu folder for the current user.
 * `start` (from gitbash or wsl): call cmd start or explorer.
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.
-* `win_hide_dotfiles_and_unusued`: hide dotfiles and others defined in BH_WIN_HIDE_HOME at home.
 * `win_path_add`: add dir to PATH. It is a wrapper to [path_add.ps1](lib/ps1/path_add.ps1).
 * `win_path_show_as_list`: show PATH as a list.
 * `win_path_show`: show PATH string
