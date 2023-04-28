@@ -73,7 +73,7 @@ See more mac helpers in [os_mac.bash](os_mac.bash).
 * `wsl_code_from_win` (at wsl): open the vscode in win environment instead of wsl.
 * `wsl_use_same_home` (at gitbash): make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/wsl_use_same_home.ps1).
 
-See more win helpers in [os_win.bash](os_win.bash).
+See more helpers in [os_win.bash](os_win.bash).
 
 ## command-dependent samples
 
@@ -84,18 +84,17 @@ See more win helpers in [os_win.bash](os_win.bash).
 * `python_setup_install`: install from a pkg folder with setup.py.
 * `python_setup_upload_testpypi`: upload to testpypi from a pkg folder with setup.py.
 * `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py.
-* `conda_env_create_from_enviroment_yml`: create using environment.yml
-* `conda_env_update_fromenviroment_yml`: update using environment.yml
+* `conda_env_create_from_enviroment_yml`: create env from environment.yml
+* `conda_env_update_from_enviroment_yml`: update env from environment.yml
 
-See more win helpers in [lib/python.bash](lib/python.bash).
+See more helpers in [lib/python.bash](lib/python.bash).
 
 ### docker
-
 
 * `docker_prune`: clean unused images and containers
 * `docker_run_at_same_folder`: run, from a image, a command line using the current folder as the working folder
 
-See more win helpers in [lib/docker.bash](lib/docker.bash).
+See more helpers in [lib/docker.bash](lib/docker.bash).
 
 ### others
 
