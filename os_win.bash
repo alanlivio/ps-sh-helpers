@@ -11,7 +11,7 @@ function home_win_hide_files() {
   powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
   if [ -n "$BH_WIN_HIDE_HOME" ]; then
     local to_hide=$(printf '"%s"' "${BH_WIN_HIDE_HOME[@]}" | sed 's/""/","/g')
-    powershell -c '
+    echo powershell -c '
       $list =' "$to_hide" '
       $nodes = Get-ChildItem ${env:userprofile} | Where-Object {$_.name -In $list}
       $nodes | ForEach-Object { $_.Attributes += "Hidden" }
@@ -24,11 +24,13 @@ function win_upgrade() { gsudo powershell.exe -c 'Install-Module -Name PSWindows
 # start
 #########################
 
-alias start='wslview' # from apt install wslu
 function start_startmenu() { powershell -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs'; }
 function start_startmenu_all_users() { powershell -c 'explorer ${env:programdata}\Microsoft\Windows\Start Menu\Programs'; }
 function start_recycle_bin() { powershell -c 'explorer shell:RecycleBinFolder'; }
-
+function start_from_wsl(){
+  if ! type wslview &>/dev/null; then sudo apt install wslu; fi
+  wslu $@
+}
 
 #########################
 # win sanity
