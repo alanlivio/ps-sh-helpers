@@ -37,6 +37,7 @@ See more OS-independent helpers  [os_any.bash](os_any.bash) folder.
 
 ### os_ubu
 
+* `ubu_update`: update ubuntu and all apt packages.
 * `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g., small icons), uninstall pre-installed and not used apps (e.g., weather, news, calendar, solitaire).
 * `deb_install_url`: fetch and install a deb package.
 
@@ -44,14 +45,14 @@ See more ubu/linux helpers in [os_ubu.bash](os_ubu.bash).
 
 ### os_mac
 
+* `mac_update`: update all brew packages
 * `mac_install_brew`: install brew package manager
-* `mac_brew_install`: install a brew package
-* `mac_brew_upgrade`: upgrade brew packages
 
 See more mac helpers in [os_mac.bash](os_mac.bash).
 
 ### os_win
 
+* `win_update`: update windows and all winget packages.
 * `home_win_hide_files`: hide dotfiles and others defined in BH_WIN_HIDE_HOME at home.
 * `start_open_recycle_bin`: explorer open trash folder.
 * `start_open_startmenu_all`explorer opens the start menu folder for all users.
@@ -67,9 +68,6 @@ See more mac helpers in [os_mac.bash](os_mac.bash).
 * `win_sanity_unused_services`: remove unused context services. It is a wrapper to [sanity_unused_services.ps1](lib/ps1/sanity_unused_services.ps1)
 * `win_sanity_this_pc`: remove link folders on This PC. It is a wrapper to [sanity_this_pc.ps1](lib/ps1/sanity_this_pc.ps1).
 * `win_sanity_ui`: enable dark mode, disable animations, and clean taskbar (e.g., small icons). It is a wrapper to [sanity_ui.ps1](lib/ps1/sanity_ui.ps1).
-* `winget_install`: winget install packages if not installed.
-* `winget_list`: winget list packages.
-* `winget_upgrade_all`: winget upgrade all packages.
 * `wsl_code_from_win` (at wsl): open the vscode in win environment instead of wsl.
 * `wsl_use_same_home` (at gitbash): make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/wsl_use_same_home.ps1).
 

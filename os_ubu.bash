@@ -11,11 +11,12 @@ function user_sudo_nopasswd() {
   SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
 }
 
+alias ubu_update="sudo apt -y update;sudo apt -y upgrade;sudo apt -y autoremove"
+
 #########################
 # apt
 #########################
 
-alias apt_update_upgrade_autoremove="sudo apt -y update;sudo apt -y upgrade;sudo apt -y autoremove"
 alias apt_ppa_remove="sudo add-apt-repository --remove"
 alias apt_ppa_list="apt policy"
 alias apt_autoremove="sudo apt -y autoremove"

@@ -18,7 +18,11 @@ function home_win_hide_files() {
     '
   fi
 }
-function win_upgrade() { gsudo powershell.exe -c 'Install-Module -Name PSWindowsUpdate -Force; Install-WindowsUpdate -AcceptAll -IgnoreReboot';  }
+
+function win_update() {
+  winget upgrade --all --silent
+  gsudo powershell.exe -c 'Install-Module -Name PSWindowsUpdate -Force; Install-WindowsUpdate -AcceptAll -IgnoreReboot'
+}
 
 #########################
 # start
@@ -91,10 +95,6 @@ function win_path_add() { # using ps1 script
 #########################
 # winget
 #########################
-
-function winget_upgrade_all() {
-  winget upgrade --all --silent
-}
 
 function winget_install() {
   local pkgs_to_install=""
