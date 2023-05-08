@@ -11,7 +11,7 @@ function home_win_hide_files() {
   powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
   if [ -n "$BH_WIN_HIDE_HOME" ]; then
     local to_hide=$(printf '"%s"' "${BH_WIN_HIDE_HOME[@]}" | sed 's/""/","/g')
-    echo powershell -c '
+    powershell -c '
       $list =' "$to_hide" '
       $nodes = Get-ChildItem ${env:userprofile} | Where-Object {$_.name -In $list}
       $nodes | ForEach-Object { $_.Attributes += "Hidden" }
