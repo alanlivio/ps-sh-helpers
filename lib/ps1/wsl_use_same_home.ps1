@@ -1,14 +1,14 @@
 function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
 function wsl_get_default() {
-    [System.Text.Encoding]::Unicode.GetString([System.Text.Encoding]::UTF8.GetBytes((wsl -l))) -split '\s\s+' | ForEach-Object {
-        if ($_.Contains('(')) {
-            return $_.Split(' ')[0]
-        }
+  [System.Text.Encoding]::Unicode.GetString([System.Text.Encoding]::UTF8.GetBytes((wsl -l))) -split '\s\s+' | ForEach-Object {
+    if ($_.Contains('(')) {
+      return $_.Split(' ')[0]
     }
+  }
 }
 function wsl_terminate() {
-    wsl -t (wsl_get_default)
+  wsl -t (wsl_get_default)
 }
 
 log_msg "setup wsl to use same home"
@@ -17,8 +17,8 @@ log_msg "terminate wsl"
 wsl_terminate
 
 if ((wsl echo '$HOME').Contains("Users")) {
-    log_msg "WSL already use windows UserProfile as home."
-    return
+  log_msg "WSL already use windows UserProfile as home."
+  return
 }
 
 log_msg "fix file metadata"

@@ -63,10 +63,9 @@ See more mac helpers in [os_mac.bash](os_mac.bash).
 * `win_path_add`: add dir to PATH. It is a wrapper to [path_add.ps1](lib/ps1/path_add.ps1).
 * `win_path_show_as_list`: show PATH as a list.
 * `win_path_show`: show PATH string
-* `win_sanity_ctx_menu`: remove unused context menu. It is a wrapper to [sanity_ctx_menu.ps1](lib/ps1/sanity_ctx_menu.ps1)
 * `win_sanity_password_policy`: remove password policy requirement. It is a wrapper to [path_add.ps1](lib/ps1/sanity_password_policy.ps1).
-* `win_sanity_unused_services`: remove unused context services. It is a wrapper to [sanity_unused_services.ps1](lib/ps1/sanity_unused_services.ps1)
-* `win_sanity_this_pc`: remove link folders on This PC. It is a wrapper to [sanity_this_pc.ps1](lib/ps1/sanity_this_pc.ps1).
+* `win_sanity_services_apps`: remove unused services and apps. It is a wrapper to [sanity_unused_services.ps1](lib/ps1/sanity_services_apps.ps1)
+* `win_sanity_explorer`: remove link folders on This PC, disable recent files, etc. It is a wrapper to [sanity_explorer.ps1](lib/ps1/sanity_explorer.ps1).
 * `win_sanity_ui`: enable dark mode, disable animations, and clean taskbar (e.g., small icons). It is a wrapper to [sanity_ui.ps1](lib/ps1/sanity_ui.ps1).
 * `wsl_code_from_win` (at wsl): open the vscode in win environment instead of wsl.
 * `wsl_use_same_home` (at gitbash): make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/wsl_use_same_home.ps1).

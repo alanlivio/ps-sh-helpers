@@ -40,11 +40,10 @@ function start_from_wsl(){
 # win sanity
 #########################
 
-function win_sanity_ctx_menu() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_ctx_menu.ps1)\'; }
 function win_sanity_password_policy() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_password_policy.ps1)\'; }
-function win_sanity_this_pc() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_this_pc.ps1)\'; }
+function win_sanity_explorer() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_explorer.ps1)\'; }
 function win_sanity_ui() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_ui.ps1)\'; }
-function win_sanity_unused_services() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_unused_services.ps1)\'; }
+function win_sanity_services_apps() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_unused_services.ps1)\'; }
 
 #########################
 # regedit
