@@ -9,4 +9,5 @@ function mac_install_brew() {
 function mac_update() {
   brew update
   sudo brew upgrade
+  sudo softwareupdate -i -a
 }
