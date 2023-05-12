@@ -45,12 +45,13 @@ alias dotfiles_diff="_dotfiles_func diff"
 #########################
 
 function home_clean() {
+  if [ -n "$1" ]; then local home="$1" else; local home="$HOME"; fi # util for wsl
   if [ -n "$BH_HOME_CLEAN" ]; then
     for i in "${BH_HOME_CLEAN[@]}"; do
-      if test -d "$i"; then
-        rm -rf "${i:?}" >/dev/null
+      if test -d "$home/$i"; then
+        rm -rf "$home/$i" >/dev/null
       elif test -e "$i"; then
-        rm -f "${i:?}" >/dev/null
+        rm -f "$home/$i" >/dev/null
       fi
     done
   fi
