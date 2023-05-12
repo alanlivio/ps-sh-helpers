@@ -67,13 +67,15 @@ function latex_clean() {
 
 function pkgs_install() {
   if type apt &>/dev/null && [ -n "$BH_PKGS_APT" ]; then
-    apt_install $BH_PKGS_APT
+    sudo apt install -y $BH_PKGS_APT
   fi
   if type winget &>/dev/null && [ -n "$BH_PKGS_WINGET" ]; then
-    winget_install $BH_PKGS_WINGET
+    for pkg in $BH_PKGS_WINGET; do
+      winget install --accept-package-agreements --accept-source-agreements --silent $pkg
+    done
   fi
   if type pacman &>/dev/null && [ -n "$BH_PKGS_MSYS2" ]; then
-    msys2_install $BH_PKGS_MSYS2
+    pacman -S --noconfirm $BH_PKGS_MSYS2
   fi
   if type brew &>/dev/null && [ -n "$BH_PKGS_MAC_BREW" ]; then
     brew install $BH_PKGS_MAC_BREW
