@@ -4,7 +4,6 @@
 
 function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
 function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
-function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
 function log_run() { log_msg "$*" && eval "$*"; }
 function test_and_create_dir() { if ! test -d "$1"; then mkdir -p $1; fi; }
 alias return_if_last_command_fail='if [ $? != 0 ]; then log_error ${FUNCNAME[0]} fail; return 1; fi'
@@ -45,12 +44,14 @@ alias dotfiles_diff="_dotfiles_func diff"
 #########################
 
 function home_clean() {
-  if [ -n "$1" ]; then local home="$1" else; local home="$HOME"; fi # util for wsl
+  if [ $# -eq 0  ]; then local home="$HOME"; else local home="$1"; fi # home_clean_win
   if [ -n "$BH_HOME_CLEAN" ]; then
     for i in "${BH_HOME_CLEAN[@]}"; do
       if test -d "$home/$i"; then
+        log_msg "rm $home/$i"
         rm -rf "$home/$i" >/dev/null
-      elif test -e "$i"; then
+      elif test -e "$home/$i"; then
+        log_msg "rm $home/$i"
         rm -f "$home/$i" >/dev/null
       fi
     done
@@ -71,7 +72,7 @@ function pkgs_install() {
   fi
   if type winget &>/dev/null && [ -n "$BH_PKGS_WINGET" ]; then
     for pkg in $BH_PKGS_WINGET; do
-      winget install --accept-package-agreements --accept-source-agreements --silent $pkg
+      winget install --accept-package-agreements --accept-source-agreements --silent $pkg 2>/dev/null
     done
   fi
   if type pacman &>/dev/null && [ -n "$BH_PKGS_MSYS2" ]; then

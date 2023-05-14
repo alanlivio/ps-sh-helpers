@@ -52,7 +52,7 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 
 ### os_win
 
-* `home_clean_win`: call home_clean (even inside WSL), and hide from explorer dotfiles (.*) and others defined in BH_WIN_HIDE_HOME.
+* `home_clean_win`: remove files/dirs defined in BH_HOME_CLEAN (even inside WSL), and hide from explorer dotfiles (.*) and others defined in BH_WIN_HIDE_HOME.
 * `win_update`: update windows and all Winget packages.
 * `start_open_recycle_bin`: explorer open trash folder.
 * `start_open_startmenu_all`explorer opens the start menu folder for all users.

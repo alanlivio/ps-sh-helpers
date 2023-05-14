@@ -13,7 +13,9 @@ function home_clean_win() {
   else
     home_clean
   fi
+  # set Hidden to nodes .*
   powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
+  # set Hidden to nodes defined $BH_WIN_HIDE_HOME
   if [ -n "$BH_WIN_HIDE_HOME" ]; then
     local to_hide=$(printf '"%s"' "${BH_WIN_HIDE_HOME[@]}" | sed 's/""/","/g')
     powershell -c '
