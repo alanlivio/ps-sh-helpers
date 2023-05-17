@@ -33,6 +33,7 @@ alias deb_install='sudo dpkg -i'
 alias deb_install_force_depends='sudo dpkg -i --force-depends'
 alias deb_info='dpkg-deb --info'
 alias deb_contents='dpkg-deb --show'
+alias snap_hide_home_folder='sudo snap set system experimental.hidden-snap-folder=true'
 
 function deb_install_from_url() {
   local deb_name=$(basename $1)
