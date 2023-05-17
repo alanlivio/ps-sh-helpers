@@ -12,14 +12,14 @@ function python_setup_upload_testpypi() {
   rm -r dist/
   python setup.py sdist bdist_wheel
   twine check dist/*
-  twine upload --repository testpypi dist/* -u $PYPI_USER -p "$PYPI_PASS"
+  twine upload --repository testpypi dist/*
 }
 
 function python_setup_upload_pip() {
   rm -r dist/
   python setup.py sdist bdist_wheel
   twine check dist/*
-  twine upload dist/* -u $PYPI_USER -p "$PYPI_PASS"
+  twine upload dist/*
 }
 
 alias conda_env_export_to_enviroment_yml="conda env export environment.yml"
