@@ -78,7 +78,7 @@ See more helpers in [os_win.bash](os_win.bash).
 
 * `python_clean_cache`: clean cache
 * `python_check_tensorflow`: check Tensorflow GPU support.
-* `python_setup_install`: install from a pkg folder with setup.py.
+* `python_setup_install_local`: install from a pkg folder with setup.py.
 * `python_setup_upload_testpypi`: upload to [testpypi repository](https://test.pypi.org/) from a pkg folder with setup.py.
 * `python_setup_upload_pip`: upload to pip from a pkg folder with setup.py.
 * `conda_env_create_from_enviroment_yml`: create env from environment.yml

@@ -4,8 +4,8 @@ function python_check_tensorflow() {
   python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
 }
 
-function python_setup_install() {
-  python setup.py install
+function python_setup_install_local() {
+  python setup.py install --user
 }
 
 function python_setup_upload_testpypi() {
