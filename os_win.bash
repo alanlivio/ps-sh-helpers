@@ -3,8 +3,6 @@
 #########################
 
 alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
-alias winget='winget.exe'
-alias powershell='powershell.exe'
 BH_LIB_PS1="$BH_DIR/lib/ps1/"
 
 function home_clean_win() {
@@ -14,11 +12,11 @@ function home_clean_win() {
     home_clean
   fi
   # set Hidden to nodes .*
-  powershell -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
+  powershell.exe -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
   # set Hidden to nodes defined $BH_WIN_HIDE_HOME
   if [ -n "$BH_WIN_HIDE_HOME" ]; then
     local to_hide=$(printf '"%s"' "${BH_WIN_HIDE_HOME[@]}" | sed 's/""/","/g')
-    powershell -c '
+    powershell.exe -c '
       $list =' "$to_hide" '
       $nodes = Get-ChildItem ${env:userprofile} | Where-Object {$_.name -In $list}
       $nodes | ForEach-Object { $_.Attributes += "Hidden" }
@@ -27,7 +25,7 @@ function home_clean_win() {
 }
 
 function win_update() {
-  winget upgrade --all --silent
+  winget.exe upgrade --all --silent
   gsudo powershell.exe -c 'Install-Module -Name PSWindowsUpdate -Force; Install-WindowsUpdate -AcceptAll -IgnoreReboot'
 }
 
@@ -35,9 +33,9 @@ function win_update() {
 # start
 #########################
 
-function start_startmenu() { powershell -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs'; }
-function start_startmenu_all_users() { powershell -c 'explorer ${env:programdata}\Microsoft\Windows\Start Menu\Programs'; }
-function start_recycle_bin() { powershell -c 'explorer shell:RecycleBinFolder'; }
+function start_startmenu() { powershell.exe -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs'; }
+function start_startmenu_all_users() { powershell.exe -c 'explorer ${env:programdata}\Microsoft\Windows\Start Menu\Programs'; }
+function start_recycle_bin() { powershell.exe -c 'explorer shell:RecycleBinFolder'; }
 function start_from_wsl(){
   if ! type wslview &>/dev/null; then sudo apt install wslu; fi
   wslu $@
@@ -57,7 +55,7 @@ function win_sanity_services_apps() { gsudo powershell.exe \'$(winpath $BH_LIB_P
 #########################
 
 function regedit_open_path() {
-  powershell -c "
+  powershell.exe -c "
     reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit\ /v Lastkey /d 'Computer\\$1' /t REG_SZ /f
     regedit.exe
   "
@@ -72,16 +70,16 @@ function regedit_open_shell_folders() {
 #########################
 
 function win_env_show() {
-  powershell -c '[System.Environment]::GetEnvironmentVariables()'
+  powershell.exe -c '[System.Environment]::GetEnvironmentVariables()'
 }
 
 function win_env_add() {
   : ${2?"Usage: ${FUNCNAME[0]} <varname> <value>"}
-  powershell -c "[System.Environment]::SetEnvironmentVariable('$1', '$2', 'user')"
+  powershell.exe -c "[System.Environment]::SetEnvironmentVariable('$1', '$2', 'user')"
 }
 
 function win_path_show() {
-  powershell -c '(Get-ChildItem Env:Path).Value'
+  powershell.exe -c '(Get-ChildItem Env:Path).Value'
 }
 
 function win_path_show_as_list() {
@@ -93,7 +91,7 @@ function win_path_add() { # using ps1 script
   local dir=$(winpath $@)
   local dircyg=$(cygpath $@)
   # export in win
-  powershell -c "$(winpath $BH_LIB_PS1/path_add.ps1)" \'$dir\'
+  powershell.exe -c "$(winpath $BH_LIB_PS1/path_add.ps1)" \'$dir\'
   # export in bash (it will reolad from win in new shell)
   if [[ ":$PATH:" != *":$dircyg:"* ]]; then export PATH=${PATH}:$dircyg; fi
 }
@@ -105,14 +103,14 @@ function win_path_add() { # using ps1 script
 function winget_install() {
   local pkgs_to_install=""
   for i in "$@"; do
-    if [[ $(winget list --id $i) =~ "No installed"* ]]; then
+    if [[ $(winget.exe list --id $i) =~ "No installed"* ]]; then
       pkgs_to_install="$i $pkgs_to_install"
     fi
   done
   if test ! -z "$pkgs_to_install"; then
     echo "pkgs_to_install=$pkgs_to_install"
     for pkg in $pkgs_to_install; do
-      winget install --accept-package-agreements --accept-source-agreements --silent $pkg
+      winget.exe install --accept-package-agreements --accept-source-agreements --silent $pkg
     done
   fi
 }
@@ -136,8 +134,8 @@ fi
 function wsl_use_same_home() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/wsl_use_same_home.ps1)\'; }
 function wsl_code_from_win() {
   if [ "$#" -ne 0 ]; then
-    powershell -c '& code ' "$@"
+    powershell.exe -c '& code ' "$@"
   else
-    powershell -c '& code .'
+    powershell.exe -c '& code .'
   fi
 }
