@@ -52,8 +52,9 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 
 ### os_win
 
-* `home_clean_win`: remove files/dirs defined in BH_HOME_CLEAN (even inside WSL), and hide from explorer dotfiles (.*) and others defined in BH_WIN_HIDE_HOME.
 * `win_update`: update windows and all Winget packages.
+* `winpath`: return path in windows format. It uses `cygpath -m` in GitBash/MSYS2, while uses `wslpath -m` in WSL.
+* `home_clean_win`: remove files/dirs defined in BH_HOME_CLEAN (even inside WSL), and hide from explorer dotfiles (.*) and others defined in BH_WIN_HIDE_HOME.
 * `start_open_recycle_bin`: explorer open trash folder.
 * `start_open_startmenu_all`explorer opens the start menu folder for all users.
 * `start_open_startmenu_user`: explorer opens the start menu folder for the current user.
