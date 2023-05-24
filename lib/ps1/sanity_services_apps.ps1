@@ -27,19 +27,14 @@ function service_disable($name) {
 }
 
 $services = @(
-  "diagnosticshub.standardcollector.service" # Diagnostics Hub
-  "DiagTrack"                                # Diagnostics Tracking Service
-  "dmwappushservice"                         # WAP Push Message Routing Service (see known issues)
   "lfsvc"                                    # Geolocation Service
   "MapsBroker"                               # Downloaded Maps Manager
   "RemoteAccess"                             # Routing and Remote Access
   "RemoteRegistry"                           # Remote Registry
   "TrkWks"                                   # Distributed Link Tracking Client
-  "WSearch"                                  # Windows Search
   "XblAuthManager"                           # Xbox Live Auth Manager
   "XblGameSave"                              # Xbox Live Game Save Service
   "XboxNetApiSvc"                            # Xbox Live Networking Service
-  "ndu"                                      # Windows Network Data Usage Monitor
 )
 foreach ($item in $services) {
   service_disable $item
