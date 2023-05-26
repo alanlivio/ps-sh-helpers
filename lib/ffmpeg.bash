@@ -8,7 +8,12 @@ function ffmpeg_show_motion_vectors() {
   ffplay -flags2 +export_mvs -vf codecview=mv=pf+bf+bb $1
 }
 
-function ffmpeg_create_from_image() {
+function ffmpeg_images_merge_to_mp4() {
   : ${1?"Usage: ${FUNCNAME[0]} <image>"}
   ffmpeg -loop_input -i "$1".png -t 5 "$1".mp4
+}
+
+function ffmpeg_mp4_files_merge() {
+  : ${1?"Usage: ${FUNCNAME[0]} <file1> ... "}
+  ffmpeg -f concat -safe 0 -i <(for f in $@; do echo "file '$PWD/$f'"; done) -c copy output.mp4
 }
