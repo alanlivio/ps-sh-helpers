@@ -1,7 +1,6 @@
 #!/bin/bash
 
 BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
-BH_LIB="$BH_DIR/lib"
 
 #########################
 # load os_<name>.bash files
@@ -30,15 +29,15 @@ esac
 # load <command>.bash files
 #########################
 
-if type adb &>/dev/null; then source "$BH_LIB/adb.bash"; fi
-if type cmake &>/dev/null; then source "$BH_LIB/cmake.bash"; fi
-if type docker &>/dev/null; then source "$BH_LIB/docker.bash"; fi
-if type ffmpeg &>/dev/null; then source "$BH_LIB/ffmpeg.bash"; fi
-if type gs &>/dev/null; then source "$BH_LIB/gs.bash"; fi
-if type git &>/dev/null; then source "$BH_LIB/git.bash"; fi
-if type lxc &>/dev/null; then source "$BH_LIB/lxc.bash"; fi
-if type meson &>/dev/null; then source "$BH_LIB/meson.bash"; fi
-if type pandoc &>/dev/null; then source "$BH_LIB/pandoc.bash"; fi
-if type python &>/dev/null; then source "$BH_LIB/python.bash"; fi
-if type wget &>/dev/null; then source "$BH_LIB/wget.bash"; fi
-if type youtube-dl &>/dev/null; then source "$BH_LIB/youtube-dl.bash"; fi
+if type adb &>/dev/null; then source "$BH_DIR/lib/adb.bash"; fi
+if type cmake &>/dev/null; then source "$BH_DIR/lib/cmake.bash"; fi
+if type docker &>/dev/null; then source "$BH_DIR/lib/docker.bash"; fi
+if type ffmpeg &>/dev/null; then source "$BH_DIR/lib/ffmpeg.bash"; fi
+if type gs &>/dev/null; then source "$BH_DIR/lib/gs.bash"; fi
+if type git &>/dev/null; then source "$BH_DIR/lib/git.bash"; fi
+if type lxc &>/dev/null; then source "$BH_DIR/lib/lxc.bash"; fi
+if type meson &>/dev/null; then source "$BH_DIR/lib/meson.bash"; fi
+if type pandoc &>/dev/null; then source "$BH_DIR/lib/pandoc.bash"; fi
+if type python &>/dev/null; then source "$BH_DIR/lib/python.bash"; fi
+if type wget &>/dev/null; then source "$BH_DIR/lib/wget.bash"; fi
+if type youtube-dl &>/dev/null; then source "$BH_DIR/lib/youtube-dl.bash"; fi
