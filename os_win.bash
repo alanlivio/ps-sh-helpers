@@ -38,7 +38,7 @@ function start_startmenu_all_users() { powershell.exe -c 'explorer ${env:program
 function start_recycle_bin() { powershell.exe -c 'explorer shell:RecycleBinFolder'; }
 function start_from_wsl(){
   if ! type wslview &>/dev/null; then sudo apt install wslu; fi
-  wslu $@
+  wslview $@
 }
 
 #########################

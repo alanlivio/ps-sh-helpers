@@ -58,7 +58,7 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 * `start_open_recycle_bin`: explorer open trash folder.
 * `start_open_startmenu_all`explorer opens the start menu folder for all users.
 * `start_open_startmenu_user`: explorer opens the start menu folder for the current user.
-* `start` (from GitBash or WSL): call cmd start or explorer.
+* `start_from_wsl` (from WSL): call cmd start or explorer.
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.
 * `win_path_add`: add dir to PATH. It is a wrapper to [path_add.ps1](lib/ps1/path_add.ps1).
