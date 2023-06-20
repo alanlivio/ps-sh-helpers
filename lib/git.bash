@@ -7,6 +7,18 @@ alias git_branch_show_remotes='git remote show origin'
 alias git_diff_files_last_commit='git diff --stat HEAD^1'
 alias git_diff_last_commit='git diff HEAD^1'
 
+function git_clone_subfolder() {
+  : ${2?"Usage: ${FUNCNAME[0]} <repo> <foldre>"}
+  local dir=${basename $1}
+  test_and_create_dir $dir
+  cd $dir
+  git init
+  git remote add origin $1
+  git sparse-checkout init
+  git sparse-checkout set $2
+  git pull origin master
+}
+
 function git_github_fix() {
   echo -e "Host github.com\\n  Hostname ssh.github.com\\n  Port 443" | tee $HOME/.ssh/config
   ssh -T git@github.com
