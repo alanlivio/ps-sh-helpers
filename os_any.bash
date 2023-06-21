@@ -72,7 +72,7 @@ function pkgs_install() {
   fi
   if type winget.exe &>/dev/null && test -n "$BH_PKGS_WINGET"; then
     for pkg in $BH_PKGS_WINGET; do
-      winget.exe install --silent $pkg | grep -v "Found an" |grep -v "No applicable"
+      winget.exe install --silent $pkg
     done
   fi
   if type pacman &>/dev/null && test -n "$BH_PKGS_MSYS2"; then
