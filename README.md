@@ -53,6 +53,7 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 ### os_win
 
 * `win_update`: update windows and all Winget packages.
+* `win_enable_hyper_v`: enable windows hyper-v feature.
 * `winpath`: return path in windows format. It uses `cygpath -m` in GitBash/MSYS2, while uses `wslpath -m` in WSL.
 * `home_clean_win`: remove files/dirs defined in BH_HOME_CLEAN (even inside WSL), and hide from explorer dotfiles (.*) and others defined in BH_WIN_HIDE_HOME.
 * `start_open_recycle_bin`: explorer open trash folder.

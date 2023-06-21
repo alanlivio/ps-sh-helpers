@@ -51,6 +51,7 @@ function win_sanity_reset_policy(){
   gsudo gpupdate.exe /force
 }
 
+function win_enable_hyper_v() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/enable_hyper_v.ps1)\'; }
 function win_sanity_password_policy() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_password_policy.ps1)\'; }
 function win_sanity_explorer() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_explorer.ps1)\'; }
 function win_sanity_ui() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_ui.ps1)\'; }
