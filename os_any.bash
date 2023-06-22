@@ -62,26 +62,6 @@ function latex_clean() {
   rm -rf _markdown* *.markdown.lua *.aux *.dvi *.log *.lox *.out *.lol *.pdf *.synctex.gz _minted-* *.bbl *.blg *.lot *.lof *.toc *.lol *.fdb_latexmk *.fls *.bcf
 }
 
-#########################
-# pkgs_install
-#########################
-
-function pkgs_install() {
-  if type apt &>/dev/null && test -n "$BH_PKGS_APT"; then
-    sudo apt install -y $BH_PKGS_APT
-  fi
-  if type winget.exe &>/dev/null && test -n "$BH_PKGS_WINGET"; then
-    for pkg in $BH_PKGS_WINGET; do
-      winget.exe install --silent $pkg
-    done
-  fi
-  if type pacman &>/dev/null && test -n "$BH_PKGS_MSYS2"; then
-    pacman -S --noconfirm $BH_PKGS_MSYS2
-  fi
-  if type brew &>/dev/null && test -n "$BH_PKGS_MAC_BREW"; then
-    brew install $BH_PKGS_MAC_BREW
-  fi
-}
 
 #########################
 # arp

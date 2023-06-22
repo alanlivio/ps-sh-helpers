@@ -7,7 +7,14 @@ function mac_install_brew() {
 }
 
 function mac_update() {
-  brew update
-  sudo brew upgrade
+  # update brew packages
+  if type brew &>/dev/null && test -n "$BH_PKGS_MAC_BREW"; then
+    log_msg "update brew packages: $BH_PKGS_MAC_BREW"
+    brew install $BH_PKGS_MAC_BREW
+    brew update
+    sudo brew upgrade
+  fi
+  # update os packages
+  log_msg "update mac packages"
   sudo softwareupdate -i -a
 }

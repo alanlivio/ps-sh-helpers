@@ -24,8 +24,27 @@ function home_clean_win() {
   fi
 }
 
+function winget_install() {
+  local pkgs_to_install=""
+  for i in "$@"; do
+    if [[ $(winget.exe list --id $i) =~ "No installed"* ]]; then
+      pkgs_to_install="$i $pkgs_to_install"
+    fi
+  done
+  if test ! -z "$pkgs_to_install"; then
+    for pkg in $pkgs_to_install; do
+      winget.exe install --accept-package-agreements --accept-source-agreements --silent $pkg
+    done
+  fi
+}
+
 function win_update() {
-  winget.exe upgrade --all --silent
+  if type winget.exe &>/dev/null && test -n "$BH_PKGS_WINGET"; then
+    log_msg "update winget packages: $BH_PKGS_WINGET"
+    winget_install $BH_PKGS_WINGET
+    winget.exe upgrade --all --silent
+  fi
+  log_msg "update win packages"
   gsudo powershell.exe -c 'Install-Module -Name PSWindowsUpdate -Force; Install-WindowsUpdate -AcceptAll -IgnoreReboot'
 }
 
@@ -36,7 +55,7 @@ function win_update() {
 function start_startmenu() { powershell.exe -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs'; }
 function start_startmenu_all_users() { powershell.exe -c 'explorer ${env:programdata}\Microsoft\Windows\Start Menu\Programs'; }
 function start_recycle_bin() { powershell.exe -c 'explorer shell:RecycleBinFolder'; }
-function start_from_wsl(){
+function start_from_wsl() {
   if ! type wslview &>/dev/null; then sudo apt install wslu; fi
   wslview $@
 }
@@ -45,7 +64,7 @@ function start_from_wsl(){
 # win sanity
 #########################
 
-function win_sanity_reset_policy(){
+function win_sanity_reset_policy() {
   gsudo cmd.exe /C 'RD /S /Q %WinDir%\\System32\\GroupPolicyUsers '
   gsudo cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
   gsudo gpupdate.exe /force
@@ -104,25 +123,6 @@ function win_path_add() { # using ps1 script
 }
 
 #########################
-# winget
-#########################
-
-function winget_install() {
-  local pkgs_to_install=""
-  for i in "$@"; do
-    if [[ $(winget.exe list --id $i) =~ "No installed"* ]]; then
-      pkgs_to_install="$i $pkgs_to_install"
-    fi
-  done
-  if test ! -z "$pkgs_to_install"; then
-    echo "pkgs_to_install=$pkgs_to_install"
-    for pkg in $pkgs_to_install; do
-      winget.exe install --accept-package-agreements --accept-source-agreements --silent $pkg
-    done
-  fi
-}
-
-#########################
 # msys2
 #########################
 if type pacman &>/dev/null; then
@@ -132,6 +132,14 @@ if type pacman &>/dev/null; then
   alias msys2_install='pacman -S --noconfirm'
   alias msys2_uninstall='pacman -R --noconfirm'
   alias msys2_use_same_home='echo db_home: windows >>/etc/nsswitch.conf'
+  function msys2_update() {
+    if test -n "$BH_PKGS_MSYS2"; then
+      log_msg "pacman install $BH_PKGS_MSYS2"
+      pacman -S --noconfirm $BH_PKGS_MSYS2
+    fi
+    log_msg "msys2 upgrade"
+    pacman -Suy
+  }
 fi
 
 #########################

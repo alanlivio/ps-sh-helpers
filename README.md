@@ -20,7 +20,6 @@ On Win, you run the above command at GitaBash installed with [GitForWindows](htt
 
 ### os_any
 
-* `pkgs_install`: install packages from BH_PKGS_WINGET, BH_PKGS_BREW, BH_PKGS_MSYS2, and BH_PKGS_APT, if Winget, brew, Pacman, and apt installed, respectively.
 * `home_clean`: remove files/dirs defined in BH_HOME_CLEAN.
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
@@ -37,7 +36,7 @@ See more OS-independent helpers  [os_any.bash](os_any.bash) folder.
 
 ### os_ubu
 
-* `ubu_update`: update ubuntu and all apt packages.
+* `ubu_update`: update os and apt packages. If defined BH_PKGS_APT, install them. 
 * `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g., small icons), uninstall pre-installed and not used apps (e.g., weather, news, calendar, solitaire).
 * `deb_install_url`: fetch and install a deb package.
 
@@ -45,14 +44,14 @@ See more Ubu helpers in [os_ubu.bash](os_ubu.bash).
 
 ### os_mac
 
-* `mac_update`: update all brew packages
+* `mac_update`: update os and brew packages. If defined BH_PKGS_BREW, install them. 
 * `mac_install_brew`: install brew package manager
 
 See more Mac helpers in [os_mac.bash](os_mac.bash).
 
 ### os_win
 
-* `win_update`: update windows and all Winget packages.
+* `win_update`: update os and winget packages. If defined BH_PKGS_WINGET, install them. 
 * `win_enable_hyper_v`: enable windows hyper-v feature.
 * `winpath`: return path in windows format. It uses `cygpath -m` in GitBash/MSYS2, while uses `wslpath -m` in WSL.
 * `home_clean_win`: remove files/dirs defined in BH_HOME_CLEAN (even inside WSL), and hide from explorer dotfiles (.*) and others defined in BH_WIN_HIDE_HOME.
@@ -71,6 +70,10 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 * `win_sanity_ui`: enable dark mode, disable animations, and clean taskbar (e.g., small icons). It is a wrapper to [sanity_ui.ps1](lib/ps1/sanity_ui.ps1).
 * `wsl_code_from_win` (at WSL): open the VSCode in the Win environment instead of WSL.
 * `wsl_use_same_home` (at GitBash): make use uses win home. It is a wrapper to [wsl_use_same_home.ps1](lib/ps1/wsl_use_same_home.ps1).
+* `msys2_update`: update msys2 packages. If defined BH_PKGS_MSYS2, install them. 
+* `msys2_search`: search for msys2 package
+* `msys2_list_installed`:  list installed msys2 packages
+* `msys2_use_same_home`: set msys2 to use same home as win user.
 
 See more helpers in [os_win.bash](os_win.bash).
 

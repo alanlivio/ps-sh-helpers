@@ -11,7 +11,17 @@ function user_sudo_nopasswd() {
   SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
 }
 
-alias ubu_update="sudo apt -y update;sudo apt -y upgrade;sudo apt -y autoremove"
+function ubu_update() {
+  log_msg "apt update"
+  sudo apt -y update
+  if test -n "$BH_PKGS_APT"; then
+    log_msg "apt install $BH_PKGS_APT"
+    sudo apt install -y $BH_PKGS_APT
+  fi
+  log_msg "apt upgrade and autoremove"
+  sudo apt -y upgrade
+  sudo apt -y autoremove
+}
 
 #########################
 # apt
