@@ -40,11 +40,12 @@ function winget_install() {
 
 function win_update() {
   if type winget.exe &>/dev/null && test -n "$BH_PKGS_WINGET"; then
-    log_msg "update winget packages: $BH_PKGS_WINGET"
+    log_msg "winget check installed BH_PKGS_WINGET: $BH_PKGS_WINGET"
     winget_install $BH_PKGS_WINGET
+    log_msg "winget upgrade all"
     winget.exe upgrade --all --silent
   fi
-  log_msg "update win packages"
+  log_msg "win os upgrade"
   gsudo powershell.exe -c 'Install-Module -Name PSWindowsUpdate -Force; Install-WindowsUpdate -AcceptAll -IgnoreReboot'
 }
 
@@ -134,10 +135,10 @@ if type pacman &>/dev/null; then
   alias msys2_use_same_home='echo db_home: windows >>/etc/nsswitch.conf'
   function msys2_update() {
     if test -n "$BH_PKGS_MSYS2"; then
-      log_msg "pacman install $BH_PKGS_MSYS2"
+    log_msg "msys2 check installed BH_PKGS_MSYS2: $BH_PKGS_MSYS2"
       pacman -S --noconfirm $BH_PKGS_MSYS2
     fi
-    log_msg "msys2 upgrade"
+    log_msg "msys2 upgrade all"
     pacman -Suy
   }
 fi
