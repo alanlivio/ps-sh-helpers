@@ -62,22 +62,6 @@ function start_from_wsl() {
 }
 
 #########################
-# win sanity
-#########################
-
-function win_sanity_reset_policy() {
-  gsudo cmd.exe /C 'RD /S /Q %WinDir%\\System32\\GroupPolicyUsers '
-  gsudo cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
-  gsudo gpupdate.exe /force
-}
-
-function win_enable_hyper_v() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/enable_hyper_v.ps1)\'; }
-function win_sanity_password_policy() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_password_policy.ps1)\'; }
-function win_sanity_explorer() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_explorer.ps1)\'; }
-function win_sanity_ui() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_ui.ps1)\'; }
-function win_sanity_services_apps() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/sanity_unused_services.ps1)\'; }
-
-#########################
 # regedit
 #########################
 
@@ -118,7 +102,7 @@ function win_path_add() { # using ps1 script
   local dir=$(winpath $@)
   local dircyg=$(cygpath $@)
   # export in win
-  powershell.exe -c "$(winpath $BH_LIB_PS1/path_add.ps1)" \'$dir\'
+  powershell.exe -c "$(winpath $BH_LIB_PS1/win_path_add.ps1)" \'$dir\'
   # export in bash (it will reolad from win in new shell)
   if [[ ":$PATH:" != *":$dircyg:"* ]]; then export PATH=${PATH}:$dircyg; fi
 }
@@ -135,7 +119,7 @@ if type pacman &>/dev/null; then
   alias msys2_use_same_home='echo db_home: windows >>/etc/nsswitch.conf'
   function msys2_update() {
     if test -n "$BH_PKGS_MSYS2"; then
-    log_msg "msys2 check installed BH_PKGS_MSYS2: $BH_PKGS_MSYS2"
+      log_msg "msys2 check installed BH_PKGS_MSYS2: $BH_PKGS_MSYS2"
       pacman -S --noconfirm $BH_PKGS_MSYS2
     fi
     log_msg "msys2 upgrade all"
@@ -144,14 +128,20 @@ if type pacman &>/dev/null; then
 fi
 
 #########################
-# wsl
+# sanity/disable/enable
 #########################
 
-function wsl_use_same_home() { gsudo powershell.exe \'$(winpath $BH_LIB_PS1/wsl_use_same_home.ps1)\'; }
-function wsl_code_from_win() {
-  if [ "$#" -ne 0 ]; then
-    powershell.exe -c '& code ' "$@"
-  else
-    powershell.exe -c '& code .'
-  fi
+function win_policy_reset() {
+  gsudo cmd.exe /C 'RD /S /Q %WinDir%\\System32\\GroupPolicyUsers '
+  gsudo cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
+  gsudo gpupdate.exe /force
 }
+
+function ps1_script() { powershell.exe "$(winpath $BH_LIB_PS1/$1)"; }
+function win_disable_apps_preinstalled() { ps1_script win_disable_apps_preinstalled.ps1; }
+function win_disable_hotkeys() { ps1_script win_disable_hotkeys.ps1; }
+function win_disable_password_policy() { ps1_script win_disable_password_policy.ps1; }
+function win_disable_pc_folders() { ps1_script win_disable_pc_folders.ps1; }
+function win_disable_sounds() { ps1_script win_disable_sounds.ps1; }
+function win_enable_hyper_v() { ps1_script win_enable_hyper_v.ps1; }
+function win_path_add() { ps1_script win_path_add.ps1; }
