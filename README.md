@@ -5,6 +5,30 @@
 Template to support you create multi-OS bash helpers (Win MSYS2/GitBash/WSL, Ubu, Mac). Useful to you organize your helpers in `OS-dependent` or `command-dependent`. The [init.sh](init.sh) load `OS-dependent` from `os_*.bash` files after testing `$OSTYPE` and load `command-dependent` from `lib/*.bash` after testing `type <command>`. 
 The project logo refers to the synthetic chemical element Bohrium, which also has BH's initials.
 
+```mermaid
+%%{init: {"flowchart": {"htmlLabels": false}} }%%
+flowchart LR
+    bashrc["~/.bashrc"]
+    subgraph bash-helpers
+    init["init.sh"]
+    os-dependent["
+        os_any.bash
+        os_mac.bash
+        os_ubu.bash
+        os_win.bash"]
+    command-dependent["
+        lib/adb.bash
+        lib/python.bash
+        lib/git.bash
+        ...
+    "]
+    end
+    bashrc --> |source| init
+    init --> |if $OSTYPE then source | os-dependent
+    init --> |if type _command_ then source | command-dependent
+```
+
+
 ## Install
 
 The bash-helpers project has two requirements: a `bash shell` and `git`. So, run on a `bash shell` with `git`:
