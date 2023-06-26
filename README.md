@@ -2,7 +2,7 @@
 
 # bash-helpers
 
-Template to support you create multi-OS bash helpers (Win MSYS2/GitBash/WSL, Ubu, Mac). Useful to you organize your helpers in `OS-dependent` or `command-dependent`. The [init.sh](init.sh) load `OS-dependent` from `os_*.bash` files after testing `$OSTYPE` and load `command-dependent` from `lib/*.bash` after testing `type <command>`. 
+Template to support you create multi-OS bash helpers (win MSYS2/GitBash/WSL, ubu, mac). Useful to you organize your helpers in `OS-dependent` or `command-dependent`. The [init.sh](init.sh) load `OS-dependent` from `os_*.bash` files after testing `$OSTYPE` and load `command-dependent` from `lib/*.bash` after testing `type <command>`. 
 The project logo refers to the synthetic chemical element Bohrium, which also has BH's initials.
 
 ```mermaid
@@ -11,8 +11,8 @@ flowchart LR
     bashrc["~/.bashrc"]
     subgraph bash-helpers
     init["init.sh"]
+    any["os_any.bash"]
     os-dependent["
-        os_any.bash
         os_mac.bash
         os_ubu.bash
         os_win.bash"]
@@ -23,9 +23,10 @@ flowchart LR
         ...
     "]
     end
-    bashrc --> |source| init
-    init --> |if $OSTYPE then source | os-dependent
-    init --> |if type _command_ then source | command-dependent
+    bashrc --> |"load"| init
+    init --> |"load"|any
+    init --> |"if OSTYPE then load"|os-dependent
+    init --> |"if COMMAND then load"|command-dependent
 ```
 
 
@@ -64,14 +65,14 @@ See more OS-independent helpers  [os_any.bash](os_any.bash) folder.
 * `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g., small icons), uninstall pre-installed and not used apps (e.g., weather, news, calendar, solitaire).
 * `deb_install_url`: fetch and install a deb package.
 
-See more Ubu helpers in [os_ubu.bash](os_ubu.bash).
+See more ubu helpers in [os_ubu.bash](os_ubu.bash).
 
 ### os_mac
 
 * `mac_update`: update os and brew packages. If defined BH_PKGS_BREW, install them. 
 * `mac_install_brew`: install brew package manager
 
-See more Mac helpers in [os_mac.bash](os_mac.bash).
+See more mac helpers in [os_mac.bash](os_mac.bash).
 
 ### os_win
 
@@ -97,7 +98,7 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 * `msys2_list_installed`:  list installed msys2 packages
 * `msys2_use_same_home`: set msys2 to use same home as win user.
 
-See more helpers in [os_win.bash](os_win.bash).
+See more win helpers in [os_win.bash](os_win.bash).
 
 ## command-dependent samples
 
