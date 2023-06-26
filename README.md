@@ -54,20 +54,20 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 * `win_update`: update os and winget packages. If defined BH_PKGS_WINGET, install them. 
 * `winpath`: return path in windows format. It uses `cygpath -m` in GitBash/MSYS2, while uses `wslpath -m` in WSL.
 * `win_policy_reset`: reset group policy.
-* `win_disable_apps_preinstalled`:  remove unused apps. It is a wrapper [win_disable_apps_preinstalled.ps1](lib/ps1/win_disable_apps_preinstalled.ps1).
-* `win_disable_hotkeys`: disable acessibility,rotation, lang hotkeys. It is a wrapper [win_disable_hotkeys.ps1](lib/ps1/win_disable_hotkeys.ps1).
-* `win_disable_password_policy`: disable password policy requirement. It is a wrapper [win_disable_password_policy.ps1](lib/ps1/win_disable_password_policy.ps1).
-* `win_disable_pc_folders`:  disable link folders on This PC. It is a wrapper [win_disable_pc_folders.ps1](lib/ps1/win_disable_pc_folders.ps1).
-* `win_disable_sounds`: disable systems sounds (e.g., bells). It is a wrapper [win_disable_sounds.ps1](lib/ps1/win_disable_sounds.ps1).
-* `win_enable_hyper_v`: enable hyper-v virtualization. It is a wrapper [win_enable_hyper_v.ps1](lib/ps1/win_enable_hyper_v.ps1).
-* `win_path_add`: add dir to path. It is a wrapper [win_path_add.ps1](lib/ps1/win_path_add.ps1).
+* `win_disable_apps_preinstalled`:  remove unused apps. It is a wrapper [win_disable_apps_preinstalled.ps1](scripts/win_disable_apps_preinstalled.ps1).
+* `win_disable_hotkeys`: disable acessibility,rotation, lang hotkeys. It is a wrapper [win_disable_hotkeys.ps1](scripts/win_disable_hotkeys.ps1).
+* `win_disable_password_policy`: disable password policy requirement. It is a wrapper [win_disable_password_policy.ps1](scripts/win_disable_password_policy.ps1).
+* `win_disable_pc_folders`:  disable link folders on This PC. It is a wrapper [win_disable_pc_folders.ps1](scripts/win_disable_pc_folders.ps1).
+* `win_disable_sounds`: disable systems sound (e.g., bells). It is a wrapper [win_disable_sounds.ps1](scripts/win_disable_sounds.ps1).
+* `win_enable_hyper_v`: enable hyper-v virtualization. It is a wrapper [win_enable_hyper_v.ps1](scripts/win_enable_hyper_v.ps1).
+* `win_path_add`: add dir to path. It is a wrapper [win_path_add.ps1](scripts/win_path_add.ps1).
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.
 * `home_clean_win`: remove files/dirs defined in BH_HOME_CLEAN (even inside WSL), and hide from explorer dotfiles (.*) and others defined in BH_WIN_HIDE_HOME.
 * `start_open_recycle_bin`: explorer open trash folder.
 * `start_open_startmenu_all`explorer opens the start menu folder for all users.
 * `start_open_startmenu_user`: explorer opens the start menu folder for the current user.
-* `start_from_wsl` (from WSL): call cmd start or explorer.
+* `start_from_wsl` (from WSL): call cmd `start` or `explorer`.
 * `msys2_update`: update msys2 packages. If defined BH_PKGS_MSYS2, install them. 
 * `msys2_search`: search for msys2 package
 * `msys2_list_installed`:  list installed msys2 packages

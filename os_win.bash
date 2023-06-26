@@ -3,7 +3,7 @@
 #########################
 
 alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
-BH_LIB_PS1="$BH_DIR/lib/ps1/"
+BH_LIB_PS1="$BH_DIR/scripts/"
 
 function home_clean_win() {
   if [[ -n $WSL_DISTRO_NAME ]]; then
