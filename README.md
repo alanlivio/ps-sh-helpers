@@ -17,16 +17,16 @@ flowchart LR
         os_ubu.bash
         os_win.bash"]
     command-dependent["
-        lib/adb.bash
-        lib/python.bash
-        lib/git.bash
+        lib/COMMAND_NAME_1.bash
+        lib/COMMAND_NAME_2.bash
+        lib/COMMAND_NAME_3.bash
         ...
     "]
     end
     bashrc --> |"load"| init
     init --> |"load"|any
-    init --> |"if OSTYPE then load"|os-dependent
-    init --> |"if COMMAND then load"|command-dependent
+    init --> |"if $OSTYPE then load"|os-dependent
+    init --> |"if type COMMAND_NAME then load"|command-dependent
 ```
 
 
