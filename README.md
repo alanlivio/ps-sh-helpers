@@ -2,7 +2,7 @@
 
 # bash-helpers
 
-Template to support you create multi-OS bash helpers (win MSYS2/GitBash/WSL, ubu, mac). Useful to you organize your helpers in `OS-dependent` or `command-dependent`. The [init.sh](init.sh) load `OS-dependent` from `os_*.bash` files after testing `$OSTYPE` and load `command-dependent` from `lib/*.bash` after testing `type <command>`. 
+Template to easily create multi-OS bash helpers for win (msys2/gitbash/wsl), ubu, and mac. Useful to let you organize helpers in `OS-dependent` or `command-dependent`. The [init.sh](init.sh) load `OS-dependent` from `os_*.bash` files after testing `$OSTYPE` and load `command-dependent` from `lib/*.bash` after testing `type <command>`. 
 The project logo refers to the synthetic chemical element Bohrium, which also has BH's initials.
 
 ```mermaid
