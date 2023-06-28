@@ -5,6 +5,12 @@
 alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
 BH_LIB_PS1="$BH_DIR/scripts/"
 
+if [[ $OSTYPE == linux* && -n $WSL_DISTRO_NAME ]]; then
+  alias winpath='wslpath -m'
+elif [[ $OSTYPE == linux* ]]; then
+  alias winpath='cygpath -m'
+fi
+
 function home_clean_win() {
   if [[ -n $WSL_DISTRO_NAME ]]; then
     home_clean $(wslpath $(wslvar USERPROFILE))
