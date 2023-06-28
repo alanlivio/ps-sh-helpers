@@ -1,5 +1,4 @@
 function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
-function log_msg_2nd () { Write-Host -ForegroundColor DarkYellow "-- >" ($args -join " ") }
 New-PSDrive -Name HKLM -PSProvider Registry -Root HKEY_LOCAL_MACHINE -ea 0 | Out-Null
 
 log_msg "disable This PC folders"
@@ -17,7 +16,5 @@ foreach ($name in $regs) {
   }
 }
 
-#########################
 # explorer_restart
-#########################
 Stop-Process -ProcessName explorer -ea 0 | Out-Null

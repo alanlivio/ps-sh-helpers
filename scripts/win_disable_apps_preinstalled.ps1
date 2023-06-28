@@ -1,8 +1,5 @@
 function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
-#########################
-# apps
-#########################
 function appx_uninstall() {
   foreach ($name in $args) {
     if (Get-AppxPackage -Name $name) {
