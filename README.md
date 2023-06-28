@@ -12,10 +12,9 @@ flowchart LR
     subgraph bash-helpers
     init["init.sh"]
     any["os_any.bash"]
-    os-dependent["
-        os_mac.bash
-        os_ubu.bash
-        os_win.bash"]
+    win["os_win.bash"]
+    ubu["os_ub.bash"]
+    mac["os_mac.bash"]
     command-dependent["
         lib/COMMAND_NAME_1.bash
         lib/COMMAND_NAME_2.bash
@@ -24,9 +23,11 @@ flowchart LR
     "]
     end
     bashrc --> |"load"| init
-    init --> |"load"|any
-    init --> |"if $OSTYPE then load"|os-dependent
-    init --> |"if type COMMAND_NAME then load"|command-dependent
+    init --> |"always load"|any
+    init --> |"if $OSTYPE == msys* || -n $WSL_DISTRO_NAME then load"|win
+    init --> |"if $OSTYPE == linux* then load"|ubu
+    init --> |"if $OSTYPE == mac* then load"|mac
+    init --> |"foreach in lib/*: if type COMMAND_NAME then load"|command-dependent
 ```
 
 

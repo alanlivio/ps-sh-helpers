@@ -7,20 +7,19 @@ BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
 #########################
 
 source "$BH_DIR/os_any.bash"
-case $OSTYPE in
-msys*)
-  source "$BH_DIR/os_win.bash"
-  ;;
-linux*)
-  source "$BH_DIR/os_ubu.bash"
-  if [[ -n $WSL_DISTRO_NAME ]]; then
-    source "$BH_DIR/os_win.bash";
-  fi
-  ;;
-darwin*)
-  source "$BH_DIR/os_mac.bash"
-  ;;
-esac
+
+if [[ $OSTYPE == msys* || -n $WSL_DISTRO_NAME ]]; then
+  echo source "$BH_DIR/os_win.bash";
+fi
+
+if [[ $OSTYPE == linux* ]]; then
+  echo source "$BH_DIR/os_ubu.bash"
+fi
+
+if [[ $OSTYPE == darwin* ]]; then
+  echo source "$BH_DIR/os_mac.bash"
+fi
+
 
 #########################
 # load <command>.bash files
