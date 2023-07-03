@@ -24,7 +24,7 @@ flowchart LR
     end
     bashrc --> |"load"| init
     init --> |"always load"|any
-    init --> |"if $OSTYPE == msys* || -n $WSL_DISTRO_NAME then load"|win
+    init --> |"if $OSTYPE == msys* || -n $wsl_DISTRO_NAME then load"|win
     init --> |"if $OSTYPE == linux* then load"|ubu
     init --> |"if $OSTYPE == mac* then load"|mac
     init --> |"foreach in lib/*: if type COMMAND_NAME then load"|command-dependent
@@ -40,7 +40,7 @@ The bash-helpers project has two requirements: a `bash shell` and `git`. So, run
     source ~/.bashrc
 ```
 
-On Win, you run the above command at GitaBash installed with [GitForWindows](https://gitforwindows.org). If you also use WSL, you can share the same BH repo by doing a symbolic link to it with `ln -s /mnt/c/<user>/.bh ~/.bh`.
+On Win, you run the above command at GitaBash installed with [GitForWindows](https://gitforwindows.org). If you also use wsl, you can share the same BH repo by doing a symbolic link to it with `ln -s /mnt/c/<user>/.bh ~/.bh`.
 
 ## OS-dependent samples
 
@@ -78,7 +78,7 @@ See more mac helpers in [os_mac.bash](os_mac.bash).
 ### os_win
 
 * `win_update`: update os and winget packages. If defined BH_PKGS_WINGET, install them. 
-* `winpath`: return path in windows format. It uses `cygpath -m` in GitBash/MSYS2, while uses `wslpath -m` in WSL.
+* `winpath`: return path in windows format. It uses `cygpath -m` in GitBash/MSYS2, while uses `wslpath -m` in wsl.
 * `win_policy_reset`: reset group policy.
 * `win_disable_apps_preinstalled`:  remove unused apps. It is a wrapper [win_disable_apps_preinstalled.ps1](scripts/win_disable_apps_preinstalled.ps1).
 * `win_disable_hotkeys`: disable acessibility,rotation, lang hotkeys. It is a wrapper [win_disable_hotkeys.ps1](scripts/win_disable_hotkeys.ps1).
@@ -89,11 +89,12 @@ See more mac helpers in [os_mac.bash](os_mac.bash).
 * `win_path_add`: add dir to path. It is a wrapper [win_path_add.ps1](scripts/win_path_add.ps1).
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.
-* `home_clean_win`: remove files/dirs defined in BH_HOME_CLEAN (even inside WSL), and hide from explorer dotfiles (.*) and others defined in BH_WIN_HIDE_HOME.
+* `home_clean_win`: remove files/dirs defined in BH_HOME_CLEAN (even inside wsl), and hide from explorer dotfiles (.*) and others defined in BH_WIN_HIDE_HOME.
 * `start_open_recycle_bin`: explorer open trash folder.
 * `start_open_startmenu_all`explorer opens the start menu folder for all users.
 * `start_open_startmenu_user`: explorer opens the start menu folder for the current user.
-* `start_from_wsl` (from WSL): call cmd `start` or `explorer`.
+* `start_from_wsl` (from wsl): call cmd `start` or `explorer`.
+* `msys2_start`(from wsl/gitbash): start msys2
 * `msys2_update`: update msys2 packages. If defined BH_PKGS_MSYS2, install them. 
 * `msys2_search`: search for msys2 package
 * `msys2_list_installed`:  list installed msys2 packages
