@@ -25,7 +25,7 @@ fi
 # load <command>.bash files
 #########################
 
-for file in "$BH_DIR/lib/"*.bash; do
+for file in "$BH_DIR/commands/"*.bash; do
   command_name=$(basename ${file%.*})
   if type $command_name &>/dev/null; then
     source $file

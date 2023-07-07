@@ -2,7 +2,7 @@
 
 # bash-helpers
 
-Template to easily create multi-OS bash helpers for win (msys2/gitbash/wsl), ubu, and mac. Useful to let you organize helpers in `OS-dependent` or `command-dependent`. The [init.sh](init.sh) load `OS-dependent` from `os_*.bash` files after testing `$OSTYPE` and load `command-dependent` from `lib/*.bash` after testing `type <command>`. 
+Template to easily create multi-OS bash helpers for win (msys2/gitbash/wsl), ubu, and mac. Useful to let you organize helpers in `OS-dependent` or `command-dependent`. The [init.sh](init.sh) load `OS-dependent` from `os_*.bash` files after testing `$OSTYPE` and load `command-dependent` from `commands/*.bash` after testing `type <command>`. 
 The project logo refers to the synthetic chemical element Bohrium, which also has BH's initials.
 
 ```mermaid
@@ -16,9 +16,9 @@ flowchart LR
     ubu["os_ub.bash"]
     mac["os_mac.bash"]
     command-dependent["
-        lib/COMMAND_NAME_1.bash
-        lib/COMMAND_NAME_2.bash
-        lib/COMMAND_NAME_3.bash
+        commands/COMMAND_NAME_1.bash
+        commands/COMMAND_NAME_2.bash
+        commands/COMMAND_NAME_3.bash
         ...
     "]
     end
@@ -27,7 +27,7 @@ flowchart LR
     init --> |"if $OSTYPE == msys* || -n $wsl_DISTRO_NAME then load"|win
     init --> |"if $OSTYPE == linux* then load"|ubu
     init --> |"if $OSTYPE == mac* then load"|mac
-    init --> |"foreach in lib/*: if type COMMAND_NAME then load"|command-dependent
+    init --> |"foreach in commands/*: if type COMMAND_NAME then load"|command-dependent
 ```
 
 
@@ -114,28 +114,28 @@ See more win helpers in [os_win.bash](os_win.bash).
 * `conda_env_create_from_enviroment_yml`: create env from environment.yml
 * `conda_env_update_from_enviroment_yml`: update env from environment.yml
 
-See more helpers in [lib/python.bash](lib/python.bash).
+See more helpers in [commands/python.bash](commands/python.bash).
 
 ### Docker
 
 * `docker_prune`: clean unused images and containers
 * `docker_run_at_same_folder`: run, from an image, a command line using the current folder as the working folder
 
-See more helpers in [lib/docker.bash](lib/docker.bash).
+See more helpers in [commands/docker.bash](commands/docker.bash).
 
 ### others
 
 See other commands at:
-* [lib/adb.bash](lib/adb.bash)
-* [lib/cmake.bash](lib/cmake.bash)
-* [lib/ffmpeg.bash](lib/ffmpeg.bash)
-* [lib/git.bash](lib/git.bash)
-* [lib/gs.bash](lib/gs.bash)
-* [lib/lxc.bash](lib/lxc.bash)
-* [lib/meson.bash](lib/meson.bash)
-* [lib/pandoc.bash](lib/pandoc.bash)
-* [lib/wget.bash](lib/wget.bash)
-* [lib/youtube-dl.bash](lib/youtube-dl.bash).
+* [commands/adb.bash](commands/adb.bash)
+* [commands/cmake.bash](commands/cmake.bash)
+* [commands/ffmpeg.bash](commands/ffmpeg.bash)
+* [commands/git.bash](commands/git.bash)
+* [commands/gs.bash](commands/gs.bash)
+* [commands/lxc.bash](commands/lxc.bash)
+* [commands/meson.bash](commands/meson.bash)
+* [commands/pandoc.bash](commands/pandoc.bash)
+* [commands/wget.bash](commands/wget.bash)
+* [commands/youtube-dl.bash](commands/youtube-dl.bash).
 
 ## References
 
