@@ -55,6 +55,15 @@ function win_update() {
   gsudo powershell.exe -c 'Install-Module -Name PSWindowsUpdate -Force; Install-WindowsUpdate -AcceptAll -IgnoreReboot'
 }
 
+function win_ssh_add_identity() {
+  gsudo powershell.exe -c '
+    Set-Service ssh-agent -StartupType Automatic
+    Start-Service ssh-agent
+    Get-Service ssh-agent
+    ssh-add $HOME/.ssh/id_rsa
+  '
+}
+
 #########################
 # start
 #########################

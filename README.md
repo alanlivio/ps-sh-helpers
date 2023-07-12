@@ -78,6 +78,7 @@ See more mac helpers in [os_mac.bash](os_mac.bash).
 ### os_win
 
 * `win_update`: update os and winget packages. If defined BH_PKGS_WINGET, install them. 
+* `win_ssh_add_identity`: set ssh-agent to automatically startup and add $HOME/.ssh/id_rsa as Identity
 * `winpath`: return path in windows format. It uses `cygpath -m` in GitBash/MSYS2, while uses `wslpath -m` in wsl.
 * `win_policy_reset`: reset group policy.
 * `win_disable_apps_preinstalled`:  remove unused apps. It is a wrapper [win_disable_apps_preinstalled.ps1](scripts/win_disable_apps_preinstalled.ps1).
