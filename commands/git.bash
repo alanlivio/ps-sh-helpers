@@ -9,9 +9,9 @@ alias git_diff_last_commit='git diff HEAD^1'
 
 function git_clone_subfolder() {
   : ${2?"Usage: ${FUNCNAME[0]} <repo> <foldre>"}
-  local dir=${basename $1}
+  local dir=$(basename $1)
   test_and_create_dir $dir
-  cd $dir
+  cd $dir || exit
   git init
   git remote add origin $1
   git sparse-checkout init
@@ -116,24 +116,24 @@ function git_formated_patch_apply() {
 function git_subdirs_pull() {
   local cwd=$(pwd)
   local dir=$(pwd $0)
-  cd $dir
+  cd $dir || exit
   for i in $(find . -type d -iname .git | sed 's/\.git//g'); do
-    cd "$dir/$i"
+    cd "$dir/$i" || exit
     if test -d .git; then
       log_msg "pull on $i"
       git pull
     fi
-    cd ..
+    cd .. || exit
   done
-  cd $cwd
+  cd $cwd || exit
 }
 
 function git_subdirs_reset_clean() {
   local cwd=$(pwd)
   local dir=$(pwd $1)
-  cd $dir
+   cd "$dir" || exit
   for i in $(find . -type d -iname .git | sed 's/\.git//g'); do
-    cd "$dir/$i"
+    cd "$dir/$i" || exit
     if test -d .git; then
       log_msg "reset and clean on $i"
       git reset --hard
@@ -141,7 +141,7 @@ function git_subdirs_reset_clean() {
     fi
     cd ..
   done
-  cd $cwd
+  cd $cwd || exit
 }
 
 function git_tag_list() {
