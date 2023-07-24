@@ -174,7 +174,7 @@ function git_filter_repo_user_rename_to_current() {
   _git_filter_repo_save_origin
   local new_name="$(git config user.name)"
   local new_email="$(git config user.email)"
-  echo git filter-repo --name-callback "'return b\""$new_name"\"'" --email-callback "'return b\""$new_email"\"'" --force | bash
+  echo git filter-repo --name-callback "'return b\"$new_name\"'" --email-callback "'return b\"$new_email\"'" --force | bash
   _git_filter_repo_test_and_msg
 }
 
