@@ -13,7 +13,7 @@ function lxc_profile_assign() {
   : ${2?"Usage: ${FUNCNAME[0]} <image_name> <profile_name,...>"}
   local image_name=$1
   shift
-  lxc assign $image_name $@
+  lxc assign $image_name "$@"
 }
 
 function lxc_launch() {

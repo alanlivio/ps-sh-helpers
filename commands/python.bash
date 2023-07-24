@@ -10,7 +10,7 @@ function python_setup_install_local() {
 
 function python_setup_upload_testpypi() {
   rm -r dist/
-  rm -rf *.egg-info
+  rm -rf ./*.egg-info
   python setup.py bdist_wheel
   twine check dist/*
   twine upload --repository testpypi dist/*
@@ -18,7 +18,7 @@ function python_setup_upload_testpypi() {
 
 function python_setup_upload_pypip() {
   rm -r dist/
-  rm -rf *.egg-info
+  rm -rf ./*.egg-info
   python setup.py bdist_wheel
   twine check dist/*
   twine upload dist/*
