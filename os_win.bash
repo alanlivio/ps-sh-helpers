@@ -73,7 +73,7 @@ function start_startmenu_all_users() { powershell.exe -c 'explorer ${env:program
 function start_recycle_bin() { powershell.exe -c 'explorer shell:RecycleBinFolder'; }
 function start_from_wsl() {
   if ! type wslview &>/dev/null; then sudo apt install wslu; fi
-  wslview $@
+  wslview "$@"
 }
 
 #########################
@@ -109,13 +109,13 @@ function win_path_show() {
 }
 
 function win_path_show_as_list() {
-  IFS=';' read -ra ADDR <<<$(win_path_show)
+  IFS=';' read -ra ADDR <<<"$(win_path_show)"
   for i in "${!ADDR[@]}"; do echo ${ADDR[$i]}; done
 }
 
 function win_path_add() { # using ps1 script
-  local dir=$(winpath $@)
-  local dircyg=$(cygpath $@)
+  local dir=$(winpath "$@")
+  local dircyg=$(cygpath "$@")
   # export in win
   powershell.exe -c "$(winpath $BH_LIB_PS1/win_path_add.ps1)" \'$dir\'
   # export in bash (it will reolad from win in new shell)

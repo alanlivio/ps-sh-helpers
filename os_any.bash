@@ -47,19 +47,19 @@ function home_clean() {
   if [ $# -eq 0  ]; then local home="$HOME"; else local home="$1"; fi # home_clean_win
   if [ -n "$BH_HOME_CLEAN" ]; then
     for i in "${BH_HOME_CLEAN[@]}"; do
-      if test -d "$home/$i"; then
+      if test -d "$home/${i:?}"; then
         log_msg "rm $home/$i"
-        rm -rf "$home/$i" >/dev/null
+        rm -rf "$home/${i:?}" >/dev/null
       elif test -e "$home/$i"; then
-        log_msg "rm $home/$i"
-        rm -f "$home/$i" >/dev/null
+        log_msg "rm $home/${i:?}"
+        rm -f "$home/${i:?}" >/dev/null
       fi
     done
   fi
 }
 
 function latex_clean() {
-  rm -rf _markdown* *.markdown.lua *.aux *.dvi *.log *.lox *.out *.lol *.pdf *.synctex.gz _minted-* *.bbl *.blg *.lot *.lof *.toc *.lol *.fdb_latexmk *.fls *.bcf
+  rm -rf ./*.aux ./*.dvi ./*.log ./*.lox ./*.out ./*.lol ./*.pdf ./*.synctex.gz ./_minted-* ./*.bbl ./*.blg ./*.lot ./*.lof ./*.toc ./*.lol ./*.fdb_latexmk ./*.fls ./*.bcf
 }
 
 
