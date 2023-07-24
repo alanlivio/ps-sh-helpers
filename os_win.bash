@@ -127,15 +127,6 @@ function win_path_show_as_list() {
   for i in "${!ADDR[@]}"; do echo ${ADDR[$i]}; done
 }
 
-function win_path_add() { # using ps1 script
-  local dir=$(winpath "$@")
-  local dircyg=$(cygpath "$@")
-  # export in win
-  powershell.exe -c "$(winpath $BH_DIR/scripts/win_path_add.ps1)" \'$dir\'
-  # export in bash (it will reolad from win in new shell)
-  if [[ ":$PATH:" != *":$dircyg:"* ]]; then export PATH=${PATH}:$dircyg; fi
-}
-
 #########################
 # msys2
 #########################
