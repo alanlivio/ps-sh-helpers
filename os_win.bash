@@ -1,15 +1,29 @@
-#########################
-# basic
-#########################
-
-alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
-BH_LIB_PS1="$BH_DIR/scripts/"
-
 if [[ -n $WSL_DISTRO_NAME ]]; then
   alias winpath='wslpath -m'
 elif [[ $OSTYPE == linux* ]]; then
   alias winpath='cygpath -m'
 fi
+
+#########################
+# load scripts as alias
+#########################
+
+function add_ps1_scripts_as_aliases(){
+  for file in "$BH_DIR/scripts/"win_*.ps1; do
+    if test -f $file &>/dev/null; then
+      script_name=$(basename ${file%.*})
+      eval "alias $script_name='powershell.exe $(winpath $file)'"
+    fi
+  done
+}
+
+add_ps1_scripts_as_aliases
+
+#########################
+# basic
+#########################
+
+alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
 
 function home_clean_win() {
   if [[ -n $WSL_DISTRO_NAME ]]; then
@@ -117,7 +131,7 @@ function win_path_add() { # using ps1 script
   local dir=$(winpath "$@")
   local dircyg=$(cygpath "$@")
   # export in win
-  powershell.exe -c "$(winpath $BH_LIB_PS1/win_path_add.ps1)" \'$dir\'
+  powershell.exe -c "$(winpath $BH_DIR/scripts/win_path_add.ps1)" \'$dir\'
   # export in bash (it will reolad from win in new shell)
   if [[ ":$PATH:" != *":$dircyg:"* ]]; then export PATH=${PATH}:$dircyg; fi
 }
@@ -152,12 +166,3 @@ function win_policy_reset() {
   gsudo cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
   gsudo gpupdate.exe /force
 }
-
-function ps1_script() { powershell.exe "$(winpath $BH_LIB_PS1/$1)"; }
-function win_disable_apps_preinstalled() { ps1_script win_disable_apps_preinstalled.ps1; }
-function win_disable_hotkeys() { ps1_script win_disable_hotkeys.ps1; }
-function win_disable_password_policy() { ps1_script win_disable_password_policy.ps1; }
-function win_disable_pc_folders() { ps1_script win_disable_pc_folders.ps1; }
-function win_disable_sounds() { ps1_script win_disable_sounds.ps1; }
-function win_enable_hyper_v() { ps1_script win_enable_hyper_v.ps1; }
-function win_path_add() { ps1_script win_path_add.ps1; }

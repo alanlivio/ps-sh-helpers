@@ -1,4 +1,19 @@
 #########################
+# load scripts as alias
+#########################
+
+function add_sh_scripts_as_aliases(){
+  for file in "$BH_DIR/scripts/"*.sh; do
+    if test -f $file &>/dev/null; then
+      script_name=$(basename ${file%.*})
+      eval "alias $script_name='sh $file'"
+    fi
+  done
+}
+
+add_sh_scripts_as_aliases
+
+#########################
 # basic
 #########################
 

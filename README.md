@@ -10,24 +10,30 @@ The project logo refers to the synthetic chemical element Bohrium, which also ha
 flowchart LR
     bashrc["~/.bashrc"]
     subgraph bash-helpers
-    init["init.sh"]
-    any["os_any.bash"]
-    win["os_win.bash"]
-    ubu["os_ub.bash"]
-    mac["os_mac.bash"]
-    command-dependent["
-        commands/COMMAND_NAME_1.bash
-        commands/COMMAND_NAME_2.bash
-        commands/COMMAND_NAME_3.bash
-        ...
-    "]
+        init["init.sh"]
+        any["os_any.bash"]
+        win["os_win.bash"]
+        ubu["os_ub.bash"]
+        mac["os_mac.bash"]
+        command-dependent["
+            commands/COMMAND_NAME_1.bash
+            commands/COMMAND_NAME_2.bash
+            ...
+        "]
+        scripts["
+            scripts/SCRIPT_1.ps1
+            scripts/SCRIPT_2.sh
+            ...
+        "]
     end
     bashrc --> |"load"| init
-    init --> |"always load"|any
-    init --> |"if $OSTYPE == msys* || -n $wsl_DISTRO_NAME then load"|win
-    init --> |"if $OSTYPE == linux* then load"|ubu
-    init --> |"if $OSTYPE == mac* then load"|mac
-    init --> |"foreach in commands/*: if type COMMAND_NAME then load"|command-dependent
+    init --> |"load"| any
+    any --> |"alias *.sh"| scripts
+    win --> |"alias *.ps1"| scripts
+    init --> |"if $OSTYPE==msys* || -n $WSL_DISTRO_NAME then load"| win
+    init --> |"if $OSTYPE==linux* then load"| ubu
+    init --> |"if $OSTYPE==mac* then load"| mac
+    init --> |"if type COMMAND_NAME then load"| command-dependent
 ```
 
 

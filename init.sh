@@ -9,7 +9,7 @@ BH_DIR="$(dirname "${BASH_SOURCE[0]}")"
 source "$BH_DIR/os_any.bash"
 
 if [[ $OSTYPE == msys* || -n $WSL_DISTRO_NAME ]]; then
-  source "$BH_DIR/os_win.bash";
+  source "$BH_DIR/os_win.bash"
 fi
 
 if [[ $OSTYPE == linux* ]]; then
@@ -19,7 +19,6 @@ fi
 if [[ $OSTYPE == darwin* ]]; then
   "$BH_DIR/os_mac.bash"
 fi
-
 
 #########################
 # load <command>.bash files
