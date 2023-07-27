@@ -1,6 +1,6 @@
 if [[ -n $WSL_DISTRO_NAME ]]; then
   alias winpath='wslpath -m'
-elif [[ $OSTYPE == linux* ]]; then
+else
   alias winpath='cygpath -m'
 fi
 
