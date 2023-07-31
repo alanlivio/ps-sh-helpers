@@ -8,16 +8,12 @@ fi
 # load scripts as alias
 #########################
 
-function add_ps1_scripts_as_aliases(){
-  for file in "$BH_DIR/scripts/"win_*.ps1; do
-    if test -f $file &>/dev/null; then
-      script_name=$(basename ${file%.*})
-      eval "alias $script_name='powershell.exe $(winpath $file)'"
-    fi
-  done
-}
-
-add_ps1_scripts_as_aliases
+for file in "$BH_DIR/scripts/"win_*.ps1; do
+  if test -f $file &>/dev/null; then
+    script_name=$(basename ${file%.*})
+    eval "alias $script_name='powershell.exe $(winpath $file)'"
+  fi
+done
 
 #########################
 # basic
