@@ -52,7 +52,6 @@ On Win, you run the above command at GitaBash installed with [GitForWindows](htt
 
 ### os_any
 
-* `home_clean`: remove files/dirs defined in BH_HOME_CLEAN.
 * `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
 * `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
 * `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.
