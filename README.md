@@ -96,7 +96,7 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 * `win_path_add`: add dir to the path. It is a wrapper [win_path_add.ps1](scripts/win_path_add.ps1).
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.
-* `home_clean_win`: remove files/dirs defined in BH_HOME_CLEAN (even inside WSL), and hide from explorer dotfiles (.*) and others defined in BH_WIN_HIDE_HOME.
+* `win_home_hide_dotfiles`: set as hidden windows files the ones at home that: starts with ".*" or are defined in BH_WIN_HIDE_HOME
 * `start_open_recycle_bin`: explorer open trash folder.
 * `start_open_startmenu_all`explorer opens the start menu folder for all users.
 * `start_open_startmenu_user`: explorer opens the start menu folder for the current user.

@@ -28,12 +28,7 @@ done
 
 alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
 
-function home_clean_win() {
-  if [[ -n $WSL_DISTRO_NAME ]]; then
-    home_clean $(wslpath $(wslvar USERPROFILE))
-  else
-    home_clean
-  fi
+function win_home_hide_dotfiles() {
   # set Hidden to nodes .*
   powershell.exe -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
   # set Hidden to nodes defined $BH_WIN_HIDE_HOME
