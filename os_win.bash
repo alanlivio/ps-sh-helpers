@@ -5,6 +5,8 @@
 alias powershell='powershell.exe'
 alias winget='winget.exe'
 alias wsl='wsl.exe'
+alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I Searches -I Favorites -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
+
 if [[ -n $WSL_DISTRO_NAME ]]; then
   alias winpath='wslpath -m'
 else
@@ -25,8 +27,6 @@ done
 #########################
 # basic
 #########################
-
-alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
 
 function win_home_hide_dotfiles() {
   # set Hidden to nodes .*
