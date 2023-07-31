@@ -1,3 +1,10 @@
+#########################
+# essetial aliases
+#########################
+
+alias powershell='powershell.exe'
+alias winget='winget.exe'
+alias wsl='wsl.exe'
 if [[ -n $WSL_DISTRO_NAME ]]; then
   alias winpath='wslpath -m'
 else
@@ -5,7 +12,7 @@ else
 fi
 
 #########################
-# load scripts as alias
+# load scripts as aliases
 #########################
 
 for file in "$BH_DIR/scripts/"win_*.ps1; do
