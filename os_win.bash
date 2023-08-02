@@ -77,9 +77,6 @@ function win_ssh_add_identity() {
 # start
 #########################
 
-function start_startmenu() { powershell.exe -c 'explorer ${env:appdata}\Microsoft\Windows\Start Menu\Programs'; }
-function start_startmenu_all_users() { powershell.exe -c 'explorer ${env:programdata}\Microsoft\Windows\Start Menu\Programs'; }
-function start_recycle_bin() { powershell.exe -c 'explorer shell:RecycleBinFolder'; }
 function start_from_wsl() {
   if ! type wslview &>/dev/null; then sudo apt install wslu; fi
   wslview "$@"
