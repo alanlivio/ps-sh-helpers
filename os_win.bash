@@ -67,12 +67,10 @@ function win_update() {
 }
 
 function win_ssh_add_identity() {
-  gsudo powershell.exe -c '
-    Set-Service ssh-agent -StartupType Automatic
-    Start-Service ssh-agent
-    Get-Service ssh-agent
-    ssh-add $HOME/.ssh/id_rsa
-  '
+  gsudo powershell.exe -c 'Set-Service ssh-agent -StartupType Automatic'
+  gsudo powershell.exe -c 'Start-Service ssh-agent'
+  gsudo powershell.exe -c 'Get-Service ssh-agent'
+  gsudo powershell.exe -c 'ssh-add "$env:userprofile\\.ssh\\id_rsa"'
 }
 
 #########################
