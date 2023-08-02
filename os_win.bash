@@ -1,8 +1,9 @@
 #########################
-# essetial aliases
+# essential aliases
 #########################
 
 alias powershell='powershell.exe'
+alias explorer='explorer.exe'
 alias winget='winget.exe'
 alias wsl='wsl.exe'
 alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I Searches -I Favorites -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
@@ -149,7 +150,11 @@ fi
 #########################
 
 function win_policy_reset() {
-  gsudo cmd.exe /C 'RD /S /Q %WinDir%\\System32\\GroupPolicyUsers '
+  gsudo cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicyUsers '
   gsudo cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
   gsudo gpupdate.exe /force
+}
+
+function win_disable_web_pack_experience() {
+  winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy
 }
