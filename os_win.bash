@@ -94,7 +94,7 @@ function regedit_open_path() {
 }
 
 function regedit_open_shell_folders() {
-  regedit_open_path 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders'
+  regedit_open_path 'HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
 }
 
 #########################

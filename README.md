@@ -96,6 +96,7 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.
 * `win_home_hide_dotfiles`: set as hidden windows files the ones at home that: starts with ".*" or are defined in BH_WIN_HIDE_HOME
+* `regedit_open_shell_folders`: open regedit in current users shell folder settings
 * `start_from_wsl`: (from wsl): call `start` from cmd.
 * `msys2_start`(from wsl/gitbash): start msys2
 * `msys2_update`: update msys2 packages. If defined BH_PKGS_MSYS2, install them.
