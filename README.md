@@ -120,6 +120,11 @@ See more Win helpers in [os_win.bash](os_win.bash).
 
 See more helpers in [commands/python.bash](commands/python.bash).
 
+### convert
+
+* `convert_heic_to_jpg_at_dir`: use imagemagick convert to convert *.heic to jpg.
+* `convert_pptx_compress_images_inplace`: extract pptx image, use imagemagick to compresse then and replace pptx file.
+
 ### Docker
 
 * `docker_prune`: clean unused images and containers

@@ -7,7 +7,7 @@ function convert_heic_to_jpg_at_dir() {
 }
 
 
-function convert_pptx_compress(){
+function convert_pptx_compress_images_inplace(){
   [[ -d xtractd ]] && rm -r xtractd
   unzip "$1" -d xtractd
   cd xtractd/ppt/media
