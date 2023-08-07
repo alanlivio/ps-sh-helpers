@@ -1,16 +1,14 @@
+# gs_compress ref
+# https://stackoverflow.com/questions/46195795/ghostscript-pdf-batch-compression
+
 function gs_compress() {
   : ${1?"Usage: ${FUNCNAME[0]} <pdf>"}
-  gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=${1%.*}-compressed.pdf $1
+  gs -dNOPAUSE -dQUIET -dBATCH -sDEVICE=pdfwrite -sOutputFile=${1%.*}-compressed.pdf $1 -dPDFSETTINGS=/ebook -dColorImageResolution=200
 }
 
-function gs_compress_hard1() {
+function gs_compress_hard() {
   : ${1?"Usage: ${FUNCNAME[0]} <pdf>"}
-  gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -dPDFSETTINGS=/printer -dColorImageResolution=200 -sOutputFile=${1%.*}-compressed.pdf $1
-}
-
-function gs_compress_hard2() {
-  : ${1?"Usage: ${FUNCNAME[0]} <pdf>"}
-  gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -dPDFSETTINGS=/ebook -sOutputFile=${1%.*}-compressed.pdf $1
+  gs -dNOPAUSE -dQUIET -dBATCH -sDEVICE=pdfwrite -sOutputFile=${1%.*}-compressed.pdf $1 -dPDFSETTINGS=/screen
 }
 
 function gs_concat() {
