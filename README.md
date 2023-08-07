@@ -123,7 +123,7 @@ See more helpers in [commands/python.bash](commands/python.bash).
 ### convert
 
 * `convert_heic_to_jpg_at_dir`: use imagemagick convert to convert *.heic to jpg.
-* `convert_pptx_compress_images_inplace`: extract pptx image, use imagemagick to compresse then and replace pptx file.
+* `convert_pptx_compress_images`: extract pptx images, use imagemagick to compresse then and create a new pptx file.
 
 ### Docker
 

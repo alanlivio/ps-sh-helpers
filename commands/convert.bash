@@ -6,24 +6,21 @@ function convert_heic_to_jpg_at_dir() {
   fi
 }
 
-
-function convert_pptx_compress_images_inplace(){
-  [[ -d xtractd ]] && rm -r xtractd
-  unzip "$1" -d xtractd
-  cd xtractd/ppt/media
-  mogrify -resize 70% *.png
-  mogrify -resize 70% *.jpeg
-  mogrify -resize 70% *.gif
-  cd ..
-  # fix linked files
-  sed -i '' -e 's/\(Target="[^"]*\)tiff"/\1png"/g' slides/_rels/*.rels
-  sed -i '' -e 's/\(Target="[^"]*\)tiff"/\1gif"/g' slides/_rels/*.rels
-  sed -i '' -e 's/\(Target="[^"]*\)tiff"/\1jpeg"/g' slides/_rels/*.rels
-  cd ..
+function convert_pptx_compress_images() {
+  : ${1?"Usage: ${FUNCNAME[0]} <pptx_file>"}
+  # https://dev.to/feldroy/til-strategies-for-compressing-jpg-files-with-imagemagick-5fn9
+  [[ -d /tmp/pptx_extracted ]] && rm -rf /tmp/pptx_extracted/
+  [[ -d ${1%.*}-compressed.pptx ]] && rm -rf ${1%.*}-compressed.pptx
+  unzip -q "$1" -d /tmp/pptx_extracted
+  local large_images=$(find /tmp/pptx_extracted/ppt/media -type f -size +500k -name *.jpg -o -name *.png -o -name *.jpeg -print)
+  local mogrigfy_params="-sampling-factor 4:2:0 -quality 85 -strip"
+  [[ -z $large_images ]]  && log_msg "no large images" && return
+  for image in $large_images; do
+    log_msg "compressing $(basename $image)"
+    mogrify $mogrigfy_params $image
+  done
   # create file
-  rm "../$1"
-  zip -r "../$1" *
-  cd ..
-  # remove uncompressed folder
-  rm -r xtractd
+  local cwd=$(pwd)
+  (cd /tmp/pptx_extracted/ &&
+    zip -9 -q -r "$cwd/${1%.*}-compressed.pptx" *)
 }
