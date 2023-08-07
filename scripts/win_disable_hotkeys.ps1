@@ -13,8 +13,9 @@ log_msg "disable hotkeys AutoRotation"
 reg add "HKCU\Software\INTEL\DISPLAY\IGFXCUI\HotKeys" /v "Enable" /t REG_DWORD /d 0 /f | Out-Null
 
 log_msg "disable hotkeys language"
-Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name HotKey -Value 3
+Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "HotKey" -Value 3
 Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "Language Hotkey" -Value 3
+Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "Layout Hotkey" -Value 3
 
 # explorer restart
 log_msg "explorer restart"
