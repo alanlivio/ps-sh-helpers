@@ -1,27 +1,27 @@
 alias python_clean_cache='find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf'
 
 function python_check_tensorflow() {
-  python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
+    python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
 }
 
 function python_setup_install_local() {
-  python setup.py install --user
+    python setup.py install --user
 }
 
 function python_setup_upload_testpypi() {
-  rm -r dist/
-  rm -rf ./*.egg-info
-  python setup.py bdist_wheel
-  twine check dist/*
-  twine upload --repository testpypi dist/*
+    rm -r dist/
+    rm -rf ./*.egg-info
+    python setup.py bdist_wheel
+    twine check dist/*
+    twine upload --repository testpypi dist/*
 }
 
 function python_setup_upload_pypip() {
-  rm -r dist/
-  rm -rf ./*.egg-info
-  python setup.py bdist_wheel
-  twine check dist/*
-  twine upload dist/*
+    rm -r dist/
+    rm -rf ./*.egg-info
+    python setup.py bdist_wheel
+    twine check dist/*
+    twine upload dist/*
 }
 
 alias conda_env_export_pip_requirements="conda list -e requirements.txt"

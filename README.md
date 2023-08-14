@@ -2,7 +2,7 @@
 
 # bash-helpers
 
-Template to easily create multi-OS bash helpers for Windows (MSYS2/GitBash/WSL), Ubuntu, and Mac. It is useful to let you organize helpers in `OS-dependent` or `command-dependent`. The [init.sh](init.sh) load `OS-dependent` from `os_*.bash` files after testing `$OSTYPE` and load `command-dependent` from `commands/*.bash` after testing `type <command>`. 
+Template to easily create multi-OS bash helpers for Windows (MSYS2/GitBash/WSL), Ubuntu, and Mac. It is useful to let you organize helpers in `OS-dependent` or `command-dependent`. The [init.sh](init.sh) load `OS-dependent` from `os_*.bash` files after testing `$OSTYPE` and load `command-dependent` from `commands/*.bash` after testing `type <command>`.
 The project logo refers to the synthetic chemical element Bohrium, which also has BH's initials.
 
 ```mermaid
@@ -36,10 +36,10 @@ flowchart LR
     init --> |"if type COMMAND_NAME then load"| command-dependent
 ```
 
-
 ## Install
 
 The bash-helpers project has two requirements: a `bash shell` and `git`. So, run on a `bash shell` with `git`:
+
 ```bash
   git clone https://github.com/alanlivio/bash-helpers ~/.bh &&\
     echo "source ~/.bh/init.sh" >> ~/.bashrc &&\
@@ -67,7 +67,7 @@ See more OS-independent helpers  [os_any.bash](os_any.bash) folder.
 
 ### os_ubu
 
-* `ubu_update`: update os and apt packages. If defined BH_PKGS_APT, install them. 
+* `ubu_update`: update os and apt packages. If defined BH_PKGS_APT, install them.
 * `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g., small icons), uninstall pre-installed and not used apps (e.g., weather, news, calendar, solitaire).
 * `deb_install_url`: fetch and install a deb package.
 
@@ -75,14 +75,14 @@ See more Ubuntu helpers in [os_ubu.bash](os_ubu.bash).
 
 ### os_mac
 
-* `mac_update`: update os and brew packages. If defined BH_PKGS_BREW, install them. 
+* `mac_update`: update os and brew packages. If defined BH_PKGS_BREW, install them.
 * `mac_install_brew`: install brew package manager
 
 See more Mac helpers in [os_mac.bash](os_mac.bash).
 
 ### os_win
 
-* `win_update`: update os and winget packages. If defined BH_PKGS_WINGET, install them. 
+* `win_update`: update os and winget packages. If defined BH_PKGS_WINGET, install them.
 * `win_ssh_add_identity`: set ssh-agent to automatically startup and add $HOME/.ssh/id_rsa as Identity.
 * `winpath`: get current path in Windows format. It uses `cygpath -m` in GitBash/MSYS2, while uses `wslpath -m` in WSL.
 * `win_policy_reset`: reset group policy.
@@ -135,6 +135,7 @@ See more helpers in [commands/docker.bash](commands/docker.bash).
 ### others
 
 See other commands at:
+
 * [commands/adb.bash](commands/adb.bash).
 * [commands/cmake.bash](commands/cmake.bash).
 * [commands/ffmpeg.bash](commands/ffmpeg.bash).

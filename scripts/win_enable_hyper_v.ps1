@@ -2,10 +2,10 @@
 function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
 log_msg "enable hyper-v"
-$dir="${env:SystemRoot}\servicing\Packages"
-$pkgs=Get-ChildItem $dir\* -Include *Hyper-V*.mum | Select Name
+$dir = "${env:SystemRoot}\servicing\Packages"
+$pkgs = Get-ChildItem $dir\* -Include *Hyper-V*.mum | Select Name
 foreach ($pkg in $pkgs) {
-  $path='"' + $dir + '\' + $pkg.Name + '"'
-  dism /online /norestart /add-package:$path
+    $path = '"' + $dir + '\' + $pkg.Name + '"'
+    dism /online /norestart /add-package:$path
 }
 dism /online /enable-feature /featurename:Microsoft-Hyper-V -All /LimitAccess /ALL

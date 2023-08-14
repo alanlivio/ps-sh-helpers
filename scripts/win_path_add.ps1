@@ -6,13 +6,13 @@ log_msg "adding to PATH dir: $addDir"
 $addDirEsc = [regex]::Escape($addDir)
 $currentPath = [System.Environment]::GetEnvironmentVariable("PATH", "user")
 if ([string]::IsNullOrEmpty($currentPath)) {
-  $newpath = $addDir
+    $newpath = $addDir
 }
 elseif ($currentPath -Match "$addDirEsc\\?") {
-  log_msg "dir already exist in PATH"
-  return 
+    log_msg "dir already exist in PATH"
+    return
 }
 else {
-  $newpath = "$currentPath;$addDir"
+    $newpath = "$currentPath;$addDir"
 }
 [System.Environment]::SetEnvironmentVariable("PATH", $newpath, "user")
