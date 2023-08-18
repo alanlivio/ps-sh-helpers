@@ -92,6 +92,8 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 * `win_disable_pc_folders`: disable link folders on This PC. It is a wrapper [win_disable_pc_folders.ps1](scripts/win_disable_pc_folders.ps1).
 * `win_disable_sounds`: disable systems sound (e.g., bells). It is a wrapper [win_disable_sounds.ps1](scripts/win_disable_sounds.ps1).
 * `win_enable_hyper_v`: enable hyper-v virtualization. It is a wrapper [win_enable_hyper_v.ps1](scripts/win_enable_hyper_v.ps1).
+* `win_disable_search_service`: disable Windows Search service (e.g., bells). It is a wrapper [win_disable_sounds.ps1](scripts/win_disable_search_service.ps1).
+* `win_disable_web_search_and_widgets`: disable Windows Web search and Widgets. It is a wrapper [win_enable_hyper_v.ps1](scripts/win_disable_web_search_and_widgets.ps1).
 * `win_path_add`: add dir to the path. It is a wrapper [win_path_add.ps1](scripts/win_path_add.ps1).
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.

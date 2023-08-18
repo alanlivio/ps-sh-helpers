@@ -1,4 +1,4 @@
-param([string]$addDir)
+param([string] $addDir)
 
 function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
