@@ -58,7 +58,7 @@ function winget_install() {
 }
 
 function win_update() {
-    log_msg "winget check installed BH_PKGS_WINGET: $BH_PKGS_WINGET"
+    log_msg "winget install pkgs from var BH_PKGS_WINGET: $BH_PKGS_WINGET"
     winget_install $BH_PKGS_WINGET
     log_msg "winget upgrade all"
     winget.exe upgrade --all --silent
@@ -148,8 +148,4 @@ function win_policy_reset() {
     gsudo cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicyUsers '
     gsudo cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
     gsudo gpupdate.exe /force
-}
-
-function win_disable_web_pack_experience() {
-    winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy
 }
