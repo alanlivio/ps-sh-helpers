@@ -20,16 +20,19 @@ flowchart LR
             commands/COMMAND_NAME_2.bash
             ...
         "]
-        scripts["
+        scripts_sh["
+            scripts/SCRIPT_1.sh
+            ...
+        "]
+        scripts_ps1["
             scripts/SCRIPT_1.ps1
-            scripts/SCRIPT_2.sh
             ...
         "]
     end
     bashrc --> |"load"| init
     init --> |"load"| any
-    any --> |"alias *.sh"| scripts
-    win --> |"alias *.ps1"| scripts
+    any --> |"alias to each *.sh"| scripts_sh
+    win --> |"alias to each *.ps1"| scripts_ps1
     init --> |"if $OSTYPE==msys* || -n $WSL_DISTRO_NAME then load"| win
     init --> |"if $OSTYPE==linux* then load"| ubu
     init --> |"if $OSTYPE==mac* then load"| mac
@@ -98,7 +101,7 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.
 * `win_home_hide_dotfiles`: set as hidden windows files the ones at home that: starts with ".*" or are defined in BH_WIN_HIDE_HOME
-* `regedit_open_shell_folders`: open regedit in current users shell folder settings
+* `regedit_open_shell_folders`: open regedit in current Gusers shell folder settings
 * `start_from_wsl`: (from wsl): call `start` from cmd.
 * `msys2_start`(from wsl/gitbash): start msys2
 * `msys2_update`: update msys2 packages. If defined BH_PKGS_MSYS2, install them.
