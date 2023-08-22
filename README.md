@@ -12,31 +12,30 @@ flowchart LR
     subgraph bash-helpers
         init["init.sh"]
         any["os_any.bash"]
+        command-dependent["
+            commands/[cmd_name].bash
+            ...
+        "]
         win["os_win.bash"]
         ubu["os_ub.bash"]
         mac["os_mac.bash"]
-        command-dependent["
-            commands/COMMAND_NAME_1.bash
-            commands/COMMAND_NAME_2.bash
-            ...
-        "]
         scripts_sh["
-            scripts/SCRIPT_1.sh
+            scripts/[script].sh
             ...
         "]
         scripts_ps1["
-            scripts/SCRIPT_1.ps1
+            scripts/win_[script].ps1
             ...
         "]
     end
     bashrc --> |"load"| init
     init --> |"load"| any
     any --> |"alias to each *.sh"| scripts_sh
-    win --> |"alias to each *.ps1"| scripts_ps1
-    init --> |"if $OSTYPE==msys* || -n $WSL_DISTRO_NAME then load"| win
-    init --> |"if $OSTYPE==linux* then load"| ubu
-    init --> |"if $OSTYPE==mac* then load"| mac
-    init --> |"if type COMMAND_NAME then load"| command-dependent
+    win --> |"alias to each win_*.ps1"| scripts_ps1
+    init --> |"load if $OSTYPE==msys* || -n $WSL_DISTRO_NAME"| win
+    init --> |"load if $OSTYPE==linux*"| ubu
+    init --> |"load if $OSTYPE==mac*"| mac
+    init --> |"load if type cmd_name"| command-dependent
 ```
 
 ## Install
