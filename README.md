@@ -102,11 +102,13 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 * `win_home_hide_dotfiles`: set as hidden windows files the ones at home that: starts with ".*" or are defined in BH_WIN_HIDE_HOME
 * `regedit_open_shell_folders`: open regedit in current Gusers shell folder settings
 * `start_from_wsl`: (from wsl): call `start` from cmd.
-* `msys2_start`(from wsl/gitbash): start msys2
-* `msys2_update`: update msys2 packages. If defined BH_PKGS_MSYS2, install them.
 * `msys2_search`: search for msys2 package
 * `msys2_list_installed`: list installed msys2 packages.
 * `msys2_use_same_home`: set msys2 to use the same home as a Windows user.
+* `msys2_show`: show pkg info
+* `msys2_install`: install pkg
+* `msys2_uninstall`: uninstall pkg
+* `msys2_use_same_home`: setup to use same home as Windows user
 
 See more Win helpers in [os_win.bash](os_win.bash).
 

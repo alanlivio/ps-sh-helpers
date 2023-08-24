@@ -130,14 +130,6 @@ if type pacman &>/dev/null; then
     alias msys2_install='pacman -S --noconfirm'
     alias msys2_uninstall='pacman -R --noconfirm'
     alias msys2_use_same_home='echo db_home: windows >>/etc/nsswitch.conf'
-    function msys2_update() {
-        if test -n "$BH_PKGS_MSYS2"; then
-            log_msg "msys2 check installed BH_PKGS_MSYS2: $BH_PKGS_MSYS2"
-            pacman -S --noconfirm $BH_PKGS_MSYS2
-        fi
-        log_msg "msys2 upgrade all"
-        pacman -Suy
-    }
 fi
 
 #########################
