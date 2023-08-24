@@ -15,7 +15,7 @@ function ubu_update() {
     log_msg "apt update"
     sudo apt -y update
     if test -n "$BH_PKGS_APT"; then
-        log_msg "apt check installed BH_PKGS_APT: $BH_PKGS_APT"
+        log_msg "apt install pkgs from var BH_PKGS_APT: $BH_PKGS_APT"
         sudo apt install -y $BH_PKGS_APT
     fi
     log_msg "apt upgrade all"
