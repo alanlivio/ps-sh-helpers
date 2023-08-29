@@ -21,6 +21,8 @@ function convert_pptx_compress_images() {
     done
     # create file
     local cwd=$(pwd)
-    (cd /tmp/pptx_extracted/ &&
-        zip -9 -q -r "$cwd/${1%.*}-compressed.pptx" *)
+    (
+        cd /tmp/pptx_extracted/
+        zip -9 -q -r "$cwd/${1%.*}-compressed.pptx" *
+    )
 }
