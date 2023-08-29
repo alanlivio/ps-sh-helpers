@@ -115,9 +115,9 @@ function git_formated_patch_apply() {
 }
 
 function git_subdirs_pull() {
-    for i in $(find . -type d -iname .git | sed 's/\.git//g'); do
+    find . -type d -iname .git | sed 's/\.git//g' | while read i; do
         (
-            cd $i
+            cd "$i"
             if test -d .git; then
                 log_msg "pull on $i"
                 git pull
@@ -127,9 +127,9 @@ function git_subdirs_pull() {
 }
 
 function git_subdirs_reset_clean() {
-    for i in $(find . -type d -iname .git | sed 's/\.git//g'); do
+    find . -type d -iname .git | sed 's/\.git//g' | while read i; do
         (
-            cd $i
+            cd "$i"
             if test -d .git; then
                 log_msg "pull on $i"
                 git reset --hard
