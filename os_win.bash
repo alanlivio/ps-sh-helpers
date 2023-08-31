@@ -32,15 +32,6 @@ done
 function win_home_hide_dotfiles() {
     # set Hidden to nodes .*
     powershell.exe -c 'Get-ChildItem "${env:userprofile}\\.*" | ForEach-Object { $_.Attributes += "Hidden" }'
-    # set Hidden to nodes defined $BH_WIN_HIDE_HOME
-    if [ -n "$BH_WIN_HIDE_HOME" ]; then
-        local to_hide=$(printf '"%s"' "${BH_WIN_HIDE_HOME[@]}" | sed 's/""/","/g')
-        powershell.exe -c '
-      $list =' "$to_hide" '
-      $nodes = Get-ChildItem ${env:userprofile} | Where-Object {$_.name -In $list}
-      $nodes | ForEach-Object { $_.Attributes += "Hidden" }
-    '
-    fi
 }
 
 function winget_install() {

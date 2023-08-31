@@ -1,15 +1,5 @@
 source $HOME/.bh/init.sh
 
-# home_clean
-case $OSTYPE in
-msys*)
-    BH_WIN_HIDE_HOME=('Cookies' 'Picutres' '3D Objects' 'Contacts' 'Favorites' 'Links' 'MicrosoftEdgeBackups' 'NetHood' 'PrintHood' 'Recent' 'Saved Games' 'Searches' 'SendTo' 'ansel' 'Intel' 'IntelGraphicsProfiles' 'MicrosoftEdgeBackups')
-    ;;
-linux*)
-    BH_UNUSED_CLEAN=('~/Videos' '~/Pictures' '~/Documents')
-    ;;
-esac
-
 # pkgs_install()
 BH_PKGS_APT="python "
 BH_PKGS_BREW="vscode "

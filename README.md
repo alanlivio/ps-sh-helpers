@@ -99,7 +99,7 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 * `win_path_add`: add dir to the path. It is a wrapper [win_path_add.ps1](scripts/win_path_add.ps1).
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.
-* `win_home_hide_dotfiles`: set as hidden windows files the ones at home that: starts with ".*" or are defined in BH_WIN_HIDE_HOME
+* `win_home_hide_dotfiles`: set as hidden files starting with "." at home folder
 * `regedit_open_shell_folders`: open regedit in current Gusers shell folder settings
 * `start_from_wsl`: (from wsl): call `start` from cmd.
 * `msys2_search`: search for msys2 package
