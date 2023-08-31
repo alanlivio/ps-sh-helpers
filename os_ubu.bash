@@ -39,14 +39,17 @@ function apt_fixes() {
     sudo apt dist-upgrade
     sudo apt autoremove -y
 }
+alias apt_list_avaliable_java="aptitude search '?provides(java-runtime)'"
 
-alias deb_install='sudo dpkg -i'
-alias deb_install_force_depends='sudo dpkg -i --force-depends'
-alias deb_info='dpkg-deb --info'
-alias deb_contents='dpkg-deb --show'
-alias snap_hide_home_folder='sudo snap set system experimental.hidden-snap-folder=true'
+#########################
+# deb
+#########################
 
-function deb_install_from_url() {
+alias deb_info_file='dpkg-deb --info'
+alias deb_contents_file='dpkg-deb --show'
+alias deb_install_file='sudo dpkg -i'
+alias deb_install_file_force_depends='sudo dpkg -i --force-depends'
+function deb_install_file_from_url() {
     local deb_name=$(basename $1)
     if test ! -f /tmp/$deb_name; then
         curl -O $1 --create-dirs --output-dir /tmp/
@@ -54,6 +57,12 @@ function deb_install_from_url() {
     fi
     sudo dpkg -i /tmp/$deb_name
 }
+
+#########################
+# snap
+#########################
+
+alias snap_hide_home_folder='sudo snap set system experimental.hidden-snap-folder=true'
 
 #########################
 # gnome settings
