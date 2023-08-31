@@ -110,7 +110,7 @@ function win_path_show() {
 #########################
 # msys2
 #########################
-alias msys2_start='cmd.exe /mnt/c/msys64/msys2_shell.cmd -defterm -mingw64 -no-start'
+
 if type pacman &>/dev/null; then
     alias msys2_search='pacman -s --noconfirm'
     alias msys2_show='pacman -Qi'
