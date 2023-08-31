@@ -85,6 +85,7 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 ### os_win
 
 * `win_update`: update os and winget packages. If defined BH_PKGS_WINGET, install them.
+* `win_path_show`: show windows path as list.
 * `win_ssh_add_identity`: set ssh-agent to automatically startup and add $HOME/.ssh/id_rsa as Identity.
 * `winpath`: get current path in Windows format. It uses `cygpath -m` in GitBash/MSYS2, while uses `wslpath -m` in WSL.
 * `win_policy_reset`: reset group policy.

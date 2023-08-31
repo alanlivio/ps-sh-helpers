@@ -102,11 +102,8 @@ function win_env_add() {
 }
 
 function win_path_show() {
-    powershell.exe -c '(Get-ChildItem Env:Path).Value'
-}
-
-function win_path_show_as_list() {
-    IFS=';' read -ra ADDR <<<"$(win_path_show)"
+    local ret=$(powershell.exe -c '(Get-ChildItem Env:Path).Value')
+    IFS=';' read -ra ADDR <<<$ret
     for i in "${!ADDR[@]}"; do echo ${ADDR[$i]}; done
 }
 
