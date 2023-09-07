@@ -97,7 +97,7 @@ function decompress() {
 function decompress_from_url() {
     : ${2?"Usage: ${FUNCNAME[0]} <URL> <dir>"}
     local file_name="/tmp/$(basename $1)"
-    if test ! -s $file_name; then
+    if test ! -e $file_name; then
         log_msg "fetching $1 to /tmp/"
         curl -LJ $1 --create-dirs --output $file_name
         return_if_last_command_fail

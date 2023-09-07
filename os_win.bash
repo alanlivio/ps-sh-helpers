@@ -41,7 +41,7 @@ function winget_install() {
             pkgs_to_install="$i $pkgs_to_install"
         fi
     done
-    if test ! -z "$pkgs_to_install"; then
+    if test -n "$pkgs_to_install"; then
         for pkg in $pkgs_to_install; do
             winget.exe install --accept-package-agreements --accept-source-agreements --silent $pkg
         done
