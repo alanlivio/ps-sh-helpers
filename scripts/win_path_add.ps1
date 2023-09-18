@@ -15,4 +15,4 @@ elseif ($currentPath -Match "$addDirEsc\\?") {
 else {
     $newpath = "$currentPath;$addDir"
 }
-[System.Environment]::SetEnvironmentVariable("PATH", $newpath, "user")
+gsudo [System.Environment]::SetEnvironmentVariable("PATH", $newpath, "user")
