@@ -11,7 +11,7 @@ function yt_dlp_audio() {
 
 function yt_dlp_audio_from_txt() {
     : ${1?"Usage: ${FUNCNAME[0]} <url to audio or list>"}
-    yt-dlp --extract-audio --audio-format m4a -a "$1"
+    yt-dlp --extract-audio --audio-format m4a --batch-file "$1"
 }
 
 function yt_dlp_video_480() {
@@ -21,5 +21,5 @@ function yt_dlp_video_480() {
 
 function yt_dlp_video_480_from_txt() {
     : ${1?"Usage: ${FUNCNAME[0]} <txt_file>"}
-    yt-dlp -f 'best[height<=480]' --recode-video mp4 -a "$1"
+    yt-dlp -f 'best[height<=480]' --recode-video mp4 --batch-file "$1"
 }
