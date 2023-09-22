@@ -6,36 +6,34 @@ Template to easily create multi-OS bash helpers for Windows (MSYS2/GitBash/WSL),
 The project logo refers to the synthetic chemical element Bohrium, which also has BH's initials.
 
 ```mermaid
-%%{init: {"flowchart": {"htmlLabels": false}} }%%
+%%{init: {'theme':'dark'}}%%
 flowchart LR
     bashrc["~/.bashrc"]
-    subgraph bash-helpers
-        init["init.sh"]
-        any["os_any.bash"]
-        command-dependent["
-            commands/[cmd_name].bash
-            ...
-        "]
-        win["os_win.bash"]
-        ubu["os_ub.bash"]
-        mac["os_mac.bash"]
-        scripts_sh["
-            scripts/[script].sh
-            ...
-        "]
-        scripts_ps1["
-            scripts/win_[script].ps1
-            ...
-        "]
-    end
+    init["bash-hepers/init.sh"]
+    anyos["os_any.bash"]
+    command-dependent["
+        commands/[cmd_name].bash
+        ...
+    "]
+    win["os_win.bash"]
+    ubu["os_ub.bash"]
+    mac["os_mac.bash"]
+    scripts_sh["
+        scripts/[script].sh
+        ...
+    "]
+    scripts_ps1["
+        scripts/win_[script].ps1
+        ...
+    "]
     bashrc --> |"load"| init
-    init --> |"load"| any
-    any --> |"alias to each *.sh"| scripts_sh
+    init --> |"load"| anyos
+    anyos --> |"alias to each *.sh"| scripts_sh
+    anyos --> |"load if cmd_name"| command-dependent
     win --> |"alias to each win_*.ps1"| scripts_ps1
     init --> |"load if $OSTYPE==msys* || -n $WSL_DISTRO_NAME"| win
     init --> |"load if $OSTYPE==linux*"| ubu
     init --> |"load if $OSTYPE==mac*"| mac
-    init --> |"load if type cmd_name"| command-dependent
 ```
 
 ## Install
