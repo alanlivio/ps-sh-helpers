@@ -2,7 +2,7 @@
 
 # bash-helpers
 
-Template to easily create multi-OS bash helpers for Windows (MSYS2/GitBash/WSL), Ubuntu, and Mac. It is useful to let you organize helpers in `OS-dependent` or `command-dependent`. The [init.sh](init.sh) load `OS-dependent` from `os_*.bash` files after testing `$OSTYPE` and load `command-dependent` from `commands/*.bash` after testing `type <command>`.
+Template to easily create multi-OS bash helpers for Windows (MSYS2/GitBash/WSL), Ubuntu, and Mac. It is useful to let you organize helpers in `OS-dependent` or `command-dependent`. Diagram below ilustrate how the [init.sh](init.sh) load `OS-dependent` from `os_*.bash` (files after testing `$OSTYPE`) and load `command-dependent` from `commands/*.bash` (after testing `type <command>`).
 The project logo refers to the synthetic chemical element Bohrium, which also has BH's initials.
 
 ```mermaid
@@ -45,6 +45,8 @@ The bash-helpers project has two requirements: a `bash shell` and `git`. So, run
     echo "source ~/.bh/init.sh" >> ~/.bashrc &&\
     source ~/.bashrc
 ```
+
+Alternative, you can see the [skel/.bashrc](skel/.bashrc) as example.
 
 On Win, you run the above command at GitaBash installed with [GitForWindows](https://gitforwindows.org). If you also use WSL, you can share the same BH repo by doing a symbolic link to it with `ln -s /mnt/c/<user>/.bh ~/.bh`.
 
