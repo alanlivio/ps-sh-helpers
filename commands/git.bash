@@ -1,25 +1,7 @@
-alias git_overleaf_push_commit_all='git commit -am "Update from local git";git push'
 alias git_count_commits='git rev-list --all --count'
 alias git_count_commits_by_user='git shortlog -s -n'
-alias git_untrack_repo_file_options_changes='git config core.fileMode false'
-alias git_stash_list='git stash save --include-untracked'
-alias git_branch_show_remotes='git remote show origin'
 alias git_diff_files_last_commit='git diff --stat HEAD^1'
 alias git_diff_last_commit='git diff HEAD^1'
-
-function git_clone_subfolder() {
-    : ${2?"Usage: ${FUNCNAME[0]} <repo> <foldre>"}
-    local dir=$(basename $1)
-    test_and_create_dir $dir
-    (
-        cd $dir
-        git init
-        git remote add origin $1
-        git sparse-checkout init
-        git sparse-checkout set $2
-        git pull origin master
-    )
-}
 
 function git_github_fix() {
     echo -e "Host github.com\\n  Hostname ssh.github.com\\n  Port 443" | tee $HOME/.ssh/config
@@ -35,13 +17,6 @@ function git_assume_unchanged() {
 function git_assume_unchanged_disable() {
     : ${1?"Usage: ${FUNCNAME[0]} <file>"}
     git update-index --no-assume-unchanged $1
-}
-
-function git_show_file_in_commit() {
-    : ${1?"Usage: ${FUNCNAME[0]} <commit> <file>"}
-    REV=$1
-    FILE=$2
-    git show $REV:$FILE
 }
 
 function git_branch_push() {
@@ -89,20 +64,9 @@ function git_push_amend_all() {
     git push --force
 }
 
-function git_push_commit_all() {
-    : ${1?"Usage: ${FUNCNAME[0]} <commit_message>"}
-    echo $1
-    git commit -am "$1"
-    git push
-}
-
 function git_gitignore_create() {
     : ${1?"Usage: ${FUNCNAME[0]} <contexts,..>"}
     curl -L -s "https://www.gitignore.io/api/$1"
-}
-
-function git_gitignore_create_python() {
-    git_gitignore_create python
 }
 
 function git_formated_patch_n_last_commits() {
@@ -138,10 +102,6 @@ function git_subdirs_reset_clean() {
             fi
         )
     done
-}
-
-function git_tag_list() {
-    git tag -l
 }
 
 function git_tag_move_to_head_and_push() {
@@ -196,7 +156,7 @@ function git_filter_repo_delete_file() {
 
 function git_filter_repo_finish_push() {
     if [ -z "$BH_FILTER_REPO_LAST_ORIGIN" ]; then
-        echo "$BH_FILTER_REPO_LAST_ORIGIN not defined fix it"
+        echo "var BH_FILTER_REPO_LAST_ORIGIN not defined (maybe this is a new shell after editing). please restart editing!"
         return
     fi
     echo -n "Is it to push into origin $BH_FILTER_REPO_LAST_ORIGIN and branch master (y/n)? "
