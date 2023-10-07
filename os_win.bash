@@ -19,7 +19,7 @@ fi
 #########################
 
 for file in "$BH_DIR/scripts/"win_*.ps1; do
-    if test -f $file &>/dev/null; then
+    if test -f $file; then
         script_name=$(basename ${file%.*})
         eval "alias $script_name='powershell.exe $(winpath $file)'"
     fi
