@@ -49,6 +49,7 @@ alias deb_info_file='dpkg-deb --info'
 alias deb_contents_file='dpkg-deb --show'
 alias deb_install_file='sudo dpkg -i'
 alias deb_install_file_force_depends='sudo dpkg -i --force-depends'
+
 function deb_install_file_from_url() {
     local deb_name=$(basename $1)
     if test ! -f /tmp/$deb_name; then
