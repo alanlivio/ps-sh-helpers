@@ -59,7 +59,7 @@ function git_branch_upstrem_set() {
     git branch --set-upstream-to $1
 }
 
-function git_push_amend_all() {
+function git_push_after_amend_all() {
     git commit -a --amend --no-edit
     git push --force
 }
