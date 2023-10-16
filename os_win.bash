@@ -103,5 +103,12 @@ function regedit_open_path() {
     powershell.exe -c "
     reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit\ /v Lastkey /d 'Computer\\$1' /t REG_SZ /f
     regedit.exe
-  "
+    "
+}
+
+function edge_disable_ctrl_shift_c() {
+    powershell.exe -c "
+        New-Item -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Force | Out-Null
+        Set-ItemProperty -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Name 'ConfigureKeyboardShortcuts' -Type String -Value  '{\"disabled\": [\"dev_tools_elements\"]}'
+    "
 }
