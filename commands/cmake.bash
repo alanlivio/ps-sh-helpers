@@ -23,6 +23,7 @@ function cmake_clean() {
 }
 
 function cmake_build_target() {
+    : ${1?"Usage: ${FUNCNAME[0]} <target>"}
     cmake --build . --target $1
 }
 
@@ -72,6 +73,7 @@ function cmake_test_all() {
 }
 
 function cmake_test_target() {
+    : ${1?"Usage: ${FUNCNAME[0]} <target>"}
     cmake --build . --target $1
     ctest -R $1
 }

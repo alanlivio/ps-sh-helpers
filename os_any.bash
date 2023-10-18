@@ -13,22 +13,28 @@ done
 # basic
 #########################
 
-function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
-function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
-function log_run() { log_msg "$*" && eval "$*"; }
-function test_and_create_dir() { if ! test -d "$1"; then mkdir -p $1; fi; }
 alias return_if_last_command_fail='if [ $? != 0 ]; then log_error ${FUNCNAME[0]} fail; return 1; fi'
 alias bashrc_reload='source $HOME/.bashrc'
 alias folder_count_files='find . -maxdepth 1 -type f | wc -l'
 alias folder_count_files_recusive='find . -maxdepth 1 -type f | wc -l'
 alias folder_list_sorted_by_size='du -ahd 1 | sort -h'
 
+function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
+function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
+function log_run() { log_msg "$*" && eval "$*"; }
+function test_and_create_dir() {
+    : ${1?"Usage: ${FUNCNAME[0]} <dirname>"}
+    if ! test -d "$1"; then
+        mkdir -p $1
+    fi
+}
+
 #########################
 # dotfiles
 #########################
 
 function _dotfiles_func() {
-    : ${1?"Usage: ${FUNCNAME[0]} backup|install|diff"}
+    : ${1?"Usage: ${FUNCNAME[0]} <backup|install|diff>"}
     declare -a files_array
     files_array=($BH_DOTFILES)
     if [ ${#files_array[@]} -eq 0 ]; then log_error "BH_DOTFILES empty" && return 1; fi

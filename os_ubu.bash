@@ -51,6 +51,7 @@ alias deb_install_file='sudo dpkg -i'
 alias deb_install_file_force_depends='sudo dpkg -i --force-depends'
 
 function deb_install_file_from_url() {
+    : ${1?"Usage: ${FUNCNAME[0]} <debfile>"}
     local deb_name=$(basename $1)
     if test ! -f /tmp/$deb_name; then
         curl -O $1 --create-dirs --output-dir /tmp/
