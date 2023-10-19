@@ -99,7 +99,7 @@ function win_ssh_add_identity() {
     gsudo powershell.exe -c 'ssh-add "$env:userprofile\\.ssh\\id_rsa"'
 }
 
-function regedit_open() {
+function regedit_open_path() {
     : ${1?"Usage: ${FUNCNAME[0]} <path>"}
     powershell.exe -c "
     reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit\ /v Lastkey /d 'Computer\\$1' /t REG_SZ /f
