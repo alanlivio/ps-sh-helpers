@@ -69,22 +69,22 @@ See more OS-independent helpers  [os_any.bash](os_any.bash) folder.
 
 ### os_ubu
 
-* `ubu_update`: update os and apt packages. If defined BH_PKGS_APT, install them.
+* `ubu_update`: update os and install apt packages if BH_PKGS_APT defined.
 * `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g., small icons), uninstall pre-installed and not used apps (e.g., weather, news, calendar, solitaire).
-* `deb_install_url`: fetch and install a deb package.
+* `deb_install_file_from_url`: fetch and install a deb package.
 
 See more Ubuntu helpers in [os_ubu.bash](os_ubu.bash).
 
 ### os_mac
 
-* `mac_update`: update os and brew packages. If defined BH_PKGS_BREW, install them.
+* `mac_update`: update os and install brew packages if BH_PKGS_BREW defined.
 * `mac_install_brew`: install brew package manager
 
 See more Mac helpers in [os_mac.bash](os_mac.bash).
 
 ### os_win
 
-* `win_update`: update os and winget packages. If defined BH_PKGS_WINGET, install them.
+* `win_update`: update os and install winget packages if BH_PKGS_WINGET defined.
 * `win_path_show`: show windows path as list.
 * `win_ssh_add_identity`: set ssh-agent to automatically startup and add $HOME/.ssh/id_rsa as Identity.
 * `winpath`: get current path in Windows format. It uses `cygpath -m` in GitBash/MSYS2, while uses `wslpath -m` in WSL.
@@ -95,13 +95,13 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 * `win_disable_pc_folders`: disable link folders on This PC. It is a wrapper [win_disable_pc_folders.ps1](scripts/win_disable_pc_folders.ps1).
 * `win_disable_sounds`: disable systems sound (e.g., bells). It is a wrapper [win_disable_sounds.ps1](scripts/win_disable_sounds.ps1).
 * `win_enable_hyper_v`: enable hyper-v virtualization. It is a wrapper [win_enable_hyper_v.ps1](scripts/win_enable_hyper_v.ps1).
-* `win_disable_search_service`: disable Windows Search service (e.g., bells). It is a wrapper [win_disable_sounds.ps1](scripts/win_disable_search_service.ps1).
+* `win_disable_search_service`: disable Windows Search service. It is a wrapper [win_disable_sounds.ps1](scripts/win_disable_search_service.ps1).
 * `win_disable_web_search_and_widgets`: disable Windows Web search and Widgets. It is a wrapper [win_enable_hyper_v.ps1](scripts/win_disable_web_search_and_widgets.ps1).
 * `win_path_add`: add dir to the path. It is a wrapper [win_path_add.ps1](scripts/win_path_add.ps1).
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.
 * `win_home_hide_dotfiles`: set as hidden files starting with "." at home folder
-* `regedit_open_shell_folders`: open regedit in current Gusers shell folder settings
+* `regedit_open_shell_folders`: open regedit in current user shell folder settings
 * `start_from_wsl`: (from wsl): call `start` from cmd.
 * `msys2_search`: search for msys2 package
 * `msys2_list_installed`: list installed msys2 packages.
