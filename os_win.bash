@@ -7,7 +7,7 @@ alias explorer='explorer.exe'
 alias winget='winget.exe'
 alias wsl='wsl.exe'
 alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I Searches -I Favorites -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
-alias start_from_wsl='if ! type wslview &>/dev/null; then sudo apt install wslu; fi; wslview'
+alias start_from_wsl='wslview'
 
 if [[ -n $WSL_DISTRO_NAME ]]; then
     alias winpath='wslpath -m'
