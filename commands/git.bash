@@ -127,6 +127,8 @@ function git_filter_repo_messages_remove_str() {
 }
 
 function git_filter_repo_user_rename_to_current() {
+    echo -n "Do want use the user.email=$(git config user.email)(y/n)? "
+    answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
     _git_filter_repo_save_origin
     local new_name="$(git config user.name)"
     local new_email="$(git config user.email)"
