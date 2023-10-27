@@ -1,4 +1,4 @@
-function convert_heic_to_jpg_at_dir() {
+function convert_heic_at_folder_to_jpg() {
     if test -n "*.heic"; then
         for file in *.heic; do convert $file ${file/%.heic/.jpg}; done
     else
@@ -6,7 +6,7 @@ function convert_heic_to_jpg_at_dir() {
     fi
 }
 
-function convert_pptx_compress_images() {
+function convert_pptx_to_compressed_images_version() {
     : ${1?"Usage: ${FUNCNAME[0]} <pptx_file>"}
     # https://dev.to/feldroy/til-strategies-for-compressing-jpg-files-with-imagemagick-5fn9
     [[ -d /tmp/pptx_extracted ]] && rm -rf /tmp/pptx_extracted/
