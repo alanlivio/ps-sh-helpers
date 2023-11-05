@@ -84,6 +84,7 @@ function decompress() {
     : ${1?"Usage: ${FUNCNAME[0]} <zip-name> [dir-name]"}
     local filename=$(basename $1)
     local filename_noext="${filename%.*}"
+    local extension=${path##*.}
     local dest
     if [ $# -eq 1 ]; then dest=.; else dest=$2; fi
     case $filename in
@@ -93,7 +94,7 @@ function decompress() {
     *.zip) ret=$(unzip $1 -d $dest) ;;
     *.zst) ret=$(tar --use-compress-program=unzstd -xvf $1 -C $dest) ;;
     *.xz) ret=$(tar -xJf $1 -C $dest) ;;
-    *) log_error "$EXT is not supported compress." && return 1 ;;
+    *) log_error "$extension is not supported compress." && return 1 ;;
     esac
     if [ $? != 0 ] || ! [ -f $file_name ]; then
         log_error "decompress $1 failed " && return 1
