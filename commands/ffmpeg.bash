@@ -1,11 +1,13 @@
 function ffmpeg_cut_mp4() {
     : ${3?"Usage: ${FUNCNAME[0]} <video> <begin_time_in_format_00:00:00> <end_time_in_format_00:00:00>"}
-    ffmpeg -i $1 -vcodec copy -acodec copy -ss $2 -t $3 -f mp4 cuted-$1
+    local filename_noext="${1%.*}"
+    local extension=${1##*.}
+    echo ffmpeg -i "$1" -vcodec copy -acodec copy -ss $2 -t $3 -f mp4 "${filename_noext} (cuted).$extension"
 }
 
 function ffmpeg_convert_to_mp4_768x432(){
     : ${1?"Usage: ${FUNCNAME[0]} <video>"}
-    ffmpeg -i $1  -vf scale=768:-1 -c:v libx264 -c:a aac "${1%.*}.mp4"
+    ffmpeg -i "$1"  -vf scale=768:-1 -c:v libx264 -c:a aac "${1%.*}.mp4"
 }
 
 function ffmpeg_extract_audio_mp4() {
@@ -15,7 +17,7 @@ function ffmpeg_extract_audio_mp4() {
 
 function ffmpeg_show_motion_vectors() {
     : ${1?"Usage: ${FUNCNAME[0]} <video>"}
-    ffplay -flags2 +export_mvs -vf codecview=mv=pf+bf+bb $1
+    ffplay -flags2 +export_mvs -vf codecview=mv=pf+bf+bb "$1"
 }
 
 function ffmpeg_images_merge_to_mp4() {
