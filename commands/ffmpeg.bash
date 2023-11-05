@@ -2,7 +2,7 @@ function ffmpeg_cut_mp4() {
     : ${3?"Usage: ${FUNCNAME[0]} <video> <begin_time_in_format_00:00:00> <end_time_in_format_00:00:00>"}
     local filename_noext="${1%.*}"
     local extension=${1##*.}
-    echo ffmpeg -i "$1" -vcodec copy -acodec copy -ss $2 -t $3 -f mp4 "${filename_noext} (cuted).$extension"
+    echo ffmpeg -i "$1" -vcodec copy -acodec copy -ss "$2" -t $3 -f mp4 "${filename_noext} (cuted).$extension"
 }
 
 function ffmpeg_convert_to_mp4_768x432(){

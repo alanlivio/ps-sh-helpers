@@ -139,7 +139,7 @@ function git_filter_repo_user_rename_to_current() {
 function git_filter_repo_user_rename_as_mailmap() {
     _git_filter_repo_save_origin
     : ${1?"Usage: ${FUNCNAME[0]} <mailmap>. See more at 'https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html#:~:text=User%20and%20email%20based%20filtering'"}
-    git filter-repo --mailmap $1 --force
+    git filter-repo --mailmap "$1" --force
     _git_filter_repo_test_and_msg
 }
 
