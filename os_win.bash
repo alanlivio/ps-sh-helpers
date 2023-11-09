@@ -2,7 +2,6 @@
 # essential aliases
 #########################
 
-alias ffmpeg='ffmpeg.exe'
 alias powershell='powershell.exe'
 alias explorer='explorer.exe'
 alias winget='winget.exe'
