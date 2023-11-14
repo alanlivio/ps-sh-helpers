@@ -110,8 +110,25 @@ function git_tag_move_to_head_and_push() {
     git push --force --tags
 }
 
-alias _git_filter_repo_test_and_msg='if [ $? -eq 0 ]; then log_msg "fiter-repo succeeded. check if you agree and run git_filter_repo_finish_push to push"; fi'
+# git filter repo
+
+function git_filter_repo_finish_push() {
+    if [ -z "$BH_FILTER_REPO_LAST_ORIGIN" ]; then
+        echo "var BH_FILTER_REPO_LAST_ORIGIN not defined (maybe this is a new shell after editing). please restart editing!"
+        return
+    fi
+    echo -n "Is it to push into origin $BH_FILTER_REPO_LAST_ORIGIN and branch master (y/n)? "
+    answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
+    if echo "$answer" | grep -iq "^y"; then
+        if [[ $(git remote get-url origin 2>/dev/null) != "$BH_FILTER_REPO_LAST_ORIGIN" ]]; then
+            git remote add origin $BH_FILTER_REPO_LAST_ORIGIN
+        fi
+        git push --set-upstream origin master --force
+    fi
+}
+
 alias _git_filter_repo_save_origin='if [[ -n $(git remote get-url origin) ]]; then BH_FILTER_REPO_LAST_ORIGIN=$(git remote get-url origin); fi'
+alias _git_filter_repo_test_and_msg='if [ $? -eq 0 ]; then log_msg "fiter-repo succeeded. check if you agree and run git_filter_repo_finish_push to push"; fi'
 
 function git_filter_repo_messages_to_lower_case() {
     _git_filter_repo_save_origin
@@ -154,19 +171,4 @@ function git_filter_repo_delete_file() {
     _git_filter_repo_save_origin
     git filter-repo --use-base-name --invert-paths --path "$1" --force
     _git_filter_repo_test_and_msg
-}
-
-function git_filter_repo_finish_push() {
-    if [ -z "$BH_FILTER_REPO_LAST_ORIGIN" ]; then
-        echo "var BH_FILTER_REPO_LAST_ORIGIN not defined (maybe this is a new shell after editing). please restart editing!"
-        return
-    fi
-    echo -n "Is it to push into origin $BH_FILTER_REPO_LAST_ORIGIN and branch master (y/n)? "
-    answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
-    if echo "$answer" | grep -iq "^y"; then
-        if [[ $(git remote get-url origin 2>/dev/null) != "$BH_FILTER_REPO_LAST_ORIGIN" ]]; then
-            git remote add origin $BH_FILTER_REPO_LAST_ORIGIN
-        fi
-        git push --set-upstream origin master --force
-    fi
 }
