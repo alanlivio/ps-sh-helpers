@@ -89,18 +89,18 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 * `win_ssh_add_identity`: set ssh-agent to automatically startup and add $HOME/.ssh/id_rsa as Identity.
 * `winpath`: get current path in Windows format. It uses `cygpath -m` in GitBash/MSYS2, while uses `wslpath -m` in WSL.
 * `win_policy_reset`: reset group policy.
-* `win_disable_apps_preinstalled`: remove unused apps. It is a wrapper [win_disable_apps_preinstalled.ps1](scripts/win_disable_apps_preinstalled.ps1).
-* `win_disable_hotkeys`disable accessibility, rotation, lang hotkeys. It is a wrapper [win_disable_hotkeys.ps1](scripts/win_disable_hotkeys.ps1).
-* `win_disable_password_policy`: disable password policy requirement. It is a wrapper [win_disable_password_policy.ps1](scripts/win_disable_password_policy.ps1).
-* `win_disable_pc_folders`: disable link folders on This PC. It is a wrapper [win_disable_pc_folders.ps1](scripts/win_disable_pc_folders.ps1).
-* `win_disable_sounds`: disable systems sound (e.g., bells). It is a wrapper [win_disable_sounds.ps1](scripts/win_disable_sounds.ps1).
-* `win_enable_hyper_v`: enable hyper-v virtualization. It is a wrapper [win_enable_hyper_v.ps1](scripts/win_enable_hyper_v.ps1).
-* `win_disable_search_service`: disable Windows Search service. It is a wrapper [win_disable_sounds.ps1](scripts/win_disable_search_service.ps1).
-* `win_disable_web_search_and_widgets`: disable Windows Web search and Widgets. It is a wrapper [win_enable_hyper_v.ps1](scripts/win_disable_web_search_and_widgets.ps1).
-* `win_path_add`: add dir to the path. It is a wrapper [win_path_add.ps1](scripts/win_path_add.ps1).
+* `win_disable_apps_preinstalled`: remove unused apps.
+* `win_keyboard_unused_disable`disable accessibility, rotation, lang hotkeys.
+* `win_disable_password_policy`: disable password policy requirement.
+* `win_explorer_disable_pc_folders`: disable link folders on This PC.
+* `win_disable_sounds`: disable systems sound (e.g., bells).
+* `win_enable_hyperv`: enable hyper-v virtualization.
+* `win_disable_file_search`: disable file search service.
+* `win_disable_web_search_and_widgets`: disable Windows Web search and Widgets.
+* `win_path_add`: add dir to the path.
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.
-* `win_home_hide_dotfiles`: set as hidden files starting with "." at home folder
+* `win_explore_hide_home_dotfiles`: set as hidden files starting with "." at home folder
 * `regedit_open_shell_folders`: open regedit in current user shell folder settings
 * `start_from_wsl`: (from wsl): call `start` from cmd.
 * `msys2_search`: search for msys2 package

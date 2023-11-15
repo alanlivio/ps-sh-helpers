@@ -1,26 +1,5 @@
 function _log_msg () { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
-# system
-
-function win_system_ver() {
-    [Environment]::OSVersion.Version.ToString()
-}
-
-function win_system_disable_password_policy {
-    $tmpfile = New-TemporaryFile
-    secedit /export /cfg $tmpfile /quiet
-  (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
-    secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
-    Remove-Item -Path $tmpfile
-}
-
-# sounds
-
-function win_system_disable_beep() {
-    Set-ItemProperty -Path "HKCU:\AppEvents\Schemes" -Name "(Default)" -Value ".None"
-    net stop beep
-}
-
 # path
 
 function win_path_add($addPath) {
@@ -62,7 +41,7 @@ function win_env_path_list($addPath) {
     Write-Output $path
 }
 
-# win_reg
+# reg
 
 function win_reg_open_path() {
     reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit\ /v Lastkey /d 'Computer\\$1' /t REG_SZ /f
@@ -72,72 +51,16 @@ function win_reg_open_path() {
 function win_reg_open_shell_folders() {
     win_reg_open_path 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
 }
-
-# edge
-
-function win_edge_disable_ctrl_shift_c() {
-    New-Item -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Force | Out-Null
-    Set-ItemProperty -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Name 'ConfigureKeyboardShortcuts' -Type String -Value  '{\"disabled\": [\"dev_tools_elements\"]}'
-}
-
-# optimize
-
-function win_optimize_appx() {
-    # microsoft
-    $pkgs = @(
-        'MicrosoftTeams'
-        'Microsoft.3DBuilder'
-        'Microsoft.Appconnector'
-        'Microsoft.BingNews'
-        'Microsoft.BingSports'
-        'Microsoft.BingWeather'
-        'Microsoft.CommsPhone'
-        'Microsoft.ConnectivityStore'
-        'Microsoft.GamingApp'
-        'Microsoft.MSPaint'
-        'Microsoft.Microsoft3DViewer'
-        'Microsoft.MicrosoftOfficeHub'
-        'Microsoft.MicrosoftSolitaireCollection'
-        'Microsoft.MicrosoftStickyNotes'
-        'Microsoft.MixedReality.Portal'
-        'Microsoft.OneConnect'
-        'Microsoft.People'
-        'Microsoft.PowerAutomateDesktop'
-        'Microsoft.Print3D'
-        'Microsoft.SkypeApp'
-        'Microsoft.StorePurchaseApp'
-        'Microsoft.Wallet'
-        'Microsoft.WindowsMaps'
-        'Microsoft.Xbox.TCUI'
-        'Microsoft.XboxApp'
-        'Microsoft.XboxGameOverlay'
-        'Microsoft.XboxGamingOverlay'
-        'Microsoft.XboxIdentityProvider'
-        'Microsoft.XboxSpeechToTextOverlay'
-        'Microsoft.YourPhone'
-        'Microsoft.ZuneMusic'
-    )
-    appx_uninstall @pkgs
-}
-
 # service
 
 function win_scheduledtask_list_enabled() {
     Get-ScheduledTask | Where-Object { $_.State -eq "Ready" }
 }
 
-
 function win_service_list_running() {
     Get-Service | Where-Object { $_.Status -eq "Running" }
 }
 
-
-function win_service_ssh() {
-    gsudo 'Set-Service ssh-agent -StartupType Automatic'
-    gsudo 'Start-Service ssh-agent'
-    gsudo 'Get-Service ssh-agent'
-    gsudo 'ssh-add "$env:userprofile\\.ssh\\id_rsa"'
-}
 
 function win_service_disable($name) {
     foreach ($name in $args) {
@@ -191,18 +114,6 @@ function win_appx_uninstall() {
     }
 }
 
-function win_appx_install_essentials() {
-    $pkgs = @(
-        'Microsoft.WindowsStore'
-        'Microsoft.WindowsCalculator'
-        'Microsoft.Windows.Photos'
-        'Microsoft.WindowsFeedbackHub'
-        'Microsoft.WindowsCamera'
-        'Microsoft.WindowsSoundRecorder'
-    )
-    appx_install @pkgs
-}
-
 # explorer
 
 function win_explorer_restore_desktop() {
@@ -214,10 +125,9 @@ function win_explorer_restore_desktop() {
     attrib +r -s -h "${env:userprofile}\Desktop"
 }
 
-function win_home_hide_dotfiles() {
+function win_explore_hide_home_dotfiles() {
     Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }
 }
-
 
 function win_explorer_open_trash() {
     Start-Process explorer shell:recyclebinfolder
@@ -258,7 +168,6 @@ function win_wsl_terminate() {
     wsl -t (wsl_get_default)
 }
 
-
 # keyboard
 
 function win_keyboard_lang_stgs_open() {
@@ -272,4 +181,147 @@ function win_keyboard_disable_shortcut_lang {
 
 function win_keyboard_disable_shortcut_altgr() {
     Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Value ([byte[]](0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x38, 0x00, 0x38, 0xe0, 0x00, 0x00, 0x00, 0x00))
+}
+
+# win_update
+
+function win_update_list() {
+    Get-WindowsUpdate
+}
+
+function win_update_list_last_installed() {
+    Get-WUHistory -Last 10 | Select-Object Date, Title, Result
+}
+
+function win_update() {
+    $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
+        if ($_ -is [string]) {
+            $_.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) 
+        } 
+    }
+}
+
+# system disable
+
+function win_disable_password_policy {
+    $tmpfile = New-TemporaryFile
+    secedit /export /cfg $tmpfile /quiet
+  (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
+    secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
+    Remove-Item -Path $tmpfile
+}
+
+function win_disable_file_search_policy {
+    gsudo cmd.exe /c 'sc stop "wsearch"'
+    gsudo cmd.exe /c 'sc config "wsearch" start=disabled'
+}
+
+function win_disable_web_search_and_widgets() {
+    _log_msg "disable Web Search"
+    New-PSDrive -Name HKCU -PSProvider Registry -Root HKEY_CURRENT_USER  -ea 0 | Out-Null
+    Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" -Name 'BingSearchEnabled' -Type DWORD -Value '0'
+    New-Item -Path "HKCU:HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\Explorer" -Force | Out-Null
+    Set-ItemProperty -Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer" -Name 'DisableSearchBoxSuggestions' -Type DWORD -Value '1'
+    _log_msg "disable Web Widgets"
+    winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy
+}
+
+function win_disable_sounds() {
+    Set-ItemProperty -Path "HKCU:\AppEvents\Schemes" -Name "(Default)" -Value ".None"
+    net stop beep
+}
+
+function win_disable_edge_ctrl_shift_c() {
+    New-Item -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Force | Out-Null
+    Set-ItemProperty -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Name 'ConfigureKeyboardShortcuts' -Type String -Value  '{\"disabled\": [\"dev_tools_elements\"]}'
+}
+
+function win_disable_shortcus() {
+    Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\ToggleKeys" -Name 'Flags' -Type String -Value '58'
+    New-Item -Path "HKCU:\Control Panel\Accessibility\Keyboard Response" -Force | Out-Null
+    Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\Keyboard Response" -Name 'Flags' -Type String -Value '122'
+    
+    _log_msg "disable hotkeys AutoRotation"
+    reg add "HKCU\Software\INTEL\DISPLAY\IGFXCUI\HotKeys" /v "Enable" /t REG_DWORD /d 0 /f | Out-Null
+    
+    _log_msg "disable hotkeys language"
+    Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "HotKey" -Value 3
+    Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "Language Hotkey" -Value 3
+    Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "Layout Hotkey" -Value 3
+    
+    # explorer restart
+    _log_msg "explorer restart"
+    Stop-Process -ProcessName explorer -ea 0 | Out-Null
+}
+
+
+function win_disable_osapps_unused() {
+    # microsoft
+    $pkgs = @(
+        'MicrosoftTeams'
+        'Microsoft.3DBuilder'
+        'Microsoft.Appconnector'
+        'Microsoft.BingNews'
+        'Microsoft.BingSports'
+        'Microsoft.BingWeather'
+        'Microsoft.CommsPhone'
+        'Microsoft.ConnectivityStore'
+        'Microsoft.GamingApp'
+        'Microsoft.MSPaint'
+        'Microsoft.Microsoft3DViewer'
+        'Microsoft.MicrosoftOfficeHub'
+        'Microsoft.MicrosoftSolitaireCollection'
+        'Microsoft.MicrosoftStickyNotes'
+        'Microsoft.MixedReality.Portal'
+        'Microsoft.OneConnect'
+        'Microsoft.People'
+        'Microsoft.PowerAutomateDesktop'
+        'Microsoft.Print3D'
+        'Microsoft.SkypeApp'
+        'Microsoft.StorePurchaseApp'
+        'Microsoft.Wallet'
+        'Microsoft.WindowsMaps'
+        'Microsoft.Xbox.TCUI'
+        'Microsoft.XboxApp'
+        'Microsoft.XboxGameOverlay'
+        'Microsoft.XboxGamingOverlay'
+        'Microsoft.XboxIdentityProvider'
+        'Microsoft.XboxSpeechToTextOverlay'
+        'Microsoft.YourPhone'
+        'Microsoft.ZuneMusic'
+    )
+    appx_uninstall @pkgs
+}
+
+# system enable
+
+function win_enable_osapps_essentials() {
+    $pkgs = @(
+        'Microsoft.WindowsStore'
+        'Microsoft.WindowsCalculator'
+        'Microsoft.Windows.Photos'
+        'Microsoft.WindowsFeedbackHub'
+        'Microsoft.WindowsCamera'
+        'Microsoft.WindowsSoundRecorder'
+    )
+    appx_install @pkgs
+}
+
+function win_enable_hyperv() {
+    _log_msg "enable hyper-v"
+    $dir = "${env:SystemRoot}\servicing\Packages"
+    $pkgs = Get-ChildItem $dir\* -Include *Hyper-V*.mum | Select-Object Name
+    foreach ($pkg in $pkgs) {
+        $path = '"' + $dir + '\' + $pkg.Name + '"'
+        gsudo dism /online /norestart /add-package:$path
+    }
+    gsudo dism /online /enable-feature /featurename:Microsoft-Hyper-V -All /LimitAccess /ALL
+}
+
+
+function win_enable_ssh_service() {
+    gsudo 'Set-Service ssh-agent -StartupType Automatic'
+    gsudo 'Start-Service ssh-agent'
+    gsudo 'Get-Service ssh-agent'
+    gsudo 'ssh-add "$env:userprofile\\.ssh\\id_rsa"'
 }
