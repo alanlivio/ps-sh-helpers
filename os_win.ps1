@@ -19,6 +19,10 @@ function win_path_list() {
     (Get-ChildItem Env:Path).Value -split ';'
 }
 
+function win_path_refresh() {
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User") 
+}
+
 function win_policy_reset() {
     gsudo cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicyUsers '
     gsudo cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
