@@ -1,6 +1,4 @@
-#########################
 # essential aliases
-#########################
 
 alias powershell='powershell.exe'
 alias explorer='explorer.exe'
@@ -15,9 +13,7 @@ else
     alias winpath='cygpath -m'
 fi
 
-#########################
-# load scripts as aliases
-#########################
+# load os_win.ps1 funcs as aliases
 
 for file in "$BH_DIR/scripts/"win_*.ps1; do
     if test -f $file; then
@@ -39,9 +35,7 @@ if type pacman &>/dev/null; then
     alias msys2_use_same_home='echo db_home: windows >>/etc/nsswitch.conf'
 fi
 
-#########################
 # win
-#########################
 
 function _winget_install() {
     local pkgs_to_install=""

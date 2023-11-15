@@ -1,6 +1,4 @@
-#########################
 # load scripts as alias
-#########################
 
 for file in "$BH_DIR/scripts/"*.sh; do
     if test -f $file; then
@@ -9,9 +7,7 @@ for file in "$BH_DIR/scripts/"*.sh; do
     fi
 done
 
-#########################
 # basic
-#########################
 
 alias return_if_last_command_fail='if [ $? != 0 ]; then log_error ${FUNCNAME[0]} fail; return 1; fi'
 alias bashrc_reload='source $HOME/.bashrc'
@@ -29,9 +25,7 @@ function test_and_create_dir() {
     fi
 }
 
-#########################
 # dotfiles
-#########################
 
 function _dotfiles_func() {
     : ${1?"Usage: ${FUNCNAME[0]} <backup|install|diff>"}
@@ -56,17 +50,13 @@ alias dotfiles_install="_dotfiles_func install"
 alias dotfiles_backup="_dotfiles_func backup"
 alias dotfiles_diff="_dotfiles_func diff"
 
-#########################
 # clean
-#########################
 
 function latex_clean() {
     rm -rf comment.cut ./*.aux ./*.dbx ./*.bbx ./*.cbx ./*.dvi ./*.log ./*.lox ./*.out ./*.lol ./*.pdf ./*.synctex.gz ./_minted-* ./*.bbl ./*.blg ./*.lot ./*.lof ./*.toc ./*.lol ./*.fdb_latexmk ./*.fls ./*.bcf ./*.aux ./*.fls ./*.fdb_latexmk ./*.log
 }
 
-#########################
 # arp
-#########################
 
 function arp_list() {
     if [[ $OSTYPE == "msys"* ]]; then
@@ -76,9 +66,7 @@ function arp_list() {
     fi
 }
 
-#########################
 # decompress/folder/user
-#########################
 
 function decompress() {
     : ${1?"Usage: ${FUNCNAME[0]} <zip-name> [dir-name]"}
@@ -113,9 +101,7 @@ function decompress_from_url() {
     decompress $file_name $2
 }
 
-#########################
 # ssh
-#########################
 
 function ssh_fix_permissions() {
     chmod 700 $HOME/.ssh/
