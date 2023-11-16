@@ -179,7 +179,7 @@ function win_disable_password_policy {
     Remove-Item -Path $tmpfile
 }
 
-function win_disable_file_search_policy {
+function win_disable_file_search {
     gsudo cmd.exe /c 'sc stop "wsearch"'
     gsudo cmd.exe /c 'sc config "wsearch" start=disabled'
 }

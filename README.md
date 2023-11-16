@@ -2,7 +2,7 @@
 
 # bash-helpers
 
-Template to easily create multi-OS bash helpers for Windows (MSYS2/GitBash/WSL), Ubuntu, and Mac. It is useful to let you organize helpers in `OS-dependent` or `command-dependent`. Diagram below ilustrate how the [init.sh](init.sh) load `OS-dependent` from `os_*.bash` (files after testing `$OSTYPE`) and load `command-dependent` from `commands/*.bash` (after testing `type <command>`).
+Template to easily create multi-OS bash helpers for Windows (MSYS2/GitBash/WSL), Ubuntu, and Mac. It is useful to let you organize helpers in `OS-dependent` or `command-dependent`. Diagram below ilustrate how the [init.sh](init.sh) load `OS-dependent` from `os_*.bash` (files after testing `$OSTYPE`) and load `command-dependent` from `commands/*.bash` (after testing `type <command>`). At Windows, it also load  ps1 functions from `os_win.ps1`.
 The project logo refers to the synthetic chemical element Bohrium, which also has BH's initials.
 
 ```mermaid
@@ -85,23 +85,24 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 ### os_win
 
 * `win_update`: update os and install winget packages if BH_PKGS_WINGET defined.
-* `win_path_show`: show windows path as list.
-* `win_ssh_add_identity`: set ssh-agent to automatically startup and add $HOME/.ssh/id_rsa as Identity.
-* `winpath`: get current path in Windows format. It uses `cygpath -m` in GitBash/MSYS2, while uses `wslpath -m` in WSL.
-* `win_policy_reset`: reset group policy.
-* `win_disable_apps_preinstalled`: remove unused apps.
-* `win_keyboard_unused_disable`disable accessibility, rotation, lang hotkeys.
-* `win_disable_password_policy`: disable password policy requirement.
-* `win_explorer_disable_pc_folders`: disable link folders on This PC.
-* `win_disable_sounds`: disable systems sound (e.g., bells).
-* `win_enable_hyperv`: enable hyper-v virtualization.
+* `regedit_open_shell_folders`: open regedit in current user shell folder settings
+* `win_disable_osapps_unused`: remove unused apps.
 * `win_disable_file_search`: disable file search service.
+* `win_disable_password_policy`: disable password policy requirement.
+* `win_disable_sounds`: disable systems sound (e.g., bells).
 * `win_disable_web_search_and_widgets`: disable Windows Web search and Widgets.
-* `win_path_add`: add dir to the path.
+* `win_disable_shortcuts_unused`: disable acessibility, autorotation, altgr, and language shortcus.
+* `win_enable_hyperv`: enable hyper-v virtualization.
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.
 * `win_explore_hide_home_dotfiles`: set as hidden files starting with "." at home folder
-* `regedit_open_shell_folders`: open regedit in current user shell folder settings
+* `win_explorer_disable_pc_folders`: disable link folders on This PC.
+* `win_keyboard_unused_disable`disable accessibility, rotation, lang hotkeys.
+* `win_path_add`: add dir to the path.
+* `win_path_show`: show windows path as list.
+* `win_policy_reset`: reset group policy.
+* `win_ssh_add_identity`: set ssh-agent to automatically startup and add $HOME/.ssh/id_rsa as Identity.
+* `winpath`: get current path in Windows format. It uses `cygpath -m` in GitBash/MSYS2, while uses `wslpath -m` in WSL.
 * `start_from_wsl`: (from wsl): call `start` from cmd.
 * `msys2_search`: search for msys2 package
 * `msys2_list_installed`: list installed msys2 packages.
