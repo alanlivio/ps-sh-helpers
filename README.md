@@ -2,7 +2,7 @@
 
 # bash-helpers
 
-Template to easily create multi-OS bash helpers for Windows (MSYS2/GitBash/WSL), Ubuntu, and Mac. It is useful to let you organize helpers in `OS-dependent` or `command-dependent`. Diagram below ilustrate how the [init.sh](init.sh) load `OS-dependent` from `os_*.bash` (files after testing `$OSTYPE`) and load `command-dependent` from `commands/*.bash` (after testing `type <command>`). At Windows, it also load  ps1 functions from `os_win.ps1`.
+Template to easily create multi-OS bash helpers for Windows (MSYS2/GitBash/WSL), Ubuntu, and Mac. It is useful to let you organize helpers in `OS-dependent` or `program-dependent`. Diagram below ilustrate how the [init.sh](init.sh) load `OS-dependent` from `os_*.bash` (files after testing `$OSTYPE`) and load `program-dependent` from `programs/<program>.bash` (after testing `type <program>`). At Windows, it also load  ps1 functions from `os_win.ps1` as alias.
 The project logo refers to the synthetic chemical element Bohrium, which also has BH's initials.
 
 ```mermaid
@@ -12,8 +12,8 @@ flowchart LR
     init["bash-hepers/init.sh"]
     anyos["os_any.bash"]
     oswinps1["os_win.ps1"]
-    command-dependent["
-        commands/[cmd_name].bash
+    program-dependent["
+        programs/[program].bash
         ...
     "]
     win["os_win.bash"]
@@ -21,7 +21,7 @@ flowchart LR
     mac["os_mac.bash"]
     bashrc --> |"load"| init
     init --> |"load"| anyos
-    anyos --> |"load if cmd_name"| command-dependent
+    anyos --> |"load if type program"| program-dependent
     win --> |"bash alias to each function at"| oswinps1
     init --> |"load if $OSTYPE==msys* || -n $WSL_DISTRO_NAME"| win
     init --> |"load if $OSTYPE==linux*"| ubu
@@ -40,7 +40,7 @@ The bash-helpers project has two requirements: a `bash shell` and `git`. So, run
 
 Alternative, you can see the [skel/.bashrc](skel/.bashrc) as example.
 
-On Win, you run the above command at GitaBash installed with [GitForWindows](https://gitforwindows.org). If you also use WSL, you can share the same BH repo by doing a symbolic link to it with `ln -s /mnt/c/<user>/.bh ~/.bh`.
+On Win, you run the above program at GitaBash installed with [GitForWindows](https://gitforwindows.org). If you also use WSL, you can share the same BH repo by doing a symbolic link to it with `ln -s /mnt/c/<user>/.bh ~/.bh`.
 
 ## OS-dependent samples
 
@@ -106,7 +106,7 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 
 See more Win helpers in [os_win.bash](os_win.bash).
 
-## command-dependent samples
+## program-dependent samples
 
 ### Python
 
@@ -118,7 +118,7 @@ See more Win helpers in [os_win.bash](os_win.bash).
 * `conda_env_create_from_enviroment_yml`: create env from environment.yml.
 * `conda_env_update_from_enviroment_yml`: update env from environment.yml.
 
-See more helpers in [commands/python.bash](commands/python.bash).
+See more helpers in [programs/python.bash](programs/python.bash).
 
 ### convert
 
@@ -128,24 +128,24 @@ See more helpers in [commands/python.bash](commands/python.bash).
 ### Docker
 
 * `docker_prune`: clean unused images and containers
-* `docker_run_at_same_folder`: run, from an image, a command line using the current folder as the working folder
+* `docker_run_at_same_folder`: run, from an image, a program line using the current folder as the working folder
 
-See more helpers in [commands/docker.bash](commands/docker.bash).
+See more helpers in [programs/docker.bash](programs/docker.bash).
 
 ### others
 
-See other commands at:
+See other programs at:
 
-* [commands/adb.bash](commands/adb.bash).
-* [commands/cmake.bash](commands/cmake.bash).
-* [commands/ffmpeg.bash](commands/ffmpeg.bash).
-* [commands/git.bash](commands/git.bash).
-* [commands/gs.bash](commands/gs.bash).
-* [commands/lxc.bash](commands/lxc.bash).
-* [commands/meson.bash](commands/meson.bash).
-* [commands/pandoc.bash](commands/pandoc.bash).
-* [commands/wget.bash](commands/wget.bash).
-* [commands/youtube-dl.bash](commands/youtube-dl.bash).
+* [programs/adb.bash](programs/adb.bash).
+* [programs/cmake.bash](programs/cmake.bash).
+* [programs/ffmpeg.bash](programs/ffmpeg.bash).
+* [programs/git.bash](programs/git.bash).
+* [programs/gs.bash](programs/gs.bash).
+* [programs/lxc.bash](programs/lxc.bash).
+* [programs/meson.bash](programs/meson.bash).
+* [programs/pandoc.bash](programs/pandoc.bash).
+* [programs/wget.bash](programs/wget.bash).
+* [programs/youtube-dl.bash](programs/youtube-dl.bash).
 
 ## References
 

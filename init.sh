@@ -20,11 +20,11 @@ if [[ $OSTYPE == darwin* ]]; then
     "$BH_DIR/os_mac.bash"
 fi
 
-# load <command>.bash files
+# load <program>.bash files
 
-for file in "$BH_DIR/commands/"*.bash; do
-    command_name=$(basename ${file%.*})
-    if type $command_name &>/dev/null; then
+for file in "$BH_DIR/programs/"*.bash; do
+    program=$(basename ${file%.*})
+    if type $program &>/dev/null; then
         source $file
     fi
 done
