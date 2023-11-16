@@ -55,68 +55,6 @@ function win_reg_open_path() {
 function win_reg_open_shell_folders() {
     win_reg_open_path 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
 }
-# service
-
-function win_scheduledtask_list_enabled() {
-    Get-ScheduledTask | Where-Object { $_.State -eq "Ready" }
-}
-
-function win_service_list_running() {
-    Get-Service | Where-Object { $_.Status -eq "Running" }
-}
-
-
-function win_service_disable($name) {
-    foreach ($name in $args) {
-        Get-Service -Name $name | Stop-Service -WarningAction SilentlyContinue
-        Get-Service -Name $ame | Set-Service -StartupType Disabled -ea 0
-    }
-}
-
-# winpackage
-
-function win_package_list_enabled() {
-    Get-WindowsPackage -Online | Where-Object PackageState -like Installed | ForEach-Object { $_.PackageName }
-}
-
-function win_package_disable_like() {
-    foreach ($name in $args) {
-        $pkgs = Get-WindowsPackage -Online | Where-Object PackageState -like Installed | Where-Object PackageName -like $name
-        if ($pkgs) {
-            $pkgs | ForEach-Object { Remove-WindowsPackage -Online -NoRestart $_ }
-        }
-    }
-}
-
-# appx
-
-function win_appx_list_installed() {
-    Get-AppxPackage -AllUsers | Select-Object Name, PackageFullName
-}
-
-function win_appx_install() {
-    $pkgs_to_install = ""
-    foreach ($name in $args) {
-        if ( !(Get-AppxPackage -Name $name)) {
-            $pkgs_to_install = "$pkgs_to_install $name"
-        }
-    }
-    if ($pkgs_to_install) {
-        _log_msg "pkgs_to_install=$pkgs_to_install"
-        foreach ($pkg in $pkgs_to_install) {
-            Get-AppxPackage -allusers $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
-        }
-    }
-}
-
-function win_appx_uninstall() {
-    foreach ($name in $args) {
-        if (Get-AppxPackage -Name $name) {
-            _log_msg "uninstall $name"
-            Get-AppxPackage -allusers $name | Remove-AppxPackage
-        }
-    }
-}
 
 # explorer
 
@@ -172,36 +110,62 @@ function win_wsl_terminate() {
     wsl -t (wsl_get_default)
 }
 
-# keyboard
+# system
 
-function win_keyboard_lang_stgs_open() {
-    cmd /c "rundll32.exe Shell32,Control_RunDLL input.dll,,{C07337D3-DB2C-4D0B-9A93-B722A6C106E2}"
+function win_appx_list_installed() {
+    Get-AppxPackage -AllUsers | ForEach-Object { echo $_.Name }
 }
 
-function win_keyboard_disable_shortcut_lang {
-    Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name HotKey -Value 3
-    Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "Language Hotkey" -Value 3
+function win_appx_install() {
+    $pkgs_to_install = ""
+    foreach ($name in $args) {
+        if ( !(Get-AppxPackage -Name $name)) {
+            $pkgs_to_install = "$pkgs_to_install $name"
+        }
+    }
+    if ($pkgs_to_install) {
+        _log_msg "pkgs_to_install=$pkgs_to_install"
+        foreach ($pkg in $pkgs_to_install) {
+            Get-AppxPackage -allusers $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
+        }
+    }
 }
 
-function win_keyboard_disable_shortcut_altgr() {
-    Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Value ([byte[]](0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x38, 0x00, 0x38, 0xe0, 0x00, 0x00, 0x00, 0x00))
+function win_appx_uninstall() {
+    foreach ($name in $args) {
+        if (Get-AppxPackage -Name $name) {
+            _log_msg "uninstall $name"
+            Get-AppxPackage -allusers $name | Remove-AppxPackage
+        }
+    }
 }
 
-# win_update
 
-function win_update_list() {
-    Get-WindowsUpdate
+function win_service_disable($name) {
+    foreach ($name in $args) {
+        Get-Service -Name $name | Stop-Service -WarningAction SilentlyContinue
+        Get-Service -Name $ame | Set-Service -StartupType Disabled -ea 0
+    }
 }
 
-function win_update_list_last_installed() {
-    Get-WUHistory -Last 10 | Select-Object Date, Title, Result
-}
-
-function win_update() {
+function win_update_os() {
     $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
         if ($_ -is [string]) {
             $_.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) 
         } 
+    }
+}
+
+function win_package_list_enabled() {
+    Get-WindowsPackage -Online | Where-Object PackageState -like Installed | ForEach-Object { $_.PackageName }
+}
+
+function win_package_disable_like() {
+    foreach ($name in $args) {
+        $pkgs = Get-WindowsPackage -Online | Where-Object PackageState -like Installed | Where-Object PackageName -like $name
+        if ($pkgs) {
+            $pkgs | ForEach-Object { Remove-WindowsPackage -Online -NoRestart $_ }
+        }
     }
 }
 
@@ -240,15 +204,20 @@ function win_disable_edge_ctrl_shift_c() {
     Set-ItemProperty -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Name 'ConfigureKeyboardShortcuts' -Type String -Value  '{\"disabled\": [\"dev_tools_elements\"]}'
 }
 
-function win_disable_shortcus() {
+function win_disable_shortcuts_unused() {
+    _log_msg "disable altgr shorcuts"
+    Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Value ([byte[]](0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 
+            0x38, 0x00, 0x38, 0xe0, 0x00, 0x00, 0x00, 0x00))
+    
+    _log_msg "disable acessibility shorcuts"
     Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\ToggleKeys" -Name 'Flags' -Type String -Value '58'
     New-Item -Path "HKCU:\Control Panel\Accessibility\Keyboard Response" -Force | Out-Null
     Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\Keyboard Response" -Name 'Flags' -Type String -Value '122'
     
-    _log_msg "disable hotkeys AutoRotation"
+    _log_msg "disable AutoRotation shorcuts"
     reg add "HKCU\Software\INTEL\DISPLAY\IGFXCUI\HotKeys" /v "Enable" /t REG_DWORD /d 0 /f | Out-Null
     
-    _log_msg "disable hotkeys language"
+    _log_msg "disable language shorcuts"
     Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "HotKey" -Value 3
     Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "Language Hotkey" -Value 3
     Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "Layout Hotkey" -Value 3
