@@ -11,6 +11,7 @@ flowchart LR
     bashrc["~/.bashrc"]
     init["bash-hepers/init.sh"]
     anyos["os_any.bash"]
+    oswinps1["os_win.ps1"]
     command-dependent["
         commands/[cmd_name].bash
         ...
@@ -18,19 +19,10 @@ flowchart LR
     win["os_win.bash"]
     ubu["os_ub.bash"]
     mac["os_mac.bash"]
-    scripts_sh["
-        scripts/[script].sh
-        ...
-    "]
-    scripts_ps1["
-        scripts/win_[script].ps1
-        ...
-    "]
     bashrc --> |"load"| init
     init --> |"load"| anyos
-    anyos --> |"alias to each *.sh"| scripts_sh
     anyos --> |"load if cmd_name"| command-dependent
-    win --> |"alias to each win_*.ps1"| scripts_ps1
+    win --> |"bash alias to each function at"| oswinps1
     init --> |"load if $OSTYPE==msys* || -n $WSL_DISTRO_NAME"| win
     init --> |"load if $OSTYPE==linux*"| ubu
     init --> |"load if $OSTYPE==mac*"| mac

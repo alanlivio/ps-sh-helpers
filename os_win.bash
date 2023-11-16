@@ -13,15 +13,6 @@ else
     alias winpath='cygpath -m'
 fi
 
-# load scripts as aliases
-
-for file in "$BH_DIR/scripts/"win_*.ps1; do
-    if test -f $file; then
-        script_name=$(basename ${file%.*})
-        eval "alias $script_name='powershell.exe $(winpath $file)'"
-    fi
-done
-
 # load funcs from os_win.ps1 as aliases
 
 function ps_call() {

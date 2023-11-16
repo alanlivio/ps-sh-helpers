@@ -1,12 +1,3 @@
-# load scripts as alias
-
-for file in "$BH_DIR/scripts/"*.sh; do
-    if test -f $file; then
-        script_name=$(basename ${file%.*})
-        eval "alias $script_name='sh $file'"
-    fi
-done
-
 # basic
 
 alias return_if_last_command_fail='if [ $? != 0 ]; then log_error ${FUNCNAME[0]} fail; return 1; fi'
