@@ -1,9 +1,5 @@
 # essential aliases
 
-alias powershell='powershell.exe'
-alias explorer='explorer.exe'
-alias winget='winget.exe'
-alias wsl='wsl.exe'
 alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I Searches -I Favorites -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
 alias start_from_wsl='wslview'
 
