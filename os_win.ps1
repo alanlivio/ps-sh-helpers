@@ -143,13 +143,13 @@ function win_appx_uninstall() {
 
 function win_service_disable($name) {
     foreach ($name in $args) {
-        Get-Service -Name $name | Stop-Service -WarningAction SilentlyContinue
-        Get-Service -Name $ame | Set-Service -StartupType Disabled -ea 0
+        Get-Service -Name $name | gsudo Stop-Service -WarningAction SilentlyContinue
+        Get-Service -Name $ame | gsudo Set-Service -StartupType Disabled -ea 0
     }
 }
 
 function win_update_os() {
-    $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
+    $(gsudo Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
         if ($_ -is [string]) {
             $_.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) 
         } 
@@ -173,9 +173,9 @@ function win_package_disable_like() {
 
 function win_disable_password_policy {
     $tmpfile = New-TemporaryFile
-    secedit /export /cfg $tmpfile /quiet
+    gsudo secedit /export /cfg $tmpfile /quiet
   (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
-    secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
+    gsudo secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
     Remove-Item -Path $tmpfile
 }
 
@@ -196,7 +196,7 @@ function win_disable_web_search_and_widgets() {
 
 function win_disable_sounds() {
     Set-ItemProperty -Path "HKCU:\AppEvents\Schemes" -Name "(Default)" -Value ".None"
-    net stop beep
+    gsudo net stop beep
 }
 
 function win_disable_edge_ctrl_shift_c() {
@@ -206,8 +206,7 @@ function win_disable_edge_ctrl_shift_c() {
 
 function win_disable_shortcuts_unused() {
     _log_msg "disable altgr shorcuts"
-    Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Value ([byte[]](0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 
-            0x38, 0x00, 0x38, 0xe0, 0x00, 0x00, 0x00, 0x00))
+    Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Value ([byte[]](0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x38, 0x00, 0x38, 0xe0, 0x00, 0x00, 0x00, 0x00))
     
     _log_msg "disable acessibility shorcuts"
     Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\ToggleKeys" -Name 'Flags' -Type String -Value '58'
@@ -281,7 +280,6 @@ function win_enable_osapps_essentials() {
 }
 
 function win_enable_hyperv() {
-    _log_msg "enable hyper-v"
     $dir = "${env:SystemRoot}\servicing\Packages"
     $pkgs = Get-ChildItem $dir\* -Include *Hyper-V*.mum | Select-Object Name
     foreach ($pkg in $pkgs) {
@@ -293,8 +291,8 @@ function win_enable_hyperv() {
 
 
 function win_enable_ssh_service() {
-    gsudo 'Set-Service ssh-agent -StartupType Automatic'
-    gsudo 'Start-Service ssh-agent'
-    gsudo 'Get-Service ssh-agent'
-    gsudo 'ssh-add "$env:userprofile\\.ssh\\id_rsa"'
+    gsudo Set-Service ssh-agent -StartupType Automatic
+    gsudo Start-Service ssh-agent
+    gsudo Get-Service ssh-agent
+    ssh-add "$env:userprofile\\.ssh\\id_rsa"
 }
