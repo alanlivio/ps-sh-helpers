@@ -276,12 +276,6 @@ function win_enable_osapps_essentials() {
 }
 
 function win_enable_hyperv() {
-    $dir = "${env:SystemRoot}\servicing\Packages"
-    $pkgs = Get-ChildItem $dir\* -Include *Hyper-V*.mum | Select-Object Name
-    foreach ($pkg in $pkgs) {
-        $path = '"' + $dir + '\' + $pkg.Name + '"'
-        gsudo dism /online /norestart /add-package:$path
-    }
     gsudo dism /online /enable-feature /featurename:Microsoft-Hyper-V -All /LimitAccess /ALL
 }
 
