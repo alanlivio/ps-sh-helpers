@@ -1,13 +1,4 @@
-# basic
-
-alias linux_product_name='sudo dmidecode -s system-product-name'
-alias linux_list_gpu="lspci -nn | grep -E 'VGA|Display'"
-alias linux_initd_services_list='service --status-all'
-
-function user_sudo_nopasswd() {
-    if ! test -d /etc/sudoers.d/; then test_and_create_dir /etc/sudoers.d/; fi
-    SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
-}
+# -- essentials --
 
 function ubu_update() {
     log_msg "apt update"
@@ -22,7 +13,7 @@ function ubu_update() {
     sudo apt -y autoremove
 }
 
-# apt
+# -- apt --
 
 alias apt_ppa_remove="sudo add-apt-repository --remove"
 alias apt_ppa_list="apt policy"
@@ -37,7 +28,7 @@ function apt_fixes() {
 }
 alias apt_list_avaliable_java="aptitude search '?provides(java-runtime)'"
 
-# deb
+# -- deb --
 
 alias deb_info_file='dpkg-deb --info'
 alias deb_contents_file='dpkg-deb --show'
@@ -54,11 +45,16 @@ function deb_install_file_from_url() {
     sudo dpkg -i /tmp/$deb_name
 }
 
-# snap
+# -- system --
 
-alias snap_hide_home_folder='sudo snap set system experimental.hidden-snap-folder=true'
+alias linux_product_name='sudo dmidecode -s system-product-name'
+alias linux_list_gpu="lspci -nn | grep -E 'VGA|Display'"
+alias linux_initd_services_list='service --status-all'
 
-# others
+function user_sudo_nopasswd() {
+    if ! test -d /etc/sudoers.d/; then test_and_create_dir /etc/sudoers.d/; fi
+    SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
+}
 
 function ubu_install_wsl_cuda_11() {
     # https://ubuntu.com/tutorials/enabling-gpu-acceleration-on-ubuntu-on-wsl2-with-the-nvidia-cuda-platform#3-install-nvidia-cuda-on-ubuntu

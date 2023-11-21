@@ -1,6 +1,8 @@
+# -- essentials --
+
 function _log_msg () { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
-# path
+# -- path --
 
 function win_path_add($addPath) {
     if (Test-Path $addPath) {
@@ -29,7 +31,7 @@ function win_policy_reset() {
     gsudo gpupdate.exe /force
 }
 
-# env 
+# -- env  --
 
 function win_env_add($name, $value) {
     gsudo [Environment]::SetEnvironmentVariable($name, $value, 'Machine')
@@ -45,7 +47,7 @@ function win_env_path_list($addPath) {
     Write-Output $path
 }
 
-# reg
+# -- reg --
 
 function win_reg_open_path() {
     reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit\ /v Lastkey /d 'Computer\\$1' /t REG_SZ /f
@@ -56,7 +58,7 @@ function win_reg_open_shell_folders() {
     win_reg_open_path 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
 }
 
-# explorer
+# -- explorer --
 
 function win_explorer_restore_desktop() {
     if (Test-Path "${env:userprofile}\Desktop") {
@@ -80,7 +82,7 @@ function win_explorer_restart() {
     Start-Process explorer.exe
 }
 
-# wsl
+# -- wsl --
 
 function win_wsl_list() {
     wsl -l -v
@@ -110,7 +112,7 @@ function win_wsl_terminate() {
     wsl -t (wsl_get_default)
 }
 
-# system
+# -- system --
 
 function win_appx_list_installed() {
     Get-AppxPackage -AllUsers | ForEach-Object { echo $_.Name }
@@ -169,7 +171,7 @@ function win_package_disable_like() {
     }
 }
 
-# system disable
+# -- system disable --
 
 function win_disable_password_policy {
     $tmpfile = New-TemporaryFile
@@ -265,7 +267,7 @@ function win_disable_osapps_unused() {
     appx_uninstall @pkgs
 }
 
-# system enable
+# -- system enable --
 
 function win_enable_osapps_essentials() {
     $pkgs = @(
