@@ -109,7 +109,7 @@ function win_wsl_terminate() {
 # -- system --
 
 function win_appx_list_installed() {
-    Get-AppxPackage -AllUsers | ForEach-Object { echo $_.Name }
+    Get-AppxPackage -AllUsers | ForEach-Object { Write-Output $_.Name }
 }
 
 function win_appx_install() {
