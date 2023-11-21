@@ -37,14 +37,8 @@ function win_env_add($name, $value) {
     gsudo [Environment]::SetEnvironmentVariable($name, $value, 'Machine')
 }
 
-
 function win_env_list() {
     [Environment]::GetEnvironmentVariables()
-}
-
-function win_env_path_list($addPath) {
-    $path = [Environment]::GetEnvironmentVariable('path', 'Machine')
-    Write-Output $path
 }
 
 # -- reg --
