@@ -196,8 +196,8 @@ function win_disable_sounds() {
 }
 
 function win_disable_edge_ctrl_shift_c() {
-    New-Item -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Force | Out-Null
-    Set-ItemProperty -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Name 'ConfigureKeyboardShortcuts' -Type String -Value  '{\"disabled\": [\"dev_tools_elements\"]}'
+    gsudo New-Item -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Force | Out-Null
+    gsudo Set-ItemProperty -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Name 'ConfigureKeyboardShortcuts' -Type String -Value  '{\"disabled\": [\"dev_tools_elements\"]}'
 }
 
 function win_disable_shortcuts_unused() {
