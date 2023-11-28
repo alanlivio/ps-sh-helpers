@@ -145,6 +145,9 @@ function win_service_disable($name) {
 }
 
 function win_update_os() {
+    _log_msg "winget upgrade all"
+    winget upgrade --all --silent
+    _log_msg "win os upgrade"
     $(gsudo Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
         if ($_ -is [string]) {
             $_.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) 

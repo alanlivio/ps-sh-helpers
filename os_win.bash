@@ -56,9 +56,6 @@ function _winget_install() {
 
 function win_update() {
     log_msg "winget install pkgs from var BH_PKGS_WINGET: $BH_PKGS_WINGET"
-    _winget_install $BH_PKGS_WINGET
-    log_msg "winget upgrade all"
-    winget.exe upgrade --all --silent
-    log_msg "win os upgrade"
-    gsudo powershell.exe -c 'Install-Module -Name PSWindowsUpdate -Force; Install-WindowsUpdate -AcceptAll -IgnoreReboot'
+    # _winget_install $BH_PKGS_WINGET
+    win_update_os
 }
