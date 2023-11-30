@@ -178,17 +178,16 @@ function win_disable_password_policy {
     Remove-Item -Path $tmpfile
 }
 
-function win_disable_file_search {
+function win_disable_file_search() {
     gsudo cmd.exe /c 'sc stop "wsearch"'
     gsudo cmd.exe /c 'sc config "wsearch" start=disabled'
 }
 
 function win_disable_web_search_and_widgets() {
     _log_msg "disable Web Search"
-    New-PSDrive -Name HKCU -PSProvider Registry -Root HKEY_CURRENT_USER  -ea 0 | Out-Null
-    Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" -Name 'BingSearchEnabled' -Type DWORD -Value '0'
-    New-Item -Path "HKCU:HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\Explorer" -Force | Out-Null
-    Set-ItemProperty -Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer" -Name 'DisableSearchBoxSuggestions' -Type DWORD -Value '1'
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name 'BingSearchEnabled' -Type DWORD -Value '0'
+    gsudo New-Item -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Force | Out-Null
+    gsudo Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name 'DisableSearchBoxSuggestions' -Type DWORD -Value '1'
     _log_msg "disable Web Widgets"
     winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy
 }
@@ -205,7 +204,7 @@ function win_disable_edge_ctrl_shift_c() {
 
 function win_disable_shortcuts_unused() {
     _log_msg "disable altgr shorcuts"
-    Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Value ([byte[]](0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x38, 0x00, 0x38, 0xe0, 0x00, 0x00, 0x00, 0x00))
+    Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Value ([byte[]](0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x38, 0x00, 0x38, 0xe0, 0x00, 0x00, 0x00, 0x00))
     
     _log_msg "disable acessibility shorcuts"
     Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\ToggleKeys" -Name 'Flags' -Type String -Value '58'
