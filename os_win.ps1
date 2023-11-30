@@ -58,8 +58,8 @@ function win_explorer_restore_desktop() {
     if (Test-Path "${env:userprofile}\Desktop") {
         mkdir "${env:userprofile}\Desktop"
     }
-    reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v "Desktop" /t REG_SZ /d "C:\Users\${env:username}\Desktop" /f
-    reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" /v "Desktop" /t REG_EXPAND_SZ /d "${env:userprofile}\Desktop" /f
+    reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v "Desktop" /t REG_SZ /d "C:\Users\${env:username}\Desktop" /f
+    reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" /v "Desktop" /t REG_EXPAND_SZ /d "${env:userprofile}\Desktop" /f
     attrib +r -s -h "${env:userprofile}\Desktop"
 }
 
@@ -170,7 +170,16 @@ function win_package_disable_like() {
 
 # -- system disable --
 
-function win_disable_password_policy {
+function win_disable_protocol_execute_warning() {
+    New-Item -Path "HKCU:\Software\Microsoft\Internet Explorer\ProtocolExecute\onenote" -Force | Out-Null
+    New-Item -Path "HKCU:\Software\Microsoft\Internet Explorer\ProtocolExecute\onenotedesktop" -Force | Out-Null
+    New-Item -Path "HKCU:\Software\Microsoft\Internet Explorer\ProtocolExecute\onenote-cmd" -Force | Out-Null
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Internet Explorer\ProtocolExecute\onenote" -Name 'WarnOnOpen ' -Type DWORD -Value '0'
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Internet Explorer\ProtocolExecute\onenotedesktop" -Name 'WarnOnOpen ' -Type DWORD -Value '0'
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Internet Explorer\ProtocolExecute\onenote-cmd" -Name 'WarnOnOpen ' -Type DWORD -Value '0'
+}
+
+function win_disable_password_policy() {
     $tmpfile = New-TemporaryFile
     gsudo secedit /export /cfg $tmpfile /quiet
   (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
