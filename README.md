@@ -61,7 +61,8 @@ See more OS-independent helpers  [os_any.bash](os_any.bash) folder.
 
 ### os_ubu
 
-* `ubu_update`: update os and install apt packages if BH_PKGS_APT defined.
+* `ubu_pkgs_install`: install apt packages if BH_PKGS_APT defined.
+* `ubu_update`: update os and apt.
 * `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g., small icons), uninstall pre-installed and not used apps (e.g., weather, news, calendar, solitaire).
 * `deb_install_file_from_url`: fetch and install a deb package.
 
@@ -69,14 +70,16 @@ See more Ubuntu helpers in [os_ubu.bash](os_ubu.bash).
 
 ### os_mac
 
-* `mac_update`: update os and install brew packages if BH_PKGS_BREW defined.
+* `mac_pkgs_install`: install brew packages if BH_PKGS_BREW defined.
+* `mac_update`: update os and brew.
 * `mac_install_brew`: install brew package manager
 
 See more Mac helpers in [os_mac.bash](os_mac.bash).
 
 ### os_win
 
-* `win_update`: update os and install winget packages if BH_PKGS_WINGET defined.
+* `win_pkgs_install`: install winget packages if BH_PKGS_WINGET defined.
+* `win_update`: update os and winget packages.
 * `regedit_open_shell_folders`: open regedit in current user shell folder settings
 * `win_disable_osapps_unused`: remove unused apps.
 * `win_disable_file_search`: disable file search service.

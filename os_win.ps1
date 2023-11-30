@@ -144,7 +144,7 @@ function win_service_disable($name) {
     }
 }
 
-function win_update_os() {
+function win_update() {
     _log_msg "winget upgrade all"
     winget upgrade --all --silent
     _log_msg "win os upgrade"

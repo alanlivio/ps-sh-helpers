@@ -9,6 +9,21 @@ else
     alias winpath='cygpath -m'
 fi
 
+function winget_pkgs_install() {
+    log_msg "winget install pkgs from var BH_PKGS_WINGET: $BH_PKGS_WINGET"
+    local pkgs_to_install=""
+    for i in $BH_PKGS_WINGET; do
+        if [[ $(winget.exe list --id $i) =~ "No installed"* ]]; then
+            pkgs_to_install="$i $pkgs_to_install"
+        fi
+    done
+    if test -n "$pkgs_to_install"; then
+        for pkg in $pkgs_to_install; do
+            winget.exe install --accept-package-agreements --accept-source-agreements --silent $pkg
+        done
+    fi
+}
+
 # -- load funcs from os_win.ps1 as aliases --
 
 function _ps_call() {
@@ -37,25 +52,3 @@ if type pacman &>/dev/null; then
     alias msys2_uninstall='pacman -R --noconfirm'
     alias msys2_use_same_home='echo db_home: windows >>/etc/nsswitch.conf'
 fi
-
-# -- win_update --
-
-function _winget_install() {
-    local pkgs_to_install=""
-    for i in "$@"; do
-        if [[ $(winget.exe list --id $i) =~ "No installed"* ]]; then
-            pkgs_to_install="$i $pkgs_to_install"
-        fi
-    done
-    if test -n "$pkgs_to_install"; then
-        for pkg in $pkgs_to_install; do
-            winget.exe install --accept-package-agreements --accept-source-agreements --silent $pkg
-        done
-    fi
-}
-
-function win_update() {
-    log_msg "winget install pkgs from var BH_PKGS_WINGET: $BH_PKGS_WINGET"
-    # _winget_install $BH_PKGS_WINGET
-    win_update_os
-}

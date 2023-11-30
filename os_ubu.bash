@@ -1,12 +1,15 @@
 # -- essentials --
 
-function ubu_update() {
-    log_msg "apt update"
+function ubu_pkgs_update() {
+    log_msg "apt install pkgs from var BH_PKGS_WINGET: $BH_PKGS_APT"
     sudo apt -y update
     if test -n "$BH_PKGS_APT"; then
         log_msg "apt install pkgs from var BH_PKGS_APT: $BH_PKGS_APT"
         sudo apt install -y $BH_PKGS_APT
     fi
+}
+
+function ubu_update() {
     log_msg "apt upgrade all"
     sudo apt -y upgrade
     log_msg "apt autoremove"
