@@ -9,7 +9,7 @@ else
     alias winpath='cygpath -m'
 fi
 
-function winget_pkgs_install() {
+function win_pkgs_install() {
     log_msg "winget install pkgs from var BH_PKGS_WINGET: $BH_PKGS_WINGET"
     local pkgs_to_install=""
     for i in $BH_PKGS_WINGET; do

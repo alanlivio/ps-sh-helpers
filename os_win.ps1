@@ -155,18 +155,6 @@ function win_update() {
     }
 }
 
-function win_package_list_enabled() {
-    Get-WindowsPackage -Online | Where-Object PackageState -like Installed | ForEach-Object { $_.PackageName }
-}
-
-function win_package_disable_like() {
-    foreach ($name in $args) {
-        $pkgs = Get-WindowsPackage -Online | Where-Object PackageState -like Installed | Where-Object PackageName -like $name
-        if ($pkgs) {
-            $pkgs | ForEach-Object { Remove-WindowsPackage -Online -NoRestart $_ }
-        }
-    }
-}
 
 # -- system disable --
 
