@@ -1,22 +1,11 @@
 # -- essentials --
 
-function ubu_pkgs_update() {
-    log_msg "apt install pkgs from var BH_PKGS_WINGET: $BH_PKGS_APT"
-    sudo apt -y update
-    if test -n "$BH_PKGS_APT"; then
-        log_msg "apt install pkgs from var BH_PKGS_APT: $BH_PKGS_APT"
-        sudo apt install -y $BH_PKGS_APT
-    fi
-}
-
 function ubu_update() {
     log_msg "apt upgrade all"
     sudo apt -y upgrade
     log_msg "apt autoremove"
     sudo apt -y autoremove
 }
-
-# -- apt --
 
 alias apt_ppa_remove="sudo add-apt-repository --remove"
 alias apt_ppa_list="apt policy"
@@ -30,8 +19,6 @@ function apt_fixes() {
     sudo apt autoremove -y
 }
 alias apt_list_avaliable_java="aptitude search '?provides(java-runtime)'"
-
-# -- deb --
 
 alias deb_info_file='dpkg-deb --info'
 alias deb_contents_file='dpkg-deb --show'

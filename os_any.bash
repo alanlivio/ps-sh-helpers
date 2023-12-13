@@ -37,9 +37,26 @@ function _dotfiles_func() {
         fi
     done
 }
-alias dotfiles_install="_dotfiles_func install"
-alias dotfiles_backup="_dotfiles_func backup"
-alias dotfiles_diff="_dotfiles_func diff"
+
+function bh_pkgs_install() {
+    if type brew &>/dev/null; then
+        log_msg "brew install pkgs from var BH_PKGS_MAC_BREW: $BH_PKGS_MAC_BREW"
+        brew install $BH_PKGS_MAC_BREW
+    fi
+
+    if type winget &>/dev/null; then
+        log_msg "winget install pkgs from var BH_PKGS_WINGET: $BH_PKGS_WINGET"
+        local pkgs_to_install=""
+        for i in $BH_PKGS_WINGET; do
+            winget.exe install --accept-package-agreements --accept-source-agreements --silent $i
+        done
+    fi
+
+    if type apt &>/dev/null; then
+        log_msg "apt install pkgs from var BH_PKGS_WINGET: $BH_PKGS_APT"
+        sudo apt install -y $BH_PKGS_APT
+    fi
+}
 
 # -- clean --
 

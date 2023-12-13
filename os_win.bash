@@ -9,21 +9,6 @@ else
     alias winpath='cygpath -m'
 fi
 
-function win_pkgs_install() {
-    log_msg "winget install pkgs from var BH_PKGS_WINGET: $BH_PKGS_WINGET"
-    local pkgs_to_install=""
-    for i in $BH_PKGS_WINGET; do
-        if [[ $(winget.exe list --id $i) =~ "No installed"* ]]; then
-            pkgs_to_install="$i $pkgs_to_install"
-        fi
-    done
-    if test -n "$pkgs_to_install"; then
-        for pkg in $pkgs_to_install; do
-            winget.exe install --accept-package-agreements --accept-source-agreements --silent $pkg
-        done
-    fi
-}
-
 # -- load funcs from os_win.ps1 as aliases --
 
 function _ps_call() {
