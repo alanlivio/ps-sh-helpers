@@ -16,8 +16,6 @@ function test_and_create_dir() {
     fi
 }
 
-# -- dotfiles --
-
 function _dotfiles_func() {
     : ${1?"Usage: ${FUNCNAME[0]} <backup|install|diff>"}
     declare -a files_array
@@ -37,6 +35,9 @@ function _dotfiles_func() {
         fi
     done
 }
+alias bh_dotfiles_install="_dotfiles_func install"
+alias bh_dotfiles_backup="_dotfiles_func backup"
+alias bh_dotfiles_diff="_dotfiles_func diff"
 
 function bh_pkgs_install() {
     if type brew &>/dev/null; then

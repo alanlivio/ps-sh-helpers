@@ -46,10 +46,11 @@ On Win, you run the above program at GitaBash installed with [GitForWindows](htt
 
 ### os_any
 
+* `bashrc_reload`: reload ~/.bashrc.
 * `bh_pkgs_install`: install brew/apt/winget packages defined in BH_PKGS_BREW, BH_PKGS_APT, and BH_PKGS_WINGET.
-* `dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
-* `dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
-* `dotfiles_install`: restore files/dirs defined in BH_DOTFILES.
+* `bh_dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
+* `bh_dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
+* `bh_dotfiles_install`: restore files/dirs defined in BH_DOTFILES.
 * `decompress_from_url`: fetch and decompress to a given folder.
 * `decompress`: decompress from multiple formats to a given folder.
 * `folder_count_files`: count files in the current folder.
