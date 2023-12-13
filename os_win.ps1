@@ -2,6 +2,18 @@
 
 function _log_msg () { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
+function win_update() {
+    _log_msg "winget upgrade all"
+    winget upgrade --all
+    _log_msg "win os upgrade"
+    $(gsudo Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
+        if ($_ -is [string]) {
+            $_.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) 
+        } 
+    }
+}
+
+
 # -- path --
 
 function win_path_add($addPath) {
@@ -143,18 +155,6 @@ function win_service_disable($name) {
         Get-Service -Name $ame | gsudo Set-Service -StartupType Disabled -ea 0
     }
 }
-
-function win_update() {
-    _log_msg "winget upgrade all"
-    winget upgrade --all --silent
-    _log_msg "win os upgrade"
-    $(gsudo Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
-        if ($_ -is [string]) {
-            $_.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) 
-        } 
-    }
-}
-
 
 # -- system disable --
 
