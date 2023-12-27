@@ -13,6 +13,27 @@ function win_update() {
     }
 }
 
+# -- ps --
+
+function ps_profile_install() {
+    Write-Output "Import-Module -Force -Global $SCRIPT_NAME" > $Profile.AllUsersAllHosts
+}
+  
+function ps_profile_reload() {
+    powershell -nologo
+}
+  
+function ps_profile_import($path) {
+    Write-Output "RUN: Import-Module -Force -Global $path"
+}
+
+function ps_show_function($name) {
+    Get-Content Function:\$name
+}
+  
+function ps_profiles_list() {
+    $profile | Select-Object -Property *
+}
 
 # -- path --
 
@@ -119,6 +140,10 @@ function win_wsl_terminate() {
 }
 
 # -- system --
+
+function win_hlink_create($desntination, $source) {
+    cmd /c mklink /D $desntination $source
+}
 
 function win_appx_list_installed() {
     Get-AppxPackage -AllUsers | ForEach-Object { Write-Output $_.Name }
