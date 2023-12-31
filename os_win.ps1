@@ -146,7 +146,7 @@ function win_hlink_create($desntination, $source) {
 }
 
 function win_appx_list_installed() {
-    Get-AppxPackage -AllUsers | ForEach-Object { Write-Output $_.Name }
+    gsudo 'Get-AppxPackage -AllUsers | ForEach-Object { Write-Output $_.Name }'
 }
 
 function win_appx_install() {
