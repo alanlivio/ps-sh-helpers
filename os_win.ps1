@@ -221,20 +221,21 @@ function win_disable_edge_ctrl_shift_c() {
 
 function win_disable_shortcuts_unused() {
     _log_msg "disable altgr shorcuts"
-    Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Value ([byte[]](0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x38, 0x00, 0x38, 0xe0, 0x00, 0x00, 0x00, 0x00))
+    gsudo New-Item -Path '"HKLM:\System\CurrentControlSet\Control\Keyboard Layout\Scancode Map' -Force | Out-Null
+    gsudo 'Set-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" "Scancode Map" ([byte[]](0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x03,0x00,0x00,0x00,0x0e,0x00,0x3a,0x00,0x53,0xe0,0x36,0x00,0x00,0x00,0x00,0x00))'
     
     _log_msg "disable acessibility shorcuts"
-    Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\ToggleKeys" -Name 'Flags' -Type String -Value '58'
-    New-Item -Path "HKCU:\Control Panel\Accessibility\Keyboard Response" -Force | Out-Null
-    Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\Keyboard Response" -Name 'Flags' -Type String -Value '122'
+    gsudo Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\ToggleKeys" -Name 'Flags' -Type String -Value '58'
+    gsudo New-Item -Path "HKCU:\Control Panel\Accessibility\Keyboard Response" -Force | Out-Null
+    gsudo Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\Keyboard Response" -Name 'Flags' -Type String -Value '122'
     
     _log_msg "disable AutoRotation shorcuts"
     reg add "HKCU\Software\INTEL\DISPLAY\IGFXCUI\HotKeys" /v "Enable" /t REG_DWORD /d 0 /f | Out-Null
     
     _log_msg "disable language shorcuts"
-    Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "HotKey" -Value 3
-    Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "Language Hotkey" -Value 3
-    Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "Layout Hotkey" -Value 3
+    gsudo Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "HotKey" -Value 3
+    gsudo Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "Language Hotkey" -Value 3
+    gsudo Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "Layout Hotkey" -Value 3
     
     # explorer restart
     _log_msg "explorer restart"
@@ -243,6 +244,7 @@ function win_disable_shortcuts_unused() {
 
 
 function win_disable_osapps_unused() {
+    _log_msg "win_disable_osapps_unused"
     # microsoft
     $pkgs = @(
         'Clipchamp.Clipchamp'
