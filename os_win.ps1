@@ -168,7 +168,7 @@ function win_appx_uninstall() {
     foreach ($name in $args) {
         if (Get-AppxPackage -Name $name) {
             _log_msg "uninstall $name"
-            Get-AppxPackage -allusers $name | Remove-AppxPackage
+            gsudo "Get-AppxPackage -allusers $name | Remove-AppxPackage"
         }
     }
 }
@@ -250,7 +250,7 @@ function win_disable_shortcuts_unused() {
 function win_disable_osapps_unused() {
     # microsoft
     $pkgs = @(
-        'MicrosoftTeams'
+        'Clipchamp.Clipchamp'
         'Microsoft.3DBuilder'
         'Microsoft.Appconnector'
         'Microsoft.BingNews'
@@ -259,13 +259,13 @@ function win_disable_osapps_unused() {
         'Microsoft.CommsPhone'
         'Microsoft.ConnectivityStore'
         'Microsoft.GamingApp'
-        'Microsoft.MSPaint'
         'Microsoft.Microsoft3DViewer'
         'Microsoft.MicrosoftOfficeHub'
         'Microsoft.MicrosoftSolitaireCollection'
         'Microsoft.MicrosoftStickyNotes'
         'Microsoft.MixedReality.Portal'
         'Microsoft.OneConnect'
+        'Microsoft.Paint'
         'Microsoft.People'
         'Microsoft.PowerAutomateDesktop'
         'Microsoft.Print3D'
@@ -281,8 +281,9 @@ function win_disable_osapps_unused() {
         'Microsoft.XboxSpeechToTextOverlay'
         'Microsoft.YourPhone'
         'Microsoft.ZuneMusic'
+        'SpotifyAB.SpotifyMusic'
     )
-    appx_uninstall @pkgs
+    win_appx_uninstall @pkgs
 }
 
 # -- system enable --
