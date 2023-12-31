@@ -200,11 +200,6 @@ function win_disable_password_policy() {
     Remove-Item -Path $tmpfile
 }
 
-function win_disable_file_search() {
-    gsudo cmd.exe /c 'sc stop "wsearch"'
-    gsudo cmd.exe /c 'sc config "wsearch" start=disabled'
-}
-
 function win_disable_web_search_and_widgets() {
     _log_msg "disable Web Search"
     Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name 'BingSearchEnabled' -Type DWORD -Value '0'
