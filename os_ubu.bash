@@ -1,10 +1,17 @@
 # -- essentials --
 
 function ubu_update() {
+    log_msg "apt update"
+    sudo apt update
     log_msg "apt upgrade all"
     sudo apt -y upgrade
     log_msg "apt autoremove"
     sudo apt -y autoremove
+}
+
+function ubu_install_bh_pkgs_apt() {
+    log_msg "apt install pkgs from var BH_PKGS_APT: $BH_PKGS_APT"
+    sudo apt install -y $BH_PKGS_APT
 }
 
 alias apt_ppa_remove="sudo add-apt-repository --remove"
