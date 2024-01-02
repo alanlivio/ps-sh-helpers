@@ -223,6 +223,7 @@ function win_disable_web_search_and_widgets() {
 function win_disable_sounds() {
     Set-ItemProperty -Path "HKCU:\AppEvents\Schemes" -Name "(Default)" -Value ".None"
     gsudo net stop beep
+    gsudo cmd /c 'sc config beep start= disabled'
 }
 
 function win_disable_edge_ctrl_shift_c() {
