@@ -6,14 +6,16 @@ function win_update() {
     _log_msg "winget upgrade all"
     winget upgrade --all
     _log_msg "win os upgrade"
-    if (-Not(Get-Command Install-WindowsUpdate -errorAction SilentlyContinue)) {
-        gsudo Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Confirm
-        gsudo Install-Module -Name PSWindowsUpdate -Force -Confirm
-    }
-    $(gsudo Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
-        if ($_ -is [string]) {
-            $_.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) 
-        } 
+    gsudo {
+        if (-Not(Get-Command Install-WindowsUpdate -errorAction SilentlyContinue)) {
+            Install-Module -Name PSWindowsUpdate -Confirm:$false
+            Add-WUServiceManager -MicrosoftUpdate -Confirm:$false | Out-Null
+        }
+        $(Install-WindowsUpdate -IgnoreReboot) | Where-Object { 
+            if ($_ -is [string]) {
+                $_.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) 
+            } 
+        }
     }
 }
 
