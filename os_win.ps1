@@ -154,6 +154,10 @@ function win_wsl_terminate() {
 
 # -- system --
 
+function win_image_cleanup() {
+    gsudo dism /Online /Cleanup-Image /RestoreHealth
+}
+
 function win_hlink_create($desntination, $source) {
     cmd /c mklink /D $desntination $source
 }
