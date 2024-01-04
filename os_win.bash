@@ -1,6 +1,5 @@
 # -- essentials --
 
-alias ls='ls --color=auto -I NTUSER\* -I ntuser\* -I AppData -I Searches -I Favorites -I IntelGraphicsProfiles* -I MicrosoftEdgeBackups'
 alias start_from_wsl='wslview'
 
 if [[ -n $WSL_DISTRO_NAME ]]; then
