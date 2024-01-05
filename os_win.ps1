@@ -11,7 +11,7 @@ function win_update() {
             Install-Module -Name PSWindowsUpdate -Confirm:$false
             Add-WUServiceManager -MicrosoftUpdate -Confirm:$false | Out-Null
         }
-        $(Install-WindowsUpdate -IgnoreReboot) | Where-Object { 
+        $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
             if ($_ -is [string]) {
                 $_.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) 
             } 
