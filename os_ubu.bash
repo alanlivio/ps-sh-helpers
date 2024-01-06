@@ -9,7 +9,7 @@ function ubu_update() {
     sudo apt -y autoremove
 }
 
-function ubu_install_bh_pkgs_apt() {
+function ubu_install_pkgs_apt() {
     log_msg "apt install pkgs from var BH_PKGS_APT: $BH_PKGS_APT"
     sudo apt install -y $BH_PKGS_APT
 }

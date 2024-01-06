@@ -19,7 +19,7 @@ function win_update() {
     }
 }
 
-function win_install_bh_pkgs_winget() {
+function win_install_pkgs_winget() {
     _log_msg "winget install pkgs from var BH_PKGS_WINGET: $env:BH_PKGS_WINGET"
     foreach ($pkg in $env:BH_PKGS_WINGET) {
         winget.exe install --accept-package-agreements --accept-source-agreements --silent $pkg
