@@ -4,22 +4,26 @@ function python_check_tensorflow() {
     python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
 }
 
-function python_setup_install_local() {
-    sudo python setup.py install
+function python_packaging_install_local() {
+    [[ -d dist ]] && rm -r dist
+    [[ -d build ]] && rm -r dist
+    python -m build . --wheel
+    pip install dist/*.whl
 }
 
-function python_setup_upload_testpypi() {
-    rm -r dist/
+function python_packaging_upload_testpypi() {
+    [[ -d dist ]] && rm -r dist
+    [[ -d build ]] && rm -r dist
     rm -rf ./*.egg-info
-    python setup.py bdist_wheel
+    python -m build . --wheel
     twine check dist/*
     twine upload --repository testpypi dist/*
 }
 
-function python_setup_upload_pypip() {
-    rm -r dist/
-    rm -rf ./*.egg-info
-    python setup.py bdist_wheel
+function python_packaging_upload_pypip() {
+    [[ -d dist ]] && rm -r dist
+    [[ -d build ]] && rm -r dist
+    python -m build . --wheel
     twine check dist/*
     twine upload dist/*
 }
