@@ -5,7 +5,7 @@ function python_check_tensorflow() {
 }
 
 function python_setup_install_local() {
-    python setup.py install --user
+    sudo python setup.py install
 }
 
 function python_setup_upload_testpypi() {
