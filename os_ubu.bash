@@ -9,11 +9,6 @@ function ubu_update() {
     sudo apt -y autoremove
 }
 
-function ubu_install_pkgs_apt() {
-    log_msg "apt install pkgs from var BH_PKGS_APT: $BH_PKGS_APT"
-    sudo apt install -y $BH_PKGS_APT
-}
-
 alias apt_ppa_remove="sudo add-apt-repository --remove"
 alias apt_ppa_list="apt policy"
 alias apt_autoremove="sudo apt -y autoremove"
