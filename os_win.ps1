@@ -109,7 +109,7 @@ function win_explorer_restore_desktop() {
     attrib +r -s -h "${env:userprofile}\Desktop"
 }
 
-function win_explore_hide_home_dotfiles() {
+function win_explorer_hide_home_dotfiles() {
     Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }
 }
 

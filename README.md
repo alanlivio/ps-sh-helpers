@@ -2,7 +2,7 @@
 
 # bash-helpers
 
-Template to easily create multi-OS bash helpers for Windows (MSYS2/GitBash/WSL), Ubuntu, and Mac. It is useful to let you organize helpers in `OS-dependent` or `program-dependent`. Diagram below ilustrate how the [init.sh](init.sh) load `OS-dependent` from `os_*.bash` (files after testing `$OSTYPE`) and load `program-dependent` from `programs/<program>.bash` (after testing `type <program>`). At Windows, it also load  ps1 functions from `os_win.ps1` as alias.
+Template to easily create multi-OS bash helpers for Windows (MSYS2/GitBash/WSL), Ubuntu, and Mac. It is useful to let you organize helpers in `OS-dependent` or `program-dependent`. Diagram below ilustrate how the [init.sh](init.sh) load `OS-dependent` from `os_*.bash` (files after testing `$OSTYPE`) and load `program-dependent` from `programs/<program>.bash` (after testing `type <program>`). At Windows, it also load ps1 functions from `os_win.ps1` as alias.
 The project logo refers to the synthetic chemical element Bohrium, which also has BH's initials.
 
 ```mermaid
@@ -91,7 +91,7 @@ See more Mac helpers in [os_mac.bash](os_mac.bash).
 * `win_enable_hyperv`: enable hyper-v virtualization.
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.
-* `win_explore_hide_home_dotfiles`: set as hidden files starting with "." at home folder
+* `win_explorer_hide_home_dotfiles`: set as hidden files starting with "." at home folder
 * `win_explorer_disable_pc_folders`: disable link folders on This PC.
 * `win_keyboard_unused_disable`disable accessibility, rotation, lang hotkeys.
 * `win_path_add`: add dir to the path.
