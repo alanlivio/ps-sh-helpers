@@ -204,50 +204,61 @@ function win_disable_protocol_execute_warning() {
 
 function win_disable_password_policy() {
     $tmpfile = New-TemporaryFile
-    gsudo secedit /export /cfg $tmpfile /quiet
-  (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
-    gsudo secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
+    gsudo {
+        secedit /export /cfg $tmpfile /quiet
+        (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
+        secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
+    }
     Remove-Item -Path $tmpfile
 }
 
 function win_disable_web_search_and_widgets() {
     _log_msg "disable Web Search"
     Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name 'BingSearchEnabled' -Type DWORD -Value '0'
-    gsudo New-Item -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Force | Out-Null
-    gsudo Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name 'DisableSearchBoxSuggestions' -Type DWORD -Value '1'
+    gsudo {
+        New-Item -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Force | Out-Null
+        Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name 'DisableSearchBoxSuggestions' -Type DWORD -Value '1'
+    }
     _log_msg "disable Web Widgets"
     winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy
 }
 
 function win_disable_sounds() {
     Set-ItemProperty -Path "HKCU:\AppEvents\Schemes" -Name "(Default)" -Value ".None"
-    gsudo net stop beep
-    gsudo cmd /c 'sc config beep start= disabled'
+    gsudo {
+        net stop beep
+        cmd /c 'sc config beep start= disabled'
+    }
 }
 
 function win_disable_edge_ctrl_shift_c() {
-    gsudo New-Item -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Force | Out-Null
-    gsudo Set-ItemProperty -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Name 'ConfigureKeyboardShortcuts' -Type String -Value '{\"disabled\": [\"dev_tools_elements\"]}'
-    gsudo gpupdate.exe /force
+    gsudo {
+        New-Item -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Force | Out-Null
+        Set-ItemProperty -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Name 'ConfigureKeyboardShortcuts' -Type String -Value '{\"disabled\": [\"dev_tools_elements\"]}'
+        gpupdate.exe /force
+    }
 }
 
 function win_disable_shortcuts_unused() {
-    _log_msg "disable altgr shorcuts"
-    gsudo New-Item -Path '"HKLM:\System\CurrentControlSet\Control\Keyboard Layout\Scancode Map' -Force | Out-Null
-    gsudo 'Set-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" "Scancode Map" ([byte[]](0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x03,0x00,0x00,0x00,0x0e,0x00,0x3a,0x00,0x53,0xe0,0x36,0x00,0x00,0x00,0x00,0x00))'
+    _log_msg "disable_shortcuts_unused"
+    gsudo {
+        # "disable altgr shorcuts"
+        New-Item -Path 'HKLM:\System\CurrentControlSet\Control\Keyboard Layout\Scancode Map' -Force | Out-Null
+        Set-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" "Scancode Map" ([byte[]](0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x0e, 0x00, 0x3a, 0x00, 0x53, 0xe0, 0x36, 0x00, 0x00, 0x00, 0x00, 0x00))
     
-    _log_msg "disable acessibility shorcuts"
-    gsudo Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\ToggleKeys" -Name 'Flags' -Type String -Value '58'
-    gsudo New-Item -Path "HKCU:\Control Panel\Accessibility\Keyboard Response" -Force | Out-Null
-    gsudo Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\Keyboard Response" -Name 'Flags' -Type String -Value '122'
+        # "disable acessibility shorcuts"
+        Set-ItemProperty -Path 'HKCU:\Control Panel\Accessibility\ToggleKeys' -Name 'Flags' -Type String -Value '58'
+        New-Item -Path 'HKCU:\Control Panel\Accessibility\Keyboard Response' -Force | Out-Null
+        Set-ItemProperty -Path 'HKCU:\Control Panel\Accessibility\Keyboard Response' -Name 'Flags' -Type String -Value '122'
+        
+        # "disable AutoRotation shorcuts"
+        Set-ItemProperty -Path 'HKCU:\Software\INTEL\DISPLAY\IGFXCUI\' -Name 'HotKeys' -Type String -Value 'Enable'
     
-    _log_msg "disable AutoRotation shorcuts"
-    reg add "HKCU\Software\INTEL\DISPLAY\IGFXCUI\HotKeys" /v "Enable" /t REG_DWORD /d 0 /f | Out-Null
-    
-    _log_msg "disable language shorcuts"
-    gsudo Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "HotKey" -Value 3
-    gsudo Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "Language Hotkey" -Value 3
-    gsudo Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name "Layout Hotkey" -Value 3
+        # "disable language shorcuts"
+        Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name 'HotKey' -Value 3
+        Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name 'Language Hotkey' -Value 3
+        Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name 'Layout Hotkey' -Value 3
+    }
     
     # explorer restart
     _log_msg "explorer restart"
@@ -315,8 +326,10 @@ function win_enable_hyperv() {
 
 
 function win_enable_ssh_service() {
-    gsudo Set-Service ssh-agent -StartupType Automatic
-    gsudo Start-Service ssh-agent
-    gsudo Get-Service ssh-agent
+    gsudo {
+        Set-Service ssh-agent -StartupType Automatic
+        Start-Service ssh-agent
+        Get-Service ssh-agent
+    }
     ssh-add "$env:userprofile\\.ssh\\id_rsa"
 }
