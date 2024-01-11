@@ -194,12 +194,13 @@ function win_service_disable($name) {
 # -- system disable --
 
 function win_disable_protocol_execute_warning() {
-    New-Item -Path "HKCU:\Software\Microsoft\Internet Explorer\ProtocolExecute\onenote" -Force | Out-Null
-    New-Item -Path "HKCU:\Software\Microsoft\Internet Explorer\ProtocolExecute\onenotedesktop" -Force | Out-Null
-    New-Item -Path "HKCU:\Software\Microsoft\Internet Explorer\ProtocolExecute\onenote-cmd" -Force | Out-Null
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Internet Explorer\ProtocolExecute\onenote" -Name 'WarnOnOpen ' -Type DWORD -Value '0'
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Internet Explorer\ProtocolExecute\onenotedesktop" -Name 'WarnOnOpen ' -Type DWORD -Value '0'
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Internet Explorer\ProtocolExecute\onenote-cmd" -Name 'WarnOnOpen ' -Type DWORD -Value '0'
+    $reg_prot_exe = "HKCU:\Software\Microsoft\Internet\ProtocolExecute"
+    New-Item -Path "$reg_prot_exe\onenote" -Force | Out-Null
+    New-Item -Path "$reg_prot_exe\onenotedesktop" -Force | Out-Null
+    New-Item -Path "$reg_prot_exe\onenote-cmd" -Force | Out-Null
+    Set-ItemProperty -Path "$reg_prot_exe\onenote" -Name 'WarnOnOpen ' -Value '0'
+    Set-ItemProperty -Path "$reg_prot_exe\onenotedesktop" -Name 'WarnOnOpen ' -Value '0'
+    Set-ItemProperty -Path "$reg_prot_exe\onenote-cmd" -Name 'WarnOnOpen ' -Value '0'
 }
 
 function win_disable_password_policy() {
@@ -214,17 +215,20 @@ function win_disable_password_policy() {
 
 function win_disable_web_search_and_widgets() {
     _log_msg "disable Web Search"
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name 'BingSearchEnabled' -Type DWORD -Value '0'
+    $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
+    Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0'
     gsudo {
-        New-Item -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Force | Out-Null
-        Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name 'DisableSearchBoxSuggestions' -Type DWORD -Value '1'
+        $reg_explorer_pols = "HKCU:\Software\Policies\Microsoft\Windows\Explorer"
+        New-Item -Path $reg_explorer_pols -Force | Out-Null
+        Set-ItemProperty -Path $reg_explorer_pols -Name 'DisableSearchBoxSuggestions' -Value '1'
     }
     _log_msg "disable Web Widgets"
+    
     winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy
 }
 
 function win_disable_sounds() {
-    Set-ItemProperty -Path "HKCU:\AppEvents\Schemes" -Name "(Default)" -Value ".None"
+    Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\(Default)" -Value ".None"
     gsudo {
         net stop beep
         cmd /c 'sc config beep start= disabled'
@@ -233,31 +237,35 @@ function win_disable_sounds() {
 
 function win_disable_edge_ctrl_shift_c() {
     gsudo {
-        New-Item -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Force | Out-Null
-        Set-ItemProperty -Path 'HKCU:\Software\Policies\Microsoft\Edge' -Name 'ConfigureKeyboardShortcuts' -Type String -Value '{\"disabled\": [\"dev_tools_elements\"]}'
+        $reg_edge_pol = "HKCU:\Software\Policies\Microsoft\Edge"
+        New-Item -Path $reg_edge_pol -Force | Out-Null
+        Set-ItemProperty -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts' -Value '{\"disabled\": [\"dev_tools_elements\"]}'
         gpupdate.exe /force
     }
 }
 
 function win_disable_shortcuts_unused() {
     _log_msg "disable_shortcuts_unused"
+    # "disable AutoRotation shorcuts"
+    Set-ItemProperty -Path "HKCU:\Software\Intel\Display\Igfxcui" -Name "HotKeys" -Value 'Enable'
+
+    # "disable language shorcuts"
+    $reg_key_toggle = "HKCU:\Keyboard Layout\Toggle"
+    Set-ItemProperty -Path $reg_key_toggle -Name "HotKey" -Value 3
+    Set-ItemProperty -Path $reg_key_toggle -Name "Language Hotkey" -Value 3
+    Set-ItemProperty -Path $reg_key_toggle -Name "Layout Hotkey" -Value 3
+    
     gsudo {
         # "disable altgr shorcuts"
-        New-Item -Path 'HKLM:\System\CurrentControlSet\Control\Keyboard Layout\Scancode Map' -Force | Out-Null
-        Set-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" "Scancode Map" ([byte[]](0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x0e, 0x00, 0x3a, 0x00, 0x53, 0xe0, 0x36, 0x00, 0x00, 0x00, 0x00, 0x00))
+        $reg_key_layout = "HKLM:\System\CurrentControlSet\Control\Keyboard Layout"
+        New-Item -Path "$reg_key_layout\Scancode Map" -Force | Out-Null
+        Set-ItemProperty "$reg_key_layout\Scancode Map" ([byte[]](0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x0e, 0x00, 0x3a, 0x00, 0x53, 0xe0, 0x36, 0x00, 0x00, 0x00, 0x00, 0x00))
     
         # "disable acessibility shorcuts"
-        Set-ItemProperty -Path 'HKCU:\Control Panel\Accessibility\ToggleKeys' -Name 'Flags' -Type String -Value '58'
-        New-Item -Path 'HKCU:\Control Panel\Accessibility\Keyboard Response' -Force | Out-Null
-        Set-ItemProperty -Path 'HKCU:\Control Panel\Accessibility\Keyboard Response' -Name 'Flags' -Type String -Value '122'
-        
-        # "disable AutoRotation shorcuts"
-        Set-ItemProperty -Path 'HKCU:\Software\INTEL\DISPLAY\IGFXCUI\' -Name 'HotKeys' -Type String -Value 'Enable'
-    
-        # "disable language shorcuts"
-        Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name 'HotKey' -Value 3
-        Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name 'Language Hotkey' -Value 3
-        Set-ItemProperty -Path 'HKCU:\Keyboard Layout\Toggle' -Name 'Layout Hotkey' -Value 3
+        $reg_acess = "HKCU:\Control Panel\Accessibility"
+        Set-ItemProperty -Path "$reg_acess\ToggleKeys" -Name "Flags" -Value '58'
+        New-Item -Path  "$reg_aces\Keyboard Response" -Force | Out-Null
+        Set-ItemProperty -Path "$reg_aces\Keyboard Response" -Name "Flags" -Value '122'
     }
     
     # explorer restart
