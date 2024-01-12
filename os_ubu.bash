@@ -48,6 +48,14 @@ function user_sudo_nopasswd() {
     SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
 }
 
+function ubu_install_miniconda() {
+    # https://docs.conda.io/projects/miniconda/en/latest/
+    mkdir -p ~/bin/miniconda3
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/bin/miniconda3/miniconda.sh
+    bash ~/bin/miniconda3/miniconda.sh -b -u -p ~/bin/miniconda3
+    rm -rf ~/bin/miniconda3/miniconda.sh
+}
+
 function ubu_install_wsl_cuda_11() {
     # https://ubuntu.com/tutorials/enabling-gpu-acceleration-on-ubuntu-on-wsl2-with-the-nvidia-cuda-platform#3-install-nvidia-cuda-on-ubuntu
     # how fix gpg key: https://developer.nvidia.com/blog/updating-the-cuda-linux-gpg-repository-key/
