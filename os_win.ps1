@@ -258,6 +258,7 @@ function win_disable_edge_ctrl_shift_c() {
 
 function win_disable_shortcuts_unused() {
     _log_msg "disable_shortcuts_unused"
+    
     # "disable AutoRotation shorcuts"
     Set-ItemProperty -Path "HKCU:\Software\Intel\Display\Igfxcui" -Name "HotKeys" -Value 'Enable'
 
@@ -267,17 +268,12 @@ function win_disable_shortcuts_unused() {
     Set-ItemProperty -Path $reg_key_toggle -Name "Language Hotkey" -Value 3
     Set-ItemProperty -Path $reg_key_toggle -Name "Layout Hotkey" -Value 3
     
+    # "disable acessibility shorcuts"
     gsudo {
-        # "disable altgr shorcuts"
-        $reg_key_layout = "HKLM:\System\CurrentControlSet\Control\Keyboard Layout"
-        New-Item -Path "$reg_key_layout\Scancode Map" -Force | Out-Null
-        Set-ItemProperty "$reg_key_layout\Scancode Map" ([byte[]](0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x0e, 0x00, 0x3a, 0x00, 0x53, 0xe0, 0x36, 0x00, 0x00, 0x00, 0x00, 0x00))
-    
-        # "disable acessibility shorcuts"
         $reg_acess = "HKCU:\Control Panel\Accessibility"
         Set-ItemProperty -Path "$reg_acess\ToggleKeys" -Name "Flags" -Value '58'
-        New-Item -Path  "$reg_aces\Keyboard Response" -Force | Out-Null
-        Set-ItemProperty -Path "$reg_aces\Keyboard Response" -Name "Flags" -Value '122'
+        New-Item -Path  "$reg_acess\Keyboard Response" -Force | Out-Null
+        Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122'
     }
     
     # explorer restart
