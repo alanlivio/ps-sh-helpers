@@ -93,6 +93,10 @@ function win_reg_open_shell_folders() {
 
 # -- explorer --
 
+function win_onedrive_reset() {
+    & "C:\Program Files\Microsoft OneDrive\onedrive.exe" /reset
+}
+
 function win_explorer_restore_desktop() {
     if (Test-Path "${env:userprofile}\Desktop") {
         mkdir "${env:userprofile}\Desktop"
