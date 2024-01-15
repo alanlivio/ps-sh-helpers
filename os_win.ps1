@@ -273,6 +273,56 @@ function win_disable_shortcuts_unused() {
     Stop-Process -ProcessName explorer -ea 0 | Out-Null
 }
 
+function win_disable_explorer_clutter() {
+    $reg_explorer = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer"
+    # setup folder listing
+    Set-ItemProperty -Path $reg_explorer -Name ShowFrequent -Value '0'
+    Set-ItemProperty -Path $reg_explorer -Name ShowRecent -Value '0'
+    Set-ItemProperty -Path $reg_explorer -Name ShowRecommendations -Value '0'
+    Set-ItemProperty -Path $reg_explorer -Name HideFileExt -Value '0'
+}
+
+function win_disable_taskbar_clutter() {
+    $reg_explorer_adv = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    # setup taskbar startmenu
+    # https://www.askvg.com/disable-or-remove-extra-icons-and-buttons-from-windows-11-taskbar
+    Set-ItemProperty -Path $reg_explorer_adv -Name ShowTaskViewButton -Value '0'
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarDa -Value '0'
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarMn -Value '0'
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAI -Value '0'
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarBadges -Value '0'
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAnimations -Value '0'
+    
+    # setup clean multitasking
+    # https://www.itechtics.com/disable-edge-tabs-alt-tab
+    Set-ItemProperty -Path $reg_explorer_adv -Name MultiTaskingAltTabFilter -Value '3'    
+    # https://superuser.com/questions/1516878/how-to-disable-windows-snap-assist-via-command-line
+    Set-ItemProperty -Path $reg_explorer_adv -Name SnapAssist -Value '0'
+    
+    # setup search
+    $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
+    Set-ItemProperty -Path $reg_search -Name SearchBoxTaskbarMode -Value '0'
+}
+
+function win_disable_gaming_clutter() {
+    # xbox controller notification
+    $reg_game_dvr = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR"
+    Set-ItemProperty -Path $reg_game_dvr -Name AppCaptureEnabled -Value '0'
+    $reg_game_store = "HKCU:\System\GameConfigStore"
+    Set-ItemProperty -Path $reg_game_store -Name GameDVR_Enabled  -Value '0'
+    
+    $pkgs = @(
+        'Microsoft.GamingApp'
+        'Microsoft.Xbox.TCUI'
+        'Microsoft.XboxApp'
+        'Microsoft.XboxGameOverlay'
+        'Microsoft.XboxGamingOverlay'
+        'Microsoft.XboxIdentityProvider'
+        'Microsoft.XboxSpeechToTextOverlay'
+    )
+    win_appx_uninstall @pkgs
+}
+
 
 function win_disable_osapps_unused() {
     _log_msg "win_disable_osapps_unused"
@@ -286,7 +336,6 @@ function win_disable_osapps_unused() {
         'Microsoft.BingWeather'
         'Microsoft.CommsPhone'
         'Microsoft.ConnectivityStore'
-        'Microsoft.GamingApp'
         'Microsoft.Microsoft3DViewer'
         'Microsoft.MicrosoftOfficeHub'
         'Microsoft.MicrosoftSolitaireCollection'
@@ -301,12 +350,6 @@ function win_disable_osapps_unused() {
         'Microsoft.StorePurchaseApp'
         'Microsoft.Wallet'
         'Microsoft.WindowsMaps'
-        'Microsoft.Xbox.TCUI'
-        'Microsoft.XboxApp'
-        'Microsoft.XboxGameOverlay'
-        'Microsoft.XboxGamingOverlay'
-        'Microsoft.XboxIdentityProvider'
-        'Microsoft.XboxSpeechToTextOverlay'
         'Microsoft.YourPhone'
         'Microsoft.ZuneMusic'
         'SpotifyAB.SpotifyMusic'
