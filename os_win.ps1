@@ -234,12 +234,12 @@ function win_disable_web_search_and_widgets() {
         Set-ItemProperty -Path $reg_explorer_pols -Name 'DisableSearchBoxSuggestions' -Value '1'
     }
     _log_msg "disable Web Widgets"
-    
     winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy
 }
 
 function win_disable_sounds() {
-    Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\(Default)" -Value ".None"
+    _log_msg "disable sounds"
+    Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\" "(Default)" -Value ".None"
     gsudo {
         net stop beep
         cmd /c 'sc config beep start= disabled'
@@ -247,6 +247,7 @@ function win_disable_sounds() {
 }
 
 function win_disable_edge_ctrl_shift_c() {
+    _log_msg "disable edge ctrl+shift+c"
     gsudo {
         $reg_edge_pol = "HKCU:\Software\Policies\Microsoft\Edge"
         New-Item -Path $reg_edge_pol -Force | Out-Null
