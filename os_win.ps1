@@ -121,6 +121,13 @@ function win_explorer_restart() {
 
 # -- wsl --
 
+function win_wsl_install() {
+    dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+    dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+    wsl --update
+    wsl --install -d Ubuntu
+}
+
 function win_wsl_list() {
     wsl -l -v
 }
