@@ -4,7 +4,7 @@ function _log_msg () { Write-Host -ForegroundColor DarkYellow "--" ($args -join 
 
 function win_update() {
     _log_msg "winget upgrade all"
-    winget upgrade --all
+    winget upgrade --accept-package-agreements --accept-source-agreements --silent --all
     _log_msg "win os upgrade"
     gsudo {
         if (-Not(Get-Command Install-WindowsUpdate -errorAction SilentlyContinue)) {
