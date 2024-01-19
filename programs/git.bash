@@ -114,12 +114,12 @@ function git_tag_move_to_head_and_push() {
 
 function git_filter_repo_finish_push() {
     if [ -z "$BH_FILTER_REPO_LAST_ORIGIN" ]; then
-        echo "var BH_FILTER_REPO_LAST_ORIGIN not defined (maybe this is a new shell after editing). please restart editing!"
+        log_msg "var BH_FILTER_REPO_LAST_ORIGIN not defined (maybe this is a new shell after editing). please restart editing!"
         return
     fi
-    echo -n "Is it to push into origin $BH_FILTER_REPO_LAST_ORIGIN and branch master (y/n)? "
+    log_msg -n "Is it to push into origin $BH_FILTER_REPO_LAST_ORIGIN and branch master (y/n)? "
     answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
-    if echo "$answer" | grep -iq "^y"; then
+    if log_msg "$answer" | grep -iq "^y"; then
         if [[ $(git remote get-url origin 2>/dev/null) != "$BH_FILTER_REPO_LAST_ORIGIN" ]]; then
             git remote add origin $BH_FILTER_REPO_LAST_ORIGIN
         fi
@@ -132,24 +132,24 @@ alias _git_filter_repo_test_and_msg='if [ $? -eq 0 ]; then log_msg "fiter-repo s
 
 function git_filter_repo_messages_to_lower_case() {
     _git_filter_repo_save_origin
-    echo git filter-repo --message-callback "'return message.lower()'" --force | bash
+    log_msg git filter-repo --message-callback "'return message.lower()'" --force | bash
     _git_filter_repo_test_and_msg
 }
 
 function git_filter_repo_messages_remove_str() {
     : ${2?"Usage: ${FUNCNAME[0]} <str> "}
     _git_filter_repo_save_origin
-    echo git filter-repo --message-callback "'return message.replace(b\"$1\", b\"\")'" --force | bash
+    log_msg git filter-repo --message-callback "'return message.replace(b\"$1\", b\"\")'" --force | bash
     _git_filter_repo_test_and_msg
 }
 
 function git_filter_repo_user_rename_to_current() {
-    echo -n "Do want use the user.email=$(git config user.email)(y/n)? "
+    log_msg -n "Do want use the user.email=$(git config user.email)(y/n)? "
     answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
     _git_filter_repo_save_origin
     local new_name="$(git config user.name)"
     local new_email="$(git config user.email)"
-    echo git filter-repo --name-callback "'return b\"$new_name\"'" --email-callback "'return b\"$new_email\"'" --force | bash
+    log_msg git filter-repo --name-callback "'return b\"$new_name\"'" --email-callback "'return b\"$new_email\"'" --force | bash
     _git_filter_repo_test_and_msg
 }
 

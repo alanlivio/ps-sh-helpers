@@ -51,7 +51,7 @@ function cmake_uninstall() {
         while IFS= read -r i; do
             local file=${i%$'\r'}
             if test -e "$file"; then
-                echo "uninstall $file"
+                log_msg "uninstall $file"
                 sudo rm "$file"
             fi
         done <$manifest
