@@ -190,14 +190,38 @@ function win_service_disable($name) {
 
 # -- system disable --
 
-function win_disable_protocol_execute_warning() {
-    $reg_prot_exe = "HKCU:\Software\Microsoft\Internet\ProtocolExecute"
-    New-Item -Path "$reg_prot_exe\onenote" -Force | Out-Null
-    New-Item -Path "$reg_prot_exe\onenotedesktop" -Force | Out-Null
-    New-Item -Path "$reg_prot_exe\onenote-cmd" -Force | Out-Null
-    Set-ItemProperty -Path "$reg_prot_exe\onenote" -Name 'WarnOnOpen ' -Value '0'
-    Set-ItemProperty -Path "$reg_prot_exe\onenotedesktop" -Name 'WarnOnOpen ' -Value '0'
-    Set-ItemProperty -Path "$reg_prot_exe\onenote-cmd" -Name 'WarnOnOpen ' -Value '0'
+
+function win_disable_osapps_unused() {
+    _log_msg "win_disable_osapps_unused"
+    # microsoft
+    $pkgs = @(
+        'Clipchamp.Clipchamp'
+        'Microsoft.3DBuilder'
+        'Microsoft.Appconnector'
+        'Microsoft.BingNews'
+        'Microsoft.BingSports'
+        'Microsoft.BingWeather'
+        'Microsoft.CommsPhone'
+        'Microsoft.ConnectivityStore'
+        'Microsoft.Microsoft3DViewer'
+        'Microsoft.MicrosoftOfficeHub'
+        'Microsoft.MicrosoftSolitaireCollection'
+        'Microsoft.MicrosoftStickyNotes'
+        'Microsoft.MixedReality.Portal'
+        'Microsoft.OneConnect'
+        'Microsoft.Paint'
+        'Microsoft.People'
+        'Microsoft.PowerAutomateDesktop'
+        'Microsoft.Print3D'
+        'Microsoft.SkypeApp'
+        'Microsoft.StorePurchaseApp'
+        'Microsoft.Wallet'
+        'Microsoft.WindowsMaps'
+        'Microsoft.YourPhone'
+        'Microsoft.ZuneMusic'
+        'SpotifyAB.SpotifyMusic'
+    )
+    win_appx_uninstall @pkgs
 }
 
 function win_disable_password_policy() {
@@ -210,37 +234,6 @@ function win_disable_password_policy() {
     }
 }
 
-function win_disable_web_search_and_widgets() {
-    _log_msg "disable Web Search"
-    $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
-    Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0'
-    gsudo {
-        $reg_explorer_pols = "HKCU:\Software\Policies\Microsoft\Windows\Explorer"
-        New-Item -Path $reg_explorer_pols -Force | Out-Null
-        Set-ItemProperty -Path $reg_explorer_pols -Name 'DisableSearchBoxSuggestions' -Value '1'
-    }
-    _log_msg "disable Web Widgets"
-    winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy
-}
-
-function win_disable_sounds() {
-    _log_msg "disable sounds"
-    Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\" "(Default)" -Value ".None"
-    gsudo {
-        net stop beep
-        cmd /c 'sc config beep start= disabled'
-    }
-}
-
-function win_disable_edge_ctrl_shift_c() {
-    _log_msg "disable edge ctrl+shift+c"
-    gsudo {
-        $reg_edge_pol = "HKCU:\Software\Policies\Microsoft\Edge"
-        New-Item -Path $reg_edge_pol -Force | Out-Null
-        Set-ItemProperty -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts' -Value '{\"disabled\": [\"dev_tools_elements\"]}'
-        gpupdate.exe /force
-    }
-}
 
 function win_disable_shortcuts_unused() {
     _log_msg "disable_shortcuts_unused"
@@ -265,6 +258,38 @@ function win_disable_shortcuts_unused() {
     # explorer restart
     _log_msg "explorer restart"
     Stop-Process -ProcessName explorer -ea 0 | Out-Null
+}
+
+function win_disable_sounds() {
+    _log_msg "disable sounds"
+    Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\" "(Default)" -Value ".None"
+    gsudo {
+        net stop beep
+        cmd /c 'sc config beep start= disabled'
+    }
+}
+
+function win_disable_web_search_and_widgets() {
+    _log_msg "disable Web Search"
+    $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
+    Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0'
+    gsudo {
+        $reg_explorer_pols = "HKCU:\Software\Policies\Microsoft\Windows\Explorer"
+        New-Item -Path $reg_explorer_pols -Force | Out-Null
+        Set-ItemProperty -Path $reg_explorer_pols -Name 'DisableSearchBoxSuggestions' -Value '1'
+    }
+    _log_msg "disable Web Widgets"
+    winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy
+}
+
+function win_disable_edge_ctrl_shift_c() {
+    _log_msg "disable edge ctrl+shift+c"
+    gsudo {
+        $reg_edge_pol = "HKCU:\Software\Policies\Microsoft\Edge"
+        New-Item -Path $reg_edge_pol -Force | Out-Null
+        Set-ItemProperty -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts' -Value '{\"disabled\": [\"dev_tools_elements\"]}'
+        gpupdate.exe /force
+    }
 }
 
 function win_disable_explorer_clutter() {
@@ -317,40 +342,6 @@ function win_disable_gaming_clutter() {
     win_appx_uninstall @pkgs
 }
 
-
-function win_disable_osapps_unused() {
-    _log_msg "win_disable_osapps_unused"
-    # microsoft
-    $pkgs = @(
-        'Clipchamp.Clipchamp'
-        'Microsoft.3DBuilder'
-        'Microsoft.Appconnector'
-        'Microsoft.BingNews'
-        'Microsoft.BingSports'
-        'Microsoft.BingWeather'
-        'Microsoft.CommsPhone'
-        'Microsoft.ConnectivityStore'
-        'Microsoft.Microsoft3DViewer'
-        'Microsoft.MicrosoftOfficeHub'
-        'Microsoft.MicrosoftSolitaireCollection'
-        'Microsoft.MicrosoftStickyNotes'
-        'Microsoft.MixedReality.Portal'
-        'Microsoft.OneConnect'
-        'Microsoft.Paint'
-        'Microsoft.People'
-        'Microsoft.PowerAutomateDesktop'
-        'Microsoft.Print3D'
-        'Microsoft.SkypeApp'
-        'Microsoft.StorePurchaseApp'
-        'Microsoft.Wallet'
-        'Microsoft.WindowsMaps'
-        'Microsoft.YourPhone'
-        'Microsoft.ZuneMusic'
-        'SpotifyAB.SpotifyMusic'
-    )
-    win_appx_uninstall @pkgs
-}
-
 # -- system enable --
 
 function win_enable_osapps_essentials() {
@@ -360,7 +351,6 @@ function win_enable_osapps_essentials() {
         'Microsoft.Windows.Photos'
         'Microsoft.WindowsFeedbackHub'
         'Microsoft.WindowsCamera'
-        'Microsoft.WindowsSoundRecorder'
     )
     appx_install @pkgs
 }
@@ -370,7 +360,7 @@ function win_enable_hyperv() {
 }
 
 
-function win_enable_ssh_service() {
+function win_ssh_agent_and_add_id_rsa() {
     gsudo {
         Set-Service ssh-agent -StartupType Automatic
         Start-Service ssh-agent

@@ -6,7 +6,7 @@ function convert_heic_at_folder_to_jpg() {
     fi
 }
 
-function convert_pptx_to_compressed_images_version() {
+function convert_pptx_to_compressed_images_pptx() {
     : ${1?"Usage: ${FUNCNAME[0]} <pptx_file>"}
     # https://dev.to/feldroy/til-strategies-for-compressing-jpg-files-with-imagemagick-5fn9
     [[ -d /tmp/pptx_extracted ]] && rm -rf /tmp/pptx_extracted/

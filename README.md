@@ -2,7 +2,7 @@
 
 # bash-helpers
 
-Template to easily create multi-OS bash helpers for Windows (MSYS2/GitBash/WSL), Ubuntu, and Mac. It is useful to let you organize helpers in `OS-dependent` or `program-dependent`. Diagram below ilustrate how the [init.sh](init.sh) load `OS-dependent` from `os_*.bash` (files after testing `$OSTYPE`) and load `program-dependent` from `programs/<program>.bash` (after testing `type <program>`). At Windows, it also load ps1 functions from `os_win.ps1` as alias.
+Template to easily create multi-OS bash helpers for Windows (MSYS2/GitBash/WSL), Ubuntu, and Mac. It is useful to let you organize helpers in `OS-dependent` or `program-dependent`. The diagram below illustrates how the [init.sh](init.sh) loads `OS-dependent` from `os_*.bash` (files after testing `$OSTYPE`) and loads `program-dependent` from `programs/<program>.bash` (after testing `type <program>`). At Windows, it also loads ps1 functions from `os_win.ps1` as an alias.
 The project logo refers to the synthetic chemical element Bohrium, which also has BH's initials.
 
 ```mermaid
@@ -38,13 +38,15 @@ The bash-helpers project has two requirements: a `bash shell` and `git`. So, run
     source ~/.bashrc
 ```
 
-Alternative, you can see the [skel/.bashrc](skel/.bashrc) as example.
+Alternatively, you can see the [skel/.bashrc](skel/.bashrc) as an example.
 
 On Win, you run the above program at GitaBash installed with [GitForWindows](https://gitforwindows.org). If you also use WSL, you can share the same BH repo by doing a symbolic link to it with `ln -s /mnt/c/<user>/.bh ~/.bh`.
 
-## OS-dependent samples
+## OS-dependent
 
 ### os_any
+
+OS-independent helpers are defined in [os_any.bash](os_any.bash). See some below.
 
 * `bashrc_reload`: reload ~/.bashrc.
 * `bh_dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
@@ -57,59 +59,52 @@ On Win, you run the above program at GitaBash installed with [GitForWindows](htt
 * `folder_sorted_by_size`: list dir sorted by item size.
 * `user_sudo_nopasswd`: disable password when calling sudo (user must be in sudoers).
 
-Some of the above helpers use `BH_*` vars from `~/.bashrc`, see examples at [skel/.bashrc](skel/.bashrc).
-See more OS-independent helpers  [os_any.bash](os_any.bash) folder.
-
 ### os_ubu
+
+Ubuntu helpers are defined in [os_ubu.bash](os_ubu.bash). See some below.
 
 * `ubu_update`: update os and apt.
 * `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g., small icons), uninstall pre-installed and not used apps (e.g., weather, news, calendar, solitaire).
 * `deb_install_file_from_url`: fetch and install a deb package.
 
-See more Ubuntu helpers in [os_ubu.bash](os_ubu.bash).
-
 ### os_mac
+
+Mac helpers are defined in [os_mac.bash](os_mac.bash). See some below.
 
 * `mac_update`: update os and brew.
 * `mac_install_brew`: install brew package manager
 
-See more Mac helpers in [os_mac.bash](os_mac.bash).
-
 ### os_win
 
-* `win_update`: update os and winget packages.
-* `regedit_open_shell_folders`: open regedit in current user shell folder settings
+Win helpers are defined in [os_win.bash](os_win.bash) and [os_win.ps1](os_win.ps1), see some below.
+
+* `start_from_wsl`: (from wsl): call cmd `start` from current wsl path.
 * `win_disable_osapps_unused`: remove unused apps.
-* `win_disable_file_search`: disable file search service.
 * `win_disable_password_policy`: disable password policy requirement.
+* `win_disable_shortcuts_unused`disable accessibility, rotation, lang hotkeys.
 * `win_disable_sounds`: disable systems sound (e.g., bells).
 * `win_disable_web_search_and_widgets`: disable Windows Web search and Widgets.
-* `win_disable_shortcuts_unused`: disable acessibility, autorotation, altgr, and language shortcus.
+* `win_disable_edge_ctrl_shift_c`: disable Edge shorcut ctrl+shift+c to developer.
+* `win_disable_explorer_clutter`: disable explorer shows recent, frequent, and recommendations and hides extensions.
+* `win_disable_taskbar_clutter`: disable taskbar shows task search, view, copilot buttons, and animation.
+* `win_enable_osapps_essentials`: install WindowsStore, WindowsCalculator, WindowsPhotos, WindowsFeedbackHub, and WindowsCamera.
+* `win_enable_osapps_essentials`: enable hyper-v virtualization.
 * `win_enable_hyperv`: enable hyper-v virtualization.
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.
 * `win_explorer_hide_home_dotfiles`: set as hidden files starting with "." at home folder
-* `win_explorer_disable_pc_folders`: disable link folders on This PC.
-* `win_keyboard_unused_disable`disable accessibility, rotation, lang hotkeys.
 * `win_path_add`: add dir to the path.
 * `win_path_show`: show windows path as list.
 * `win_policy_reset`: reset group policy.
-* `win_ssh_add_identity`: set ssh-agent to automatically startup and add $HOME/.ssh/id_rsa as Identity.
+* `win_ssh_agent_and_add_id_rsa`: set ssh-agent to automatically startup and add $HOME/.ssh/id_rsa as Identity.
+* `win_update`: update os and winget packages.
 * `winpath`: get current path in Windows format. It uses `cygpath -m` in GitBash/MSYS2, while uses `wslpath -m` in WSL.
-* `start_from_wsl`: (from wsl): call `start` from cmd.
-* `msys2_search`: search for msys2 package
-* `msys2_list_installed`: list installed msys2 packages.
-* `msys2_use_same_home`: set msys2 to use the same home as a Windows user.
-* `msys2_show`: show pkg info
-* `msys2_install`: install pkg
-* `msys2_uninstall`: uninstall pkg
-* `msys2_use_same_home`: setup to use same home as Windows user
 
-See more Win helpers in [os_win.bash](os_win.bash).
-
-## program-dependent samples
+## program-dependent
 
 ### Python
+
+Python helpers are defined in [programs/python.bash](programs/python.bash). See some below.
 
 * `python_clean_cache`: clean cache
 * `python_check_tensorflow`: check Tensorflow GPU support.
@@ -119,19 +114,12 @@ See more Win helpers in [os_win.bash](os_win.bash).
 * `conda_env_create_from_enviroment_yml`: create env from environment.yml.
 * `conda_env_update_from_enviroment_yml`: update env from environment.yml.
 
-See more helpers in [programs/python.bash](programs/python.bash).
-
-### convert
-
-* `convert_heic_to_jpg_at_dir`: use imagemagick convert to convert *.heic to jpg.
-* `convert_pptx_compress_images`: extract pptx images, use imagemagick to compresse then and create a new pptx file.
-
 ### Docker
 
-* `docker_prune`: clean unused images and containers
-* `docker_run_at_same_folder`: run, from an image, a program line using the current folder as the working folder
+Docker helpers are defined in [programs/docker.bash](programs/docker.bash). See others below.
 
-See more helpers in [programs/docker.bash](programs/docker.bash).
+* `docker_prune`: clean, unused images and containers
+* `docker_run_at_same_folder`: run, from an image, a program line using the current folder as the working folder
 
 ### others
 
