@@ -1,9 +1,3 @@
-# ubu_update
-BH_PKGS_APT="python vscode "
-# mac_update
-BH_PKGS_BREW="python vscode "
-# win_update
-BH_PKGS_WINGET="python vscode Microsoft.WindowsTerminal "
 # dotfiles_backup
 BH_DOTFILES_BKP_DIR="$HOME/Backup/dotfiles"
 BH_DOTFILES="$HOME/.bashrc $BH_DOTFILES_BKP_DIR/.bashrc "

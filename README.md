@@ -49,9 +49,7 @@ On Win, you run the above program at GitaBash installed with [GitForWindows](htt
 OS-independent helpers are defined in [os_any.bash](os_any.bash). See some below.
 
 * `bashrc_reload`: reload ~/.bashrc.
-* `bh_dotfiles_backup`: backup files/dirs defined in BH_DOTFILES.
-* `bh_dotfiles_diff`: show diff files/dirs defined in BH_DOTFILES.
-* `bh_dotfiles_install`: restore files/dirs defined in BH_DOTFILES.
+* `bh_dotfiles_backup`,`bh_dotfiles_diff`,`bh_dotfiles_install`: backup, diff and install files/dirs defined in BH_DOTFILES. See a BH_DOTFILES var example at [skel/.bashrc](skel/.bashrc).
 * `decompress_from_url`: fetch and decompress to a given folder.
 * `decompress`: decompress from multiple formats to a given folder.
 * `folder_count_files`: count files in the current folder.
