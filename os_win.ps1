@@ -51,15 +51,19 @@ function win_path_refresh() {
 }
 
 function win_policy_reset() {
-    gsudo cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicyUsers '
-    gsudo cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
-    gsudo gpupdate.exe /force
+    gsudo {
+        cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicyUsers '
+        cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
+        gpupdate.exe /force
+    }
 }
 
 # -- env  --
 
 function win_env_add($name, $value) {
-    gsudo [Environment]::SetEnvironmentVariable($name, $value, 'Machine')
+    gsudo {
+        [Environment]::SetEnvironmentVariable($name, $value, 'Machine')
+    }
 }
 
 function win_env_list() {
@@ -145,7 +149,7 @@ function win_wsl_terminate() {
 # -- system --
 
 function win_image_cleanup() {
-    gsudo dism /Online /Cleanup-Image /RestoreHealth
+    gsudo { dism /Online /Cleanup-Image /RestoreHealth }
 }
 
 function win_hlink_create($desntination, $source) {
@@ -153,7 +157,7 @@ function win_hlink_create($desntination, $source) {
 }
 
 function win_appx_list_installed() {
-    gsudo 'Get-AppxPackage -AllUsers | ForEach-Object { Write-Output $_.Name }'
+    gsudo { Get-AppxPackage -AllUsers | ForEach-Object { Write-Output $_.Name } }
 }
 
 function win_appx_install() {
@@ -175,7 +179,7 @@ function win_appx_uninstall() {
     foreach ($name in $args) {
         if (Get-AppxPackage -Name $name) {
             _log_msg "uninstall $name"
-            gsudo "Get-AppxPackage -allusers $name | Remove-AppxPackage"
+            gsudo { Get-AppxPackage -allusers $name | Remove-AppxPackage }
         }
     }
 }
@@ -356,7 +360,7 @@ function win_enable_osapps_essentials() {
 }
 
 function win_enable_hyperv() {
-    gsudo dism /online /enable-feature /featurename:Microsoft-Hyper-V -All /LimitAccess /ALL
+    gsudo { dism /online /enable-feature /featurename:Microsoft-Hyper-V -All /LimitAccess /ALL }
 }
 
 
