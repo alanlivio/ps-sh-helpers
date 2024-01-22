@@ -1,6 +1,7 @@
 # dotfiles_backup
 BH_DOTFILES_BKP_DIR="$HOME/Backup/dotfiles"
 BH_DOTFILES="$HOME/.bashrc $BH_DOTFILES_BKP_DIR/.bashrc "
+BH_DOTFILES+="$HOME/.gitconfig $BH_DOTFILES_BKP_DIR/.gitconfig "
 # download and setup bash-helpers
 BH="$HOME/.bh/"
 BH_INIT="$HOME/.bh/init.sh"
