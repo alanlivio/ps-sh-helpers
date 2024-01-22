@@ -157,7 +157,7 @@ function win_hlink_create($desntination, $source) {
 }
 
 function win_appx_list_installed() {
-    gsudo { Get-AppxPackage -AllUsers | ForEach-Object { Write-Output $_.Name } }
+    gsudo { Get-AppxPackage -User $env:username | ForEach-Object { Write-Output $_.Name } }
 }
 
 function win_appx_install() {
@@ -170,7 +170,7 @@ function win_appx_install() {
     if ($pkgs_to_install) {
         _log_msg "pkgs_to_install=$pkgs_to_install"
         foreach ($pkg in $pkgs_to_install) {
-            Get-AppxPackage -allusers $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
+            Get-AppxPackage -User $env:username $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
         }
     }
 }
@@ -179,7 +179,7 @@ function win_appx_uninstall() {
     foreach ($name in $args) {
         if (Get-AppxPackage -Name $name) {
             _log_msg "uninstall $name"
-            gsudo { Get-AppxPackage -allusers $name | Remove-AppxPackage }
+            gsudo { Get-AppxPackage -User $env:username $name | Remove-AppxPackage }
         }
     }
 }
