@@ -1,6 +1,5 @@
 # -- essentials --
 
-alias return_if_last_command_fail='if [ $? != 0 ]; then log_error ${FUNCNAME[0]} fail; return 1; fi'
 alias bashrc_reload='source $HOME/.bashrc'
 alias folder_count_files='find . -maxdepth 1 -type f | wc -l'
 alias folder_count_files_recusive='find . -maxdepth 1 -type f | wc -l'
@@ -77,7 +76,7 @@ function decompress_from_url() {
     if test ! -e $file_name; then
         _log_msg "fetching "$1" to /tmp/"
         curl -LJ "$1" --create-dirs --output $file_name
-        return_if_last_command_fail
+        if [ $? != 0 ]; then _log_error "curl fail" && return; fi
     fi
     _log_msg "extracting $file_name to $2"
     decompress $file_name $2
