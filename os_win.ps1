@@ -26,7 +26,12 @@ function ps_profile_reload() {
 function ps_show_function($name) {
     Get-Content Function:\$name
 }
-  
+
+function win_hlink_create($desntination, $source) {
+    cmd /c mklink /D $desntination $source
+}
+
+
 # -- path --
 
 function win_path_add($addPath) {
@@ -50,14 +55,6 @@ function win_path_refresh() {
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User") 
 }
 
-function win_policy_reset() {
-    gsudo {
-        cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicyUsers '
-        cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
-        gpupdate.exe /force
-    }
-}
-
 # -- env  --
 
 function win_env_add($name, $value) {
@@ -70,30 +67,10 @@ function win_env_list() {
     [Environment]::GetEnvironmentVariables()
 }
 
-# -- reg --
-
-function win_reg_open_path() {
-    reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit\ /v Lastkey /d 'Computer\\$1' /t REG_SZ /f
-    regedit.exe
-}
-
-function win_reg_open_shell_folders() {
-    win_reg_open_path 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
-}
-
 # -- explorer --
 
 function win_onedrive_reset() {
     & "C:\Program Files\Microsoft OneDrive\onedrive.exe" /reset
-}
-
-function win_explorer_restore_desktop() {
-    if (Test-Path "${env:userprofile}\Desktop") {
-        mkdir "${env:userprofile}\Desktop"
-    }
-    reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v "Desktop" /t REG_SZ /d "C:\Users\${env:username}\Desktop" /f
-    reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" /v "Desktop" /t REG_EXPAND_SZ /d "${env:userprofile}\Desktop" /f
-    attrib +r -s -h "${env:userprofile}\Desktop"
 }
 
 function win_explorer_hide_home_dotfiles() {
@@ -152,7 +129,16 @@ function win_image_cleanup() {
     gsudo { dism /Online /Cleanup-Image /RestoreHealth }
 }
 
+function win_policy_reset() {
+    gsudo {
+        cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicyUsers '
+        cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
+        gpupdate.exe /force
+    }
+}
+
 function win_enable_insider_beta() {
+    # https://www.elevenforum.com/t/change-windows-insider-program-channel-in-windows-11.795/
     bcdedit /set flightsigning on 
     Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\Applicability" -Name "BranchName" -Value 'Beta'
     Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\Applicability" -Name "ContentType" -Value 'Mainline'
@@ -160,10 +146,6 @@ function win_enable_insider_beta() {
     Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\UI\Selection" -Name "UIBranch" -Value 'Beta'
     Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\UI\Selection" -Name "UIContentType" -Value 'Mainline'
     Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\UI\Selection" -Name "UIRing" -Value 'External'
-}
-
-function win_hlink_create($desntination, $source) {
-    cmd /c mklink /D $desntination $source
 }
 
 function win_appx_list_installed() {
@@ -191,14 +173,6 @@ function win_appx_uninstall() {
             _log_msg "uninstall $name"
             gsudo { Get-AppxPackage -User $env:username $name | Remove-AppxPackage }
         }
-    }
-}
-
-
-function win_service_disable($name) {
-    foreach ($name in $args) {
-        Get-Service -Name $name | gsudo Stop-Service -WarningAction SilentlyContinue
-        Get-Service -Name $ame | gsudo Set-Service -StartupType Disabled -ea 0
     }
 }
 
