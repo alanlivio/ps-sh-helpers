@@ -152,6 +152,16 @@ function win_image_cleanup() {
     gsudo { dism /Online /Cleanup-Image /RestoreHealth }
 }
 
+function win_enable_insider_beta() {
+    bcdedit /set flightsigning on 
+    Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\Applicability" -Name "BranchName" -Value 'Beta'
+    Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\Applicability" -Name "ContentType" -Value 'Mainline'
+    Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\Applicability" -Name "Ring" -Value 'External'
+    Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\UI\Selection" -Name "UIBranch" -Value 'Beta'
+    Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\UI\Selection" -Name "UIContentType" -Value 'Mainline'
+    Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\UI\Selection" -Name "UIRing" -Value 'External'
+}
+
 function win_hlink_create($desntination, $source) {
     cmd /c mklink /D $desntination $source
 }
@@ -193,7 +203,6 @@ function win_service_disable($name) {
 }
 
 # -- system disable --
-
 
 function win_disable_osapps_unused() {
     _log_msg "win_disable_osapps_unused"
