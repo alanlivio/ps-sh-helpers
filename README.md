@@ -55,15 +55,18 @@ OS-independent helpers are defined in [os_any.bash](os_any.bash). See some below
 * `folder_count_files`: count files in the current folder.
 * `folder_count_files_recursive`: count files in the current and subfolder.
 * `folder_sorted_by_size`: list dir sorted by item size.
-* `user_sudo_nopasswd`: disable password when calling sudo (user must be in sudoers).
+* `user_sudo_no_password`: disable password when calling sudo (user must be in sudoers).
 
 ### os_ubu
 
 Ubuntu helpers are defined in [os_ubu.bash](os_ubu.bash). See some below.
 
 * `ubu_update`: update os and apt.
-* `gnome_sanity`: enable dark mode, disable animations, clean taskbar (e.g., small icons), uninstall pre-installed and not used apps (e.g., weather, news, calendar, solitaire).
 * `deb_install_file_from_url`: fetch and install a deb package.
+* `ubu_install_miniconda`: fetch and install miniconda.
+* `user_sudo_no_password`: remove password for current user sudo.
+* `gnome_dark_mode`: enable gnome dark mode.
+* `gnome_nautilus_list_view`: enable nautilus list view.
 
 ### os_mac
 

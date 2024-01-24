@@ -20,12 +20,6 @@ function apt_fixes() {
     sudo apt dist-upgrade
     sudo apt autoremove -y
 }
-alias apt_list_avaliable_java="aptitude search '?provides(java-runtime)'"
-
-alias deb_info_file='dpkg-deb --info'
-alias deb_contents_file='dpkg-deb --show'
-alias deb_install_file='sudo dpkg -i'
-alias deb_install_file_force_depends='sudo dpkg -i --force-depends'
 
 function deb_install_file_from_url() {
     : ${1?"Usage: ${FUNCNAME[0]} <debfile>"}
@@ -37,13 +31,11 @@ function deb_install_file_from_url() {
     sudo dpkg -i /tmp/$deb_name
 }
 
-# -- system --
-
 alias linux_product_name='sudo dmidecode -s system-product-name'
 alias linux_list_gpu="lspci -nn | grep -E 'VGA|Display'"
 alias linux_initd_services_list='service --status-all'
 
-function user_sudo_nopasswd() {
+function user_sudo_no_password() {
     if ! test -d /etc/sudoers.d/; then sudo mkdir -p /etc/sudoers.d/; fi
     SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
 }
@@ -66,7 +58,7 @@ function ubu_install_wsl_cuda_11() {
     sudo apt-get -y install cuda-11-8
 }
 
-function gnome_sanity() {
+function gnome_dark_mode() {
     # dark mode
     gsettings set org.gnome.desktop.interface cursor-theme 'DMZ-Black'
     gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
@@ -76,21 +68,15 @@ function gnome_sanity() {
     gsettings set org.gnome.desktop.background picture-uri ''
     gsettings set org.gnome.desktop.background primary-color "#000000"
     gsettings set org.gnome.desktop.background secondary-color "#000000"
-    # clock
-    gsettings set org.gnome.desktop.interface clock-show-date true
-    # notifications
-    gsettings set org.gnome.desktop.notifications show-banners false
-    gsettings set org.gnome.desktop.notifications show-in-lock-screen false
+}
+
+function gnome_nautilus_list_view() {
     # recent files
     gsettings set org.gnome.desktop.privacy remember-recent-files false
-    # sound
-    gsettings set org.gnome.desktop.sound event-sounds false
-    gsettings set org.gnome.desktop.wm.preferences num-workspaces 1
     # nautilus
     gsettings set org.gnome.nautilus.list-view default-zoom-level 'small'
     gsettings set org.gnome.nautilus.list-view default-visible-columns "['name', 'size']"
     gsettings set org.gnome.nautilus.list-view use-tree-view true
     gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view'
-    gsettings set org.gnome.nautilus.window-state maximized false
     gsettings set org.gnome.nautilus.window-state sidebar-width 180
 }
