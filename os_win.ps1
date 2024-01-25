@@ -8,6 +8,7 @@ function win_update() {
     _log_msg "win os upgrade"
     gsudo {
         if (-Not(Get-Command Install-WindowsUpdate -errorAction SilentlyContinue)) {
+            Set-PSRepository PSGallery -InstallationPolicy Trusted  
             Install-Module -Name PSWindowsUpdate -Confirm:$false
             Add-WUServiceManager -MicrosoftUpdate -Confirm:$false | Out-Null
         }
