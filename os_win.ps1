@@ -89,22 +89,15 @@ function win_explorer_restart() {
 
 # -- wsl --
 
-function win_wsl_install() {
-    dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-    dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-    wsl --update
-    wsl --install -d Ubuntu
-}
-
-function win_wsl_list() {
+function wsl_list() {
     wsl -l -v
 }
 
-function win_wsl_list_running() {
+function wsl_list_running() {
     wsl -l -v --running
 }
 
-function win_wsl_get_default() {
+function wsl_get_default() {
     [System.Text.Encoding]::Unicode.GetString([System.Text.Encoding]::UTF8.GetBytes((wsl -l))) -split '\s\s+' | ForEach-Object {
         if ($_.Contains('(')) {
             return $_.Split(' ')[0]
@@ -112,7 +105,7 @@ function win_wsl_get_default() {
     }
 }
 
-function win_wsl_get_default_version() {
+function wsl_get_default_version() {
     Foreach ($i in (wsl -l -v)) {
         if ($i.Contains('*')) {
             return $i.Split(' ')[-1]
@@ -120,11 +113,18 @@ function win_wsl_get_default_version() {
     }
 }
 
-function win_wsl_terminate() {
+function wsl_terminate() {
     wsl -t (wsl_get_default)
 }
 
 # -- system --
+
+function win_wsl_install() {
+    dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+    dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+    wsl --update
+    wsl --install -d Ubuntu
+}
 
 function win_image_cleanup() {
     gsudo { dism /Online /Cleanup-Image /RestoreHealth }
