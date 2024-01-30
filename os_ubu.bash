@@ -40,6 +40,22 @@ function user_sudo_no_password() {
     SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
 }
 
+function ubu_install_gh() {
+    # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+    type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg &&
+        sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg &&
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null &&
+        sudo apt update &&
+        sudo apt install gh -y
+}
+
+function ubu_install_gh_act() {
+    type -p gh >/dev/null || ubu_install_gh
+    gh auth status >/dev/null || gh auth login # login if not
+    gh extension install https://github.com/nektos/gh-act
+}
+
 function ubu_install_miniconda() {
     # https://docs.conda.io/projects/miniconda/en/latest/
     mkdir -p ~/bin/miniconda3
