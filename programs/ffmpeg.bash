@@ -5,10 +5,10 @@ function ffmpeg_cut_mp4() {
     ffmpeg -i "$1" -vcodec copy -acodec copy -ss "$2" -t $3 -f mp4 "$fname_no_ext (cuted).$extension"
 }
 
-function ffmpeg_convert_to_mp4_768x432() {
+function ffmpeg_convert_to_mp4_960x540() {
     : ${1?"Usage: ${FUNCNAME[0]} <video>"}
     local fname_no_ext="${1%.*}"
-    ffmpeg -i "$1" -vf scale=768:-1 -c:v libx264 -c:a aac "$fname_no_ext (converted).mp4"
+    ffmpeg -i "$1" -vf "scale=960:540" -c:v libx264 -c:a aac "$fname_no_ext (converted).mp4"
 }
 
 function ffmpeg_extract_audio_mp4() {
