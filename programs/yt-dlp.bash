@@ -1,4 +1,4 @@
-ARGS_ALL="--no-warnings --windows-filenames --output %(title)s"
+ARGS_ALL="--no-warnings --windows-filenames --output '%(title)s.%(ext)s'"
 ARGS_BACTH="$AR--download-archive .downloaded.txt --no-playlist"
 
 function yt_dlp_sub_en() {
