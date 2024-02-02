@@ -1,6 +1,6 @@
 # -- essentials --
 
-function _log_msg () { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
+function _log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
 function win_update() {
     _log_msg "winget upgrade all"
@@ -275,7 +275,7 @@ function win_disable_edge_ctrl_shift_c() {
     gsudo {
         $reg_edge_pol = "HKCU:\Software\Policies\Microsoft\Edge"
         New-Item -Path $reg_edge_pol -Force | Out-Null
-        Set-ItemProperty -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts' -Value '{\"disabled\": [\"dev_tools_elements\"]}'
+        Set-ItemProperty -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts' -Value '{"disabled": ["dev_tools_elements"]}'
         gpupdate.exe /force
     }
 }
