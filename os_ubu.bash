@@ -64,6 +64,15 @@ function ubu_install_miniconda() {
     rm -rf ~/bin/miniconda3/miniconda.sh
 }
 
+function ubu_increase_swap() {
+    sudo fallocate -l 1G /swapfile
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile
+    sudo swapon /swapfile
+    sudo cp /etc/fstab /etc/fstab.bak
+    echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+}
+
 function gnome_dark_mode() {
     # dark mode
     gsettings set org.gnome.desktop.interface cursor-theme 'DMZ-Black'
