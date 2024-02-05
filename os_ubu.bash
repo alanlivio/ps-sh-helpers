@@ -64,16 +64,6 @@ function ubu_install_miniconda() {
     rm -rf ~/bin/miniconda3/miniconda.sh
 }
 
-function ubu_install_wsl_cuda_11() {
-    # https://ubuntu.com/tutorials/enabling-gpu-acceleration-on-ubuntu-on-wsl2-with-the-nvidia-cuda-platform#3-install-nvidia-cuda-on-ubuntu
-    # how fix gpg key: https://developer.nvidia.com/blog/updating-the-cuda-linux-gpg-repository-key/
-    sudo apt-key del 7fa2af80
-    wget https://developer.download.nvidia.com/compute/cuda/repos/wsl-ubuntu/x86_64/cuda-keyring_1.0-1_all.deb
-    sudo dpkg -i cuda-keyring_1.0-1_all.deb
-    sudo apt-get update
-    sudo apt-get -y install cuda-11-8
-}
-
 function gnome_dark_mode() {
     # dark mode
     gsettings set org.gnome.desktop.interface cursor-theme 'DMZ-Black'
