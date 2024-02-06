@@ -50,12 +50,6 @@ function ubu_install_gh() {
         sudo apt install gh -y
 }
 
-function ubu_install_gh_act() {
-    type -p gh >/dev/null || ubu_install_gh
-    gh auth status >/dev/null || gh auth login # login if not
-    gh extension install https://github.com/nektos/gh-act
-}
-
 function ubu_install_miniconda() {
     # https://docs.conda.io/projects/miniconda/en/latest/
     mkdir -p ~/bin/miniconda3
