@@ -21,18 +21,13 @@ function git_assume_unchanged_disable() {
     git update-index --no-assume-unchanged $1
 }
 
-function git_branch_push() {
-    : ${1?"Usage: ${FUNCNAME[0]} <branch-name>"}
-    git push -u origin $1
-}
-
-function git_branch_delete_local_and_origin() {
+function git_branch_remove_local_and_remote() {
     : ${1?"Usage: ${FUNCNAME[0]} <branch-name>"}
     git branch -d $1
     git push origin --delete $1
 }
 
-function git_branch_all_remotes_checkout_and_reset_hard() {
+function git_branch_all_remotes_checkout_and_reset() {
     local CURRENT=$(git branch --show-current)
     git fetch -p origin
     git branch -r | grep -v '\->' | while read -r remote; do
@@ -50,15 +45,6 @@ function git_branch_all_remotes_checkout_and_reset_hard() {
     done
     _log_msg "returning to branch $CURRENT"
     git checkout $CURRENT
-}
-
-function git_branch_all_remotes_remove_local() {
-    git branch | grep -v develop | xargs -r git branch -d
-}
-
-function git_branch_upstrem_set() {
-    : ${1?"Usage: ${FUNCNAME[0]} <remote-branch>"}
-    git branch --set-upstream-to $1
 }
 
 function git_push_after_amend_all() {
