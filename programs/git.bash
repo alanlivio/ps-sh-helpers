@@ -120,9 +120,7 @@ function git_filter_repo_finish_push() {
     _log_msg -n "Is it to push into origin $BH_FILTER_REPO_LAST_ORIGIN and branch master (y/n)? "
     answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
     if _log_msg "$answer" | grep -iq "^y"; then
-        if [[ $(git remote get-url origin 2>/dev/null) != "$BH_FILTER_REPO_LAST_ORIGIN" ]]; then
-            git remote add origin $BH_FILTER_REPO_LAST_ORIGIN
-        fi
+        git remote add origin $BH_FILTER_REPO_LAST_ORIGIN
         git push --set-upstream origin master --force
     fi
 }
