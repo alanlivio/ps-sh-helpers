@@ -3,10 +3,12 @@ alias git_count_commits_by_user='git shortlog -s -n'
 alias git_diff_files_last_commit='git diff --stat HEAD^1'
 alias git_diff_last_commit='git diff HEAD^1'
 
-function git_github_fix() {
-    echo -e "Host github.com\\n  Hostname ssh.github.com\\n  Port 443" | tee $HOME/.ssh/config
+function git_fix_ssh() {
+    # https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open
+    chmod 700 $HOME/.ssh/
+    chmod 600 $HOME/.ssh/id_rsa
+    chmod 600 $HOME/.ssh/id_rsa.pubssh-rsa
     ssh -T git@github.com
-    ssh-keyscan -t rsa github.com >>~/.ssh/known_hosts
 }
 
 function git_assume_unchanged() {
