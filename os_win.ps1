@@ -340,7 +340,7 @@ function win_enable_osapps_essentials() {
         'Microsoft.WindowsFeedbackHub'
         'Microsoft.WindowsCamera'
     )
-    appx_install @pkgs
+    win_appx_install @pkgs
 }
 
 function win_enable_hyperv() {
