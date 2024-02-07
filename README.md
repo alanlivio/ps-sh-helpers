@@ -80,6 +80,7 @@ Mac helpers are defined in [os_mac.bash](os_mac.bash). See some below.
 Win helpers are defined in [os_win.bash](os_win.bash) and [os_win.ps1](os_win.ps1), see some below.
 
 * `start_from_wsl`: (from wsl): call cmd `start` from current wsl path.
+* `wsl_install_cuda_cudnn`: (from wsl): install cuda and cudadnn.
 * `win_disable_osapps_unused`: remove unused apps.
 * `win_disable_password_policy`: disable password policy requirement.
 * `win_disable_shortcuts_unused`disable accessibility, rotation, lang hotkeys.

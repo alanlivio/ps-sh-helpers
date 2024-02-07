@@ -33,6 +33,8 @@ function wsl_install_cuda_cudnn() {
     sudo mv tmp/cuda-wsl-ubuntu.pin /etc/apt/preferences.d/cuda-repository-pin-600
     sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/wsl-ubuntu/x86_64/3bf863cc.pub
     sudo add-apt-repository -y 'deb https://developer.download.nvidia.com/compute/cuda/repos/wsl-ubuntu/x86_64/ /'
+    # https://itsfoss.com/key-is-stored-in-legacy-trusted-gpg/
+    sudo apt-key export 3BF863CC | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/cudatools.gpg
     sudo apt-get update
     sudo apt-get -y install cuda nvidia-cudnn
 }
