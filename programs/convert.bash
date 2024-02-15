@@ -12,8 +12,8 @@ function convert_pptx_to_compressed_images_pptx() {
     [[ -d /tmp/pptx_extracted ]] && rm -rf /tmp/pptx_extracted/
     [[ -d ${1%.*}-compressed.pptx ]] && rm -rf ${1%.*}-compressed.pptx
     unzip -q "$1" -d /tmp/pptx_extracted
-    local large_images=$(find /tmp/pptx_extracted/ppt/media -type f -size +500k -name *.jpg -o -name *.png -o -name *.jpeg -print)
-    local mogrigfy_params="-sampling-factor 4:2:0 -quality 85 -strip"
+    local large_images=$(find /tmp/pptx_extracted/ppt/media -type f -size +500k -name '*.jpg' -o -name '*.png' -o -name '*.jpeg')
+    local mogrigfy_params="-sampling-factor 4:2:0 -quality 50 -strip"
     [[ -z $large_images ]] && _log_msg "no large images" && return
     for image in $large_images; do
         _log_msg "compressing $(basename $image)"
@@ -23,6 +23,7 @@ function convert_pptx_to_compressed_images_pptx() {
     local cwd=$(pwd)
     (
         cd /tmp/pptx_extracted/
+        _log_msg "creating "$cwd/${1%.*}-compressed.pptx""
         zip -9 -q -r "$cwd/${1%.*}-compressed.pptx" *
     )
 }
