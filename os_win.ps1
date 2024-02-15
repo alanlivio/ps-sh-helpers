@@ -275,12 +275,14 @@ function win_disable_web_search_and_widgets() {
 }
 
 function win_disable_edge_ctrl_shift_c() {
-    _log_msg "disable edge ctrl+shift+c"
+    _log_msg "disable edge"
     gsudo {
         $reg_edge_pol = "HKCU:\Software\Policies\Microsoft\Edge"
-        New-Item -Path $reg_edge_pol -Force | Out-Null
-        Set-ItemProperty -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts' -Value '{"disabled": ["dev_tools_elements"]}'
-        gpupdate.exe /force
+        if (-not (Get-ItemPropertyValue -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts')) {
+            New-Item -Path $reg_edge_pol -Force | Out-Null
+            Set-ItemProperty -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts' -Value '{"disabled": ["dev_tools_elements"]}'
+            gpupdate.exe /force
+        }
     }
 }
 
