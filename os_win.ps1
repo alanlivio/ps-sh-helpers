@@ -267,7 +267,9 @@ function win_disable_web_search_and_widgets() {
         Set-ItemProperty -Path $reg_explorer_pols -Name 'DisableSearchBoxSuggestions' -Value '1'
     }
     _log_msg "disable Web Widgets"
-    winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy
+    if ((winget list) -match "MicrosoftWindows.Client.WebExperience_cw5n1h2txyew") {
+        winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy
+    }
 }
 
 function win_disable_edge_ctrl_shift_c() {
