@@ -1,5 +1,11 @@
 alias python_clean_cache='find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf'
 
+function pip_install() {
+    for pkg in $@; do
+        pip show $pkg >/dev/null || pip install -U  $pkg
+    done
+}
+
 function python_check_tensorflow() {
     python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
 }
@@ -33,7 +39,7 @@ function python_pyright_stubs_from_requirements_txt() {
     pip show requirements-parser >/dev/null || pip install requirements-parser
     local pkgs=$(python -c "import requirements;import os;names=[req.name for req in requirements.parse(open('requirements.txt', 'r'))]; print(' '.join(names))")
     for pkg in $pkgs; do
-        pyright --createstub  $pkg
+        pyright --createstub $pkg
     done
 }
 
