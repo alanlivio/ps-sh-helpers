@@ -28,6 +28,15 @@ function python_packaging_upload_pypip() {
     twine upload dist/*
 }
 
+function python_pyright_stubs_from_requirements_txt() {
+    type -p pyright >/dev/null || pip install pyright
+    pip show requirements-parser >/dev/null || pip install requirements-parser
+    local pkgs=$(python -c "import requirements;import os;names=[req.name for req in requirements.parse(open('requirements.txt', 'r'))]; print(' '.join(names))")
+    for pkg in $pkgs; do
+        pyright --createstub  $pkg
+    done
+}
+
 alias conda_env_export_pip_requirements="conda list -e requirements.txt"
 alias conda_env_export_to_enviroment_yml="conda env export -f environment.yml"
 alias conda_env_create_from_enviroment_yml="conda env create -f environment.yml"
