@@ -21,7 +21,7 @@ function win_update() {
 }
 
 function ps_profile_reload() {
-    . $profile
+    & $profile
 }
 
 function ps_show_function($name) {
@@ -251,9 +251,11 @@ function win_disable_shortcuts_unused() {
 function win_disable_sounds() {
     _log_msg "disable sounds"
     Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\" "(Default)" -Value ".None"
-    gsudo {
-        net stop beep
-        cmd /c 'sc config beep start= disabled'
+    if ((Get-Service -name beep).Status -ne "Stopped") {
+        gsudo {
+            net stop beep
+            cmd /c 'sc config beep start= disabled'
+        }
     }
 }
 
