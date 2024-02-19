@@ -1,9 +1,14 @@
 # -- essentials --
 
-alias start_from_wsl='wslview'
-
 if [[ -n $WSL_DISTRO_NAME ]]; then
     alias winpath='wslpath -m'
+    alias winget='winget.exe'
+    alias explorer='explorer.exe'
+    alias powershell='powershell.exe'
+    function start() {
+        type -p wslview >/dev/null || sudo apt install wslu
+        wslview $@
+    }
 else
     alias winpath='cygpath -m'
 fi
