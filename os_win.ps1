@@ -194,7 +194,6 @@ function win_disable_osapps_unused() {
         'Microsoft.CommsPhone'
         'Microsoft.ConnectivityStore'
         'Microsoft.Microsoft3DViewer'
-        'Microsoft.MicrosoftOfficeHub'
         'Microsoft.MicrosoftSolitaireCollection'
         'Microsoft.MicrosoftStickyNotes'
         'Microsoft.MixedReality.Portal'
