@@ -48,7 +48,7 @@ function wsl_install_cuda_cudnn() {
 
 # -- msys2 --
 
-if type pacman &>/dev/null; then
+if type -p pacman >/dev/null; then
     alias msys2_search='pacman -s --noconfirm'
     alias msys2_show='pacman -Qi'
     alias msys2_list_installed='pacman -Qqe'
