@@ -40,6 +40,12 @@ function user_sudo_no_password() {
     SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
 }
 
+function ubu_disable_esam_hook() {
+    sudo systemctl mask apt-news.service
+    sudo systemctl mask esm-cache.service
+    sudo mv /etc/apt/apt.conf.d/20apt-esm-hook.conf /etc/apt/apt.conf.d/20apt-esm-hook.conf.disabled
+}
+
 function ubu_install_gh() {
     # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
     type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
