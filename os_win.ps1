@@ -1,3 +1,5 @@
+# sudo calls on here require https://learn.microsoft.com/en-us/windows/sudo/ or https://github.com/gerardog/gsudo
+
 # -- essentials --
 
 function _log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
@@ -6,7 +8,7 @@ function win_update() {
     _log_msg "winget upgrade all"
     winget upgrade --accept-package-agreements --accept-source-agreements --silent --all
     _log_msg "win os upgrade"
-    gsudo {
+    sudo {
         if (-Not(Get-Command Install-WindowsUpdate -errorAction SilentlyContinue)) {
             Set-PSRepository PSGallery -InstallationPolicy Trusted  
             Install-Module -Name PSWindowsUpdate -Confirm:$false
@@ -59,7 +61,7 @@ function win_path_refresh() {
 # -- env  --
 
 function win_env_add($name, $value) {
-    gsudo {
+    sudo {
         [Environment]::SetEnvironmentVariable($name, $value, 'Machine')
     }
 }
@@ -127,11 +129,11 @@ function win_wsl_install() {
 }
 
 function win_image_cleanup() {
-    gsudo { dism /Online /Cleanup-Image /RestoreHealth }
+    sudo { dism /Online /Cleanup-Image /RestoreHealth }
 }
 
 function win_policy_reset() {
-    gsudo {
+    sudo {
         cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicyUsers '
         cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
         gpupdate.exe /force
@@ -150,7 +152,7 @@ function win_enable_insider_beta() {
 }
 
 function win_appx_list_installed() {
-    gsudo { Get-AppxPackage -User $env:username | ForEach-Object { Write-Output $_.Name } }
+    sudo { Get-AppxPackage -User $env:username | ForEach-Object { Write-Output $_.Name } }
 }
 
 function win_appx_install() {
@@ -172,7 +174,7 @@ function win_appx_uninstall() {
     foreach ($name in $args) {
         if (Get-AppxPackage -Name $name) {
             _log_msg "uninstall $name"
-            gsudo { Get-AppxPackage -User $env:username $name | Remove-AppxPackage }
+            sudo { Get-AppxPackage -User $env:username $name | Remove-AppxPackage }
         }
     }
 }
@@ -213,7 +215,7 @@ function win_disable_osapps_unused() {
 }
 
 function win_disable_password_policy() {
-    gsudo {
+    sudo {
         $tmpfile = New-TemporaryFile
         secedit /export /cfg $tmpfile /quiet
         (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
@@ -236,7 +238,7 @@ function win_disable_shortcuts_unused() {
     Set-ItemProperty -Path $reg_key_toggle -Name "Layout Hotkey" -Value 3
     
     # "disable acessibility shorcuts"
-    gsudo {
+    sudo {
         $reg_acess = "HKCU:\Control Panel\Accessibility"
         Set-ItemProperty -Path "$reg_acess\ToggleKeys" -Name "Flags" -Value '58'
         New-Item -Path  "$reg_acess\Keyboard Response" -Force | Out-Null
@@ -252,7 +254,7 @@ function win_disable_sounds() {
     _log_msg "disable sounds"
     Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\" "(Default)" -Value ".None"
     if ((Get-Service -name beep).Status -ne "Stopped") {
-        gsudo {
+        sudo {
             net stop beep
             cmd /c 'sc config beep start= disabled'
         }
@@ -263,7 +265,7 @@ function win_disable_web_search_and_widgets() {
     _log_msg "disable Web Search"
     $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
     Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0'
-    gsudo {
+    sudo {
         $reg_explorer_pols = "HKCU:\Software\Policies\Microsoft\Windows\Explorer"
         New-Item -Path $reg_explorer_pols -Force | Out-Null
         Set-ItemProperty -Path $reg_explorer_pols -Name 'DisableSearchBoxSuggestions' -Value '1'
@@ -276,7 +278,7 @@ function win_disable_web_search_and_widgets() {
 
 function win_disable_edge_ctrl_shift_c() {
     _log_msg "disable edge"
-    gsudo {
+    sudo {
         $reg_edge_pol = "HKCU:\Software\Policies\Microsoft\Edge"
         if (-not (Get-ItemPropertyValue -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts')) {
             New-Item -Path $reg_edge_pol -Force | Out-Null
@@ -350,12 +352,12 @@ function win_enable_osapps_essentials() {
 }
 
 function win_enable_hyperv() {
-    gsudo { dism /online /enable-feature /featurename:Microsoft-Hyper-V -All /LimitAccess /ALL }
+    sudo { dism /online /enable-feature /featurename:Microsoft-Hyper-V -All /LimitAccess /ALL }
 }
 
 
 function win_ssh_agent_and_add_id_rsa() {
-    gsudo {
+    sudo {
         Set-Service ssh-agent -StartupType Automatic
         Start-Service ssh-agent
         Get-Service ssh-agent
