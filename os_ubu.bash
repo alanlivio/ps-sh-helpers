@@ -13,6 +13,12 @@ alias apt_ppa_remove="sudo add-apt-repository --remove"
 alias apt_ppa_list="apt policy"
 alias apt_autoremove="sudo apt -y autoremove"
 
+function apt_file_search() {
+    : ${1?"Usage: ${FUNCNAME[0]} <file>"}
+    type -p apt-file >/dev/null || sudo pip install apt-file
+    apt-file search $1
+}
+
 function apt_fixes() {
     sudo dpkg --configure -a
     sudo apt install -f --fix-broken
