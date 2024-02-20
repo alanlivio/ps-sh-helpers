@@ -225,7 +225,7 @@ function win_disable_password_policy() {
 
 
 function win_disable_shortcuts_unused() {
-    log_msg "disable_shortcuts_unused"
+    log_msg "win_disable_shortcuts_unused"
     
     # "disable AutoRotation shorcuts"
     Set-ItemProperty -Path "HKCU:\Software\Intel\Display\Igfxcui" -Name "HotKeys" -Value 'Enable'
@@ -250,7 +250,7 @@ function win_disable_shortcuts_unused() {
 }
 
 function win_disable_sounds() {
-    log_msg "disable sounds"
+    log_msg "win_disable_sounds"
     Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\" "(Default)" -Value ".None"
     if ((Get-Service -name beep).Status -ne "Stopped") {
         sudo {
@@ -261,7 +261,7 @@ function win_disable_sounds() {
 }
 
 function win_disable_web_search_and_widgets() {
-    log_msg "disable Web Search"
+    log_msg "win_disable_web_search_and_widgets"
     $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
     Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0'
     sudo {
@@ -276,7 +276,7 @@ function win_disable_web_search_and_widgets() {
 }
 
 function win_disable_edge_ctrl_shift_c() {
-    log_msg "disable edge"
+    log_msg "win_disable_edge_ctrl_shift_c"
     sudo {
         $reg_edge_pol = "HKCU:\Software\Policies\Microsoft\Edge"
         if (-not (Get-ItemPropertyValue -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts')) {
@@ -288,6 +288,7 @@ function win_disable_edge_ctrl_shift_c() {
 }
 
 function win_disable_explorer_clutter() {
+    log_msg "win_disable_explorer_clutter"
     $reg_explorer = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer"
     # setup folder listing
     Set-ItemProperty -Path $reg_explorer -Name ShowFrequent -Value '0'
@@ -297,6 +298,7 @@ function win_disable_explorer_clutter() {
 }
 
 function win_disable_taskbar_clutter() {
+    log_msg "win_disable_taskbar_clutter"
     $reg_explorer_adv = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     # setup taskbar startmenu
     # https://www.askvg.com/disable-or-remove-extra-icons-and-buttons-from-windows-11-taskbar
@@ -319,6 +321,7 @@ function win_disable_taskbar_clutter() {
 }
 
 function win_disable_gaming_clutter() {
+    log_msg "win_disable_gaming_clutter"
     # xbox controller notification
     $reg_game_dvr = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR"
     Set-ItemProperty -Path $reg_game_dvr -Name AppCaptureEnabled -Value '0'
@@ -340,6 +343,7 @@ function win_disable_gaming_clutter() {
 # -- system enable --
 
 function win_enable_osapps_essentials() {
+    log_msg "win_enable_osapps_essentials"
     $pkgs = @(
         'Microsoft.WindowsStore'
         'Microsoft.WindowsCalculator'
