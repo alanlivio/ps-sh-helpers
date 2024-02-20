@@ -27,7 +27,9 @@ _regex_no_underscore_func='function\s([^_][^{]+)\('
 while read -r line; do
     if [[ $line =~ $_regex_no_underscore_func ]]; then
         func=${BASH_REMATCH[1]}
-        _ps_def_func $func
+        if [[ ! $func =~ ^(log_msg)$ ]]; then # also exists in win.ps1
+            _ps_def_func $func
+        fi
     fi
 done <$BH_DIR/os_win.ps1
 
