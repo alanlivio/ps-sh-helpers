@@ -33,17 +33,17 @@ function git_branch_all_remotes_checkout_and_reset() {
     git branch -r | grep -v '\->' | while read -r remote; do
         git reset --hard
         git clean -ndf
-        _log_msg "updating ${remote#origin/}"
+        log_msg "updating ${remote#origin/}"
         git checkout "${remote#origin/}"
         if test $? != 0; then
-            _log_error "cannot goes to ${remote#origin/} because there are local changes" && return 1
+            log_error "cannot goes to ${remote#origin/} because there are local changes" && return 1
         fi
         git pull --all
         if test $? != 0; then
-            _log_error "cannot pull ${remote#origin/} because there are local changes" && return 1
+            log_error "cannot pull ${remote#origin/} because there are local changes" && return 1
         fi
     done
-    _log_msg "returning to branch $CURRENT"
+    log_msg "returning to branch $CURRENT"
     git checkout $CURRENT
 }
 
@@ -71,7 +71,7 @@ function git_subdirs_pull() {
         (
             cd "$i"
             if test -d .git; then
-                _log_msg "pull on $i"
+                log_msg "pull on $i"
                 git pull
             fi
         )
@@ -83,7 +83,7 @@ function git_subdirs_reset_clean() {
         (
             cd "$i"
             if test -d .git; then
-                _log_msg "pull on $i"
+                log_msg "pull on $i"
                 git reset --hard
                 git clean -df
                 git pull
@@ -102,11 +102,11 @@ function git_tag_move_to_head_and_push() {
 
 function git_filter_repo_finish_push() {
     if [ -z "$BH_LAST_ORIGIN" ]; then
-        _log_msg "var BH_LAST_ORIGIN not defined (maybe this is a new shell after editing). please restart editing!"
+        log_msg "var BH_LAST_ORIGIN not defined (maybe this is a new shell after editing). please restart editing!"
         return
     fi
 
-    _log_msg "Is it to force push branch $BH_LAST_BRANCH to origin $BH_LAST_ORIGIN (y/n)? "
+    log_msg "Is it to force push branch $BH_LAST_BRANCH to origin $BH_LAST_ORIGIN (y/n)? "
     answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
     if echo "$answer" | grep -iq "^y"; then
         git remote add origin $BH_LAST_ORIGIN
@@ -115,28 +115,28 @@ function git_filter_repo_finish_push() {
 }
 
 alias _git_filter_repo_save_origin_and_branch='if [[ -n $(git remote get-url origin) ]]; then BH_LAST_ORIGIN=$(git remote get-url origin); BH_LAST_BRANCH=$(git branch --show-current); fi'
-alias _git_filter_repo_test_and_msg='if [ $? -eq 0 ]; then _log_msg "fiter-repo succeeded. check if you agree and run git_filter_repo_finish_push to push"; fi'
+alias _git_filter_repo_test_and_msg='if [ $? -eq 0 ]; then log_msg "fiter-repo succeeded. check if you agree and run git_filter_repo_finish_push to push"; fi'
 
 function git_filter_repo_messages_to_lower_case() {
     _git_filter_repo_save_origin_and_branch
-    _log_msg git filter-repo --message-callback "'return message.lower()'" --force | bash
+    log_msg git filter-repo --message-callback "'return message.lower()'" --force | bash
     _git_filter_repo_test_and_msg
 }
 
 function git_filter_repo_messages_remove_str() {
     : ${2?"Usage: ${FUNCNAME[0]} <str> "}
     _git_filter_repo_save_origin_and_branch
-    _log_msg git filter-repo --message-callback "'return message.replace(b\"$1\", b\"\")'" --force | bash
+    log_msg git filter-repo --message-callback "'return message.replace(b\"$1\", b\"\")'" --force | bash
     _git_filter_repo_test_and_msg
 }
 
 function git_filter_repo_user_rename_to_current() {
-    _log_msg -n "Do want use the user.email=$(git config user.email)(y/n)? "
+    log_msg -n "Do want use the user.email=$(git config user.email)(y/n)? "
     answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
     _git_filter_repo_save_origin_and_branch
     local new_name="$(git config user.name)"
     local new_email="$(git config user.email)"
-    _log_msg git filter-repo --name-callback "'return b\"$new_name\"'" --email-callback "'return b\"$new_email\"'" --force | bash
+    log_msg git filter-repo --name-callback "'return b\"$new_name\"'" --email-callback "'return b\"$new_email\"'" --force | bash
     _git_filter_repo_test_and_msg
 }
 

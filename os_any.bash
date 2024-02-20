@@ -6,14 +6,14 @@ alias folder_count_files_recusive='find . -maxdepth 1 -type f | wc -l'
 alias folder_list_sorted_by_size='du -ahd 1 | sort -h'
 alias folder_find_file_with_crlf='find . -not -type d -exec file "{}" ";" | grep CRLF'
 
-function _log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
-function _log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
+function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
+function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
 
 function _dotfiles_func() {
     : ${1?"Usage: ${FUNCNAME[0]} <backup|install|diff>"}
     declare -a files_array
     files_array=($BH_DOTFILES)
-    if [ ${#files_array[@]} -eq 0 ]; then _log_error "BH_DOTFILES empty" && return 1; fi
+    if [ ${#files_array[@]} -eq 0 ]; then log_error "BH_DOTFILES empty" && return 1; fi
     for ((i = 0; i < ${#files_array[@]}; i = i + 2)); do
         if [ "$1" = "backup" ]; then
             cp ${files_array[$i]} ${files_array[$((i + 1))]}
@@ -22,7 +22,7 @@ function _dotfiles_func() {
         elif [ "$1" = "diff" ]; then
             ret=$(diff ${files_array[$i]} ${files_array[$((i + 1))]})
             if [ $? = 1 ]; then
-                _log_msg "diff ${files_array[$i]} ${files_array[$((i + 1))]}"
+                log_msg "diff ${files_array[$i]} ${files_array[$((i + 1))]}"
                 echo "$ret"
             fi
         fi
@@ -64,10 +64,10 @@ function decompress() {
     *.zip) ret=$(unzip "$1" -d $dest) ;;
     *.zst) ret=$(tar --use-compress-program=unzstd -xvf "$1" -C $dest) ;;
     *.xz) ret=$(tar -xJf "$1" -C $dest) ;;
-    *) _log_error "$extension is not supported compress." && return 1 ;;
+    *) log_error "$extension is not supported compress." && return 1 ;;
     esac
     if [ $? != 0 ] || ! [ -f $file_name ]; then
-        _log_error "decompress "$1" failed " && return 1
+        log_error "decompress "$1" failed " && return 1
     fi
 }
 
@@ -75,11 +75,11 @@ function decompress_from_url() {
     : ${2?"Usage: ${FUNCNAME[0]} <URL> <dir>"}
     local file_name="/tmp/$(basename $1)"
     if test ! -e $file_name; then
-        _log_msg "fetching "$1" to /tmp/"
+        log_msg "fetching "$1" to /tmp/"
         curl -LJ "$1" --create-dirs --output $file_name
-        if [ $? != 0 ]; then _log_error "curl fail" && return; fi
+        if [ $? != 0 ]; then log_error "curl fail" && return; fi
     fi
-    _log_msg "extracting $file_name to $2"
+    log_msg "extracting $file_name to $2"
     decompress $file_name $2
 }
 

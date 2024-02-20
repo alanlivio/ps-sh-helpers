@@ -6,9 +6,9 @@ function mac_install_brew() {
 }
 
 function mac_update() {
-    _log_msg "brew upgrade all"
+    log_msg "brew upgrade all"
     brew update
     sudo brew upgrade
-    _log_msg "mac os upgrade"
+    log_msg "mac os upgrade"
     sudo softwareupdate -i -a
 }

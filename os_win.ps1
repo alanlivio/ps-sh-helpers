@@ -2,12 +2,12 @@
 
 # -- essentials --
 
-function _log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
+function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
 function win_update() {
-    _log_msg "winget upgrade all"
+    log_msg "winget upgrade all"
     winget upgrade --accept-package-agreements --accept-source-agreements --silent --all
-    _log_msg "win os upgrade"
+    log_msg "win os upgrade"
     sudo {
         if (-Not(Get-Command Install-WindowsUpdate -errorAction SilentlyContinue)) {
             Set-PSRepository PSGallery -InstallationPolicy Trusted  
@@ -163,7 +163,7 @@ function win_appx_install() {
         }
     }
     if ($pkgs_to_install) {
-        _log_msg "pkgs_to_install=$pkgs_to_install"
+        log_msg "pkgs_to_install=$pkgs_to_install"
         foreach ($pkg in $pkgs_to_install) {
             Get-AppxPackage -User $env:username $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
         }
@@ -173,7 +173,7 @@ function win_appx_install() {
 function win_appx_uninstall() {
     foreach ($name in $args) {
         if (Get-AppxPackage -Name $name) {
-            _log_msg "uninstall $name"
+            log_msg "uninstall $name"
             sudo { Get-AppxPackage -User $env:username $name | Remove-AppxPackage }
         }
     }
@@ -182,7 +182,7 @@ function win_appx_uninstall() {
 # -- system disable --
 
 function win_disable_osapps_unused() {
-    _log_msg "win_disable_osapps_unused"
+    log_msg "win_disable_osapps_unused"
     # microsoft
     $pkgs = @(
         'Clipchamp.Clipchamp'
@@ -225,7 +225,7 @@ function win_disable_password_policy() {
 
 
 function win_disable_shortcuts_unused() {
-    _log_msg "disable_shortcuts_unused"
+    log_msg "disable_shortcuts_unused"
     
     # "disable AutoRotation shorcuts"
     Set-ItemProperty -Path "HKCU:\Software\Intel\Display\Igfxcui" -Name "HotKeys" -Value 'Enable'
@@ -245,12 +245,12 @@ function win_disable_shortcuts_unused() {
     }
     
     # explorer restart
-    _log_msg "explorer restart"
+    log_msg "explorer restart"
     Stop-Process -ProcessName explorer -ea 0 | Out-Null
 }
 
 function win_disable_sounds() {
-    _log_msg "disable sounds"
+    log_msg "disable sounds"
     Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\" "(Default)" -Value ".None"
     if ((Get-Service -name beep).Status -ne "Stopped") {
         sudo {
@@ -261,7 +261,7 @@ function win_disable_sounds() {
 }
 
 function win_disable_web_search_and_widgets() {
-    _log_msg "disable Web Search"
+    log_msg "disable Web Search"
     $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
     Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0'
     sudo {
@@ -269,14 +269,14 @@ function win_disable_web_search_and_widgets() {
         New-Item -Path $reg_explorer_pols -Force | Out-Null
         Set-ItemProperty -Path $reg_explorer_pols -Name 'DisableSearchBoxSuggestions' -Value '1'
     }
-    _log_msg "disable Web Widgets"
+    log_msg "disable Web Widgets"
     if ((winget list) -match "MicrosoftWindows.Client.WebExperience_cw5n1h2txyew") {
         winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy
     }
 }
 
 function win_disable_edge_ctrl_shift_c() {
-    _log_msg "disable edge"
+    log_msg "disable edge"
     sudo {
         $reg_edge_pol = "HKCU:\Software\Policies\Microsoft\Edge"
         if (-not (Get-ItemPropertyValue -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts')) {

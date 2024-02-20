@@ -1,11 +1,11 @@
 # -- essentials --
 
 function ubu_update() {
-    _log_msg "apt update"
+    log_msg "apt update"
     sudo apt update
-    _log_msg "apt upgrade all"
+    log_msg "apt upgrade all"
     sudo apt -y upgrade
-    _log_msg "apt autoremove"
+    log_msg "apt autoremove"
     sudo apt -y autoremove
 }
 
@@ -26,7 +26,7 @@ function deb_install_file_from_url() {
     local deb_name=$(basename "$1")
     if test ! -f /tmp/$deb_name; then
         curl -O "$1" --create-dirs --output-dir /tmp/
-        if test $? != 0; then _log_error "curl failed." && return 1; fi
+        if test $? != 0; then log_error "curl failed." && return 1; fi
     fi
     sudo dpkg -i /tmp/$deb_name
 }

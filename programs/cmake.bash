@@ -51,12 +51,12 @@ function cmake_uninstall() {
         while IFS= read -r i; do
             local file=${i%$'\r'}
             if test -e "$file"; then
-                _log_msg "uninstall $file"
+                log_msg "uninstall $file"
                 sudo rm "$file"
             fi
         done <$manifest
     else
-        _log_error "$manifest does not exist" && return 1
+        log_error "$manifest does not exist" && return 1
     fi
 }
 
@@ -64,7 +64,7 @@ function cmake_clean_retain_objs() {
     if test -d CMakeFiles; then
         find . -maxdepth 1 -not -name '.' -not -name CMakeFiles -exec rm -rf {} \;
     else
-        _log_error "there is no CMakeFiles dir" && return 1
+        log_error "there is no CMakeFiles dir" && return 1
     fi
 }
 
