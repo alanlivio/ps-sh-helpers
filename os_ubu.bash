@@ -46,6 +46,10 @@ function user_sudo_no_password() {
     SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
 }
 
+function ubu_disable_snap_dir_at_home() {
+    sudo snap set system experimental.hidden-snap-folder=true
+}
+
 function ubu_disable_esam_hook() {
     sudo systemctl mask apt-news.service
     sudo systemctl mask esm-cache.service
