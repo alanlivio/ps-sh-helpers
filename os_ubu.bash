@@ -49,7 +49,7 @@ function user_sudo_no_password() {
 function ubu_disable_esam_hook() {
     sudo systemctl mask apt-news.service
     sudo systemctl mask esm-cache.service
-    sudo mv /etc/apt/apt.conf.d/20apt-esm-hook.conf /etc/apt/apt.conf.d/20apt-esm-hook.conf.disabled
+    test /etc/apt/apt.conf.d/20apt-esm-hook.conf || sudo mv /etc/apt/apt.conf.d/20apt-esm-hook.conf /etc/apt/apt.conf.d/20apt-esm-hook.conf.disabled
 }
 
 function ubu_install_gh() {
