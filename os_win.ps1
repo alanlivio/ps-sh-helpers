@@ -22,6 +22,13 @@ function win_update() {
     }
 }
 
+function winget_install() { 
+    if (-not (winget list) -match $Args[0]){
+        echo "installing" $Args[0]
+        winget install --accept-package-agreements --accept-source-agreements --silent $Args[0]
+    }
+}
+
 function ps_profile_reload() {
     & $profile
 }
