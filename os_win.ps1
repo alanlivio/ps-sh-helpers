@@ -23,7 +23,7 @@ function win_update() {
 }
 
 function winget_install() { 
-    if (-not (winget list) -match $Args[0]){
+    if (-not (winget list) -match $Args[0]) {
         echo "installing" $Args[0]
         winget install --accept-package-agreements --accept-source-agreements --silent $Args[0]
     }
@@ -252,7 +252,6 @@ function win_disable_shortcuts_unused() {
     }
     
     # explorer restart
-    log_msg "explorer restart"
     Stop-Process -ProcessName explorer -ea 0 | Out-Null
 }
 
@@ -261,8 +260,8 @@ function win_disable_sounds() {
     Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\" "(Default)" -Value ".None"
     if ((Get-Service -name beep).Status -ne "Stopped") {
         sudo {
-            net stop beep
-            cmd /c 'sc config beep start= disabled'
+            net.exe stop beep
+            sc.exe config beep start= disabled
         }
     }
 }
@@ -276,7 +275,6 @@ function win_disable_web_search_and_widgets() {
         New-Item -Path $reg_explorer_pols -Force | Out-Null
         Set-ItemProperty -Path $reg_explorer_pols -Name 'DisableSearchBoxSuggestions' -Value '1'
     }
-    log_msg "disable Web Widgets"
     if ((winget list) -match "MicrosoftWindows.Client.WebExperience_cw5n1h2txyew") {
         winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy
     }
