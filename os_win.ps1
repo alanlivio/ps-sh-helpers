@@ -36,8 +36,8 @@ function ps_show_function($name) {
     Get-Content Function:\$name
 }
 
-function win_hlink_create($desntination, $source) {
-    cmd /c mklink /D $desntination $source
+function win_hlink_create($path, $target) {
+    sudo New-Item -ItemType SymbolicLink -Force -Path $path -Target $target
 }
 
 
