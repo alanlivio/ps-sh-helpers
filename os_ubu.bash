@@ -56,6 +56,13 @@ function ubu_disable_esam_hook() {
     test /etc/apt/apt.conf.d/20apt-esm-hook.conf || sudo mv /etc/apt/apt.conf.d/20apt-esm-hook.conf /etc/apt/apt.conf.d/20apt-esm-hook.conf.disabled
 }
 
+function ubu_enable_git_ppa() {
+    local codename=$(cat /etc/os-release | grep UBUNTU_CODENAME | cut -d = -f 2)
+    if ! test -f /etc/apt/sources.list.d/git-core-ubuntu-ppa-$codename.list; then
+        sudo apt-add-repository ppa:git-core/ppa
+    fi
+}
+
 function ubu_install_gh() {
     # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
     type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
