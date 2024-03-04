@@ -46,6 +46,17 @@ function wsl_install_cuda_cudnn() {
     sudo apt-get -y install cuda nvidia-cudnn
 }
 
+function wsl_fix_libcuda_so_slink() {
+    # https://github.com/microsoft/WSL/issues/5663
+    (
+        cd /usr/lib/wsl/lib
+        sudo rm libcuda.so
+        sudo rm libcuda.so.1
+        sudo ln -s libcuda.so.1.1 libcuda.so
+        sudo ln -s libcuda.so.1.1 libcuda.so.1
+    )
+}
+
 # -- msys2 --
 
 if type -p pacman >/dev/null; then
