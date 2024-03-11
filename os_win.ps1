@@ -259,8 +259,8 @@ function win_disable_sounds() {
     Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\" "(Default)" -Value ".None"
     if ((Get-Service -name beep).Status -ne "Stopped") {
         sudo {
-            net.exe stop beep
-            sc.exe config beep start= disabled
+            Stop-Service beep
+            Set-Service beep -StartupType disabled
         }
     }
 }
