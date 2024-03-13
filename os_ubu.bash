@@ -13,6 +13,8 @@ alias apt_ppa_remove="sudo add-apt-repository --remove"
 alias apt_ppa_list="apt policy"
 alias apt_autoremove="sudo apt -y autoremove"
 
+alias ps_user='ps -u $USERNAME|grep -v ps -u'
+
 function apt_file_search() {
     : ${1?"Usage: ${FUNCNAME[0]} <file>"}
     type -p apt-file >/dev/null || sudo pip install apt-file
