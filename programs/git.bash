@@ -11,6 +11,16 @@ function git_fix_ssh() {
     ssh -T git@github.com
 }
 
+function git_overleaf_boostrap() {
+    git_gitignore_create latex >.gitignore
+    echo _main.pdf >>.gitignore
+}
+
+function git_overleaf_push_commit_all() {
+    git commit -am "Update from local git"
+    git push
+}
+
 function git_assume_unchanged() {
     : ${1?"Usage: ${FUNCNAME[0]} <file>"}
     git update-index --assume-unchanged $1
