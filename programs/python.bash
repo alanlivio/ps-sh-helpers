@@ -6,6 +6,11 @@ function pip_install() {
     done
 }
 
+function pip_conda_clean_cache() {
+    pip cache purge
+    conda clean --all --yes
+}
+
 function python_check_tensorflow() {
     python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
 }
