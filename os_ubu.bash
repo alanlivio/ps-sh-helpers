@@ -17,7 +17,7 @@ alias ps_user='ps -u $USERNAME|grep -v ps -u'
 
 function apt_file_search() {
     : ${1?"Usage: ${FUNCNAME[0]} <file>"}
-    type -p apt-file >/dev/null || sudo pip install apt-file
+    type -p apt-file >/dev/null || sudo apt install apt-file
     apt-file search $1
 }
 

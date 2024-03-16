@@ -6,7 +6,7 @@ function pip_install() {
     done
 }
 
-function pip_conda_clean_cache() {
+function python_clean_pip_conda_cache() {
     pip cache purge
     conda clean --all --yes
 }
