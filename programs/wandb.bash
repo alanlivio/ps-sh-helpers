@@ -10,7 +10,7 @@ api = wandb.Api()
 runs = api.runs('$1/$2')
 for run in runs:
     for artifact in run.logged_artifacts():
-        artifact.delete()
+        artifact.delete(delete_aliases=True)
     run.delete()
 EOF
 }
