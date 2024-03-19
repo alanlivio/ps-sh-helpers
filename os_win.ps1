@@ -265,6 +265,9 @@ function win_disable_web_search_and_widgets() {
     log_msg "win_disable_web_search_and_widgets"
     $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
     Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0'
+    $reg_search2 = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings'
+    Set-ItemProperty -Path "$reg_search2" -Name 'IsDynamicSearchBoxEnabled' -Value '0' -Type 'DWORD'
+
     sudo {
         $reg_explorer_pols = "HKCU:\Software\Policies\Microsoft\Windows\Explorer"
         New-Item -Path $reg_explorer_pols -Force | Out-Null
