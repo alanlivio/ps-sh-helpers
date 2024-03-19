@@ -171,7 +171,7 @@ function win_appx_install() {
     if ($pkgs_to_install) {
         log_msg "pkgs_to_install=$pkgs_to_install"
         foreach ($pkg in $pkgs_to_install) {
-            Get-AppxPackage -User $env:username $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
+            Get-AppxPackage -User $env:username -Name $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
         }
     }
 }
@@ -180,7 +180,7 @@ function win_appx_uninstall() {
     foreach ($name in $args) {
         if (Get-AppxPackage -Name $name) {
             log_msg "uninstall $name"
-            sudo { Get-AppxPackage -User $env:username $name | Remove-AppxPackage }
+            sudo { Get-AppxPackage -User $env:username -Name $name | Remove-AppxPackage }
         }
     }
 }
