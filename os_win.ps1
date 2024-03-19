@@ -164,7 +164,7 @@ function win_appx_list_installed() {
 function win_appx_install() {
     $pkgs_to_install = ""
     foreach ($name in $args) {
-        if ( !(Get-AppxPackage -Name $name)) {
+        if ( !(Get-AppxPackage -User $env:username -Name $name)) {
             $pkgs_to_install = "$pkgs_to_install $name"
         }
     }
@@ -178,9 +178,9 @@ function win_appx_install() {
 
 function win_appx_uninstall() {
     foreach ($name in $args) {
-        if (Get-AppxPackage -Name $name) {
+        if (Get-AppxPackage -User $env:username -Name $name) {
             log_msg "uninstall $name"
-            sudo { Get-AppxPackage -User $env:username -Name $name | Remove-AppxPackage }
+            Get-AppxPackage -User $env:username -Name $name | Remove-AppxPackage
         }
     }
 }
