@@ -326,12 +326,13 @@ function win_disable_taskbar_clutter() {
 
 function win_disable_gaming_clutter() {
     log_msg "win_disable_gaming_clutter"
+    # https://www.makeuseof.com/windows-new-app-ms-gamingoverlay-error/
     
     $reg_game_dvr = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR"
-    Set-ItemProperty -Path $reg_game_dvr -Name AppCaptureEnabled -Value '0'
+    Set-ItemProperty -Path $reg_game_dvr -Name AppCaptureEnabled -Value '0' -Type REG_SZ
     Set-ItemProperty -Path $reg_game_dvr -Name HistoricalCaptureEnabled -Value '0'
     $reg_game_store = "HKCU:\System\GameConfigStore"
-    Set-ItemProperty -Path $reg_game_store -Name GameDVR_Enabled  -Value '0'
+    Set-ItemProperty -Path $reg_game_store -Name GameDVR_Enabled -Value '0'
     
     $pkgs = @(
         'Microsoft.GamingApp'
