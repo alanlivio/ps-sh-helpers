@@ -208,6 +208,8 @@ function win_disable_osapps_unused() {
         'Microsoft.YourPhone'
         'Microsoft.ZuneMusic'
         'SpotifyAB.SpotifyMusic'
+        'NVIDIACorp.NVIDIAControlPanel'
+        'Microsoft.Windows.DevHome'
     )
     win_appx_uninstall @pkgs
 }
