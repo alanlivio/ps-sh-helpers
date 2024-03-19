@@ -61,7 +61,7 @@ function ubu_disable_esam_hook() {
 function ubu_enable_git_ppa() {
     local codename=$(cat /etc/os-release | grep UBUNTU_CODENAME | cut -d = -f 2)
     if ! test -f /etc/apt/sources.list.d/git-core-ubuntu-ppa-$codename.list; then
-        sudo apt-add-repository ppa:git-core/ppa
+        sudo apt-add-repository ppa:git-core/ppa --yes
     fi
 }
 
