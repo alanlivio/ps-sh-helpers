@@ -257,7 +257,8 @@ function win_disable_shortcuts_unused() {
 function win_disable_sounds() {
     log_msg "win_disable_sounds"
     Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\" "(Default)" -Value ".None"
-    if ((Get-Service -name beep).Status -ne "Stopped") {
+    $status = (Get-Service -name beep).Status
+    if ( $status -eq "Running" ) {
         sudo {
             Stop-Service beep
             Set-Service beep -StartupType disabled
