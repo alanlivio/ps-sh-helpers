@@ -10,19 +10,19 @@ function win_update() {
     log_msg "win os upgrade"
     sudo {
         if (-Not(Get-Command Install-WindowsUpdate -errorAction SilentlyContinue)) {
-            Set-PSRepository PSGallery -InstallationPolicy Trusted  
+            Set-PSRepository PSGallery -InstallationPolicy Trusted
             Install-Module -Name PSWindowsUpdate -Confirm:$false
             Add-WUServiceManager -MicrosoftUpdate -Confirm:$false | Out-Null
         }
-        $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object { 
+        $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object {
             if ($_ -is [string]) {
-                $_.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) 
-            } 
+                $_.Split('', [System.StringSplitOptions]::RemoveEmptyEntries)
+            }
         }
     }
 }
 
-function winget_install() { 
+function winget_install() {
     if (-not (winget list) -match $Args[0]) {
         winget install --accept-package-agreements --accept-source-agreements --silent $Args[0]
     }
@@ -61,7 +61,7 @@ function win_path_list() {
 }
 
 function win_path_refresh() {
-    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User") 
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 }
 
 # -- env  --
@@ -148,7 +148,7 @@ function win_policy_reset() {
 
 function win_enable_insider_beta() {
     # https://www.elevenforum.com/t/change-windows-insider-program-channel-in-windows-11.795/
-    bcdedit /set flightsigning on 
+    bcdedit /set flightsigning on
     Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\Applicability" -Name "BranchName" -Value 'Beta'
     Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\Applicability" -Name "ContentType" -Value 'Mainline'
     Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\Applicability" -Name "Ring" -Value 'External'
@@ -232,7 +232,7 @@ function win_disable_password_policy() {
 
 function win_disable_shortcuts_unused() {
     log_msg "win_disable_shortcuts_unused"
-    
+
     # "disable AutoRotation shorcuts"
     Set-ItemProperty -Path "HKCU:\Software\Intel\Display\Igfxcui" -Name "HotKeys" -Value 'Enable'
 
@@ -241,7 +241,7 @@ function win_disable_shortcuts_unused() {
     Set-ItemProperty -Path $reg_key_toggle -Name "HotKey" -Value 3
     Set-ItemProperty -Path $reg_key_toggle -Name "Language Hotkey" -Value 3
     Set-ItemProperty -Path $reg_key_toggle -Name "Layout Hotkey" -Value 3
-    
+
     # "disable acessibility shorcuts"
     sudo {
         $reg_acess = "HKCU:\Control Panel\Accessibility"
@@ -249,7 +249,7 @@ function win_disable_shortcuts_unused() {
         New-Item -Path  "$reg_acess\Keyboard Response" -Force | Out-Null
         Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122'
     }
-    
+
     # explorer restart
     Stop-Process -ProcessName explorer -ea 0 | Out-Null
 }
@@ -313,13 +313,13 @@ function win_disable_taskbar_clutter() {
     Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAI -Value '0'
     Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarBadges -Value '0'
     Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAnimations -Value '0'
-    
+
     # setup clean multitasking
     # https://www.itechtics.com/disable-edge-tabs-alt-tab
-    Set-ItemProperty -Path $reg_explorer_adv -Name MultiTaskingAltTabFilter -Value '3'    
+    Set-ItemProperty -Path $reg_explorer_adv -Name MultiTaskingAltTabFilter -Value '3'
     # https://superuser.com/questions/1516878/how-to-disable-windows-snap-assist-via-command-line
     Set-ItemProperty -Path $reg_explorer_adv -Name SnapAssist -Value '0'
-    
+
     # setup search
     $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
     Set-ItemProperty -Path $reg_search -Name SearchBoxTaskbarMode -Value '0'
