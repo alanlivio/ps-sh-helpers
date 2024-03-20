@@ -331,6 +331,9 @@ function win_disable_taskbar_clutter() {
     Set-ItemProperty -Path $reg_explorer_adv -Name ShowTaskViewButton -Value '0' -Type 'DWORD'
     Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarDa -Value '0' -Type 'DWORD'
     Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarMn -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_explorer_adv -Name ShowCopilotButton -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_explorer_adv -Name UseCompactMode -Value '1' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_explorer_adv -Name ShowStatusBar -Value '1' -Type 'DWORD'
     Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAI -Value '0' -Type 'DWORD'
     Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarBadges -Value '0' -Type 'DWORD'
     Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAnimations -Value '0' -Type 'DWORD'
@@ -341,16 +344,17 @@ function win_disable_taskbar_clutter() {
     # https://superuser.com/questions/1516878/how-to-disable-windows-snap-assist-via-command-line
     Set-ItemProperty -Path $reg_explorer_adv -Name SnapAssist -Value '0' -Type 'DWORD'
     
-    # copilot
+    # search
+    $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
+    Set-ItemProperty -Path $reg_search -Name SearchBoxTaskbarMode -Value '0' -Type 'DWORD'
+}
+
+function win_disable_copilot() {
     sudo {
         $reg_explorer_pols = "HKCU:\Software\Policies\Microsoft\Windows"
         New-Item -Path "$reg_explorer_pols\WindowsCopilot" -Force | Out-Null
         Set-ItemProperty -Path "$reg_explorer_pols\WindowsCopilot" -Name 'TurnOffWindowsCopilot' -Value '1' -Type 'DWORD'
     }
-
-    # search
-    $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
-    Set-ItemProperty -Path $reg_search -Name SearchBoxTaskbarMode -Value '0' -Type 'DWORD'
 }
 
 function win_disable_gaming_clutter() {
