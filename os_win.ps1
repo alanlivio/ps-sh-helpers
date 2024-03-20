@@ -30,7 +30,17 @@ function winget_install() {
 }
 
 function ps_profile_reload() {
-    & $profile
+    @(
+        $profile.AllUsersAllHosts,
+        $profile.AllUsersCurrentHost,
+        $profile.CurrentUserAllHosts,
+        $profile.CurrentUserCurrentHost
+    ) | % {
+        if(Test-Path $_){
+            echo "loading $_"
+            . $_
+        }
+    }
 }
 
 function ps_show_function($name) {
