@@ -36,7 +36,7 @@ function ps_profile_reload() {
         $profile.CurrentUserAllHosts,
         $profile.CurrentUserCurrentHost
     ) | % {
-        if(Test-Path $_){
+        if (Test-Path $_) {
             echo "loading $_"
             . $_
         }
@@ -244,16 +244,16 @@ function win_disable_shortcuts_unused() {
 
     # "disable language shorcuts"
     $reg_key_toggle = "HKCU:\Keyboard Layout\Toggle"
-    Set-ItemProperty -Path $reg_key_toggle -Name "HotKey" -Value 3
-    Set-ItemProperty -Path $reg_key_toggle -Name "Language Hotkey" -Value 3
-    Set-ItemProperty -Path $reg_key_toggle -Name "Layout Hotkey" -Value 3
+    Set-ItemProperty -Path $reg_key_toggle -Name "HotKey" -Value '3' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_key_toggle -Name "Language Hotkey" -Value '3' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_key_toggle -Name "Layout Hotkey" -Value '3' -Type 'DWORD'
 
     # "disable acessibility shorcuts"
     sudo {
         $reg_acess = "HKCU:\Control Panel\Accessibility"
-        Set-ItemProperty -Path "$reg_acess\ToggleKeys" -Name "Flags" -Value '58'
+        Set-ItemProperty -Path "$reg_acess\ToggleKeys" -Name "Flags" -Value '58' -Type 'DWORD'
         New-Item -Path  "$reg_acess\Keyboard Response" -Force | Out-Null
-        Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122'
+        Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122' -Type 'DWORD'
     }
 
     # explorer restart
@@ -277,7 +277,7 @@ function win_disable_web_search_and_widgets() {
     # https://www.bennetrichter.de/en/tutorials/windows-10-disable-web-search/
     log_msg "win_disable_web_search_and_widgets"
     $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
-    Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0'  -Type 'DWORD'
+    Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0' -Type 'DWORD'
     $reg_search2 = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings'
     Set-ItemProperty -Path "$reg_search2" -Name 'IsDynamicSearchBoxEnabled' -Value '0' -Type 'DWORD'
 
@@ -308,33 +308,34 @@ function win_disable_explorer_clutter() {
     log_msg "win_disable_explorer_clutter"
     $reg_explorer = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer"
     # setup folder listing
-    Set-ItemProperty -Path $reg_explorer -Name ShowFrequent -Value '0'
-    Set-ItemProperty -Path $reg_explorer -Name ShowRecent -Value '0'
-    Set-ItemProperty -Path $reg_explorer -Name ShowRecommendations -Value '0'
-    Set-ItemProperty -Path $reg_explorer -Name HideFileExt -Value '0'
+    Set-ItemProperty -Path $reg_explorer -Name ShowFrequent -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_explorer -Name ShowRecent -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_explorer -Name ShowRecommendations -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_explorer -Name HideFileExt -Value '0' -Type 'DWORD'
 }
 
 function win_disable_taskbar_clutter() {
     log_msg "win_disable_taskbar_clutter"
     $reg_explorer_adv = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    
     # setup taskbar startmenu
     # https://www.askvg.com/disable-or-remove-extra-icons-and-buttons-from-windows-11-taskbar
-    Set-ItemProperty -Path $reg_explorer_adv -Name ShowTaskViewButton -Value '0'
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarDa -Value '0'
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarMn -Value '0'
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAI -Value '0'
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarBadges -Value '0'
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAnimations -Value '0'
+    Set-ItemProperty -Path $reg_explorer_adv -Name ShowTaskViewButton -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarDa -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarMn -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAI -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarBadges -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAnimations -Value '0' -Type 'DWORD'
 
     # setup clean multitasking
     # https://www.itechtics.com/disable-edge-tabs-alt-tab
-    Set-ItemProperty -Path $reg_explorer_adv -Name MultiTaskingAltTabFilter -Value '3'
+    Set-ItemProperty -Path $reg_explorer_adv -Name MultiTaskingAltTabFilter -Value '3' -Type 'DWORD'
     # https://superuser.com/questions/1516878/how-to-disable-windows-snap-assist-via-command-line
-    Set-ItemProperty -Path $reg_explorer_adv -Name SnapAssist -Value '0'
-
+    Set-ItemProperty -Path $reg_explorer_adv -Name SnapAssist -Value '0' -Type 'DWORD'
+    
     # setup search
     $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
-    Set-ItemProperty -Path $reg_search -Name SearchBoxTaskbarMode -Value '0'
+    Set-ItemProperty -Path $reg_search -Name SearchBoxTaskbarMode -Value '0' -Type 'DWORD'
 }
 
 function win_disable_gaming_clutter() {
@@ -342,10 +343,10 @@ function win_disable_gaming_clutter() {
     # https://www.makeuseof.com/windows-new-app-ms-gamingoverlay-error/
 
     $reg_game_dvr = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR"
-    Set-ItemProperty -Path $reg_game_dvr -Name AppCaptureEnabled -Value '0' 
-    Set-ItemProperty -Path $reg_game_dvr -Name HistoricalCaptureEnabled -Value '0'
+    Set-ItemProperty -Path $reg_game_dvr -Name AppCaptureEnabled -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_game_dvr -Name HistoricalCaptureEnabled -Value '0' -Type 'DWORD'
     $reg_game_store = "HKCU:\System\GameConfigStore"
-    Set-ItemProperty -Path $reg_game_store -Name GameDVR_Enabled -Value '0'
+    Set-ItemProperty -Path $reg_game_store -Name GameDVR_Enabled -Value '0' -Type 'DWORD'
 
     $pkgs = @(
         'Microsoft.Xbox.TCUI'
