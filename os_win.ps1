@@ -35,9 +35,9 @@ function ps_profile_reload() {
         $profile.AllUsersCurrentHost,
         $profile.CurrentUserAllHosts,
         $profile.CurrentUserCurrentHost
-    ) | % {
+    ) | ForEach-Object {
         if (Test-Path $_) {
-            echo "loading $_"
+            Write-Output "loading $_"
             . $_
         }
     }
