@@ -161,6 +161,14 @@ function win_enable_insider_beta() {
     Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\UI\Selection" -Name "UIRing" -Value 'External'
 }
 
+function win_enable_dark_no_transparency() {
+    $reg_personalize = "HKCU:Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+    Set-ItemProperty -Path $reg_personalize -Name "SystemUsesLightTheme" -Value  '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_personalize -Name "EnableTransparency" -Value  '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_personalize -Name "SystemUsesLightTheme" -Value  '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_personalize -Name "ColorPrevalence" -Value  '0' -Type 'DWORD'
+}
+
 function win_appx_list_installed() {
     sudo { Get-AppxPackage -User $env:username | ForEach-Object { Write-Output $_.Name } }
 }
