@@ -38,7 +38,7 @@ function ps_profile_reload() {
     ) | ForEach-Object {
         if (Test-Path $_) {
             Write-Output "loading $_"
-            . $_
+            Import-Module -Force -Global $_ #-Verbose 
         }
     }
 }
