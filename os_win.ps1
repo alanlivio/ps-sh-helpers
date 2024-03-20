@@ -170,7 +170,7 @@ function win_enable_dark_no_transparency() {
 }
 
 function win_appx_list_installed() {
-    sudo { Get-AppxPackage -User $env:username | ForEach-Object { Write-Output $_.Name } }
+    Get-AppxPackage -User $env:username | ForEach-Object { Write-Output $_.Name }
 }
 
 function win_appx_install() {
@@ -257,12 +257,10 @@ function win_disable_shortcuts_unused() {
     Set-ItemProperty -Path $reg_key_toggle -Name "Layout Hotkey" -Value '3' -Type 'DWORD'
 
     # "disable acessibility shorcuts"
-    sudo {
-        $reg_acess = "HKCU:\Control Panel\Accessibility"
-        Set-ItemProperty -Path "$reg_acess\ToggleKeys" -Name "Flags" -Value '58' -Type 'DWORD'
-        New-Item -Path "$reg_acess\Keyboard Response" -Force | Out-Null
-        Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122' -Type 'DWORD'
-    }
+    $reg_acess = "HKCU:\Control Panel\Accessibility"
+    Set-ItemProperty -Path "$reg_acess\ToggleKeys" -Name "Flags" -Value '58' -Type 'DWORD'
+    New-Item -Path "$reg_acess\Keyboard Response" -Force | Out-Null
+    Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122' -Type 'DWORD'
 
     # explorer restart
     Stop-Process -ProcessName explorer -ea 0 | Out-Null
