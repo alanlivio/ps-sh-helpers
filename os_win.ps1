@@ -23,7 +23,7 @@ function win_update() {
 }
 
 function winget_install() {
-    winget list -q $Args  | Out-Null
+    winget list -q $Args | Out-Null
     if (-not $?) {
         winget install --accept-package-agreements --accept-source-agreements --silent "$Args"
     }
@@ -273,20 +273,23 @@ function win_disable_sounds() {
 }
 
 function win_disable_web_search_and_widgets() {
+    # win 10
+    # https://www.bennetrichter.de/en/tutorials/windows-10-disable-web-search/
     log_msg "win_disable_web_search_and_widgets"
     $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
-    Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0'
+    Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0'  -Type 'DWORD'
     $reg_search2 = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings'
     Set-ItemProperty -Path "$reg_search2" -Name 'IsDynamicSearchBoxEnabled' -Value '0' -Type 'DWORD'
 
+    # win 11
+    # https://www.tomshardware.com/how-to/disable-windows-web-search
     sudo {
         $reg_explorer_pols = "HKCU:\Software\Policies\Microsoft\Windows\Explorer"
         New-Item -Path $reg_explorer_pols -Force | Out-Null
-        Set-ItemProperty -Path $reg_explorer_pols -Name 'DisableSearchBoxSuggestions' -Value '1'
+        Set-ItemProperty -Path $reg_explorer_pols -Name 'DisableSearchBoxSuggestions' -Value '1' -Type 'DWORD'
     }
-    if ((winget list) -match "MicrosoftWindows.Client.WebExperience_cw5n1h2txyew") {
-        winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy
-    }
+    winget list -q "MicrosoftWindows.Client.WebExperience_cw5n1h2txyew" | Out-Null
+    if ($?) { winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy }
 }
 
 function win_disable_edge_ctrl_shift_c() {
