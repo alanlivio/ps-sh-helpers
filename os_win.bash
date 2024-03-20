@@ -20,7 +20,7 @@ function _ps_call() {
 }
 
 function _ps_def_func() {
-    eval "function $1() { _ps_call $*; }"
+    eval 'function '$1'() { _ps_call $*; }'
 }
 
 _regex_no_underscore_func='function\s([^_][^{]+)\('
