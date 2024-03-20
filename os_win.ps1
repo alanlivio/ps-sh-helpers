@@ -260,7 +260,7 @@ function win_disable_shortcuts_unused() {
     sudo {
         $reg_acess = "HKCU:\Control Panel\Accessibility"
         Set-ItemProperty -Path "$reg_acess\ToggleKeys" -Name "Flags" -Value '58' -Type 'DWORD'
-        New-Item -Path  "$reg_acess\Keyboard Response" -Force | Out-Null
+        New-Item -Path "$reg_acess\Keyboard Response" -Force | Out-Null
         Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122' -Type 'DWORD'
     }
 
@@ -326,7 +326,7 @@ function win_disable_taskbar_clutter() {
     log_msg "win_disable_taskbar_clutter"
     $reg_explorer_adv = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     
-    # setup taskbar startmenu
+    # taskbar
     # https://www.askvg.com/disable-or-remove-extra-icons-and-buttons-from-windows-11-taskbar
     Set-ItemProperty -Path $reg_explorer_adv -Name ShowTaskViewButton -Value '0' -Type 'DWORD'
     Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarDa -Value '0' -Type 'DWORD'
@@ -335,13 +335,20 @@ function win_disable_taskbar_clutter() {
     Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarBadges -Value '0' -Type 'DWORD'
     Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAnimations -Value '0' -Type 'DWORD'
 
-    # setup clean multitasking
+    # multitasking
     # https://www.itechtics.com/disable-edge-tabs-alt-tab
     Set-ItemProperty -Path $reg_explorer_adv -Name MultiTaskingAltTabFilter -Value '3' -Type 'DWORD'
     # https://superuser.com/questions/1516878/how-to-disable-windows-snap-assist-via-command-line
     Set-ItemProperty -Path $reg_explorer_adv -Name SnapAssist -Value '0' -Type 'DWORD'
     
-    # setup search
+    # copilot
+    sudo {
+        $reg_explorer_pols = "HKCU:\Software\Policies\Microsoft\Windows"
+        New-Item -Path "$reg_explorer_pols\WindowsCopilot" -Force | Out-Null
+        Set-ItemProperty -Path "$reg_explorer_pols\WindowsCopilot" -Name 'TurnOffWindowsCopilot' -Value '1' -Type 'DWORD'
+    }
+
+    # search
     $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
     Set-ItemProperty -Path $reg_search -Name SearchBoxTaskbarMode -Value '0' -Type 'DWORD'
 }
