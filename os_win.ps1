@@ -243,7 +243,6 @@ function win_disable_password_policy() {
     }
 }
 
-
 function win_disable_shortcuts_unused() {
     log_msg "win_disable_shortcuts_unused"
 
@@ -268,14 +267,9 @@ function win_disable_shortcuts_unused() {
 
 function win_disable_sounds() {
     log_msg "win_disable_sounds"
+    # https://stackoverflow.com/questions/66824212/change-default-windows-sound-with-powershell
     Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\" "(Default)" -Value ".None"
-    $status = (Get-Service -name beep).Status
-    if ( $status -eq "Running" ) {
-        sudo {
-            Stop-Service beep
-            Set-Service beep -StartupType disabled
-        }
-    }
+    Get-ChildItem -Path 'HKCU:\AppEvents\Schemes\Apps' | Get-ChildItem | Get-ChildItem | Where-Object { $_.PSChildName -eq '.Current' } | Set-ItemProperty -Name '(Default)' -Value '' 
 }
 
 function win_disable_web_search_and_widgets() {
