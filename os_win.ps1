@@ -219,12 +219,9 @@ function win_disable_osapps_unused() {
     # old appx not avaliable in winget, most for win10
     $pkgs = @(
         'Clipchamp.Clipchamp'
-        'Microsoft.3DBuilder'
         'Microsoft.BingNews'
         'Microsoft.BingSports'
         'Microsoft.BingWeather'
-        'Microsoft.CommsPhone'
-        'Microsoft.ConnectivityStore'
         'Microsoft.Getstarted'
         'Microsoft.Microsoft3DViewer'
         'Microsoft.MicrosoftSolitaireCollection'
@@ -234,8 +231,10 @@ function win_disable_osapps_unused() {
         'Microsoft.Wallet'
         'microsoft.windowscommunicationsapps'
         'Microsoft.WindowsMaps'
+        'Microsoft.YourPhone'
         'Microsoft.ZuneMusic'
         'Microsoft.ZuneVideo'
+        'SpotifyAB.SpotifyMusic'
     )
     win_appx_uninstall @pkgs
     
@@ -244,7 +243,6 @@ function win_disable_osapps_unused() {
     winget_uninstall Microsoft.ZuneVideo_8wekyb3d8bbwe
     winget_uninstall Microsoft.MSPaint_8wekyb3d8bbwe
     winget_uninstall Microsoft.Skype
-    winget_uninstall Spotify.Spotify
     winget_uninstall Microsoft.PowerAutomateDesktop
 }
 
