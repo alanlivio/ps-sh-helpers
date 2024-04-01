@@ -3,11 +3,15 @@
 # -- essentials --
 
 function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
+function log_error() { Write-Host -ForegroundColor DarkRed "--" ($args -join " ") }
+function has_sudo() { if (Get-Command sudo -errorAction SilentlyContinue) { return $true } else { return $false } }
 
 function win_update() {
-    log_msg "winget upgrade all"
+    log_msg "win_update"
+    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
+    log_msg "-- winget upgrade"
     winget upgrade --accept-package-agreements --accept-source-agreements --silent --all
-    log_msg "win os upgrade"
+    log_msg "-- os upgrade"
     sudo {
         if (-Not(Get-Command Install-WindowsUpdate -errorAction SilentlyContinue)) {
             Set-PSRepository PSGallery -InstallationPolicy Trusted
@@ -48,7 +52,7 @@ function ps_show_function($name) {
 }
 
 function win_hlink_create($path, $target) {
-    sudo New-Item -ItemType SymbolicLink -Force -Path $path -Target $target
+    New-Item -ItemType Hardlink -Force -Path $path -Target $target
 }
 
 
@@ -78,6 +82,7 @@ function win_path_refresh() {
 # -- env  --
 
 function win_env_add($name, $value) {
+    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
     sudo {
         [Environment]::SetEnvironmentVariable($name, $value, 'Machine')
     }
@@ -139,10 +144,12 @@ function wsl_terminate() {
 # -- system --
 
 function win_image_cleanup() {
+    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
     sudo { dism /Online /Cleanup-Image /RestoreHealth }
 }
 
 function win_policy_reset() {
+    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
     sudo {
         cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicyUsers '
         cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
@@ -189,6 +196,7 @@ function win_appx_install() {
 }
 
 function win_appx_uninstall() {
+    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
     foreach ($name in $args) {
         if (Get-AppxPackage -User $env:username -Name $name) {
             log_msg "uninstall $name"
@@ -234,6 +242,8 @@ function win_disable_osapps_unused() {
 }
 
 function win_disable_password_policy() {
+    log_msg "win_disable_password_policy"
+    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
     sudo {
         $tmpfile = New-TemporaryFile
         secedit /export /cfg $tmpfile /quiet
@@ -245,7 +255,8 @@ function win_disable_password_policy() {
 
 function win_disable_shortcuts_unused() {
     log_msg "win_disable_shortcuts_unused"
-
+    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
+    
     # "disable AutoRotation shorcuts"
     Set-ItemProperty -Path "HKCU:\Software\Intel\Display\Igfxcui" -Name "HotKeys" -Value 'Enable'
 
@@ -267,7 +278,6 @@ function win_disable_shortcuts_unused() {
 
 function win_disable_sounds() {
     log_msg "win_disable_sounds"
-    # https://stackoverflow.com/questions/66824212/change-default-windows-sound-with-powershell
     Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\" "(Default)" -Value ".None"
     Get-ChildItem -Path 'HKCU:\AppEvents\Schemes\Apps' | Get-ChildItem | Get-ChildItem | Where-Object { $_.PSChildName -eq '.Current' } | Set-ItemProperty -Name '(Default)' -Value '' 
 }
@@ -276,6 +286,7 @@ function win_disable_web_search_and_widgets() {
     # win 10
     # https://www.bennetrichter.de/en/tutorials/windows-10-disable-web-search/
     log_msg "win_disable_web_search_and_widgets"
+    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
     $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
     Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0' -Type 'DWORD'
     $reg_search2 = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings'
@@ -294,6 +305,7 @@ function win_disable_web_search_and_widgets() {
 
 function win_disable_edge_ctrl_shift_c() {
     log_msg "win_disable_edge_ctrl_shift_c"
+    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
     sudo {
         $reg_edge_pol = "HKCU:\Software\Policies\Microsoft\Edge"
         if (-not (Get-ItemPropertyValue -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts')) {
@@ -385,11 +397,13 @@ function win_enable_osapps_essentials() {
 }
 
 function win_enable_hyperv() {
+    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
     sudo { dism /online /enable-feature /featurename:Microsoft-Hyper-V -All /LimitAccess /ALL }
 }
 
 
 function win_ssh_agent_and_add_id_rsa() {
+    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
     sudo {
         Set-Service ssh-agent -StartupType Automatic
         Start-Service ssh-agent
