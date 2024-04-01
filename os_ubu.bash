@@ -69,6 +69,11 @@ function ubu_install_latex() {
     sudo apt install latexmk texlive-latex-extra texlive-fonts-extra
 }
 
+function ubu_install_node_npm(){
+    type -p node >/dev/null || sudo snap install --classic node
+    type -p npm >/dev/null || sudo npm install -g npm
+}
+
 function ubu_install_gh() {
     # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
     type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
