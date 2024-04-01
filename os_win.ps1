@@ -33,6 +33,13 @@ function winget_install() {
     }
 }
 
+function winget_uninstall() {
+    winget list -q $Args | Out-Null
+    if ($?) {
+        winget uninstall --silent "$Args"
+    }
+}
+
 function ps_profile_reload() {
     @(
         $profile.AllUsersAllHosts,
@@ -208,11 +215,11 @@ function win_appx_uninstall() {
 
 function win_disable_osapps_unused() {
     log_msg "win_disable_osapps_unused"
-    # microsoft
+    
+    # old appx not avaliable in winget, most for win10
     $pkgs = @(
         'Clipchamp.Clipchamp'
         'Microsoft.3DBuilder'
-        'Microsoft.Appconnector'
         'Microsoft.BingNews'
         'Microsoft.BingSports'
         'Microsoft.BingWeather'
@@ -223,25 +230,22 @@ function win_disable_osapps_unused() {
         'Microsoft.MicrosoftSolitaireCollection'
         'Microsoft.MicrosoftStickyNotes'
         'Microsoft.MixedReality.Portal'
-        'Microsoft.MSPaint'
-        'Microsoft.OneConnect'
-        'Microsoft.Paint'
         'Microsoft.People'
-        'Microsoft.PowerAutomateDesktop'
-        'Microsoft.Print3D'
-        'Microsoft.SkypeApp'
-        'Microsoft.StorePurchaseApp'
         'Microsoft.Wallet'
-        'Microsoft.Windows.DevHome'
         'microsoft.windowscommunicationsapps'
         'Microsoft.WindowsMaps'
-        'Microsoft.YourPhone'
         'Microsoft.ZuneMusic'
         'Microsoft.ZuneVideo'
-        'NVIDIACorp.NVIDIAControlPanel'
-        'SpotifyAB.SpotifyMusic'
     )
     win_appx_uninstall @pkgs
+    
+    # avaliable in winget
+    winget_uninstall Microsoft.BingWallpaper
+    winget_uninstall Microsoft.ZuneVideo_8wekyb3d8bbwe
+    winget_uninstall Microsoft.MSPaint_8wekyb3d8bbwe
+    winget_uninstall Microsoft.Skype
+    winget_uninstall Spotify.Spotify
+    winget_uninstall Microsoft.PowerAutomateDesktop
 }
 
 function win_disable_password_policy() {
@@ -374,15 +378,12 @@ function win_disable_gaming_clutter() {
     $reg_game_store = "HKCU:\System\GameConfigStore"
     Set-ItemProperty -Path $reg_game_store -Name GameDVR_Enabled -Value '0' -Type 'DWORD'
 
-    $pkgs = @(
-        'Microsoft.Xbox.TCUI'
-        'Microsoft.XboxApp'
-        'Microsoft.XboxGameOverlay'
-        'Microsoft.XboxGamingOverlay'
-        'Microsoft.XboxIdentityProvider'
-        'Microsoft.XboxSpeechToTextOverlay'
-    )
-    win_appx_uninstall @pkgs
+    winget_uninstall Microsoft.Xbox.TCUI_8wekyb3d8bbwe
+    winget_uninstall Microsoft.XboxApp_8wekyb3d8bbwe
+    winget_uninstall Microsoft.XboxGameOverlay_8wekyb3d8bbwe
+    winget_uninstall Microsoft.XboxGamingOverlay_8wekyb3d8bbwe
+    winget_uninstall Microsoft.XboxIdentityProvider_8wekyb3d8bbwe
+    winget_uninstall Microsoft.XboxSpeechToTextOverlay_8wekyb3d8bbwe
 }
 
 # -- system enable --
