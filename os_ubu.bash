@@ -65,6 +65,10 @@ function ubu_enable_git_ppa() {
     fi
 }
 
+function ubu_install_latex() {
+    sudo apt install latexmk texlive-latex-extra texlive-fonts-extra
+}
+
 function ubu_install_gh() {
     # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
     type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
