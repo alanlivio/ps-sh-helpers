@@ -196,7 +196,6 @@ function win_appx_install() {
 }
 
 function win_appx_uninstall() {
-    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
     foreach ($name in $args) {
         if (Get-AppxPackage -User $env:username -Name $name) {
             log_msg "uninstall $name"
@@ -219,10 +218,12 @@ function win_disable_osapps_unused() {
         'Microsoft.BingWeather'
         'Microsoft.CommsPhone'
         'Microsoft.ConnectivityStore'
+        'Microsoft.Getstarted'
         'Microsoft.Microsoft3DViewer'
         'Microsoft.MicrosoftSolitaireCollection'
         'Microsoft.MicrosoftStickyNotes'
         'Microsoft.MixedReality.Portal'
+        'Microsoft.MSPaint'
         'Microsoft.OneConnect'
         'Microsoft.Paint'
         'Microsoft.People'
@@ -231,12 +232,14 @@ function win_disable_osapps_unused() {
         'Microsoft.SkypeApp'
         'Microsoft.StorePurchaseApp'
         'Microsoft.Wallet'
+        'Microsoft.Windows.DevHome'
+        'microsoft.windowscommunicationsapps'
         'Microsoft.WindowsMaps'
         'Microsoft.YourPhone'
         'Microsoft.ZuneMusic'
-        'SpotifyAB.SpotifyMusic'
+        'Microsoft.ZuneVideo'
         'NVIDIACorp.NVIDIAControlPanel'
-        'Microsoft.Windows.DevHome'
+        'SpotifyAB.SpotifyMusic'
     )
     win_appx_uninstall @pkgs
 }
