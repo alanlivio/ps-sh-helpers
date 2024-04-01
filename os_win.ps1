@@ -262,7 +262,6 @@ function win_disable_password_policy() {
 
 function win_disable_shortcuts_unused() {
     log_msg "win_disable_shortcuts_unused"
-    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
     
     # "disable AutoRotation shorcuts"
     Set-ItemProperty -Path "HKCU:\Software\Intel\Display\Igfxcui" -Name "HotKeys" -Value 'Enable'
