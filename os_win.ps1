@@ -26,6 +26,13 @@ function win_update() {
     }
 }
 
+function win_install_ubuntu() {
+    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
+    wsl --set-default-version 2
+    sudo wsl --update
+    sudo wsl --install -d Ubuntu
+}
+
 function winget_install() {
     winget list -q $Args | Out-Null
     if (-not $?) {
@@ -190,7 +197,7 @@ function win_appx_list_installed() {
 function win_appx_install() {
     $pkgs_to_install = ""
     foreach ($name in $args) {
-        if ( !(Get-AppxPackage -User $env:username -Name $name)) {
+        if (-Not (Get-AppxPackage -User $env:username -Name $name)) {
             $pkgs_to_install = "$pkgs_to_install $name"
         }
     }
