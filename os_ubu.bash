@@ -25,8 +25,8 @@ function apt_fixes() {
     sudo dpkg --configure -a
     sudo apt install -f --fix-broken
     sudo apt-get update --fix-missing
-    sudo apt dist-upgrade
-    sudo apt autoremove -y
+    sudo apt -y dist-upgrade
+    sudo apt -y autoremove
 }
 
 function deb_install_file_from_url() {
