@@ -9,14 +9,15 @@ function has_sudo() { if (Get-Command sudo -errorAction SilentlyContinue) { retu
 function win_update() {
     log_msg "win_update"
     if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
-    log_msg "-- winget upgrade"
+    log_msg "> winget upgrade"
     winget upgrade --accept-package-agreements --accept-source-agreements --silent --all
-    log_msg "-- os upgrade"
+    log_msg "> os upgrade"
+    if (-Not (has_sudo)) { log_error "no sudo. skipping windows update. you can do manually"; return }
     sudo {
         if (-Not(Get-Command Install-WindowsUpdate -errorAction SilentlyContinue)) {
-            Set-PSRepository PSGallery -InstallationPolicy Trusted
-            Install-Module -Name PSWindowsUpdate -Confirm:$false
-            Add-WUServiceManager -MicrosoftUpdate -Confirm:$false | Out-Null
+            Install-PackageProvider -Name NuGet -Scope CurrentUser -Force
+            Install-Module -Name PSWindowsUpdate -Scope CurrentUser -Force
+            # Add-WUServiceManager -MicrosoftUpdate -Confirm:$false | Out-Null
         }
         $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object {
             if ($_ -is [string]) {
