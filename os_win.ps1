@@ -34,9 +34,16 @@ function win_install_ubuntu() {
 }
 
 function winget_install() {
-    winget list -q $Args | Out-Null
+    winget list -q $Args[0] | Out-Null
     if (-not $?) {
-        winget install --accept-package-agreements --accept-source-agreements --silent "$Args"
+        winget install $Args[0] --accept-package-agreements --accept-source-agreements --scope "user"
+    }
+}
+
+function winget_install_at_location() {
+    winget list -q $Args[0] | Out-Null
+    if (-not $?) {
+        winget install $Args[0] --accept-package-agreements --accept-source-agreements --scope "user" --location="$Args[1]"
     }
 }
 
