@@ -103,6 +103,10 @@ function win_path_refresh() {
 # -- env  --
 
 function win_env_add($name, $value) {
+    [Environment]::SetEnvironmentVariable($name, $value, 'User')
+}
+
+function win_env_add_machine($name, $value) {
     if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
     sudo {
         [Environment]::SetEnvironmentVariable($name, $value, 'Machine')
