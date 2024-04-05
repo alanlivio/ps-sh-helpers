@@ -17,7 +17,7 @@ if [[ $OSTYPE == linux* ]]; then
 fi
 
 if [[ $OSTYPE == darwin* ]]; then
-    "$BH_DIR/os_mac.bash"
+    source "$BH_DIR/os_mac.bash"
 fi
 
 # load <program>.bash files
