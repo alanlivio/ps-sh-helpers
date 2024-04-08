@@ -1,10 +1,23 @@
-# sudo calls on here require https://learn.microsoft.com/en-us/windows/sudo/ or https://github.com/gerardog/gsudo
-
 # -- essentials --
+
 
 function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 function log_error() { Write-Host -ForegroundColor DarkRed "--" ($args -join " ") }
 function has_sudo() { if (Get-Command sudo -errorAction SilentlyContinue) { return $true } else { return $false } }
+
+function win_enable_sudo() {
+    if (-Not(Get-Command sudo -errorAction SilentlyContinue)) {
+        # win 11 support native sudo https://learn.microsoft.com/en-us/windows/sudo/
+        if ((Get-ComputerInfo | Select-Object -expand OsName) -match 11) {
+            sudo config --enable
+        }
+        # win 10 support from https://github.com/gerardog/gsudo
+        else {
+            winget install gsudo
+        }
+        win_path_refresh
+    }
+}
 
 function win_update() {
     log_msg "win_update"

@@ -90,7 +90,7 @@ Win helpers are defined in [os_win.bash](os_win.bash) and [os_win.ps1](os_win.ps
 * `win_disable_explorer_clutter`: disable explorer shows recent, frequent, and recommendations and hides extensions.
 * `win_disable_taskbar_clutter`: disable taskbar shows task search, view, copilot buttons, and animation.
 * `win_enable_osapps_essentials`: install WindowsStore, WindowsCalculator, WindowsPhotos, WindowsFeedbackHub, and WindowsCamera.
-* `win_enable_osapps_essentials`: enable hyper-v virtualization.
+* `win_enable_sudo`: enable sudo elevation (using sudo config at win11 and gsudo at win10).
 * `win_enable_hyperv`: enable hyper-v virtualization.
 * `win_env_add`: add variable to env variables.
 * `win_env_show`: show env variables.
