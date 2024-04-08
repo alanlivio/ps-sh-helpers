@@ -212,7 +212,7 @@ function win_enable_insider_beta() {
 }
 
 function win_enable_dark_no_transparency() {
-    $reg_personalize = "HKCU:Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+    $reg_personalize = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
     Set-ItemProperty -Path $reg_personalize -Name "SystemUsesLightTheme" -Value  '0' -Type 'DWORD'
     Set-ItemProperty -Path $reg_personalize -Name "EnableTransparency" -Value  '0' -Type 'DWORD'
     Set-ItemProperty -Path $reg_personalize -Name "SystemUsesLightTheme" -Value  '0' -Type 'DWORD'
@@ -331,9 +331,9 @@ function win_disable_web_search_and_widgets() {
         # https://www.tomshardware.com/how-to/disable-windows-web-search
         if (-Not (has_sudo)) { log_error "no sudo. skipping DisableSearchBoxSuggestions at win 11 ."; return }
         sudo {
-            $reg_explorer_pols = "HKCU:\Software\Policies\Microsoft\Windows\Explorer"
-            New-Item -Path $reg_explorer_pols -Force | Out-Null
-            Set-ItemProperty -Path $reg_explorer_pols -Name 'DisableSearchBoxSuggestions' -Value '1' -Type 'DWORD'
+            $reg_explorer_pol = "HKCU:\Software\Policies\Microsoft\Windows\Explorer"
+            New-Item -Path $reg_explorer_pol -Force | Out-Null
+            Set-ItemProperty -Path $reg_explorer_pol -Name 'DisableSearchBoxSuggestions' -Value '1' -Type 'DWORD'
         }
     }
     else {
@@ -397,10 +397,11 @@ function win_disable_taskbar_clutter() {
 }
 
 function win_disable_copilot() {
+    # https://winaero.com/disable-windows-copilot/
     sudo {
-        $reg_explorer_pols = "HKCU:\Software\Policies\Microsoft\Windows"
-        New-Item -Path "$reg_explorer_pols\WindowsCopilot" -Force | Out-Null
-        Set-ItemProperty -Path "$reg_explorer_pols\WindowsCopilot" -Name 'TurnOffWindowsCopilot' -Value '1' -Type 'DWORD'
+        $reg_explorer_pol = "HKCU:\Software\Policies\Microsoft\Windows"
+        New-Item -Path "$reg_explorer_pol\WindowsCopilot" -Force | Out-Null
+        Set-ItemProperty -Path "$reg_explorer_pol\WindowsCopilot" -Name 'TurnOffWindowsCopilot' -Value '1' -Type 'DWORD'
     }
 }
 
