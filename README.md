@@ -81,25 +81,28 @@ Win helpers are defined in [os_win.bash](os_win.bash) and [os_win.ps1](os_win.ps
 
 * `start_from_wsl`: (from wsl): call cmd `start` from current wsl path.
 * `wsl_install_cuda_cudnn`: (from wsl): install cuda and cudadnn.
+* `win_install_ubuntu`: install WSL 2 and Ubuntu.
 * `win_disable_osapps_unused`: remove unused apps.
-* `win_disable_password_policy`: disable password policy requirement.
+* `win_disable_password_policy`: disable password policy requirement (require sudo).
 * `win_disable_shortcuts_unused`disable accessibility, rotation, lang hotkeys.
 * `win_disable_sounds`: disable systems sound (e.g., bells).
-* `win_disable_web_search_and_widgets`: disable Windows Web search and Widgets.
-* `win_disable_edge_ctrl_shift_c`: disable Edge shorcut ctrl+shift+c to developer.
+* `win_disable_web_search_and_widgets`: disable Windows Web search and Widgets (require sudo on win11).
+* `win_disable_edge_ctrl_shift_c`: disable Edge shorcut ctrl+shift+c to developer (require sudo).
 * `win_disable_explorer_clutter`: disable explorer shows recent, frequent, and recommendations and hides extensions.
 * `win_disable_taskbar_clutter`: disable taskbar shows task search, view, copilot buttons, and animation.
 * `win_enable_osapps_essentials`: install WindowsStore, WindowsCalculator, WindowsPhotos, WindowsFeedbackHub, and WindowsCamera.
 * `win_enable_sudo`: enable sudo elevation (using sudo config at win11 and gsudo at win10).
-* `win_enable_hyperv`: enable hyper-v virtualization.
-* `win_env_add`: add variable to env variables.
+* `win_enable_hyperv`: enable hyper-v virtualization (require sudo).
+* `win_env_add`: add variable to user env variables.
+* `win_env_add_machine`: add variable to system env variables (require sudo).
 * `win_env_show`: show env variables.
 * `win_explorer_hide_home_dotfiles`: set as hidden files starting with "." at home folder
-* `win_path_add`: add dir to the path.
+* `win_path_add`: add dir to the path at user scope.
 * `win_path_show`: show windows path as list.
-* `win_policy_reset`: reset group policy.
-* `win_ssh_agent_and_add_id_rsa`: set ssh-agent to automatically startup and add $HOME/.ssh/id_rsa as Identity.
-* `win_update`: update os and winget packages.
+* `win_image_cleanup`: win image cleanup (require sudo).
+* `win_policy_reset`: reset group policy (require sudo).
+* `win_ssh_agent_and_add_id_rsa`: set ssh-agent to automatically startup using $HOME/.ssh/id_rsa as Identity (require sudo).
+* `win_update`: update winget packages and, if has sudo, install os update.
 * `winpath`: get current path in Windows format. It uses `cygpath -m` in GitBash/MSYS2, while uses `wslpath -m` in WSL.
 
 ## program-dependent
