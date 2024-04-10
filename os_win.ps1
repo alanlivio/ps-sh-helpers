@@ -54,14 +54,14 @@ function win_install_ubuntu() {
 function winget_install() {
     winget list -q $Args[0] | Out-Null
     if (-not $?) {
-        winget install $Args[0] --accept-package-agreements --accept-source-agreements --scope "user"
+        winget install --accept-package-agreements --accept-source-agreements --scope user $Args[0] 
     }
 }
 
 function winget_install_at_location() {
     winget list -q $Args[0] | Out-Null
     if (-not $?) {
-        winget install $Args[0] --accept-package-agreements --accept-source-agreements --scope "user" --location="$Args[1]"
+        winget install --accept-package-agreements --accept-source-agreements --scope user --location="$Args[1]"  $Args[0] 
     }
 }
 
