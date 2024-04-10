@@ -33,7 +33,7 @@ alias bh_dotfiles_install="_dotfiles_func install"
 alias bh_dotfiles_backup="_dotfiles_func backup"
 alias bh_dotfiles_diff="_dotfiles_func diff"
 
-alias password_generate="var=$(tr -dc 'A-Za-z0-9!?%=' < /dev/urandom | head -c 10); echo $var"
+alias password_generate='echo $(tr -dc "A-Za-z0-9!?%=" < /dev/urandom | head -c 10)'
 
 # -- clean --
 
