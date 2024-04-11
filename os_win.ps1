@@ -51,17 +51,22 @@ function win_install_ubuntu() {
     sudo wsl --install -d Ubuntu
 }
 
+
 function winget_install() {
+    winget install --accept-package-agreements --accept-source-agreements --scope user $Args
+}
+
+function winget_install_one() {
     winget list -q $Args[0] | Out-Null
     if (-not $?) {
-        winget install --accept-package-agreements --accept-source-agreements --scope user $Args[0] 
+        winget_install $Args[0] 
     }
 }
 
-function winget_install_at_location() {
+function winget_install_one_at_location() {
     winget list -q $Args[0] | Out-Null
     if (-not $?) {
-        winget install --accept-package-agreements --accept-source-agreements --scope user --location="$Args[1]"  $Args[0] 
+        winget_install --location="$Args[1]" $Args[0] 
     }
 }
 
