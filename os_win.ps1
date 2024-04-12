@@ -250,17 +250,17 @@ function win_appx_uninstall() {
 function win_enable_dark_no_transparency() {
     log_msg "win_enable_dark_no_transparency"
     $reg_personalize = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
-    Set-ItemProperty -Path $reg_personalize -Name "AppsUseLightTheme" -Value '0' -Type 'DWORD' -Force 
-    Set-ItemProperty -Path $reg_personalize -Name "SystemUsesLightTheme" -Value '0' -Type 'DWORD' -Force 
-    Set-ItemProperty -Path $reg_personalize -Name "EnableTransparency" -Value '0' -Type 'DWORD' -Force 
-    Set-ItemProperty -Path $reg_personalize -Name "ColorPrevalence" -Value '0' -Type 'DWORD' -Force 
+    Set-ItemProperty -Path $reg_personalize -Name "AppsUseLightTheme" -Value '0' -Type Dword -Force 
+    Set-ItemProperty -Path $reg_personalize -Name "SystemUsesLightTheme" -Value '0' -Type Dword -Force 
+    Set-ItemProperty -Path $reg_personalize -Name "EnableTransparency" -Value '0' -Type Dword -Force 
+    Set-ItemProperty -Path $reg_personalize -Name "ColorPrevalence" -Value '0' -Type Dword -Force 
     $reg_accent = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent"
     $AccentPalette = "cc,cc,cc,00,ae,ae,ae,00,92,92,92,00,76,76,76,00,4f,4f,4f,00,37,37,37,00,26,26,26,00,d1,34,38,00"
     $hexified = $AccentPalette.Split(',') | ForEach-Object { "0x$_" }
     Set-ItemProperty -Path $reg_accent -Name "AccentPalette" -Value ([byte[]]$hexified) -Type Binary
-    Set-ItemProperty -Path $reg_accent -Name "AccentColor" -Value 0xff000000 -Type 'DWORD' -Force
-    Set-ItemProperty -Path $reg_accent -Name "AccentColorMenu" -Value 0xff767676 -Type 'DWORD' -Force
-    Set-ItemProperty -Path $reg_accent -Name "StartColorMenu" -Value 0xff4f4f4f -Type 'DWORD' -Force
+    Set-ItemProperty -Path $reg_accent -Name "AccentColor" -Value 0xff000000 -Type Dword -Force
+    Set-ItemProperty -Path $reg_accent -Name "AccentColorMenu" -Value 0xff767676 -Type Dword -Force
+    Set-ItemProperty -Path $reg_accent -Name "StartColorMenu" -Value 0xff4f4f4f -Type Dword -Force
 }
 
 function win_disable_osapps_unused() {
@@ -316,15 +316,15 @@ function win_disable_shortcuts_unused() {
 
     # "disable language shorcuts"
     $reg_key_toggle = "HKCU:\Keyboard Layout\Toggle"
-    Set-ItemProperty -Path $reg_key_toggle -Name "HotKey" -Value '3' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_key_toggle -Name "Language Hotkey" -Value '3' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_key_toggle -Name "Layout Hotkey" -Value '3' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_key_toggle -Name "HotKey" -Value '3' -Type Dword
+    Set-ItemProperty -Path $reg_key_toggle -Name "Language Hotkey" -Value '3' -Type Dword
+    Set-ItemProperty -Path $reg_key_toggle -Name "Layout Hotkey" -Value '3' -Type Dword
 
     # "disable acessibility shorcuts"
     $reg_acess = "HKCU:\Control Panel\Accessibility"
-    Set-ItemProperty -Path "$reg_acess\ToggleKeys" -Name "Flags" -Value '58' -Type 'DWORD'
+    Set-ItemProperty -Path "$reg_acess\ToggleKeys" -Name "Flags" -Value '58' -Type Dword
     New-Item -Path "$reg_acess\Keyboard Response" -Force | Out-Null
-    Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122' -Type 'DWORD'
+    Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122' -Type Dword
 
     # explorer restart
     Stop-Process -ProcessName explorer -ea 0 | Out-Null
@@ -347,16 +347,16 @@ function win_disable_web_search_and_widgets() {
         sudo {
             $reg_explorer_pol = "HKCU:\Software\Policies\Microsoft\Windows\Explorer"
             New-Item -Path $reg_explorer_pol -Force | Out-Null
-            Set-ItemProperty -Path $reg_explorer_pol -Name 'DisableSearchBoxSuggestions' -Value '1' -Type 'DWORD'
+            Set-ItemProperty -Path $reg_explorer_pol -Name 'DisableSearchBoxSuggestions' -Value '1' -Type Dword
         }
     }
     else {
         # win 10
         # https://www.bennetrichter.de/en/tutorials/windows-10-disable-web-search/
         $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
-        Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0' -Type 'DWORD'
+        Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0' -Type Dword
         $reg_search2 = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings'
-        Set-ItemProperty -Path "$reg_search2" -Name 'IsDynamicSearchBoxEnabled' -Value '0' -Type 'DWORD'
+        Set-ItemProperty -Path "$reg_search2" -Name 'IsDynamicSearchBoxEnabled' -Value '0' -Type Dword
     }
 }
 
@@ -377,10 +377,10 @@ function win_disable_explorer_clutter() {
     log_msg "win_disable_explorer_clutter"
     $reg_explorer = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer"
     # setup folder listing
-    Set-ItemProperty -Path $reg_explorer -Name ShowFrequent -Value '0' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_explorer -Name ShowRecent -Value '0' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_explorer -Name ShowRecommendations -Value '0' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_explorer -Name HideFileExt -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_explorer -Name ShowFrequent -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg_explorer -Name ShowRecent -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg_explorer -Name ShowRecommendations -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg_explorer -Name HideFileExt -Value '0' -Type Dword
 }
 
 function win_disable_taskbar_clutter() {
@@ -389,25 +389,25 @@ function win_disable_taskbar_clutter() {
     
     # taskbar
     # https://www.askvg.com/disable-or-remove-extra-icons-and-buttons-from-windows-11-taskbar
-    Set-ItemProperty -Path $reg_explorer_adv -Name ShowTaskViewButton -Value '0' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarDa -Value '0' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarMn -Value '0' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_explorer_adv -Name ShowCopilotButton -Value '0' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_explorer_adv -Name UseCompactMode -Value '1' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_explorer_adv -Name ShowStatusBar -Value '1' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAI -Value '0' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarBadges -Value '0' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAnimations -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_explorer_adv -Name ShowTaskViewButton -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarDa -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarMn -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name ShowCopilotButton -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name UseCompactMode -Value '1' -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name ShowStatusBar -Value '1' -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAI -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarBadges -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAnimations -Value '0' -Type Dword
 
     # multitasking
     # https://www.itechtics.com/disable-edge-tabs-alt-tab
-    Set-ItemProperty -Path $reg_explorer_adv -Name MultiTaskingAltTabFilter -Value '3' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_explorer_adv -Name MultiTaskingAltTabFilter -Value '3' -Type Dword
     # https://superuser.com/questions/1516878/how-to-disable-windows-snap-assist-via-command-line
-    Set-ItemProperty -Path $reg_explorer_adv -Name SnapAssist -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_explorer_adv -Name SnapAssist -Value '0' -Type Dword
     
     # search
     $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
-    Set-ItemProperty -Path $reg_search -Name SearchBoxTaskbarMode -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_search -Name SearchBoxTaskbarMode -Value '0' -Type Dword
 }
 
 function win_disable_copilot() {
@@ -415,7 +415,7 @@ function win_disable_copilot() {
     sudo {
         $reg_explorer_pol = "HKCU:\Software\Policies\Microsoft\Windows"
         New-Item -Path "$reg_explorer_pol\WindowsCopilot" -Force | Out-Null
-        Set-ItemProperty -Path "$reg_explorer_pol\WindowsCopilot" -Name 'TurnOffWindowsCopilot' -Value '1' -Type 'DWORD'
+        Set-ItemProperty -Path "$reg_explorer_pol\WindowsCopilot" -Name 'TurnOffWindowsCopilot' -Value '1' -Type Dword
     }
 }
 
@@ -424,10 +424,10 @@ function win_disable_gaming_clutter() {
     # https://www.makeuseof.com/windows-new-app-ms-gamingoverlay-error/
 
     $reg_game_dvr = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR"
-    Set-ItemProperty -Path $reg_game_dvr -Name AppCaptureEnabled -Value '0' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_game_dvr -Name HistoricalCaptureEnabled -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_game_dvr -Name AppCaptureEnabled -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg_game_dvr -Name HistoricalCaptureEnabled -Value '0' -Type Dword
     $reg_game_store = "HKCU:\System\GameConfigStore"
-    Set-ItemProperty -Path $reg_game_store -Name GameDVR_Enabled -Value '0' -Type 'DWORD'
+    Set-ItemProperty -Path $reg_game_store -Name GameDVR_Enabled -Value '0' -Type Dword
 
     winget_uninstall Microsoft.Xbox.TCUI_8wekyb3d8bbwe
     winget_uninstall Microsoft.XboxApp_8wekyb3d8bbwe
