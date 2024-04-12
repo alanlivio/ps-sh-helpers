@@ -216,13 +216,6 @@ function win_enable_insider_beta() {
     Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\UI\Selection" -Name "UIRing" -Value 'External'
 }
 
-function win_enable_dark_no_transparency() {
-    $reg_personalize = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
-    Set-ItemProperty -Path $reg_personalize -Name "SystemUsesLightTheme" -Value  '0' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_personalize -Name "EnableTransparency" -Value  '0' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_personalize -Name "SystemUsesLightTheme" -Value  '0' -Type 'DWORD'
-    Set-ItemProperty -Path $reg_personalize -Name "ColorPrevalence" -Value  '0' -Type 'DWORD'
-}
 
 function win_appx_list_installed() {
     Get-AppxPackage -User $env:username | ForEach-Object { Write-Output $_.Name }
@@ -253,6 +246,22 @@ function win_appx_uninstall() {
 }
 
 # -- system disable --
+
+function win_enable_dark_no_transparency() {
+    log_msg "win_enable_dark_no_transparency"
+    $reg_personalize = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+    Set-ItemProperty -Path $reg_personalize -Name "AppsUseLightTheme" -Value '0' -Type 'DWORD' -Force 
+    Set-ItemProperty -Path $reg_personalize -Name "SystemUsesLightTheme" -Value '0' -Type 'DWORD' -Force 
+    Set-ItemProperty -Path $reg_personalize -Name "EnableTransparency" -Value '0' -Type 'DWORD' -Force 
+    Set-ItemProperty -Path $reg_personalize -Name "ColorPrevalence" -Value '0' -Type 'DWORD' -Force 
+    $reg_accent = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent"
+    $AccentPalette = "cc,cc,cc,00,ae,ae,ae,00,92,92,92,00,76,76,76,00,4f,4f,4f,00,37,37,37,00,26,26,26,00,d1,34,38,00"
+    $hexified = $AccentPalette.Split(',') | ForEach-Object { "0x$_" }
+    Set-ItemProperty -Path $reg_accent -Name "AccentPalette" -Value ([byte[]]$hexified) -Type Binary
+    Set-ItemProperty -Path $reg_accent -Name "AccentColor" -Value 0xff000000 -Type 'DWORD' -Force
+    Set-ItemProperty -Path $reg_accent -Name "AccentColorMenu" -Value 0xff767676 -Type 'DWORD' -Force
+    Set-ItemProperty -Path $reg_accent -Name "StartColorMenu" -Value 0xff4f4f4f -Type 'DWORD' -Force
+}
 
 function win_disable_osapps_unused() {
     log_msg "win_disable_osapps_unused"
