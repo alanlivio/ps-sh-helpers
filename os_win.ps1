@@ -311,7 +311,9 @@ function win_disable_shortcuts_unused() {
     log_msg "win_disable_shortcuts_unused"
     
     # "disable AutoRotation shorcuts"
-    Set-ItemProperty -Path "HKCU:\Software\Intel\Display\Igfxcui" -Name "HotKeys" -Value 'Enable'
+    $igf="HKCU:\Software\Intel\Display\Igfxcui"
+    New-Item -Path $igf -Force | Out-Null
+    Set-ItemProperty -Path $igf -Name "HotKeys" -Value 'Enable'
 
     # "disable language shorcuts"
     $reg_key_toggle = "HKCU:\Keyboard Layout\Toggle"
