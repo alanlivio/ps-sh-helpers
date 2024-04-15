@@ -52,10 +52,12 @@ function ubu_disable_snap_dir_at_home() {
     sudo snap set system experimental.hidden-snap-folder=true
 }
 
-function ubu_disable_esam_hook() {
-    sudo systemctl mask apt-news.service
-    sudo systemctl mask esm-cache.service
-    test /etc/apt/apt.conf.d/20apt-esm-hook.conf || sudo mv /etc/apt/apt.conf.d/20apt-esm-hook.conf /etc/apt/apt.conf.d/20apt-esm-hook.conf.disabled
+function ubu_fix_esam_hook() {
+    if ! test /etc/apt/apt.conf.d/20apt-esm-hook.conf; then
+        sudo systemctl mask apt-news.service
+        sudo systemctl mask esm-cache.service
+        sudo mv /etc/apt/apt.conf.d/20apt-esm-hook.conf /etc/apt/apt.conf.d/20apt-esm-hook.conf.disabled
+    fi
 }
 
 function ubu_enable_git_ppa() {
