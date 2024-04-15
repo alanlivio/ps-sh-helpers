@@ -258,6 +258,10 @@ function win_enable_dark_no_transparency() {
     Set-ItemProperty -Path $reg_accent -Name "StartColorMenu" -Value 0xff4f4f4f -Type Dword -Force
 }
 
+function win_disable_msstore() {
+    win_appx_uninstall Microsoft.WindowsStore
+}
+
 function win_disable_osapps_unused() {
     log_msg "win_disable_osapps_unused"
     
