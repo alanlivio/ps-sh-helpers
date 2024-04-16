@@ -258,9 +258,12 @@ function win_enable_dark_no_transparency() {
     Set-ItemProperty -Path $reg_accent -Name "StartColorMenu" -Value 0xff4f4f4f -Type Dword -Force
 }
 
-function win_disable_msstore() {
-    win_appx_uninstall Microsoft.WindowsStore
+function win_disable_desktop_icons() {
+    $Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    Set-ItemProperty -Path $Path -Name "HideIcons" -Value 1
+    Get-Process "explorer" | Stop-Process
 }
+
 
 function win_disable_osapps_unused() {
     log_msg "win_disable_osapps_unused"
@@ -297,7 +300,7 @@ function win_disable_osapps_unused() {
 
 function win_disable_password_policy() {
     log_msg "win_disable_password_policy"
-    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
+    if (-Not (has_sudo)) { log_error "no sudo. skipping disable password"; return }
     sudo {
         $tmpfile = New-TemporaryFile
         secedit /export /cfg $tmpfile /quiet # this call requires admin
@@ -311,7 +314,7 @@ function win_disable_shortcuts_unused() {
     log_msg "win_disable_shortcuts_unused"
     
     # "disable AutoRotation shorcuts"
-    $igf="HKCU:\Software\Intel\Display\Igfxcui"
+    $igf = "HKCU:\Software\Intel\Display\Igfxcui"
     New-Item -Path $igf -Force | Out-Null
     Set-ItemProperty -Path $igf -Name "HotKeys" -Value 'Enable'
 
@@ -328,7 +331,7 @@ function win_disable_shortcuts_unused() {
     Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122' -Type Dword
 
     # explorer restart
-    Stop-Process -ProcessName explorer -ea 0 | Out-Null
+    Get-Process "explorer" | Stop-Process
 }
 
 function win_disable_sounds() {
