@@ -9,7 +9,7 @@ function win_enable_sudo() {
     # win 11 supports native sudo https://learn.microsoft.com/en-us/windows/sudo/
     # win 10 supports from https://github.com/gerardog/gsudo
     if (-Not(Get-Command sudo -errorAction SilentlyContinue)) {
-        winget_install_one
+        winget_install gsudo
         win_path_refresh
     }
 }
@@ -47,21 +47,21 @@ function win_install_ubuntu() {
 }
 
 
-function winget_install() {
+function _winget_install() {
     winget install --accept-package-agreements --accept-source-agreements --scope user $Args
 }
 
-function winget_install_one() {
+function winget_install() {
     winget list -q $Args[0] | Out-Null
     if (-not $?) {
-        winget_install $Args[0] 
+        _winget_install $Args[0] 
     }
 }
 
-function winget_install_one_at_location() {
+function winget_install_at_location() {
     winget list -q $Args[0] | Out-Null
     if (-not $?) {
-        winget_install --location="$Args[1]" $Args[0] 
+        _winget_install --location="$Args[1]" $Args[0] 
     }
 }
 
