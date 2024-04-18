@@ -300,7 +300,7 @@ function win_disable_osapps_unused() {
 
 function win_disable_password_policy() {
     log_msg "win_disable_password_policy"
-    if (-Not (has_sudo)) { log_error "no sudo. skipping disable password"; return }
+    if (-Not (has_sudo)) { log_error "no sudo. skipping disable password."; return }
     sudo {
         $tmpfile = New-TemporaryFile
         secedit /export /cfg $tmpfile /quiet # this call requires admin
@@ -347,7 +347,7 @@ function win_disable_web_search_and_widgets() {
         winget list -q "MicrosoftWindows.Client.WebExperience_cw5n1h2txyew" | Out-Null
         if ($?) { winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy }
         # https://www.tomshardware.com/how-to/disable-windows-web-search
-        if (-Not (has_sudo)) { log_error "no sudo. skipping DisableSearchBoxSuggestions at win 11 ."; return }
+        if (-Not (has_sudo)) { log_error "no sudo. skipping DisableSearchBoxSuggestions at win 11."; return }
         sudo {
             $reg_explorer_pol = "HKCU:\Software\Policies\Microsoft\Windows\Explorer"
             New-Item -Path $reg_explorer_pol -Force | Out-Null
