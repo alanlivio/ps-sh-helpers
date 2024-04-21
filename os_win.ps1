@@ -91,7 +91,9 @@ function ps_show_function($name) {
 }
 
 function win_hlink_create($path, $target) {
-    New-Item -ItemType Hardlink -Force -Path $path -Target $target
+    if (-not (Test-Path $path)) {
+        New-Item -ItemType Hardlink -Force -Path $path -Target $target
+    }
 }
 
 
