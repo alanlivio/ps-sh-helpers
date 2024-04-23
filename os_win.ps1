@@ -48,7 +48,7 @@ function win_install_ubuntu() {
 
 
 function _winget_install() {
-    winget install --accept-package-agreements --accept-source-agreements --scope user $Args
+    winget install --accept-package-agreements --accept-source-agreements --scope user -s winget -e --id $Args
 }
 
 function winget_install() {
@@ -349,25 +349,15 @@ function win_disable_sounds() {
 function win_disable_web_search_and_widgets() {
     log_msg "win_disable_web_search_and_widgets"
     # win 11
-    if ((Get-ComputerInfo | Select-Object -expand OsName) -match 11) {
-        winget list -q "MicrosoftWindows.Client.WebExperience_cw5n1h2txyew" | Out-Null
-        if ($?) { winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy }
-        # https://www.tomshardware.com/how-to/disable-windows-web-search
-        if (-Not (has_sudo)) { log_error "no sudo. skipping DisableSearchBoxSuggestions at win 11."; return }
-        sudo {
-            $reg_explorer_pol = "HKCU:\Software\Policies\Microsoft\Windows\Explorer"
-            New-Item -Path $reg_explorer_pol -Force | Out-Null
-            Set-ItemProperty -Path $reg_explorer_pol -Name 'DisableSearchBoxSuggestions' -Value '1' -Type Dword
-        }
-    }
-    else {
-        # win 10
-        # https://www.bennetrichter.de/en/tutorials/windows-10-disable-web-search/
-        $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
-        Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0' -Type Dword
-        $reg_search2 = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings'
-        Set-ItemProperty -Path "$reg_search2" -Name 'IsDynamicSearchBoxEnabled' -Value '0' -Type Dword
-    }
+    # https://www.tomshardware.com/how-to/disable-windows-web-search
+    winget list -q "MicrosoftWindows.Client.WebExperience_cw5n1h2txyew" | Out-Null
+    if ($?) { winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy }
+    # win 10
+    # https://www.bennetrichter.de/en/tutorials/windows-10-disable-web-search/
+    $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
+    Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0' -Type Dword
+    $reg_search2 = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings'
+    Set-ItemProperty -Path "$reg_search2" -Name 'IsDynamicSearchBoxEnabled' -Value '0' -Type Dword
 }
 
 function win_disable_edge_ctrl_shift_c() {
