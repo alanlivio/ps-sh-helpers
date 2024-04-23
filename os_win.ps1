@@ -202,6 +202,10 @@ function win_policy_reset() {
     }
 }
 
+function win_enable_administrator_user() {
+    net user administrator /active:yes
+}
+
 function win_enable_insider_beta() {
     # https://www.elevenforum.com/t/change-windows-insider-program-channel-in-windows-11.795/
     bcdedit /set flightsigning on
