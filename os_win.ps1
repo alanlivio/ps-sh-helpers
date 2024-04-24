@@ -16,13 +16,13 @@ function win_enable_sudo() {
 
 function win_update() {
     log_msg "win_update"
-    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
     log_msg "> winget upgrade"
-    winget upgrade --accept-package-agreements --accept-source-agreements --silent --all
+    winget upgrade --accept-package-agreements --accept-source-agreements --silent --scope user --all
     log_msg "> os upgrade"
     if (-Not (has_sudo)) { 
         log_error "no sudo for os upgrade. starting settings manually"
-        explorer.exe ms-settings:windowsupdate-action
+        start ms-settings:windowsupdate-action
+        return
     }
     sudo {
         # https://gist.github.com/billpieper/a39173afa0b343a14ddeeb1d79ab14ea
