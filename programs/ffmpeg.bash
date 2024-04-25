@@ -28,6 +28,13 @@ function ffmpeg_show_motion_vectors() {
     ffplay -flags2 +export_mvs -vf codecview=mv=pf+bf+bb "$1"
 }
 
+function ffmpeg_extract_key_frames() {
+    : ${1?"Usage: ${FUNCNAME[0]} <video>"}
+    # https://jdhao.github.io/2021/12/25/ffmpeg-extract-key-frame-video/
+    local fname_no_ext="${1%.*}"
+    ffmpeg -skip_frame nokey -i "$1" -vsync vfr -frame_pts true "${fname_no_ext}-key-frame-%02d.jpeg"
+}
+
 function ffmpeg_mp4_files_merge() {
     : ${1?"Usage: ${FUNCNAME[0]} <file1> ... "}
     ffmpeg -f concat -safe 0 -i <(for f in "$@"; do echo "file '$PWD/$f'"; done) -c copy merged.mp4
