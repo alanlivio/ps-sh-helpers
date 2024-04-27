@@ -20,7 +20,25 @@ function _ps_call() {
 }
 
 function _ps_def_func() {
-    eval 'function '$1'() { _ps_call' $1 '$*; }'
+    if ! typeset -f $1 >/dev/null 2>&1; then
+        eval 'function '$1'() { _ps_call' $1 '$*; }'
+    fi
+}
+
+function ps_def_funcs_from_ps1() {
+    : ${1?"Usage: ${FUNCNAME[0]} <ps1_file>"}
+    # load functions from file that does not start with _
+    if test -f $1; then
+        _regex_no_underscore_func='function\s([^_][^{]+)\('
+        while read -r line; do
+            if [[ $line =~ $_regex_no_underscore_func ]]; then
+                func=${BASH_REMATCH[1]}
+                _ps_def_func $func
+            fi
+        done <$1
+    else
+        echo "$1 does not exist"
+    fi
 }
 
 _regex_no_underscore_func='function\s([^_][^{]+)\('
