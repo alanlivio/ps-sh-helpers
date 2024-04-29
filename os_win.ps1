@@ -381,6 +381,11 @@ function win_disable_explorer_clutter() {
     Set-ItemProperty -Path $reg_explorer -Name ShowRecent -Value '0' -Type Dword
     Set-ItemProperty -Path $reg_explorer -Name ShowRecommendations -Value '0' -Type Dword
     Set-ItemProperty -Path $reg_explorer -Name HideFileExt -Value '0' -Type Dword
+    # remove grouping listing
+    # https://answers.microsoft.com/en-us/windows/forum/all/completely-disable-file-grouping-always-everywhere/ac31a227-f585-4b0a-ab2e-a557828eaec5
+    $key = 'HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell' 
+    Remove-Item -Path "$key\BagMRU"  -Force -ErrorAction SilentlyContinue
+    Stop-Process -Force -ErrorAction SilentlyContinue -ProcessName Explorer
 }
 
 function win_disable_taskbar_clutter() {
