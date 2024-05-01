@@ -56,6 +56,7 @@ OS-independent helpers are defined in [os_any.bash](os_any.bash). See some below
 * `folder_count_files_recursive`: count files in the current and subfolder.
 * `folder_sorted_by_size`: list dir sorted by item size.
 * `user_sudo_no_password`: disable password when calling sudo (user must be in sudoers).
+* `ssh_fix_permisisons`: fix permissions for files in ~/.ssh folder.
 
 ### os_ubu
 

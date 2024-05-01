@@ -88,6 +88,13 @@ function decompress_from_url() {
 
 # -- ssh --
 
+function ssh_fix_permisisons() {
+    # https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open
+    chmod 700 $HOME/.ssh/
+    chmod 600 $HOME/.ssh/id_rsa
+    chmod 600 $HOME/.ssh/id_rsa.pubssh-rsa
+}
+
 function ssh_send_to_server_authorized_pub_key() {
     : ${1?"Usage: ${FUNCNAME[0]} <user@server>"}
     ssh "$1" sh -c 'cat - >> ~/.ssh/authorized_keys' <$HOME/.ssh/id_rsa.pub
