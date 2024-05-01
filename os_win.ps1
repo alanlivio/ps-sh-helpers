@@ -14,6 +14,10 @@ function win_enable_sudo() {
     }
 }
 
+function explorer_restart(){
+    Stop-Process -Force -ErrorAction SilentlyContinue -ProcessName Explorer
+}
+
 function win_update() {
     log_msg "win_update"
     log_msg "> winget upgrade"
@@ -267,7 +271,6 @@ function win_enable_dark_no_transparency() {
 function win_disable_desktop_icons() {
     $Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     Set-ItemProperty -Path $Path -Name "HideIcons" -Value 1
-    Get-Process "explorer" | Stop-Process
 }
 
 
@@ -335,9 +338,6 @@ function win_disable_shortcuts_unused() {
     Set-ItemProperty -Path "$reg_acess\ToggleKeys" -Name "Flags" -Value '58' -Type Dword
     New-Item -Path "$reg_acess\Keyboard Response" -Force | Out-Null
     Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122' -Type Dword
-
-    # explorer restart
-    Get-Process "explorer" | Stop-Process
 }
 
 function win_disable_sounds() {
@@ -385,7 +385,6 @@ function win_disable_explorer_clutter() {
     # https://answers.microsoft.com/en-us/windows/forum/all/completely-disable-file-grouping-always-everywhere/ac31a227-f585-4b0a-ab2e-a557828eaec5
     $key = 'HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell' 
     Remove-Item -Path "$key\BagMRU"  -Force -ErrorAction SilentlyContinue
-    Stop-Process -Force -ErrorAction SilentlyContinue -ProcessName Explorer
 }
 
 function win_disable_taskbar_clutter() {
