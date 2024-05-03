@@ -2,7 +2,7 @@ function ffmpeg_cut_mp4() {
     : ${3?"Usage: ${FUNCNAME[0]} <video> <begin_time_in_format_00:00:00> <end_time_in_format_00:00:00>"}
     local fname_no_ext="${1%.*}"
     local extension=${1##*.}
-    ffmpeg -i "$1" -vcodec copy -acodec copy -ss "$2" -t $3 -f mp4 "$fname_no_ext (cuted).$extension"
+    ffmpeg -i "$1" -vcodec copy -acodec copy -ss "$2" -t "$3" -f mp4 "$fname_no_ext (cuted).$extension"
 }
 
 function ffmpeg_convert_to_mp4_960x540() {
@@ -13,8 +13,8 @@ function ffmpeg_convert_to_mp4_960x540() {
 
 function ffmpeg_convert_to_mp4_960x540_cutted_until() {
     : ${1?"Usage: ${FUNCNAME[0]} <video> <XX:YY:ZZ>"}
-    local fname_no_ext="${2%.*}"
-    ffmpeg -i "$1" -ss 00:00:00 -t "$2"  -vf "scale=960:540" -c:v libx264 -c:a aac "$fname_no_ext (converted).mp4"
+    local fname_no_ext="${1%.*}"
+    ffmpeg -i "$1" -ss 00:00:00 -t "$2" -vf "scale=960:540" -c:v libx264 -c:a aac "$fname_no_ext (converted).mp4"
 }
 
 function ffmpeg_extract_audio_mp4() {
