@@ -3,7 +3,8 @@
 
 function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 function log_error() { Write-Host -ForegroundColor DarkRed "--" ($args -join " ") }
-function has_sudo() { if (Get-Command sudo -errorAction SilentlyContinue) { return $true } else { return $false } }
+function Test-HasSudo() { if (Get-Command sudo -errorAction SilentlyContinue) { return $true } else { return $false } }
+function Test-IsNotAdmin { -not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator') }
 
 function win_enable_sudo() {
     # win 11 supports native sudo https://learn.microsoft.com/en-us/windows/sudo/
@@ -14,7 +15,7 @@ function win_enable_sudo() {
     }
 }
 
-function explorer_restart(){
+function explorer_restart() {
     Stop-Process -Force -ErrorAction SilentlyContinue -ProcessName Explorer
 }
 
@@ -23,7 +24,7 @@ function win_update() {
     log_msg "> winget upgrade"
     winget upgrade --accept-package-agreements --accept-source-agreements --silent --scope user --all
     log_msg "> os upgrade"
-    if (-Not (has_sudo)) { 
+    if (Test-IsNotAdmin) { 
         log_error "no sudo for os upgrade. starting settings manually"
         start ms-settings:windowsupdate-action
         return
@@ -44,7 +45,7 @@ function win_update() {
 }
 
 function win_install_ubuntu() {
-    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
+    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
     wsl --set-default-version 2
     sudo wsl --update
     sudo wsl --install -d Ubuntu
@@ -131,10 +132,8 @@ function win_env_add($name, $value) {
 }
 
 function win_env_add_machine($name, $value) {
-    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
-    sudo {
-        [Environment]::SetEnvironmentVariable($name, $value, 'Machine')
-    }
+    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
+    [Environment]::SetEnvironmentVariable($name, $value, 'Machine')
 }
 
 function win_env_list() {
@@ -192,34 +191,28 @@ function wsl_terminate() {
 
 # -- system --
 
-function Test-IsNotAdmin
-{
-    -not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')
-}
-
 function win_desktop_wallpaper_folder() {
     $dir = $args[0]
     if (Test-Path $dir) {
         $dir = (Resolve-Path $dir).Path
         $reg = "HKCU:\Control Panel\Desktop"
         Set-ItemProperty -Path $reg -Name "Wallpaper" -Value "$dir"
-    } else{
-         log_error "$dir does not exists." 
+    }
+    else {
+        log_error "$dir does not exists." 
     }
 }
 
 function win_image_cleanup() {
-    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
-    sudo { dism /Online /Cleanup-Image /RestoreHealth }
+    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
+    dism /Online /Cleanup-Image /RestoreHealth
 }
 
 function win_policy_reset() {
-    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
-    sudo {
-        cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicyUsers '
-        cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
-        gpupdate.exe /force
-    }
+    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
+    cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicyUsers '
+    cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
+    gpupdate.exe /force
 }
 
 function win_enable_administrator_user() {
@@ -325,14 +318,12 @@ function win_disable_osapps_unused() {
 
 function win_disable_password_policy() {
     log_msg "win_disable_password_policy"
-    if (-Not (has_sudo)) { log_error "no sudo. skipping disable password."; return }
-    sudo {
-        $tmpfile = New-TemporaryFile
-        secedit /export /cfg $tmpfile /quiet # this call requires admin
-        (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
-        secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
-        Remove-Item -Path $tmpfile
-    }
+    if (Test-IsNotAdmin) { log_error "no admin. skipping disable password."; return }
+    $tmpfile = New-TemporaryFile
+    secedit /export /cfg $tmpfile /quiet # this call requires admin
+    (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
+    secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
+    Remove-Item -Path $tmpfile
 }
 
 function win_disable_shortcuts_unused() {
@@ -378,14 +369,12 @@ function win_disable_web_search_and_widgets() {
 
 function win_disable_edge_ctrl_shift_c() {
     log_msg "win_disable_edge_ctrl_shift_c"
-    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
-    sudo {
-        $reg_edge_pol = "HKCU:\Software\Policies\Microsoft\Edge"
-        New-Item -Path $reg_edge_pol -Force | Out-Null
-        if (-not (Get-ItemPropertyValue -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts')) {
-            Set-ItemProperty -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts' -Value '{"disabled": ["dev_tools_elements"]}'
-            gpupdate.exe /force
-        }
+    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
+    $reg_edge_pol = "HKCU:\Software\Policies\Microsoft\Edge"
+    New-Item -Path $reg_edge_pol -Force | Out-Null
+    if (-not (Get-ItemPropertyValue -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts')) {
+        Set-ItemProperty -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts' -Value '{"disabled": ["dev_tools_elements"]}'
+        gpupdate.exe /force
     }
 }
 
@@ -472,17 +461,15 @@ function win_enable_osapps_essentials() {
 }
 
 function win_enable_hyperv() {
-    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
-    sudo { dism /online /enable-feature /featurename:Microsoft-Hyper-V -All /LimitAccess /ALL }
+    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
+    dism /online /enable-feature /featurename:Microsoft-Hyper-V -All /LimitAccess /ALL
 }
 
 
 function win_ssh_agent_and_add_id_rsa() {
-    if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
-    sudo {
-        Set-Service ssh-agent -StartupType Automatic
-        Start-Service ssh-agent
-        Get-Service ssh-agent
-    }
+    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
+    Set-Service ssh-agent -StartupType Automatic
+    Start-Service ssh-agent
+    Get-Service ssh-agent
     ssh-add "$env:userprofile\\.ssh\\id_rsa"
 }
