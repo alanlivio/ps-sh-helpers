@@ -192,6 +192,11 @@ function wsl_terminate() {
 
 # -- system --
 
+function Test-IsNotAdmin
+{
+    -not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')
+}
+
 function win_desktop_wallpaper_folder() {
     $dir = $args[0]
     if (Test-Path $dir) {
