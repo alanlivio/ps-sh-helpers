@@ -192,6 +192,17 @@ function wsl_terminate() {
 
 # -- system --
 
+function win_desktop_wallpaper_folder() {
+    $dir = $args[0]
+    if (Test-Path $dir) {
+        $dir = (Resolve-Path $dir).Path
+        $reg = "HKCU:\Control Panel\Desktop"
+        Set-ItemProperty -Path $reg -Name "Wallpaper" -Value "$dir"
+    } else{
+         log_error "$dir does not exists." 
+    }
+}
+
 function win_image_cleanup() {
     if (-Not (has_sudo)) { log_error "no sudo. skipping."; return }
     sudo { dism /Online /Cleanup-Image /RestoreHealth }
