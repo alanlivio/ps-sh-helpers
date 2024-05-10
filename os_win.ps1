@@ -189,6 +189,37 @@ function wsl_terminate() {
     wsl -t (wsl_get_default)
 }
 
+
+function wsl_use_same_home() {
+    log_msg "setup wsl to use same home"
+    log_msg "target wsl is $(wsl_get_default)"
+    if ((wsl echo '$HOME').Contains("Users")) {
+        log_msg "WSL already use windows UserProfile as home."
+        return
+    }
+    log_msg "terminate wsl"
+    wsl_terminate
+    $user_name = (wsl whoami)
+    log_msg "change default dir to /mnt/c/Users/"
+    wsl -u root skill -KILL -u $user_name
+    wsl -u root usermod -d /mnt/c/Users/$env:UserName $user_name
+    log_msg "create a link /home/user at /mnt/c/Users/user"
+    wsl -u root rm -rf /home/$user_name
+    wsl -u root ln -s /mnt/c/Users/$env:UserName /home/$user_name
+
+}
+
+function wsl_fix_metadata() {
+    log_msg "wsl_fix_metadata"
+    # https://docs.microsoft.com/en-us/windows/wsl/wsl-config
+    # https://github.com/Microsoft/WSL/issues/3138
+    # https://devblogs.microsoft.com/commandline/chmod-chown-wsl-improvements/
+    log_msg "terminate wsl"
+    wsl_terminate
+    wsl -u root bash -c 'echo "[automount]" > /etc/wsl.conf'
+    wsl -u root bash -c 'echo "options=\"metadata,umask=0022,fmask=11\"" >> /etc/wsl.conf'
+}
+
 # -- system --
 
 function win_desktop_wallpaper_folder() {
