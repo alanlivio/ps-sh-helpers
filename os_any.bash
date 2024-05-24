@@ -8,7 +8,6 @@ alias folder_find_file_with_crlf='find . -not -type d -exec file "{}" ";" | grep
 
 function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
 function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
-function log_msg2() { echo -e "\033[00;33m-- > $* \033[00m"; }
 
 function _dotfiles_func() {
     : ${1?"Usage: ${FUNCNAME[0]} <backup|install|diff>"}
