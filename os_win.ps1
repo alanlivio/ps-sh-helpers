@@ -57,21 +57,21 @@ function _winget_install() {
 }
 
 function winget_install() {
-    winget list -q $Args[0] | Out-Null
+    winget list -q --accept-source-agreements $Args[0]
     if (-not $?) {
         _winget_install $Args[0] 
     }
 }
 
 function winget_install_at_location() {
-    winget list -q $Args[0] | Out-Null
+    winget list -q --accept-source-agreements $Args[0] | Out-Null
     if (-not $?) {
         _winget_install --location="$Args[1]" $Args[0] 
     }
 }
 
 function winget_uninstall() {
-    winget list -q $Args | Out-Null
+    winget list -q --accept-source-agreements $Args | Out-Null
     if ($?) {
         winget uninstall --silent "$Args"
     }
@@ -388,7 +388,7 @@ function win_disable_web_search_and_widgets() {
     log_msg "win_disable_web_search_and_widgets"
     # win 11
     # https://www.tomshardware.com/how-to/disable-windows-web-search
-    winget list -q "MicrosoftWindows.Client.WebExperience_cw5n1h2txyew" | Out-Null
+    winget list -q --accept-source-agreements "MicrosoftWindows.Client.WebExperience_cw5n1h2txyew" | Out-Null
     if ($?) { winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy }
     # win 10
     # https://www.bennetrichter.de/en/tutorials/windows-10-disable-web-search/
