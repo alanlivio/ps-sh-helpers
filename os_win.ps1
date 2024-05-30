@@ -102,10 +102,11 @@ function ps_show_function($name) {
     Get-Content Function:\$name
 }
 
-function win_hlink_create($path, $target) {
-    if (-not (Test-Path $path)) {
-        New-Item -ItemType Hardlink -Force -Path $path -Target $target
+function win_hlink_create_rm_if_exists($path, $target) {
+    if (Test-Path $path) {
+        Remove-Item $path
     }
+    New-Item -ItemType Hardlink -Force -Path $path -Target $target
 }
 
 
