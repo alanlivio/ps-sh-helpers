@@ -19,6 +19,13 @@ function explorer_restart() {
     Stop-Process -Force -ErrorAction SilentlyContinue -ProcessName Explorer
 }
 
+function passwd_generate() {
+    $length = 10
+    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?'
+    $password = -join (1..$length | ForEach-Object { Get-Random -Maximum $characters.length | ForEach-Object { $characters[$_] } })
+    Write-Output $password
+}
+
 function win_update() {
     log_msg "win_update"
     log_msg "> winget upgrade"
@@ -26,7 +33,7 @@ function win_update() {
     log_msg "> os upgrade"
     if (Test-IsNotAdmin) { 
         log_error "no sudo for os upgrade. starting settings manually"
-        start ms-settings:windowsupdate-action
+        Start-Process ms-settings:windowsupdate-action
         return
     }
     sudo {
