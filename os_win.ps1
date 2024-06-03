@@ -231,7 +231,7 @@ function wsl_fix_metadata() {
 # -- system --
 
 function win_check_winget() {
-    if (-Not(Get-Command $cmdName -errorAction SilentlyContinue)) {
+    if (-Not(Get-Command winget -errorAction SilentlyContinue)) {
         Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
     }
     winget.exe list --accept-source-agreements | out-null
