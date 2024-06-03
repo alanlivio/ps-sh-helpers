@@ -103,7 +103,9 @@ function ps_show_function($name) {
 }
 
 function win_hlink_create_rm_if_exists($path, $target) {
-    if (Test-Path $path) {
+    $hash1 = Get-FileHash $path
+    $hash2 = Get-FileHash $target
+    if ($hash1.Hash -ne $hash2.Hash) {
         Remove-Item $path
     }
     New-Item -ItemType Hardlink -Force -Path $path -Target $target
