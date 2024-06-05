@@ -60,7 +60,7 @@ function win_install_ubuntu() {
 
 
 function _winget_install() {
-    winget install --accept-package-agreements --accept-source-agreements --scope user -s winget -e --id $Args
+    winget install --accept-package-agreements --accept-source-agreements --scope user -e --id $Args
 }
 
 function winget_install() {
