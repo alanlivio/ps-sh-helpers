@@ -171,6 +171,10 @@ function win_explorer_restart() {
 
 # -- wsl --
 
+function wsl_call_with_profile() {
+    bash  -i -c "$args"
+}
+
 function wsl_list() {
     wsl -l -v
 }
