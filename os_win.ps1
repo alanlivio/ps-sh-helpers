@@ -297,7 +297,7 @@ function win_appx_install() {
     if ($pkgs_to_install) {
         log_msg "pkgs_to_install=$pkgs_to_install"
         foreach ($pkg in $pkgs_to_install) {
-            Get-AppxPackage -User $env:username -Name $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } | Out-null
+            Get-AppxPackage -User $env:username -Name $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" }
         }
     }
 }
@@ -353,7 +353,6 @@ function win_disable_osapps_unused() {
         'Microsoft.Wallet'
         'microsoft.windowscommunicationsapps'
         'Microsoft.WindowsMaps'
-        'Microsoft.YourPhone'
         'Microsoft.ZuneMusic'
         'Microsoft.ZuneVideo'
         'SpotifyAB.SpotifyMusic'
