@@ -1,11 +1,11 @@
 # -- essentials --
 
 function ubu_update() {
-    log_msg "> apt update"
+    log_msg "apt update"
     sudo apt update
-    log_msg "> apt upgrade all"
+    log_msg "apt upgrade all"
     sudo apt -y upgrade
-    log_msg "> apt autoremove"
+    log_msg "apt autoremove"
     sudo apt -y autoremove
 }
 
