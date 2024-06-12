@@ -85,16 +85,13 @@ function winget_uninstall() {
 }
 
 function ps_profile_reload() {
-    @(
-        $profile.AllUsersAllHosts,
-        $profile.AllUsersCurrentHost,
-        $profile.CurrentUserAllHosts,
-        $profile.CurrentUserCurrentHost
-    ) | ForEach-Object {
-        if (Test-Path $_) {
-            Write-Output "loading $_"
-            Import-Module -Force -Global $_ #-Verbose 
-        }
+    $file = $profile
+    if (Test-Path $file) { 
+        Write-Output "loading $file"
+        . $file
+    }
+    else { 
+        Write-Output "$file does not exists to be loaded" 
     }
 }
 
