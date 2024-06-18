@@ -238,6 +238,11 @@ function wsl_fix_metadata() {
 
 # -- system --
 
+function win_system_fix() {
+    cmd.exe /c 'sfc /scannow'
+    dism.exe /Online /Cleanup-image /Restorehealth    
+}
+
 function win_check_winget() {
     if (-Not(Get-Command winget -errorAction SilentlyContinue)) {
         Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
