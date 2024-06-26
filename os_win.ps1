@@ -394,15 +394,16 @@ function win_disable_shortcuts_unused() {
 
     # "disable language shorcuts"
     $reg_key_toggle = "HKCU:\Keyboard Layout\Toggle"
-    Set-ItemProperty -Path $reg_key_toggle -Name "HotKey" -Value '3' -Type Dword
-    Set-ItemProperty -Path $reg_key_toggle -Name "Language Hotkey" -Value '3' -Type Dword
-    Set-ItemProperty -Path $reg_key_toggle -Name "Layout Hotkey" -Value '3' -Type Dword
+    Set-ItemProperty -Path $reg_key_toggle -Name "HotKey" -Value '3' -Type String
+    Set-ItemProperty -Path $reg_key_toggle -Name "Language Hotkey" -Value '3' -Type String
+    Set-ItemProperty -Path $reg_key_toggle -Name "Layout Hotkey" -Value '3' -Type String
 
     # "disable acessibility shorcuts"
     $reg_acess = "HKCU:\Control Panel\Accessibility"
-    Set-ItemProperty -Path "$reg_acess\ToggleKeys" -Name "Flags" -Value '58' -Type Dword
+    Set-ItemProperty -Path "$reg_acess\ToggleKeys" -Name "Flags" -Value '58' -Type String
+    Set-ItemProperty -Path "$reg_acess\StickyKeys" -Name "Flags" -Value '26' -Type String
     New-Item -Path "$reg_acess\Keyboard Response" -Force | Out-Null
-    Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122' -Type Dword
+    Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122' -Type String
 }
 
 function win_disable_sounds() {
