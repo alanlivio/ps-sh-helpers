@@ -384,6 +384,21 @@ function win_disable_password_policy() {
     Remove-Item -Path $tmpfile
 }
 
+function win_disable_3_and_4_fingers_gestures() {
+    log_msg "win_disable_shortcuts_unused"
+    $reg = "HKCU:\Software\Microsoft\Windows\CurrentVersion\PrecisionTouchPad"
+    Set-ItemProperty -Path $reg -Name "FourFingerDown" -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg -Name "FourFingerLeft" -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg -Name "FourFingerRight" -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg -Name "FourFingerUp" -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg -Name "FourFingerTapEnabled" -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg -Name "ThreeFingerDown" -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg -Name "ThreeFingerLeft" -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg -Name "ThreeFingerRight" -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg -Name "ThreeFingerTapEnabled" -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg -Name "ThreeFingerUp" -Value '0' -Type Dword
+}
+
 function win_disable_shortcuts_unused() {
     log_msg "win_disable_shortcuts_unused"
     
