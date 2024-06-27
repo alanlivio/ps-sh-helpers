@@ -167,6 +167,7 @@ function win_explorer_open_trash() {
 }
 
 function win_explorer_restart() {
+    log_msg "win_explorer_restart"
     taskkill /f /im explorer.exe | Out-Null
     Start-Process explorer.exe
 }
