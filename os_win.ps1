@@ -32,8 +32,7 @@ function win_update() {
     winget upgrade --accept-package-agreements --accept-source-agreements --silent --scope user --all
     log_msg "> os upgrade"
     if (Test-IsNotAdmin) { 
-        log_error "no sudo for os upgrade. starting settings manually"
-        Start-Process ms-settings:windowsupdate-action
+        log_error "no sudo for os upgrade. you can dot it manually by win_open_settings_update"
         return
     }
     sudo {
@@ -49,6 +48,10 @@ function win_update() {
             }
         }
     }
+}
+
+function win_open_settings_update() {
+    Start-Process ms-settings:windowsupdate-action
 }
 
 function win_install_ubuntu() {
