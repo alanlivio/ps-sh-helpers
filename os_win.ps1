@@ -477,7 +477,7 @@ function win_disable_taskbar_clutter() {
     # taskbar
     # https://www.askvg.com/disable-or-remove-extra-icons-and-buttons-from-windows-11-taskbar
     Set-ItemProperty -Path $reg_explorer_adv -Name ShowTaskViewButton -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarDa -Value '0' -Type Dword
+    # Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarDa -Value '0' -Type Dword
     Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarMn -Value '0' -Type Dword
     Set-ItemProperty -Path $reg_explorer_adv -Name ShowCopilotButton -Value '0' -Type Dword
     Set-ItemProperty -Path $reg_explorer_adv -Name UseCompactMode -Value '1' -Type Dword
