@@ -68,7 +68,7 @@ function ubu_enable_git_ppa() {
 }
 
 function ubu_install_latex() {
-    sudo apt install latexmk texlive-latex-extra texlive-fonts-extra
+    sudo apt install -y latexmk texlive-latex-extra texlive-fonts-extra
 }
 
 function ubu_install_node_npm(){
@@ -83,7 +83,7 @@ function ubu_install_gh() {
         sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg &&
         echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null &&
         sudo apt update &&
-        sudo apt install gh -y
+        sudo apt install -y gh
 }
 
 function ubu_install_miniconda() {
