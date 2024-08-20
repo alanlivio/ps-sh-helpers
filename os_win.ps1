@@ -32,7 +32,7 @@ function win_update() {
     winget upgrade --accept-package-agreements --accept-source-agreements --silent --scope user --all
     log_msg "> os upgrade"
     if (Test-IsNotAdmin) { 
-        log_error "no sudo for os upgrade. you can dot it manually by win_open_settings_update"
+        log_msg "no sudo for os upgrade. you can open the Settings update window by win_open_settings_update"
         return
     }
     sudo {
