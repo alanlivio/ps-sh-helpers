@@ -51,10 +51,18 @@ function win_update() {
 }
 
 function win_install_ubuntu() {
-    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
-    wsl --set-default-version 2
     sudo wsl --update
     sudo wsl --install -d Ubuntu
+}
+
+function win_install_nodejs_noadmin() {
+    winget install Schniz.fnm
+    $fnm = "$env:LOCALAPPDATA\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe\fnm.exe"
+    & $fnm env --use-on-cd | Out-String | Invoke-Expression
+    & $fnm use --install-if-missing 20
+    win_path_add($env:FNM_MULTISHELL_PATH)
+    node -v
+    npm -v
 }
 
 
@@ -117,11 +125,11 @@ function win_hlink_create_rm_if_exists($path, $target) {
 
 function win_path_add($addPath) {
     if (Test-Path $addPath) {
-        $path = [Environment]::GetEnvironmentVariable('path', 'Machine')
+        $path = [Environment]::GetEnvironmentVariable('path', 'User')
         $regexAddPath = [regex]::Escape($addPath)
         $arrPath = $path -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
         $newpath = ($arrPath + $addPath) -join ';'
-        [Environment]::SetEnvironmentVariable("path", $newpath, 'Machine')
+        [Environment]::SetEnvironmentVariable("path", $newpath, 'User')
     }
     else {
         Throw "$addPath' is not a valid path."
