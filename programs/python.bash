@@ -21,6 +21,7 @@ function python_check_numa() {
 }
 
 function python_packaging_install_local() {
+    pip install build setuptools >/dev/null
     [[ -d dist ]] && rm -r dist
     [[ -d build ]] && rm -r dist
     python -m build . --wheel
@@ -28,7 +29,7 @@ function python_packaging_install_local() {
 }
 
 function python_packaging_upload_testpypi() {
-    type -p numactl >/dev/null || pip install twine
+    pip install build setuptools twine >/dev/null
     [[ -d dist ]] && rm -r dist
     [[ -d build ]] && rm -r dist
     rm -rf ./*.egg-info
@@ -38,7 +39,7 @@ function python_packaging_upload_testpypi() {
 }
 
 function python_packaging_upload_pypip() {
-    type -p numactl >/dev/null || pip install twine
+    pip install build setuptools twine >/dev/null
     [[ -d dist ]] && rm -r dist
     [[ -d build ]] && rm -r dist
     python -m build . --wheel
