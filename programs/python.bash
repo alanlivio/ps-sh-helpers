@@ -2,7 +2,7 @@ alias python_clean_cache='find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xar
 
 function pip_install() {
     for pkg in $@; do
-        pip show $pkg >/dev/null || pip install -U $pkg
+        pip show $pkg &>/dev/null || pip install -U $pkg
     done
 }
 
@@ -16,20 +16,21 @@ function python_check_tensorflow() {
 }
 
 function python_check_numa() {
-    type -p numactl >/dev/null || sudo apt-get install numactl
+    type -p numactl &>/dev/null || sudo apt-get install numactl
     numactl --show
 }
 
 function python_packaging_install_local() {
-    pip install build setuptools >/dev/null
+    pip show setuptools &>/dev/null || pip install setuptools
     [[ -d dist ]] && rm -r dist
     [[ -d build ]] && rm -r dist
     python -m build . --wheel
-    pip install dist/*.whl
+    pip install dist/*.whl --force-reinstall
 }
 
 function python_packaging_upload_testpypi() {
-    pip install build setuptools twine >/dev/null
+    pip show setuptools &>/dev/null || pip install setuptools
+    pip show twine &>/dev/null || pip install twine
     [[ -d dist ]] && rm -r dist
     [[ -d build ]] && rm -r dist
     rm -rf ./*.egg-info
@@ -39,7 +40,8 @@ function python_packaging_upload_testpypi() {
 }
 
 function python_packaging_upload_pypip() {
-    pip install build setuptools twine >/dev/null
+    pip show setuptools &>/dev/null || pip install setuptools
+    pip show twine &>/dev/null || pip install twine
     [[ -d dist ]] && rm -r dist
     [[ -d build ]] && rm -r dist
     python -m build . --wheel
@@ -48,7 +50,7 @@ function python_packaging_upload_pypip() {
 }
 
 function python_pyright_stubs_from_requirements_txt() {
-    type -p pyright >/dev/null || pip install pyright
+    pip show pyright &>/dev/null || pip install twine
     pip show requirements-parser >/dev/null || pip install requirements-parser
     local pkgs=$(python -c "import requirements; import os; names=[req.name for req in requirements.parse(open('requirements.txt', 'r'))]; print(' '.join(names))")
     for pkg in $pkgs; do
