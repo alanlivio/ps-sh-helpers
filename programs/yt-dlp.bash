@@ -17,6 +17,11 @@ function yt_dlp_audio_from_txt() {
     yt-dlp $ARGS_ALL $ARGS_BACTH --extract-audio --audio-format m4a --batch-file "$1"
 }
 
+function yt_dlp_video_from_txt() {
+    : ${1?"Usage: ${FUNCNAME[0]} <url to audio or list>"}
+    yt-dlp $ARGS_ALL $ARGS_BACTH --recode-video mp4 --batch-file "$1"
+}
+
 function yt_dlp_video_480() {
     : ${1?"Usage: ${FUNCNAME[0]} <url to video or list>"}
     yt-dlp $ARGS_ALL -f 'best[height<=480]' --recode-video mp4 "$1"
