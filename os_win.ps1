@@ -243,9 +243,11 @@ function wsl_fix_metadata() {
 
 # -- system --
 
-function win_system_fix() {
+function win_system_image_scan_cleanup() {
+    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
     cmd.exe /c 'sfc /scannow'
     dism.exe /Online /Cleanup-image /Restorehealth    
+    dism /Online /Cleanup-Image /RestoreHealth
 }
 
 function win_check_winget() {
@@ -267,23 +269,32 @@ function win_desktop_wallpaper_folder() {
     }
 }
 
-function win_image_cleanup() {
-    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
-    dism /Online /Cleanup-Image /RestoreHealth
-}
-
-function win_policy_reset() {
+function win_system_policy_reset() {
     if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
     cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicyUsers '
     cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
     gpupdate.exe /force
 }
 
-function win_enable_administrator_user() {
+function win_administrator_user_enable() {
     net user administrator /active:yes
 }
 
-function win_enable_insider_beta() {
+function win_administrator_user_disable() {
+    net user administrator /active:no
+}
+
+function win_password_policy_disable() {
+    log_msg "win_disable_password_policy"
+    if (Test-IsNotAdmin) { log_error "no admin. skipping disable password."; return }
+    $tmpfile = New-TemporaryFile
+    secedit /export /cfg $tmpfile /quiet # this call requires admin
+    (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
+    secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
+    Remove-Item -Path $tmpfile
+}
+
+function win_insider_beta_enable() {
     # https://www.elevenforum.com/t/change-windows-insider-program-channel-in-windows-11.795/
     bcdedit /set flightsigning on
     Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\Applicability" -Name "BranchName" -Value 'Beta'
@@ -293,7 +304,6 @@ function win_enable_insider_beta() {
     Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\UI\Selection" -Name "UIContentType" -Value 'Mainline'
     Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\UI\Selection" -Name "UIRing" -Value 'External'
 }
-
 
 function win_appx_list_installed() {
     Get-AppxPackage -User $env:username | ForEach-Object { Write-Output $_.Name }
@@ -323,10 +333,34 @@ function win_appx_uninstall() {
     }
 }
 
-# -- system disable --
+function win_hyperv_enable() {
+    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
+    dism /online /enable-feature /featurename:Microsoft-Hyper-V -All /LimitAccess /ALL
+}
 
-function win_enable_dark_no_transparency() {
-    log_msg "win_enable_dark_no_transparency"
+function win_ssh_agent_and_add_id_rsa() {
+    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
+    Set-Service ssh-agent -StartupType Automatic
+    Start-Service ssh-agent
+    Get-Service ssh-agent
+    ssh-add "$env:userprofile\\.ssh\\id_rsa"
+}
+
+function win_edge_disable_edge_ctrl_shift_c() {
+    log_msg "win_edge_disable_edge_ctrl_shift_c"
+    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
+    $reg_edge_pol = "HKCU:\Software\Policies\Microsoft\Edge"
+    New-Item -Path $reg_edge_pol -Force | Out-Null
+    if (-not (Get-ItemPropertyValue -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts')) {
+        Set-ItemProperty -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts' -Value '{"disabled": ["dev_tools_elements"]}'
+        gpupdate.exe /force
+    }
+}
+
+# -- win_clutter --
+
+function win_clutter_use_dark_theme_no_transparency() {
+    log_msg "win_clutter_use_dark_theme_no_transparency"
     $reg_personalize = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
     Set-ItemProperty -Path $reg_personalize -Name "AppsUseLightTheme" -Value '0' -Type Dword -Force 
     Set-ItemProperty -Path $reg_personalize -Name "SystemUsesLightTheme" -Value '0' -Type Dword -Force 
@@ -341,14 +375,14 @@ function win_enable_dark_no_transparency() {
     Set-ItemProperty -Path $reg_accent -Name "StartColorMenu" -Value 0xff4f4f4f -Type Dword -Force
 }
 
-function win_disable_desktop_icons() {
+
+function win_clutter_no_desktop_icons() {
     $Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     Set-ItemProperty -Path $Path -Name "HideIcons" -Value 1
 }
 
-
-function win_disable_osapps_unused() {
-    log_msg "win_disable_osapps_unused"
+function win_clutter_remove_osapps_unused() {
+    log_msg "win_clutter_remove_osapps_unused"
     
     # old appx not avaliable in winget, most for win10
     $pkgs = @(
@@ -379,18 +413,8 @@ function win_disable_osapps_unused() {
     winget_uninstall Microsoft.PowerAutomateDesktop
 }
 
-function win_disable_password_policy() {
-    log_msg "win_disable_password_policy"
-    if (Test-IsNotAdmin) { log_error "no admin. skipping disable password."; return }
-    $tmpfile = New-TemporaryFile
-    secedit /export /cfg $tmpfile /quiet # this call requires admin
-    (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
-    secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
-    Remove-Item -Path $tmpfile
-}
-
-function win_disable_3_and_4_fingers_gestures() {
-    log_msg "win_disable_shortcuts_unused"
+function win_clutter_remove_3_and_4_fingers_gestures() {
+    log_msg "win_clutter_remove_3_and_4_fingers_gestures"
     $reg = "HKCU:\Software\Microsoft\Windows\CurrentVersion\PrecisionTouchPad"
     Set-ItemProperty -Path $reg -Name "FourFingerDown" -Value '0' -Type Dword
     Set-ItemProperty -Path $reg -Name "FourFingerLeft" -Value '0' -Type Dword
@@ -404,8 +428,8 @@ function win_disable_3_and_4_fingers_gestures() {
     Set-ItemProperty -Path $reg -Name "ThreeFingerUp" -Value '0' -Type Dword
 }
 
-function win_disable_shortcuts_unused() {
-    log_msg "win_disable_shortcuts_unused"
+function win_clutter_remove_shortcuts_unused() {
+    log_msg "win_clutter_remove_shortcuts_unused"
     
     # "disable AutoRotation shorcuts"
     $igf = "HKCU:\Software\Intel\Display\Igfxcui"
@@ -426,14 +450,14 @@ function win_disable_shortcuts_unused() {
     Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122' -Type String
 }
 
-function win_disable_sounds() {
-    log_msg "win_disable_sounds"
+function win_clutter_remove_bell_sounds() {
+    log_msg "win_clutter_remove_bell_sounds"
     Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\" "(Default)" -Value ".None"
     Get-ChildItem -Path 'HKCU:\AppEvents\Schemes\Apps' | Get-ChildItem | Get-ChildItem | Where-Object { $_.PSChildName -eq '.Current' } | Set-ItemProperty -Name '(Default)' -Value '' 
 }
 
-function win_disable_web_search_and_widgets() {
-    log_msg "win_disable_web_search_and_widgets"
+function win_clutter_remove_web_search_and_widgets() {
+    log_msg "win_clutter_remove_web_search_and_widgets"
     # win 11
     # https://www.tomshardware.com/how-to/disable-windows-web-search
     winget list --accept-source-agreements -q "MicrosoftWindows.Client.WebExperience_cw5n1h2txyew" | Out-Null
@@ -446,19 +470,8 @@ function win_disable_web_search_and_widgets() {
     Set-ItemProperty -Path "$reg_search2" -Name 'IsDynamicSearchBoxEnabled' -Value '0' -Type Dword
 }
 
-function win_disable_edge_ctrl_shift_c() {
-    log_msg "win_disable_edge_ctrl_shift_c"
-    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
-    $reg_edge_pol = "HKCU:\Software\Policies\Microsoft\Edge"
-    New-Item -Path $reg_edge_pol -Force | Out-Null
-    if (-not (Get-ItemPropertyValue -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts')) {
-        Set-ItemProperty -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts' -Value '{"disabled": ["dev_tools_elements"]}'
-        gpupdate.exe /force
-    }
-}
-
-function win_disable_explorer_clutter() {
-    log_msg "win_disable_explorer_clutter"
+function win_clutter_remove_explorer() {
+    log_msg "win_clutter_remove_explorer"
     $reg_explorer = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer"
     # setup folder listing
     Set-ItemProperty -Path $reg_explorer -Name ShowFrequent -Value '0' -Type Dword
@@ -471,8 +484,8 @@ function win_disable_explorer_clutter() {
     Remove-Item -Path "$key\BagMRU"  -Force -ErrorAction SilentlyContinue
 }
 
-function win_disable_taskbar_clutter() {
-    log_msg "win_disable_taskbar_clutter"
+function win_clutter_remove_taskbar() {
+    log_msg "win_clutter_remove_taskbar"
     $reg_explorer_adv = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     
     # taskbar
@@ -498,7 +511,7 @@ function win_disable_taskbar_clutter() {
     Set-ItemProperty -Path $reg_search -Name SearchBoxTaskbarMode -Value '0' -Type Dword
 }
 
-function win_disable_copilot() {
+function win_clutter_remove_copilot() {
     # https://winaero.com/disable-windows-copilot/
     sudo {
         $reg_explorer_pol = "HKCU:\Software\Policies\Microsoft\Windows"
@@ -507,8 +520,8 @@ function win_disable_copilot() {
     }
 }
 
-function win_disable_gaming_clutter() {
-    log_msg "win_disable_gaming_clutter"
+function win_clutter_remove_xbox() {
+    log_msg "win_clutter_remove_xbox"
     # https://www.makeuseof.com/windows-new-app-ms-gamingoverlay-error/
 
     $reg_game_dvr = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR"
@@ -523,32 +536,4 @@ function win_disable_gaming_clutter() {
     winget_uninstall Microsoft.XboxGamingOverlay_8wekyb3d8bbwe
     winget_uninstall Microsoft.XboxIdentityProvider_8wekyb3d8bbwe
     winget_uninstall Microsoft.XboxSpeechToTextOverlay_8wekyb3d8bbwe
-}
-
-# -- system enable --
-
-function win_enable_osapps_essentials() {
-    log_msg "win_enable_osapps_essentials"
-    $pkgs = @(
-        'Microsoft.WindowsStore'
-        'Microsoft.WindowsCalculator'
-        'Microsoft.Windows.Photos'
-        'Microsoft.WindowsFeedbackHub'
-        'Microsoft.WindowsCamera'
-    )
-    win_appx_install @pkgs
-}
-
-function win_enable_hyperv() {
-    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
-    dism /online /enable-feature /featurename:Microsoft-Hyper-V -All /LimitAccess /ALL
-}
-
-
-function win_ssh_agent_and_add_id_rsa() {
-    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
-    Set-Service ssh-agent -StartupType Automatic
-    Start-Service ssh-agent
-    Get-Service ssh-agent
-    ssh-add "$env:userprofile\\.ssh\\id_rsa"
 }
