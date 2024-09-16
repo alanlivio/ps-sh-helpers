@@ -3,26 +3,6 @@ function log_error() { Write-Host -ForegroundColor DarkRed "--" ($args -join " "
 function Test-HasSudo() { if (Get-Command sudo -errorAction SilentlyContinue) { return $true } else { return $false } }
 function Test-IsNotAdmin { -not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator') }
 
-function win_enable_sudo() {
-    # win 11 supports native sudo https://learn.microsoft.com/en-us/windows/sudo/
-    # win 10 supports from https://github.com/gerardog/gsudo
-    if (-Not(Get-Command sudo -errorAction SilentlyContinue)) {
-        winget_install gsudo
-        win_env_path_refresh
-    }
-}
-
-function explorer_restart() {
-    Stop-Process -Force -ErrorAction SilentlyContinue -ProcessName Explorer
-}
-
-function passwd_generate() {
-    $length = 10
-    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?'
-    $password = -join (1..$length | ForEach-Object { Get-Random -Maximum $characters.length | ForEach-Object { $characters[$_] } })
-    Write-Output $password
-}
-
 function win_update() {
     log_msg "win_update"
     log_msg "> winget upgrade"
@@ -47,6 +27,44 @@ function win_update() {
     }
 }
 
+# -- admin and password --
+
+function passwd_generate() {
+    $length = 10
+    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?'
+    $password = -join (1..$length | ForEach-Object { Get-Random -Maximum $characters.length | ForEach-Object { $characters[$_] } })
+    Write-Output $password
+}
+
+function win_enable_sudo() {
+    # win 11 supports native sudo https://learn.microsoft.com/en-us/windows/sudo/
+    # win 10 supports from https://github.com/gerardog/gsudo
+    if (-Not(Get-Command sudo -errorAction SilentlyContinue)) {
+        winget_install gsudo
+        win_env_path_refresh
+    }
+}
+
+function win_administrator_user_enable() {
+    net user administrator /active:yes
+}
+
+function win_administrator_user_disable() {
+    net user administrator /active:no
+}
+
+function win_password_policy_disable() {
+    log_msg "win_disable_password_policy"
+    if (Test-IsNotAdmin) { log_error "no admin. skipping disable password."; return }
+    $tmpfile = New-TemporaryFile
+    secedit /export /cfg $tmpfile /quiet # this call requires admin
+    (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
+    secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
+    Remove-Item -Path $tmpfile
+}
+
+# -- installing -- 
+
 function win_install_ubuntu() {
     sudo wsl --update
     sudo wsl --install -d Ubuntu
@@ -61,7 +79,6 @@ function win_install_nodejs_noadmin() {
     node -v
     npm -v
 }
-
 
 function _winget_install() {
     winget install --accept-package-agreements --accept-source-agreements --scope user -e --id $Args
@@ -88,6 +105,45 @@ function winget_uninstall() {
     }
 }
 
+
+function win_check_winget() {
+    if (-Not(Get-Command winget -errorAction SilentlyContinue)) {
+        Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
+    }
+    winget.exe list --accept-source-agreements | out-null
+}
+
+
+function win_appx_list_installed() {
+    Get-AppxPackage -User $env:username | ForEach-Object { Write-Output $_.Name }
+}
+
+function win_appx_install() {
+    $pkgs_to_install = ""
+    foreach ($name in $args) {
+        if (-Not (Get-AppxPackage -User $env:username -Name $name)) {
+            $pkgs_to_install = "$pkgs_to_install $name"
+        }
+    }
+    if ($pkgs_to_install) {
+        log_msg "pkgs_to_install=$pkgs_to_install"
+        foreach ($pkg in $pkgs_to_install) {
+            Get-AppxPackage -User $env:username -Name $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" }
+        }
+    }
+}
+
+function win_appx_uninstall() {
+    foreach ($name in $args) {
+        if (Get-AppxPackage -User $env:username -Name $name) {
+            log_msg "uninstall $name"
+            Get-AppxPackage -User $env:username -Name $name | Remove-AppxPackage
+        }
+    }
+}
+
+# -- env and path --
+
 function ps_profile_reload() {
     $file = $profile
     if (Test-Path $file) { 
@@ -103,22 +159,6 @@ function ps_show_function($name) {
     Get-Content Function:\$name
 }
 
-function win_hlink_create_rm_if_exists($path, $target) {
-    try {
-        $hash1 = Get-FileHash $path
-        $hash2 = Get-FileHash $target
-        if ($hash1.Hash -ne $hash2.Hash) {
-            Remove-Item $path
-        }
-        New-Item -ItemType Hardlink -Force -Path $path -Target $target
-    } 
-    catch {
-        exit
-    }
-}
-
-
-# -- path --
 
 function win_env_path_add($addPath) {
     if (Test-Path $addPath) {
@@ -141,8 +181,6 @@ function win_env_path_refresh() {
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 }
 
-# -- env  --
-
 function win_env_add($name, $value) {
     [Environment]::SetEnvironmentVariable($name, $value, 'User')
 }
@@ -156,10 +194,11 @@ function win_env_list() {
     [Environment]::GetEnvironmentVariables()
 }
 
-# -- explorer --
+# -- dir and explorer --
 
-function win_onedrive_reset() {
-    & "C:\Program Files\Microsoft OneDrive\onedrive.exe" /reset
+
+function explorer_restart() {
+    Stop-Process -Force -ErrorAction SilentlyContinue -ProcessName Explorer
 }
 
 function win_explorer_hide_home_dotfiles() {
@@ -174,6 +213,21 @@ function win_explorer_restart() {
     log_msg "win_explorer_restart"
     taskkill /f /im explorer.exe | Out-Null
     Start-Process explorer.exe
+}
+
+
+function win_hlink_create_rm_if_exists($path, $target) {
+    try {
+        $hash1 = Get-FileHash $path
+        $hash2 = Get-FileHash $target
+        if ($hash1.Hash -ne $hash2.Hash) {
+            Remove-Item $path
+        }
+        New-Item -ItemType Hardlink -Force -Path $path -Target $target
+    } 
+    catch {
+        exit
+    }
 }
 
 # -- wsl --
@@ -241,6 +295,7 @@ function wsl_fix_metadata() {
     wsl -u root bash -c 'echo "options=\"metadata,umask=0022,fmask=11\"" >> /etc/wsl.conf'
 }
 
+
 # -- system --
 
 function win_system_image_scan_cleanup() {
@@ -250,11 +305,15 @@ function win_system_image_scan_cleanup() {
     dism /Online /Cleanup-Image /RestoreHealth
 }
 
-function win_check_winget() {
-    if (-Not(Get-Command winget -errorAction SilentlyContinue)) {
-        Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
-    }
-    winget.exe list --accept-source-agreements | out-null
+function win_system_policy_reset() {
+    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
+    cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicyUsers '
+    cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
+    gpupdate.exe /force
+}
+
+function win_onedrive_reset() {
+    & "C:\Program Files\Microsoft OneDrive\onedrive.exe" /reset
 }
 
 function win_desktop_wallpaper_folder() {
@@ -269,31 +328,6 @@ function win_desktop_wallpaper_folder() {
     }
 }
 
-function win_system_policy_reset() {
-    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
-    cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicyUsers '
-    cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
-    gpupdate.exe /force
-}
-
-function win_administrator_user_enable() {
-    net user administrator /active:yes
-}
-
-function win_administrator_user_disable() {
-    net user administrator /active:no
-}
-
-function win_password_policy_disable() {
-    log_msg "win_disable_password_policy"
-    if (Test-IsNotAdmin) { log_error "no admin. skipping disable password."; return }
-    $tmpfile = New-TemporaryFile
-    secedit /export /cfg $tmpfile /quiet # this call requires admin
-    (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
-    secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
-    Remove-Item -Path $tmpfile
-}
-
 function win_insider_beta_enable() {
     # https://www.elevenforum.com/t/change-windows-insider-program-channel-in-windows-11.795/
     bcdedit /set flightsigning on
@@ -303,34 +337,6 @@ function win_insider_beta_enable() {
     Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\UI\Selection" -Name "UIBranch" -Value 'Beta'
     Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\UI\Selection" -Name "UIContentType" -Value 'Mainline'
     Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\UI\Selection" -Name "UIRing" -Value 'External'
-}
-
-function win_appx_list_installed() {
-    Get-AppxPackage -User $env:username | ForEach-Object { Write-Output $_.Name }
-}
-
-function win_appx_install() {
-    $pkgs_to_install = ""
-    foreach ($name in $args) {
-        if (-Not (Get-AppxPackage -User $env:username -Name $name)) {
-            $pkgs_to_install = "$pkgs_to_install $name"
-        }
-    }
-    if ($pkgs_to_install) {
-        log_msg "pkgs_to_install=$pkgs_to_install"
-        foreach ($pkg in $pkgs_to_install) {
-            Get-AppxPackage -User $env:username -Name $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" }
-        }
-    }
-}
-
-function win_appx_uninstall() {
-    foreach ($name in $args) {
-        if (Get-AppxPackage -User $env:username -Name $name) {
-            log_msg "uninstall $name"
-            Get-AppxPackage -User $env:username -Name $name | Remove-AppxPackage
-        }
-    }
 }
 
 function win_hyperv_enable() {
