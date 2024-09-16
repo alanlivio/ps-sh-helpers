@@ -295,6 +295,14 @@ function wsl_fix_metadata() {
     wsl -u root bash -c 'echo "options=\"metadata,umask=0022,fmask=11\"" >> /etc/wsl.conf'
 }
 
+# -- office --
+
+function win_office_disable_warn_local_link() {
+    # https://superuser.com/questions/1307645/how-to-disable-hyperlink-security-notice-in-onenote-2016
+    $reg = "HKCU:\Software\Microsoft\Office\16.0\Common\Security"
+    New-Item -Path $reg -Force | Out-Null
+    Set-ItemProperty -Path $reg -Name "DisableHyperlinkWarning" -Value 1 -Type Dword -Force
+}
 
 # -- system --
 
