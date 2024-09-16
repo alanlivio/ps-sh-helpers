@@ -1,16 +1,16 @@
 # -- essentials --
 
 if [[ -n $WSL_DISTRO_NAME ]]; then
-    alias winpath='wslpath -m'
+    alias win_dir_as_unix_format='wslpath -m'
     alias winget='winget.exe'
     alias explorer='explorer.exe'
     alias powershell='powershell.exe'
-    function start() {
+    function win_start() {
         type -p wslview >/dev/null || sudo apt install wslu
         wslview $@
     }
 else
-    alias winpath='cygpath -m'
+    alias win_dir_as_unix_format='cygpath -m'
 fi
 
 # -- load funcs from os_win.ps1 as aliases --
