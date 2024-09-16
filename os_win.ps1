@@ -8,7 +8,7 @@ function win_enable_sudo() {
     # win 10 supports from https://github.com/gerardog/gsudo
     if (-Not(Get-Command sudo -errorAction SilentlyContinue)) {
         winget_install gsudo
-        win_path_refresh
+        win_env_path_refresh
     }
 }
 
@@ -57,7 +57,7 @@ function win_install_nodejs_noadmin() {
     $fnm = "$env:LOCALAPPDATA\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe\fnm.exe"
     & $fnm env --use-on-cd | Out-String | Invoke-Expression
     & $fnm use --install-if-missing 20
-    win_path_add($env:FNM_MULTISHELL_PATH)
+    win_env_path_add($env:FNM_MULTISHELL_PATH)
     node -v
     npm -v
 }
@@ -120,7 +120,7 @@ function win_hlink_create_rm_if_exists($path, $target) {
 
 # -- path --
 
-function win_path_add($addPath) {
+function win_env_path_add($addPath) {
     if (Test-Path $addPath) {
         $path = [Environment]::GetEnvironmentVariable('path', 'User')
         $regexAddPath = [regex]::Escape($addPath)
@@ -133,11 +133,11 @@ function win_path_add($addPath) {
     }
 }
 
-function win_path_list() {
+function win_env_path_list() {
     (Get-ChildItem Env:Path).Value -split ';'
 }
 
-function win_path_refresh() {
+function win_env_path_refresh() {
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 }
 
