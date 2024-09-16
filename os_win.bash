@@ -1,5 +1,3 @@
-# -- essentials --
-
 if [[ -n $WSL_DISTRO_NAME ]]; then
     alias win_dir_as_unix_format='wslpath -m'
     alias winget='winget.exe'

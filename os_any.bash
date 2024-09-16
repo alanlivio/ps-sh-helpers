@@ -1,5 +1,3 @@
-# -- essentials --
-
 alias bashrc_reload='source $HOME/.bashrc'
 alias folder_count_files='find . -maxdepth 1 -type f | wc -l'
 alias folder_count_files_recusive='find . -maxdepth 1 -type f | wc -l'
@@ -33,22 +31,6 @@ alias bh_dotfiles_backup="_dotfiles_func backup"
 alias bh_dotfiles_diff="_dotfiles_func diff"
 
 alias passwd_generate='echo $(tr -dc "A-Za-z0-9!?%=" < /dev/urandom | head -c 12)'
-
-# -- clean --
-
-function latex_clean() {
-    rm -rf comment.cut ./*.aux ./*.dbx ./*.bbx ./*.cbx ./*.dvi ./*.log ./*.lox ./*.out ./*.lol ./*.pdf ./*.synctex.gz ./_minted-* ./*.bbl ./*.blg ./*.lot ./*.lof ./*.toc ./*.lol ./*.fdb_latexmk ./*.fls ./*.bcf ./*.aux ./*.fls ./*.fdb_latexmk ./*.log
-}
-
-# -- arp --
-
-function arp_list() {
-    if [[ $OSTYPE == "msys"* ]]; then
-        arp //a
-    else
-        arp -a
-    fi
-}
 
 # -- decompress --
 

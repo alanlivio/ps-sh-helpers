@@ -1,5 +1,3 @@
-# -- essentials --
-
 function ubu_update() {
     log_msg "apt update"
     sudo apt update
@@ -71,7 +69,7 @@ function ubu_install_latex() {
     sudo apt install -y latexmk texlive-latex-extra texlive-fonts-extra
 }
 
-function ubu_install_node_npm(){
+function ubu_install_node_npm() {
     type -p node >/dev/null || sudo snap install --classic node
     type -p npm >/dev/null || sudo npm install -g npm
 }
