@@ -2,6 +2,7 @@ function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " 
 function log_error() { Write-Host -ForegroundColor DarkRed "--" ($args -join " ") }
 function Test-HasSudo() { if (Get-Command sudo -errorAction SilentlyContinue) { return $true } else { return $false } }
 function Test-IsNotAdmin { -not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator') }
+function Test-IsAdmin { ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator') }
 
 function win_update() {
     log_msg "win_update"
