@@ -544,6 +544,7 @@ function win_clutter_remove_xbox() {
     $reg_game_store = "HKCU:\System\GameConfigStore"
     Set-ItemProperty -Path $reg_game_store -Name GameDVR_Enabled -Value '0' -Type Dword
 
+    winget_uninstall 9MV0B5HZVK9Z
     winget_uninstall Microsoft.Xbox.TCUI_8wekyb3d8bbwe
     winget_uninstall Microsoft.XboxApp_8wekyb3d8bbwe
     winget_uninstall Microsoft.XboxGameOverlay_8wekyb3d8bbwe
