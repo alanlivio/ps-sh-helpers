@@ -4,7 +4,7 @@ ARGS_BACTH="$AR--download-archive .downloaded.txt --no-playlist"
 function yt_dlp_sub_en() {
     : ${1?"Usage: ${FUNCNAME[0]} <url to video>"}
     local url=${1%%&*} # remove all after & (to leave only www.youtube.com/watch?v=...)
-    yt-dlp $ARGS_ALL --skip-download --write-sub --sub-langs en "$url"
+    yt-dlp $ARGS_ALL --skip-download --write-sub --write-auto-sub --convert-subs srt --sub-lang en "$url"
 }
 
 function yt_dlp_audio() {
