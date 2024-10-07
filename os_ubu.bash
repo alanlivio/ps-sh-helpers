@@ -66,7 +66,8 @@ function ubu_enable_git_ppa() {
 }
 
 function ubu_install_latex() {
-    sudo apt install -y latexmk texlive-latex-extra texlive-fonts-extra
+    sudo apt install -y latexmk texlive-full
+
 }
 
 function ubu_install_node_npm() {
