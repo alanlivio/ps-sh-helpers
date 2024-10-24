@@ -121,24 +121,24 @@ alias _git_filter_repo_test_and_msg='if [ $? -eq 0 ]; then log_msg "fiter-repo s
 
 function git_filter_repo_messages_to_lower_case() {
     _git_filter_repo_save_origin_and_branch
-    log_msg git filter-repo --message-callback "'return message.lower()'" --force | bash
+    log_msg git filter-repo --message-callback "'return message.lower()'" --force
     _git_filter_repo_test_and_msg
 }
 
 function git_filter_repo_messages_remove_str() {
     : ${2?"Usage: ${FUNCNAME[0]} <str> "}
     _git_filter_repo_save_origin_and_branch
-    log_msg git filter-repo --message-callback "'return message.replace(b\"$1\", b\"\")'" --force | bash
+    log_msg git filter-repo --message-callback "'return message.replace(b\"$1\", b\"\")'" --force
     _git_filter_repo_test_and_msg
 }
 
 function git_filter_repo_user_rename_to_current() {
-    log_msg -n "Do want use the user.email=$(git config user.email)(y/n)? "
+    log_msg "Do want use the user.email=$(git config user.email)(y/n)? "
     answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
     _git_filter_repo_save_origin_and_branch
     local new_name="$(git config user.name)"
     local new_email="$(git config user.email)"
-    log_msg git filter-repo --name-callback "'return b\"$new_name\"'" --email-callback "'return b\"$new_email\"'" --force | bash
+    git filter-repo --name-callback "'return b\"$new_name\"'" --email-callback "'return b\"$new_email\"'" --force
     _git_filter_repo_test_and_msg
 }
 
