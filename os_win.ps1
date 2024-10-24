@@ -71,6 +71,11 @@ function win_install_ubuntu() {
     sudo wsl --install -d Ubuntu
 }
 
+function win_install_miktex() {
+    winget_install Miktex.Miktex
+    miktex packages update
+}
+
 function win_install_nodejs_noadmin() {
     winget install Schniz.fnm
     $fnm = "$env:LOCALAPPDATA\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe\fnm.exe"
