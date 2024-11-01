@@ -77,13 +77,15 @@ function win_install_miktex() {
 }
 
 function win_install_nodejs_noadmin() {
-    winget install Schniz.fnm
-    $fnm = "$env:LOCALAPPDATA\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe\fnm.exe"
-    & $fnm env --use-on-cd | Out-String | Invoke-Expression
-    & $fnm use --install-if-missing 20
-    win_env_path_add($env:FNM_MULTISHELL_PATH)
-    node -v
-    npm -v
+    if (-Not(Get-Command node)) {
+        winget install Schniz.fnm
+        $fnm = "$env:LOCALAPPDATA\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe\fnm.exe"
+        & $fnm env --use-on-cd | Out-String | Invoke-Expression
+        & $fnm use --install-if-missing 20
+        win_env_path_add($env:FNM_MULTISHELL_PATH)
+        node -v
+        npm -v
+    }
 }
 
 function _winget_install() {
