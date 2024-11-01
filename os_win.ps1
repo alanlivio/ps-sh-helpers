@@ -72,8 +72,10 @@ function win_install_ubuntu() {
 }
 
 function win_install_miktex() {
-    winget_install Miktex.Miktex
-    miktex packages update
+    if (-Not(Get-Command miktex)) {
+        winget_install Miktex.Miktex
+        miktex packages update
+    }
 }
 
 function win_install_nodejs_noadmin() {
