@@ -86,6 +86,7 @@ function win_install_nodejs_noadmin() {
         & $fnm env --use-on-cd | Out-String | Invoke-Expression
         & $fnm use --install-if-missing 20
         win_env_path_add($env:FNM_MULTISHELL_PATH)
+        win_env_path_reload
         node -v
         npm -v
     }
@@ -421,6 +422,7 @@ function win_clutter_remove_osapps_unused() {
     winget_uninstall "Solitaire & Casual Games"
     winget_uninstall "News"
     winget_uninstall "Windows Maps"
+    winget_uninstall "Microsoft People"
     winget_uninstall "Films & TV"
     winget_uninstall "Power Automate"
 }
