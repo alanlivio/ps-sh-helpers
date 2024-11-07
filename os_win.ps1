@@ -410,33 +410,14 @@ function win_clutter_no_desktop_icons() {
 function win_clutter_remove_osapps_unused() {
     log_msg "win_clutter_remove_osapps_unused"
     
-    # old appx not avaliable in winget, most for win10
-    $pkgs = @(
-        'Clipchamp.Clipchamp'
-        'Microsoft.BingNews'
-        'Microsoft.BingSports'
-        'Microsoft.BingWeather'
-        'Microsoft.Getstarted'
-        'Microsoft.Microsoft3DViewer'
-        'Microsoft.MicrosoftSolitaireCollection'
-        'Microsoft.MicrosoftStickyNotes'
-        'Microsoft.MixedReality.Portal'
-        'Microsoft.People'
-        'Microsoft.Wallet'
-        'microsoft.windowscommunicationsapps'
-        'Microsoft.WindowsMaps'
-        'Microsoft.ZuneMusic'
-        'Microsoft.ZuneVideo'
-        'SpotifyAB.SpotifyMusic'
-    )
-    win_appx_uninstall @pkgs
-    
-    # avaliable in winget
-    winget_uninstall Microsoft.BingWallpaper
-    winget_uninstall Microsoft.ZuneVideo_8wekyb3d8bbwe
-    winget_uninstall Microsoft.MSPaint_8wekyb3d8bbwe
-    winget_uninstall Microsoft.Skype
-    winget_uninstall Microsoft.PowerAutomateDesktop
+    winget_uninstall "Mail and Calendar"
+    winget_uninstall "Microsoft Sticky Notes"
+    winget_uninstall "Microsoft Clipchamp"
+    winget_uninstall "Solitaire & Casual Games"
+    winget_uninstall "News"
+    winget_uninstall "Windows Maps"
+    winget_uninstall "Films & TV"
+    winget_uninstall "Power Automate"
 }
 
 function win_clutter_remove_3_and_4_fingers_gestures() {
