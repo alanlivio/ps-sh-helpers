@@ -72,14 +72,15 @@ function win_install_ubuntu() {
 }
 
 function win_install_miktex() {
-    if (-Not(Get-Command miktex)) {
-        winget_install Miktex.Miktex
+    if (-Not(Get-Command miktex -errorAction SilentlyContinue)) {
+        winget_install MiKTeX.MiKTeX
+        win_env_path_reload
         miktex packages update
     }
 }
 
 function win_install_nodejs_noadmin() {
-    if (-Not(Get-Command node)) {
+    if (-Not(Get-Command node -errorAction SilentlyContinue)) {
         winget install Schniz.fnm
         $fnm = "$env:LOCALAPPDATA\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe\fnm.exe"
         & $fnm env --use-on-cd | Out-String | Invoke-Expression
@@ -169,6 +170,10 @@ function ps_show_function($name) {
     Get-Content Function:\$name
 }
 
+
+function win_env_path_reload() {
+    $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", [System.EnvironmentVariableTarget]::Machine) + ";" + [System.Environment]::GetEnvironmentVariable("PATH", [System.EnvironmentVariableTarget]::User)
+}
 
 function win_env_path_add($addPath) {
     if (Test-Path $addPath) {
