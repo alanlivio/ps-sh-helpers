@@ -79,6 +79,29 @@ function win_install_miktex() {
     }
 }
 
+function win_install_golang(){
+    $goVersion = "1.23.3"
+    $goUrl = "https://golang.org/dl/go$goVersion.windows-amd64.zip"
+    $installPath = "$env:LOCALAPPDATA\Golang"
+    $zipPath = "$env:TEMP\go$goVersion.zip"
+
+    log_msg "Downloading Go $goVersion..."
+    $webClient = New-Object System.Net.WebClient
+    $webClient.DownloadFile($goUrl, $zipPath)
+    if (!(Test-Path -Path $installPath)) {
+        New-Item -ItemType Directory -Path $installPath | Out-Null
+    }
+    
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    Write-Host "Extracting Go to $installPath..."
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $installPath)
+    
+    Remove-Item -Path $zipPath
+    win_env_path_add("$installPath\go\bin")
+    log_msg "Go has been installed to $installPath and added to the PATH."
+    win_env_path_reload
+}
+
 function win_install_nodejs_noadmin() {
     if (-Not(Get-Command node -errorAction SilentlyContinue)) {
         winget install Schniz.fnm
