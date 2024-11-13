@@ -79,15 +79,40 @@ function win_install_miktex() {
     }
 }
 
-function win_install_golang(){
-    $goVersion = "1.23.3"
-    $goUrl = "https://golang.org/dl/go$goVersion.windows-amd64.zip"
-    $installPath = "$env:LOCALAPPDATA\Golang"
-    $zipPath = "$env:TEMP\go$goVersion.zip"
+function win_install_vlc(){
+    $version = "3.0.21"
+    $url = "https://www.mirrorservice.org/sites/videolan.org/vlc/$version/win32/vlc-$version-win32.zip"
+    $installPath = "$env:LOCALAPPDATA\VLC"
+    $binPath = "$env:LOCALAPPDATA\VLC\vlc-$version\"
+    $zipPath = "$env:TEMP\vlc-$version-win32.zip"
 
-    log_msg "Downloading Go $goVersion..."
+    log_msg "Downloading Go $version..."
     $webClient = New-Object System.Net.WebClient
-    $webClient.DownloadFile($goUrl, $zipPath)
+    $webClient.DownloadFile($url, $zipPath)
+    if (!(Test-Path -Path $installPath)) {
+        New-Item -ItemType Directory -Path $installPath | Out-Null
+    }
+    
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    Write-Host "Extracting VLC to $installPath..."
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $installPath)
+    
+    Remove-Item -Path $zipPath
+    win_env_path_add("$binPath")
+    log_msg "VLC has been installed to $binPath and added to the PATH."
+    win_env_path_reload
+}
+
+function win_install_golang(){
+    $version = "1.23.3"
+    $url = "https://golang.org/dl/go$version.windows-amd64.zip"
+    $installPath = "$env:LOCALAPPDATA\Golang"
+    $binPath = "$env:LOCALAPPDATA\Golang\go\bin"
+    $zipPath = "$env:TEMP\go$version.zip"
+
+    log_msg "Downloading Go $version..."
+    $webClient = New-Object System.Net.WebClient
+    $webClient.DownloadFile($url, $zipPath)
     if (!(Test-Path -Path $installPath)) {
         New-Item -ItemType Directory -Path $installPath | Out-Null
     }
@@ -97,8 +122,8 @@ function win_install_golang(){
     [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $installPath)
     
     Remove-Item -Path $zipPath
-    win_env_path_add("$installPath\go\bin")
-    log_msg "Go has been installed to $installPath and added to the PATH."
+    win_env_path_add("$binPath")
+    log_msg "Go has been installed to $binPath and added to the PATH."
     win_env_path_reload
 }
 
