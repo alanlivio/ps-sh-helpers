@@ -9,10 +9,7 @@ function win_update() {
     log_msg "> winget upgrade"
     winget upgrade --accept-package-agreements --accept-source-agreements --silent --scope user --all
     log_msg "> os upgrade"
-    if (Test-IsNotAdmin) { 
-        log_msg "no sudo for os upgrade. you can update manually from Settings app."
-        return
-    }
+    if (Test-IsNotAdmin) { log_msg "no sudo for os upgrade. you can do manually from Settings app."; return }
     sudo {
         # https://gist.github.com/billpieper/a39173afa0b343a14ddeeb1d79ab14ea
         if (-Not(Get-Command Install-WindowsUpdate -errorAction SilentlyContinue)) {
@@ -79,7 +76,7 @@ function win_install_miktex() {
     }
 }
 
-function win_install_vlc(){
+function win_install_vlc() {
     $version = "3.0.21"
     $url = "https://www.mirrorservice.org/sites/videolan.org/vlc/$version/win32/vlc-$version-win32.zip"
     $installPath = "$env:LOCALAPPDATA\VLC"
@@ -103,7 +100,7 @@ function win_install_vlc(){
     win_env_path_reload
 }
 
-function win_install_golang(){
+function win_install_golang() {
     $version = "1.23.3"
     $url = "https://golang.org/dl/go$version.windows-amd64.zip"
     $installPath = "$env:LOCALAPPDATA\Golang"
