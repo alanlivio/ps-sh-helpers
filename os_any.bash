@@ -1,11 +1,16 @@
+function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
+function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
+
+# -- basic --
+
 alias bashrc_reload='source $HOME/.bashrc'
 alias folder_count_files='find . -maxdepth 1 -type f | wc -l'
 alias folder_count_files_recusive='find . -maxdepth 1 -type f | wc -l'
 alias folder_list_sorted_by_size='du -ahd 1 | sort -h'
 alias folder_find_file_with_crlf='find . -not -type d -exec file "{}" ";" | grep CRLF'
+alias passwd_generate='echo $(tr -dc "A-Za-z0-9!?%=" < /dev/urandom | head -c 12)'
 
-function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
-function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
+# -- dotfiles --
 
 function _dotfiles_func() {
     : ${1?"Usage: ${FUNCNAME[0]} <backup|install|diff>"}
@@ -30,8 +35,6 @@ alias bh_dotfiles_install="_dotfiles_func install"
 alias bh_dotfiles_backup="_dotfiles_func backup"
 alias bh_dotfiles_diff="_dotfiles_func diff"
 
-alias passwd_generate='echo $(tr -dc "A-Za-z0-9!?%=" < /dev/urandom | head -c 12)'
-
 # -- decompress --
 
 function decompress() {
@@ -44,7 +47,7 @@ function decompress() {
     case $filename in
     *.tar.bz2 | *.tbz | *.tbz2) ret=$(tar -xzf "$1" -C $dest) ;;
     *.gz | *.Z) ret=$(gunzip "$1" >$dest/$filename_noext) ;;
-    *bz2) ret=$(tar -xjf "$1" -C $dest) ;;
+    *.bz2) ret=$(tar -xjf "$1" -C $dest) ;;
     *.zip) ret=$(unzip "$1" -d $dest) ;;
     *.zst) ret=$(tar --use-compress-program=unzstd -xvf "$1" -C $dest) ;;
     *.xz) ret=$(tar -xJf "$1" -C $dest) ;;

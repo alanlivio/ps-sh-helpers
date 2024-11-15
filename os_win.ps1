@@ -460,7 +460,6 @@ function win_clutter_no_desktop_icons() {
 
 function win_clutter_remove_osapps_unused() {
     log_msg "win_clutter_remove_osapps_unused"
-    
     winget_uninstall "Mail and Calendar"
     winget_uninstall "Microsoft Sticky Notes"
     winget_uninstall "Microsoft Clipchamp"
