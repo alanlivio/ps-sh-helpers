@@ -18,14 +18,12 @@ flowchart LR
     "]
     win["os_win.bash"]
     ubu["os_ub.bash"]
-    mac["os_mac.bash"]
     bashrc --> |"load"| init
     init --> |"load"| anyos
     anyos --> |"load if type program"| program-dependent
     win --> |"bash alias to each function at"| oswinps1
     init --> |"load if $OSTYPE==msys* || -n $WSL_DISTRO_NAME"| win
     init --> |"load if $OSTYPE==linux*"| ubu
-    init --> |"load if $OSTYPE==mac*"| mac
 ```
 
 ## Install
@@ -68,13 +66,6 @@ Ubuntu helpers are defined in [os_ubu.bash](os_ubu.bash). See some below.
 - `user_sudo_no_password`: remove password for current user sudo.
 - `gnome_dark_mode`: enable gnome dark mode.
 - `gnome_nautilus_list_view`: enable nautilus list view.
-
-### os_mac
-
-Mac helpers are defined in [os_mac.bash](os_mac.bash). See some below.
-
-- `mac_update`: update os and brew.
-- `mac_install_brew`: install brew package manager
 
 ### os_win
 
