@@ -332,20 +332,24 @@ function win_explorer_restart() {
 }
 
 
-function win_hlink_create_rm_if_exists($path, $target) {
-    if (Test-Path $target) { 
-        if ($path) {
-            $hash1 = Get-FileHash $path
-            $hash2 = Get-FileHash $target
-            if ($hash1.Hash -ne $hash2.Hash) {
-                Remove-Item $path
-            }
-        }
-        New-Item -ItemType Hardlink -Force -Path $path -Target $target
-    } 
-    else {
-        Throw "$target is not a valid path."
+function win_hlink_create_overwrite() {
+    $source = $Args[0]
+    $target = $Args[1]
+    log_msg "win_hlink_create_overwrite source $source target $target"
+    if (!(Test-Path "$target")) { 
+        Throw "target $target is not a valid"
     }
+    if (Test-Path "$source") { 
+        $hash1 = Get-FileHash "$source"
+        $hash2 = Get-FileHash "$target"
+        if ($hash1.Hash -ne $hash2.Hash) {
+            log_msg "remove old source $source"
+            Remove-Item -Force "$source"
+        } else{
+            return # same file
+        }
+    }
+    New-Item -ItemType Hardlink -Force -Path "$source" -Target "$target"
 }
 
 # -- wsl --
