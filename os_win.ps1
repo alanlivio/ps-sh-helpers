@@ -114,7 +114,8 @@ function win_install_vlc() {
     $zipPath = "$env:TEMP\vlc-$version-win32.zip"
     $extractPath = "$env:userprofile\bin\" # zip has an internal folder
     $exePath = "$env:userprofile\bin\vlc-$version\vlc.exe"
-
+    if (Test-Path $exePath) { return } # return if exePath already exists
+    
     log_msg "Downloading $name $version"
     $webClient = New-Object System.Net.WebClient
     $webClient.DownloadFile($url, $zipPath)
@@ -138,6 +139,7 @@ function win_install_obs() {
     $zipPath = "$env:TEMP\OBS-Studio-$version-Windows.zip"
     $extractPath = "$env:userprofile\bin\OBS" # zip has no internal folder
     $exePath = "$extractPath\bin\64bit\obs64.exe"
+    if (Test-Path $exePath) { return } # return if exePath already exists
 
     log_msg "Downloading $name $version"
     $webClient = New-Object System.Net.WebClient
@@ -162,6 +164,7 @@ function win_install_golang() {
     $extractPath = "$env:userprofile\bin\go$version"
     $binPath = "$extractPath\bin"
     $zipPath = "$env:TEMP\go$version.zip"
+    if (Test-Path $binPath) { return } # return if binPath already exists
 
     log_msg "Downloading $name $version"
     $webClient = New-Object System.Net.WebClient
