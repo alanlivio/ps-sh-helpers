@@ -11,10 +11,10 @@ else
     alias win_dir_as_unix_format='cygpath -m'
 fi
 
-# -- load funcs from os_win.ps1 as aliases --
+# -- load funcs from init.ps1 as aliases --
 
 function _ps_call() {
-    powershell.exe -command "& { . $(wslpath -w $BH_DIR/os_win.ps1); $* }"
+    powershell.exe -command "& { . $(wslpath -w $HELPERS_DIR/init.ps1); $* }"
 }
 
 function _ps_def_func() {
@@ -47,7 +47,7 @@ while read -r line; do
             _ps_def_func $func
         fi
     fi
-done <$BH_DIR/os_win.ps1
+done <$HELPERS_DIR/init.ps1
 
 function wsl_install_cuda_cudnn() {
     # https://canonical-ubuntu-wsl.readthedocs-hosted.com/en/latest/tutorials/gpu-cuda/
