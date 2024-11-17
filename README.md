@@ -1,29 +1,43 @@
 # ps-sh-helpers
 
-Lib template for creating powershell and bash helpers. It let you organize helpers in `OS-dependent` or `program-dependent` and load them from powershell or bash. 
-
-The diagram below illustrates how ps-sh-helpers loads `OS-dependent` from `os_*.bash` (files after testing `$OSTYPE`) and loads `program-dependent` from `programs/<program>.bash` (after testing `type <program>`).
+Lib template for creating powershell and bash helpers. It let you organize helpers in `OS-dependent` or `program-dependent` and load them from powershell or bash. It loads `OS-dependent` from `os_*` and loads `program-dependent` from `programs/<program>.*`.
 
 ```mermaid
 %%{init: {'theme':'dark'}}%%
 flowchart LR
     bashrc["~/.bashrc"]
-    init["bash-hepers/init.sh"]
-    anyos["os_any.bash"]
-    oswinps1["init.ps1"]
+    init["ps-sh-hepers/init.sh"]
+    oswinps1["os_win.ps1"]
     program-dependent["
         programs/[program].bash
         ...
     "]
     win["os_win.bash"]
-    ubu["os_ub.bash"]
+    ubu["os_ubu.bash"]
     bashrc --> |"load"| init
-    init --> |"load"| anyos
-    anyos --> |"load if type program"| program-dependent
+    init --> |"load if program exists"| program-dependent
     win --> |"bash alias to each function at"| oswinps1
-    init --> |"load if $OSTYPE==msys* || -n $WSL_DISTRO_NAME"| win
+    init --> |"load if $OSTYPE==msys* | -n $WSL_DISTRO_NAME"| win
     init --> |"load if $OSTYPE==linux*"| ubu
 ```
+
+<div style="transform: scale(0.7); transform-origin: top left;">
+
+```mermaid
+%%{init: {'theme':'dark'}}%%
+flowchart LR
+    psprofile["Microsoft.PowerShell_profile.ps1"]
+    program-dependent["
+        programs/[program].ps1
+        ...
+    "]
+    init --> |"load if program exists"| program-dependent
+    init["ps-sh-hepers/init.ps1"]
+    oswinps1["os_win.ps1"]
+    psprofile--> |"load"| init
+    init --> |"load"| oswinps1
+```
+<div>
 
 ## Install
 
