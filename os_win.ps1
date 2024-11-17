@@ -68,6 +68,36 @@ function win_install_ubuntu() {
     sudo wsl --install -d Ubuntu
 }
 
+
+function win_add_to_start_menu {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$ExePath  # Path to the .exe file
+    )
+    if (-not (Test-Path $ExePath)) {
+        Write-Error "The specified executable path does not exist: $ExePath"
+        return
+    }
+    $shortcutName = [System.IO.Path]::GetFileNameWithoutExtension($ExePath) + ".lnk"
+    $startMenuFolder = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs"
+    if (-not (Test-Path $startMenuFolder)) {
+        Write-Error "The Start Menu folder does not exist: $startMenuFolder"
+        return
+    }
+    $shortcutPath = Join-Path -Path $startMenuFolder -ChildPath $shortcutName
+    try {
+        $shell = New-Object -ComObject WScript.Shell
+        $shortcut = $shell.CreateShortcut($shortcutPath)
+        $shortcut.TargetPath = $ExePath
+        $shortcut.WorkingDirectory = (Split-Path -Parent $ExePath)
+        $shortcut.Description = "Shortcut to $(Split-Path -Leaf $ExePath)"
+        $shortcut.Save()
+        Write-Output "Shortcut successfully created: $shortcutPath"
+    } catch {
+        Write-Error "An error occurred while creating the shortcut: $_"
+    }
+}
+
 function win_install_miktex() {
     if (-Not(Get-Command miktex -errorAction SilentlyContinue)) {
         winget_install MiKTeX.MiKTeX
@@ -78,49 +108,74 @@ function win_install_miktex() {
 
 function win_install_vlc() {
     $version = "3.0.21"
+    $name = "VLC"
     $url = "https://www.mirrorservice.org/sites/videolan.org/vlc/$version/win32/vlc-$version-win32.zip"
-    $installPath = "$env:LOCALAPPDATA\VLC"
-    $binPath = "$env:LOCALAPPDATA\VLC\vlc-$version\"
     $zipPath = "$env:TEMP\vlc-$version-win32.zip"
+    $extractPath = "$env:userprofile\bin\" # zip has an internal folder
+    $exePath = "$env:userprofile\bin\vlc-$version\vlc.exe"
 
-    log_msg "Downloading Go $version..."
+    log_msg "Downloading $name $version"
     $webClient = New-Object System.Net.WebClient
     $webClient.DownloadFile($url, $zipPath)
-    if (!(Test-Path -Path $installPath)) {
-        New-Item -ItemType Directory -Path $installPath | Out-Null
+    if (!(Test-Path -Path $extractPath)) {
+        New-Item -ItemType Directory -Path $extractPath | Out-Null
     }
     
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    Write-Host "Extracting VLC to $installPath..."
-    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $installPath)
+    Write-Host "Extracting $name to $extractPath"
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $extractPath)
     
     Remove-Item -Path $zipPath
-    win_env_path_add("$binPath")
-    log_msg "VLC has been installed to $binPath and added to the PATH."
-    win_env_path_reload
+    win_add_to_start_menu $exePath
+    log_msg "$exePath has been added to StartMenu."
+}
+
+function win_install_obs() {
+    $version = "30.2.3"
+    $name = "OBS Studio"
+    $url = "https://cdn-fastly.obsproject.com/downloads/OBS-Studio-$version-Windows.zip"
+    $zipPath = "$env:TEMP\OBS-Studio-$version-Windows.zip"
+    $extractPath = "$env:userprofile\bin\OBS" # zip has no internal folder
+    $exePath = "$extractPath\bin\64bit\obs64.exe"
+
+    log_msg "Downloading $name $version"
+    $webClient = New-Object System.Net.WebClient
+    $webClient.DownloadFile($url, $zipPath)
+    if (!(Test-Path -Path $extractPath)) {
+        New-Item -ItemType Directory -Path $extractPath | Out-Null
+    }
+    
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    Write-Host "Extracting $name to $extractPath"
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $extractPath)
+    
+    Remove-Item -Path $zipPath
+    win_add_to_start_menu $exePath
+    log_msg "$exePath has been added to StartMenu."
 }
 
 function win_install_golang() {
     $version = "1.23.3"
+    $name = "Go"
     $url = "https://golang.org/dl/go$version.windows-amd64.zip"
-    $installPath = "$env:LOCALAPPDATA\Golang"
-    $binPath = "$env:LOCALAPPDATA\Golang\go\bin"
+    $extractPath = "$env:userprofile\bin\go$version"
+    $binPath = "$extractPath\bin"
     $zipPath = "$env:TEMP\go$version.zip"
 
-    log_msg "Downloading Go $version..."
+    log_msg "Downloading $name $version"
     $webClient = New-Object System.Net.WebClient
     $webClient.DownloadFile($url, $zipPath)
-    if (!(Test-Path -Path $installPath)) {
-        New-Item -ItemType Directory -Path $installPath | Out-Null
+    if (!(Test-Path -Path $extractPath)) {
+        New-Item -ItemType Directory -Path $extractPath | Out-Null
     }
     
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    Write-Host "Extracting Go to $installPath..."
-    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $installPath)
+    Write-Host "Extracting $name to $extractPath"
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $extractPath)
     
     Remove-Item -Path $zipPath
     win_env_path_add("$binPath")
-    log_msg "Go has been installed to $binPath and added to the PATH."
+    log_msg "$name has been installed to $binPath and added to the PATH."
     win_env_path_reload
 }
 
