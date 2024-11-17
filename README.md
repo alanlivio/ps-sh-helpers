@@ -1,9 +1,8 @@
-<h1 align="center"><img src="logo.svg" width="250" onerror='this.style.display="none"'/></h1>
+# ps1-sh-helpers
 
-# bash-helpers
+Lib template for creating powershell and bash helpers. It let you organize helpers in `OS-dependent` or `program-dependent` and load them from powershell or bash. 
 
-Template to easily create multi-OS bash helpers for Windows (MSYS2/GitBash/WSL), Ubuntu, and Mac. It is useful to let you organize helpers in `OS-dependent` or `program-dependent`. The diagram below illustrates how the [init.sh](init.sh) loads `OS-dependent` from `os_*.bash` (files after testing `$OSTYPE`) and loads `program-dependent` from `programs/<program>.bash` (after testing `type <program>`). At Windows, it also loads ps1 functions from `os_win.ps1` as an alias.
-The project logo refers to the synthetic chemical element Bohrium, which also has BH's initials.
+The diagram below illustrates how ps1-sh-helpers loads `OS-dependent` from `os_*.bash` (files after testing `$OSTYPE`) and loads `program-dependent` from `programs/<program>.bash` (after testing `type <program>`).
 
 ```mermaid
 %%{init: {'theme':'dark'}}%%
@@ -11,7 +10,7 @@ flowchart LR
     bashrc["~/.bashrc"]
     init["bash-hepers/init.sh"]
     anyos["os_any.bash"]
-    oswinps1["os_win.ps1"]
+    oswinps1["init.ps1"]
     program-dependent["
         programs/[program].bash
         ...
@@ -28,11 +27,11 @@ flowchart LR
 
 ## Install
 
-The bash-helpers project has two requirements: a `bash shell` and `git`. So, run on a `bash shell` with `git`:
+The ps1-sh-helpers project has two requirements: a `bash shell` and `git`. So, run on a `bash shell` with `git`:
 
 ```bash
-  git clone https://github.com/alanlivio/bash-helpers ~/.bh &&\
-    echo "source ~/.bh/init.sh" >> ~/.bashrc &&\
+  git clone https://github.com/alanlivio/ps1-sh-helpers ~/.bh &&\
+    echo "source ~/ps1-sh-helpers/init.sh" >> ~/.bashrc &&\
     source ~/.bashrc
 ```
 
@@ -69,7 +68,7 @@ Ubuntu helpers are defined in [os_ubu.bash](os_ubu.bash). See some below.
 
 ### os_win
 
-Win helpers are defined in [os_win.bash](os_win.bash) and [os_win.ps1](os_win.ps1), see some below.
+Win helpers are defined in [os_win.bash](os_win.bash) and [init.ps1](init.ps1), see some below.
 
 - `win_dir_as_unix_format`: convert dir to a unix format using '/'. It uses `cygpath -m` in GitBash/MSYS2, while uses `wslpath -m` in WSL.
 - `win_disable_edge_ctrl_shift_c`: disable Edge shorcut ctrl+shift+c to developer (require sudo).
