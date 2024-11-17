@@ -194,30 +194,35 @@ function win_install_nodejs_noadmin() {
 }
 
 function _winget_install() {
-    winget install --accept-package-agreements --accept-source-agreements --scope user -e --id $Args
+    winget install --accept-package-agreements --accept-source-agreements --scope user -e --id $args
 }
 
 function winget_install() {
-    winget list --accept-source-agreements -q $Args[0] | Out-Null
+    param ([Parameter(Mandatory = $true)][string] $pkg)
+    winget list --accept-source-agreements -q $pkg | Out-Null
     if (-not $?) {
-        _winget_install $Args[0] 
+        _winget_install $pkg
     }
 }
 
 function winget_install_at_location() {
-    winget list --accept-source-agreements -q $Args[0] | Out-Null
+    param (
+        [Parameter(Mandatory = $true)][string] $pkg, 
+        [Parameter(Mandatory = $true)][string] $location
+    )
+    winget list --accept-source-agreements -q $pkg | Out-Null
     if (-not $?) {
-        _winget_install --location="$Args[1]" $Args[0] 
+        _winget_install --location="$location" $pkg
     }
 }
 
 function winget_uninstall() {
-    winget list --accept-source-agreements -q $Args | Out-Null
+    param ([Parameter(Mandatory = $true)][string] $pkg)
+    winget list --accept-source-agreements -q $pkg | Out-Null
     if ($?) {
-        winget uninstall --silent "$Args"
+        winget uninstall --silent "$pkg"
     }
 }
-
 
 function win_check_winget() {
     if (-Not(Get-Command winget -errorAction SilentlyContinue)) {
@@ -453,7 +458,7 @@ function win_onedrive_reset() {
 }
 
 function win_desktop_wallpaper_folder() {
-    $dir = $args[0]
+    param ([Parameter(Mandatory = $true)][string] $dir)
     if (Test-Path $dir) {
         $dir = (Resolve-Path $dir).Path
         $reg = "HKCU:\Control Panel\Desktop"
