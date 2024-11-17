@@ -93,7 +93,8 @@ function win_add_to_start_menu {
         $shortcut.Description = "Shortcut to $(Split-Path -Leaf $ExePath)"
         $shortcut.Save()
         Write-Output "Shortcut successfully created: $shortcutPath"
-    } catch {
+    }
+    catch {
         Write-Error "An error occurred while creating the shortcut: $_"
     }
 }
@@ -333,8 +334,12 @@ function win_explorer_restart() {
 
 
 function win_hlink_create_overwrite() {
-    $source = $Args[0]
-    $target = $Args[1]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $source,
+        [Parameter(Mandatory = $true)]
+        [string] $target
+    )
     log_msg "win_hlink_create_overwrite source $source target $target"
     if (!(Test-Path "$target")) { 
         Throw "target $target is not a valid"
@@ -345,7 +350,8 @@ function win_hlink_create_overwrite() {
         if ($hash1.Hash -ne $hash2.Hash) {
             log_msg "remove old source $source"
             Remove-Item -Force "$source"
-        } else{
+        }
+        else {
             return # same file
         }
     }
