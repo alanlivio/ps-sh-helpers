@@ -1,9 +1,0 @@
-{
-    "recommendations": [
-        "ms-vscode.powershell",
-        "foxundermoon.shell-format",
-        "timonwong.shellcheck",
-        "bierner.markdown-preview-github-styles",
-        "bierner.markdown-mermaid"
-    ]
-}
