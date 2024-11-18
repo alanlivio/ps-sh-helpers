@@ -1,6 +1,6 @@
 # ps-sh-helpers
 
-Lib template for creating powershell and bash helpers. It let you organize helpers in `OS-dependent` or `program-dependent` and load them from powershell or bash. It loads `OS-dependent` from `os_*` and loads `program-dependent` from `programs/<program>.*`.
+This project is template for creating PowerShell and Bash helpers. It let you organize helpers in `OS-dependent` from `os_*` files and loads `program-dependent` from `programs/<program>.*` files. It is initialized at `~/.bashrc` by loading `init.sh` or at `PowerShell_profile.ps1` by loading `init.ps1` (see diagram below).
 
 ```mermaid
 %%{init: {'theme':'dark'}}%%
@@ -14,14 +14,12 @@ flowchart LR
     "]
     win["os_win.bash"]
     ubu["os_ubu.bash"]
-    bashrc --> |"load"| init
-    init --> |"load if program exists"| program-dependent
+    bashrc --> |"loads"| init
+    init --> |"loads if program exists"| program-dependent
     win --> |"bash alias to each function at"| oswinps1
-    init --> |"load if $OSTYPE==msys* | -n $WSL_DISTRO_NAME"| win
-    init --> |"load if $OSTYPE==linux*"| ubu
+    init --> |"loads if runing from WSL or MSSYS2"| win
+    init --> |"loads if running from Ubu"| ubu
 ```
-
-<div style="transform: scale(0.7); transform-origin: top left;">
 
 ```mermaid
 %%{init: {'theme':'dark'}}%%
@@ -31,24 +29,23 @@ flowchart LR
         programs/[program].ps1
         ...
     "]
-    init --> |"load if program exists"| program-dependent
+    init --> |"loads if program exists"| program-dependent
     init["ps-sh-hepers/init.ps1"]
     oswinps1["os_win.ps1"]
-    psprofile--> |"load"| init
-    init --> |"load"| oswinps1
+    psprofile--> |"loads"| init
+    init --> |"loads"| oswinps1
 ```
-<div>
 
-## Install
+## How to install
 
-From bash, install ps-sh-helpers by:
+At Bash, you call install `ps-sh-helpers` by:
 
 ```bash
 git clone https://github.com/alanlivio/ps-sh-helpers ~/.ps1-sh-helpers
 echo "source ~/.ps-sh-helpers/init.sh" >> ~/.bashrc
 ```
 
-From powershell, install ps-sh-helpers by:
+At PowerShell, you can install `ps-sh-helpers` by:
 
 ```ps1
 git clone https://github.com/alanlivio/ps-sh-helpers ${env:userprofile}\.ps1-sh-helpers
