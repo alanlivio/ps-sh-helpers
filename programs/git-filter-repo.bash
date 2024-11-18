@@ -1,18 +1,18 @@
 function git_filter_repo_finish_push() {
-    if [ -z "$BH_LAST_ORIGIN" ]; then
-        log_msg "var BH_LAST_ORIGIN not defined (maybe this is a new shell after editing). please restart editing!"
+    if [ -z "$GIT_LAST_ORIGIN" ]; then
+        log_msg "var GIT_LAST_ORIGIN not defined (maybe this is a new shell after editing). please restart editing!"
         return
     fi
 
-    log_msg "Is it to force push branch $BH_LAST_BRANCH to origin $BH_LAST_ORIGIN (y/n)? "
+    log_msg "Is it to force push branch $GIT_LAST_BRANCH to origin $GIT_LAST_ORIGIN (y/n)? "
     answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
     if echo "$answer" | grep -iq "^y"; then
-        git remote add origin $BH_LAST_ORIGIN
-        git push --set-upstream origin $BH_LAST_BRANCH --force
+        git remote add origin $GIT_LAST_ORIGIN
+        git push --set-upstream origin $GIT_LAST_BRANCH --force
     fi
 }
 
-alias _git_filter_repo_save_origin_and_branch='if [[ -n $(git remote get-url origin) ]]; then BH_LAST_ORIGIN=$(git remote get-url origin); BH_LAST_BRANCH=$(git branch --show-current); fi'
+alias _git_filter_repo_save_origin_and_branch='if [[ -n $(git remote get-url origin) ]]; then GIT_LAST_ORIGIN=$(git remote get-url origin); GIT_LAST_BRANCH=$(git branch --show-current); fi'
 alias _git_filter_repo_test_and_msg='if [ $? -eq 0 ]; then log_msg "fiter-repo succeeded. check if you agree and run git_filter_repo_finish_push to push"; fi'
 
 function git_filter_repo_messages_to_lower_case() {
