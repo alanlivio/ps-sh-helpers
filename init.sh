@@ -1,6 +1,7 @@
 HELPERS_DIR="$(dirname "${BASH_SOURCE[0]}")"
 
 # -- bash basic --
+
 function log_error() { echo -e "\033[00;31m-- $* \033[00m"; }
 function log_msg() { echo -e "\033[00;33m-- $* \033[00m"; }
 alias bashrc_reload='source $HOME/.bashrc'

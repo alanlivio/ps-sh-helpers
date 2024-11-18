@@ -11,6 +11,8 @@ else
     alias win_dir_as_unix_format='cygpath -m'
 fi
 
+# -- install --
+
 function wsl_install_cuda_cudnn() {
     # https://canonical-ubuntu-wsl.readthedocs-hosted.com/en/latest/tutorials/gpu-cuda/
     sudo apt-key del 7fa2af80

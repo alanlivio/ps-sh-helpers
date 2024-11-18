@@ -1,3 +1,5 @@
+# -- update --
+
 function ubu_update() {
     log_msg "apt update"
     sudo apt update
@@ -6,6 +8,8 @@ function ubu_update() {
     log_msg "apt autoremove"
     sudo apt -y autoremove
 }
+
+# -- apt --
 
 alias apt_ppa_remove="sudo add-apt-repository --remove"
 alias apt_ppa_list="apt policy"
@@ -37,19 +41,6 @@ function deb_install_file_from_url() {
     sudo dpkg -i /tmp/$deb_name
 }
 
-alias linux_product_name='sudo dmidecode -s system-product-name'
-alias linux_list_gpu="lspci -nn | grep -E 'VGA|Display'"
-alias linux_initd_services_list='service --status-all'
-
-function user_sudo_no_password() {
-    if ! test -d /etc/sudoers.d/; then sudo mkdir -p /etc/sudoers.d/; fi
-    SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
-}
-
-function ubu_disable_snap_dir_at_home() {
-    sudo snap set system experimental.hidden-snap-folder=true
-}
-
 function ubu_fix_esam_hook() {
     if ! test /etc/apt/apt.conf.d/20apt-esm-hook.conf; then
         sudo systemctl mask apt-news.service
@@ -65,8 +56,25 @@ function ubu_enable_git_ppa() {
     fi
 }
 
+# -- admin --
+
+alias linux_product_name='sudo dmidecode -s system-product-name'
+alias linux_list_gpu="lspci -nn | grep -E 'VGA|Display'"
+alias linux_initd_services_list='service --status-all'
+
+function user_sudo_no_password() {
+    if ! test -d /etc/sudoers.d/; then sudo mkdir -p /etc/sudoers.d/; fi
+    SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
+}
+
+function ubu_disable_snap_dir_at_home() {
+    sudo snap set system experimental.hidden-snap-folder=true
+}
+
+# -- install --
+
 function ubu_install_latex() {
-    sudo apt install -y latexmk texlive-latex-extra texlive-fonts-extra 
+    sudo apt install -y latexmk texlive-latex-extra texlive-fonts-extra
 }
 
 function ubu_install_node_npm() {
@@ -100,6 +108,8 @@ function ubu_increase_swap() {
     sudo cp /etc/fstab /etc/fstab.bak
     echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 }
+
+# -- customize --
 
 function gnome_dark_mode() {
     # dark mode

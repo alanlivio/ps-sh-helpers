@@ -1,8 +1,4 @@
-function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
-function log_error() { Write-Host -ForegroundColor DarkRed "--" ($args -join " ") }
-function Test-HasSudo() { if (Get-Command sudo -errorAction SilentlyContinue) { return $true } else { return $false } }
-function Test-IsNotAdmin { -not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator') }
-function Test-IsAdmin { ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator') }
+# -- update --
 
 function win_update() {
     log_msg "win_update"
@@ -25,14 +21,10 @@ function win_update() {
     }
 }
 
-# -- admin and password --
+# -- admin --
 
-function passwd_generate() {
-    $length = 10
-    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?'
-    $password = -join (1..$length | ForEach-Object { Get-Random -Maximum $characters.length | ForEach-Object { $characters[$_] } })
-    Write-Output $password
-}
+function Test-IsNotAdmin { -not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator') }
+function Test-IsAdmin { ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator') }
 
 function win_enable_sudo() {
     # win 11 supports native sudo https://learn.microsoft.com/en-us/windows/sudo/
