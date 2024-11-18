@@ -2,7 +2,7 @@
 
 `ps-sh-helpers` is a template for creating your library PowerShell and Bash helpers.  It is very usfeull for Windows users that wants take the best of WSL Bash and integrate it with PowerShell.
 
-`ps-sh-helpers`  organize helpers in OS-dependent from `os_*` files and loads program-dependent from `programs/<program>.*` files. It is initialized at `.bashrc` by loading `init.sh` or at `PowerShell_profile.ps1` by loading `init.ps1` (see diagram below).
+`ps-sh-helpers`  organize helpers in OS-dependent from `os/<os>.*` files and loads program-dependent from `programs/<program>.*` files. It is initialized at `.bashrc` by loading `init.sh` or at `PowerShell_profile.ps1` by loading `init.ps1` (see diagram below).
 
 ```mermaid
 %%{init: {'theme':'dark'}}%%
@@ -15,8 +15,9 @@ flowchart LR
         ...
     "]
     OS-dependent["
-        os_win.bash
-        os_ubu.bash
+        os/win.bash
+        os/ubu.bash
+        ...
     "]
     
     bashrc --> |"loads"| sh-init
@@ -36,8 +37,9 @@ flowchart LR
         ...
     "]
     OS-dependent["
-        os_win.ps1
-        os_ubu.ps1
+        os/win.ps1
+        os/ubu.ps1
+        ...
     "]
 
     psprofile--> |"loads"| ps-init

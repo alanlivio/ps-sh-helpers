@@ -16,13 +16,13 @@ function ssh_fix_permisisons() {
     chmod 600 $HOME/.ssh/id_rsa.pubssh-rsa
 }
 
-# -- load os_<name>.bash files --
+# -- load os/<name>.bash files --
 
 if [[ $OSTYPE == msys* || -n $WSL_DISTRO_NAME ]]; then
-    source "$HELPERS_DIR/os_win.bash"
+    source "$HELPERS_DIR/os/win.bash"
 fi
 if [[ $OSTYPE == linux* ]]; then
-    source "$HELPERS_DIR/os_ubu.bash"
+    source "$HELPERS_DIR/os/ubu.bash"
 fi
 
 # -- load <program>.bash files --
