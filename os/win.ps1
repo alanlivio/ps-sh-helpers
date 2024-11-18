@@ -23,8 +23,11 @@ function win_update() {
 
 # -- admin --
 
-function Test-IsNotAdmin { -not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator') }
-function Test-IsAdmin { ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator') }
+function win_version() { (Get-CimInstance Win32_OperatingSystem).version }
+
+function win_is_admin { 
+    ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator') 
+}
 
 function win_enable_sudo() {
     # win 11 supports native sudo https://learn.microsoft.com/en-us/windows/sudo/
@@ -45,7 +48,7 @@ function win_administrator_user_disable() {
 
 function win_password_policy_disable() {
     log_msg "win_disable_password_policy"
-    if (Test-IsNotAdmin) { log_error "no admin. skipping disable password."; return }
+    if (-not (win_is_admin)) { log_error "no admin. skipping disable password."; return }
     $tmpfile = New-TemporaryFile
     secedit /export /cfg $tmpfile /quiet # this call requires admin
     (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
@@ -54,12 +57,6 @@ function win_password_policy_disable() {
 }
 
 # -- installing -- 
-
-function win_install_ubuntu() {
-    sudo wsl --update
-    sudo wsl --install -d Ubuntu
-}
-
 
 function win_add_to_start_menu {
     param (
