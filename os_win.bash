@@ -11,44 +11,6 @@ else
     alias win_dir_as_unix_format='cygpath -m'
 fi
 
-# -- load funcs from init.ps1 as aliases --
-
-function _ps_call() {
-    powershell.exe -command "& { . $(wslpath -w $HELPERS_DIR/os_win.ps1); $* }"
-}
-
-function _ps_def_func() {
-    if ! typeset -f $1 >/dev/null 2>&1; then
-        eval 'function '$1'() { _ps_call' $1 '$*; }'
-    fi
-}
-
-function ps_def_funcs_from_ps1() {
-    : ${1?"Usage: ${FUNCNAME[0]} <ps1_file>"}
-    # load functions from file that does not start with _
-    if test -f $1; then
-        _regex_no_underscore_func='function\s([^_][^{]+)\('
-        while read -r line; do
-            if [[ $line =~ $_regex_no_underscore_func ]]; then
-                func=${BASH_REMATCH[1]}
-                _ps_def_func $func
-            fi
-        done <$1
-    else
-        echo "$1 does not exist"
-    fi
-}
-
-_regex_no_underscore_func='function\s([^_][^{]+)\('
-while read -r line; do
-    if [[ $line =~ $_regex_no_underscore_func ]]; then
-        func=${BASH_REMATCH[1]}
-        if [[ ! $func =~ ^(log_msg)$ ]]; then # also exists in win.ps1
-            _ps_def_func $func
-        fi
-    fi
-done <$HELPERS_DIR/os_win.ps1
-
 function wsl_install_cuda_cudnn() {
     # https://canonical-ubuntu-wsl.readthedocs-hosted.com/en/latest/tutorials/gpu-cuda/
     sudo apt-key del 7fa2af80

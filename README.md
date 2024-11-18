@@ -1,39 +1,49 @@
 # ps-sh-helpers
 
-This project is template for creating PowerShell and Bash helpers. It let you organize helpers in `OS-dependent` from `os_*` files and loads `program-dependent` from `programs/<program>.*` files. It is initialized at `~/.bashrc` by loading `init.sh` or at `PowerShell_profile.ps1` by loading `init.ps1` (see diagram below).
+`ps-sh-helpers` is a template for creating your library PowerShell and Bash helpers.  It is very usfeull for Windows users that wants take the best of WSL Bash and integrate it with PowerShell.
+
+`ps-sh-helpers`  organize helpers in OS-dependent from `os_*` files and loads program-dependent from `programs/<program>.*` files. It is initialized at `.bashrc` by loading `init.sh` or at `PowerShell_profile.ps1` by loading `init.ps1` (see diagram below).
 
 ```mermaid
 %%{init: {'theme':'dark'}}%%
 flowchart LR
-    bashrc["~/.bashrc"]
-    init["ps-sh-hepers/init.sh"]
-    oswinps1["os_win.ps1"]
+    bashrc[".bashrc"]
+    ps-init["init.ps1"]
+    sh-init["init.sh"]
     program-dependent["
         programs/[program].bash
         ...
     "]
-    win["os_win.bash"]
-    ubu["os_ubu.bash"]
-    bashrc --> |"loads"| init
-    init --> |"loads if program exists"| program-dependent
-    win --> |"bash alias to each function at"| oswinps1
-    init --> |"loads if runing from WSL or MSSYS2"| win
-    init --> |"loads if running from Ubu"| ubu
+    OS-dependent["
+        os_win.bash
+        os_ubu.bash
+    "]
+    
+    bashrc --> |"loads"| sh-init
+    sh-init --> |"loads if program exists"| program-dependent
+    sh-init --> |"loads if runing at OS"| OS-dependent
+    sh-init --> |"bash alias to each function at"| ps-init
 ```
 
 ```mermaid
 %%{init: {'theme':'dark'}}%%
 flowchart LR
     psprofile["Microsoft.PowerShell_profile.ps1"]
+    ps-init["init.ps1"]
+    sh-init["init.sh"]
     program-dependent["
         programs/[program].ps1
         ...
     "]
-    init --> |"loads if program exists"| program-dependent
-    init["ps-sh-hepers/init.ps1"]
-    oswinps1["os_win.ps1"]
-    psprofile--> |"loads"| init
-    init --> |"loads"| oswinps1
+    OS-dependent["
+        os_win.ps1
+        os_ubu.ps1
+    "]
+
+    psprofile--> |"loads"| ps-init
+    ps-init --> |"loads if program exists"| program-dependent
+    ps-init --> |"loads if runing at OS"| OS-dependent
+    ps-init --> |"bash alias to each function at"| sh-init
 ```
 
 ## How to install

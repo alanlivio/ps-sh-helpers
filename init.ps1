@@ -4,3 +4,13 @@ $HELPERS_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 $scriptToLoad = Join-Path -Path $HELPERS_DIR -ChildPath "os_win.ps1"
 . $scriptToLoad
+
+# -- load <program>.bash files --
+
+# TODO
+
+
+# -- load funcs from init.sh as aliases --
+
+# TODO
+# skip if exists
