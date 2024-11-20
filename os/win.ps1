@@ -513,10 +513,11 @@ function win_edge_disable_edge_ctrl_shift_c() {
     }
 }
 
+
 # -- win_clutter --
 
-function win_clutter_use_dark_theme_no_transparency() {
-    log_msg "win_clutter_use_dark_theme_no_transparency"
+function win_theme_dark_no_transparency() {
+    log_msg "win_theme_dark_no_transparency"
     $reg_personalize = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
     Set-ItemProperty -Path $reg_personalize -Name "AppsUseLightTheme" -Value '0' -Type Dword -Force 
     Set-ItemProperty -Path $reg_personalize -Name "SystemUsesLightTheme" -Value '0' -Type Dword -Force 
@@ -531,8 +532,43 @@ function win_clutter_use_dark_theme_no_transparency() {
     Set-ItemProperty -Path $reg_accent -Name "StartColorMenu" -Value 0xff4f4f4f -Type Dword -Force
 }
 
+# -- win_clutter --
 
-function win_clutter_no_desktop_icons() {
+function win_clutter_remove_all_and_explorer_restart() {
+    win_clutter_remove_3_and_4_fingers_gestures
+    win_clutter_remove_bell_sounds
+    win_clutter_remove_desktop_icons
+    win_clutter_remove_explorer
+    win_clutter_remove_old_unused_folders
+    win_clutter_remove_osapps_unused
+    win_clutter_remove_shortcuts_unused
+    win_clutter_remove_taskbar
+    win_clutter_remove_web_search_and_widgets
+    win_clutter_remove_xbox
+    win_explorer_restart
+}
+
+function win_clutter_remove_old_unused_folders() {
+    # paths to delete
+    $paths = @(
+        "${env:userprofile}\Cookies"
+        "${env:userprofile}\Local Settings"
+        "${env:userprofile}\My Documents"
+        "${env:userprofile}\Start Menu"
+        "${env:userprofile}\PrintHood"
+        "${env:userprofile}\Recent"
+        "${env:userprofile}\SendTo"
+        "${env:userprofile}\NetHood"
+        "${env:userprofile}\Templates"
+    )
+    $paths | ForEach-Object { 
+        if (Test-Path -Path "$_") {
+            Remove-Item $_
+        }
+    }
+}
+
+function win_clutter_remove_desktop_icons() {
     $Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     Set-ItemProperty -Path $Path -Name "HideIcons" -Value 1
 }
