@@ -5,7 +5,7 @@ function win_update() {
     log_msg "> winget upgrade"
     winget upgrade --accept-package-agreements --accept-source-agreements --silent --scope user --all
     log_msg "> os upgrade"
-    if (Test-IsNotAdmin) { log_msg "no sudo for os upgrade. you can do manually from Settings app."; return }
+    if (win_is_not_admin) { log_msg "no sudo for os upgrade. you can do manually from Settings app."; return }
     sudo {
         # https://gist.github.com/billpieper/a39173afa0b343a14ddeeb1d79ab14ea
         if (-Not(Get-Command Install-WindowsUpdate -errorAction SilentlyContinue)) {
@@ -44,6 +44,10 @@ function win_version_wsl_code_exts_info_for_github() {
 
 function win_is_admin { 
     ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator') 
+}
+
+function win_is_not_admin { 
+    -not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator') 
 }
 
 function win_enable_sudo() {
