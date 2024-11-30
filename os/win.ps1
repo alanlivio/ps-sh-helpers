@@ -206,15 +206,23 @@ function win_install_nodejs_noadmin() {
     }
 }
 
-function _winget_install_agree_user_scope() {
-    winget install --accept-package-agreements --accept-source-agreements --scope user -e $args
-}
-
+$_WINGET_ARGS="--accept-package-agreements --accept-source-agreements --scope user"
 function winget_install() {
     param ([Parameter(Mandatory = $true)][string] $pkg)
+    winget list @($_WINGET_ARGS -split ' ') -q $pkg | Out-Null
+    if (-not $?) {
+        winget install @($_WINGET_ARGS -split ' ') --id $pkg
+    }
+}
+
+function winget_install_override() {
+    param (
+        [Parameter(Mandatory = $true)][string] $pkg, 
+        [Parameter(Mandatory = $true)][string] $override
+    )
     winget list --accept-source-agreements -q $pkg | Out-Null
     if (-not $?) {
-        _winget_install_agree_user_scope --id $pkg
+        winget install @($_WINGET_ARGS -split ' ') --id $pkg --override "$override"
     }
 }
 
@@ -225,7 +233,7 @@ function winget_install_at_location() {
     )
     winget list --accept-source-agreements -q $pkg | Out-Null
     if (-not $?) {
-        _winget_install_agree_user_scope --id $pkg --location="$location"
+        winget install @($_WINGET_ARGS -split ' ') --id $pkg --location="$location"
     }
 }
 
