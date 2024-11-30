@@ -1,6 +1,7 @@
 $HELPERS_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 # -- powershell basic --
+
 function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 function log_error() { Write-Host -ForegroundColor DarkRed "--" ($args -join " ") }
 function passwd_generate() {
@@ -18,7 +19,6 @@ $scriptToLoad = Join-Path -Path $HELPERS_DIR -ChildPath "os/win.ps1"
 # -- load <program>.bash files --
 
 # TODO
-
 
 # -- load funcs from init.sh as aliases --
 

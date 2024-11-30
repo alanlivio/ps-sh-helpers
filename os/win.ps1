@@ -206,7 +206,7 @@ function win_install_nodejs_noadmin() {
     }
 }
 
-$_WINGET_ARGS="--accept-package-agreements --accept-source-agreements --scope user"
+$_WINGET_ARGS = "--accept-package-agreements --accept-source-agreements --scope user"
 function winget_install() {
     param ([Parameter(Mandatory = $true)][string] $pkg)
     winget list @($_WINGET_ARGS -split ' ') -q $pkg | Out-Null
@@ -366,15 +366,14 @@ function win_hlink_create_overwrite() {
         [Parameter(Mandatory = $true)]
         [string] $target
     )
-    log_msg "win_hlink_create_overwrite source $source target $target"
     if (!(Test-Path "$target")) { 
-        Throw "target $target is not a valid"
+        Throw "target=$target is not a valid"
     }
     if (Test-Path "$source") { 
         $hash1 = Get-FileHash "$source"
         $hash2 = Get-FileHash "$target"
         if ($hash1.Hash -ne $hash2.Hash) {
-            log_msg "remove old source $source"
+            log_msg "remove old source=$source"
             Remove-Item -Force "$source"
         }
         else {
@@ -382,6 +381,7 @@ function win_hlink_create_overwrite() {
         }
     }
     New-Item -ItemType Hardlink -Force -Path "$source" -Target "$target"
+    log_msg "creating Hardlink source=$source target=$target"
 }
 
 # -- wsl --
