@@ -29,7 +29,7 @@ flowchart LR
 ```mermaid
 %%{init: {'theme':'dark'}}%%
 flowchart LR
-    psprofile["Microsoft.PowerShell_profile.ps1"]
+    psprofile["profile.ps1"]
     ps-init["init.ps1"]
     sh-init["init.sh"]
     program-dependent["
@@ -57,13 +57,17 @@ git clone https://github.com/alanlivio/ps-sh-helpers ~/.ps1-sh-helpers
 echo "source ~/.ps-sh-helpers/init.sh" >> ~/.bashrc
 ```
 
-You can use the PowerShell commands below to fetch, install, and setup `ps-sh-helpers`  to be loaded in your `PowerShell_profile.ps1`:
+You can use the PowerShell commands below to fetch, install, and setup `ps-sh-helpers`  to be loaded in your `profile.ps1`:
 
 ```ps1
 git clone https://github.com/alanlivio/ps-sh-helpers ${env:userprofile}\.ps1-sh-helpers
 $contentAdd = '. "${env:userprofile}\.ps-sh-helpers\init.ps1""'
-Set-Content "${env:userprofile}/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1" $contentAdd
+# to setup WindowsPowerShell
+Set-Content "${env:userprofile}/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1" $contentAdd 
 ```
+
+Pay attention that to setup a PowerShell >= 6, the last line should be:
+`Set-Content "${env:userprofile}/Documents/PowerShell/profile.ps1" $contentAdd`
 
 ## References
 
