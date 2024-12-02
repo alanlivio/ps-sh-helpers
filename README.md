@@ -1,6 +1,6 @@
 # ps-sh-helpers
 
-`ps-sh-helpers` is a template for creating your library PowerShell and Bash helpers.  It is very usfeull for Windows users that wants take the best of WSL Bash and integrate it with PowerShell.
+`ps-sh-helpers` is a template for creating your library PowerShell and Bash helpers.  It is very useful for Windows users that wants take the best of WSL Bash and integrate it with PowerShell.
 
 `ps-sh-helpers`  organize helpers in OS-dependent from `os/<os>.*` files and loads program-dependent from `programs/<program>.*` files. It is initialized at `.bashrc` by loading `init.sh` or at `PowerShell_profile.ps1` by loading `init.ps1` (see diagram below).
 
@@ -22,7 +22,7 @@ flowchart LR
     
     bashrc --> |"loads"| sh-init
     sh-init --> |"loads if program exists"| program-dependent
-    sh-init --> |"loads if runing at OS"| OS-dependent
+    sh-init --> |"loads if running at OS"| OS-dependent
     sh-init --> |"bash alias to each function at"| ps-init
 ```
 
@@ -44,7 +44,7 @@ flowchart LR
 
     psprofile--> |"loads"| ps-init
     ps-init --> |"loads if program exists"| program-dependent
-    ps-init --> |"loads if runing at OS"| OS-dependent
+    ps-init --> |"loads if running at OS"| OS-dependent
     ps-init --> |"bash alias to each function at"| sh-init
 ```
 
