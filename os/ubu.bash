@@ -62,6 +62,13 @@ alias linux_product_name='sudo dmidecode -s system-product-name'
 alias linux_list_gpu="lspci -nn | grep -E 'VGA|Display'"
 alias linux_initd_services_list='service --status-all'
 
+function ssh_fix_permisisons() {
+    # https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open
+    chmod 700 $HOME/.ssh/
+    chmod 600 $HOME/.ssh/id_rsa
+    chmod 600 $HOME/.ssh/id_rsa.pubssh-rsa
+}
+
 function user_sudo_no_password() {
     if ! test -d /etc/sudoers.d/; then sudo mkdir -p /etc/sudoers.d/; fi
     SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"

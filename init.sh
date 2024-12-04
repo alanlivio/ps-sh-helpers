@@ -10,12 +10,6 @@ alias folder_count_files_recusive='find . -maxdepth 1 -type f | wc -l'
 alias folder_list_sorted_by_size='du -ahd 1 | sort -h'
 alias folder_find_file_with_crlf='find . -not -type d -exec file "{}" ";" | grep CRLF'
 alias passwd_generate='echo $(tr -dc "A-Za-z0-9!?%=" < /dev/urandom | head -c 12)'
-function ssh_fix_permisisons() {
-    # https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open
-    chmod 700 $HOME/.ssh/
-    chmod 600 $HOME/.ssh/id_rsa
-    chmod 600 $HOME/.ssh/id_rsa.pubssh-rsa
-}
 
 # -- load os/<name>.bash files --
 
