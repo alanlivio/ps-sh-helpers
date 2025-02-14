@@ -490,21 +490,6 @@ function win_desktop_wallpaper_folder() {
     }
 }
 
-function win_insider_beta_enable() {
-    # https://www.elevenforum.com/t/change-windows-insider-program-channel-in-windows-11.795/
-    bcdedit /set flightsigning on
-    Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\Applicability" -Name "BranchName" -Value 'Beta'
-    Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\Applicability" -Name "ContentType" -Value 'Mainline'
-    Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\Applicability" -Name "Ring" -Value 'External'
-    Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\UI\Selection" -Name "UIBranch" -Value 'Beta'
-    Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\UI\Selection" -Name "UIContentType" -Value 'Mainline'
-    Set-ItemProperty -Path "HKLM:\Software\Microsoft\WindowsSelfHost\UI\Selection" -Name "UIRing" -Value 'External'
-}
-
-function win_hyperv_enable() {
-    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
-    dism /online /enable-feature /featurename:Microsoft-Hyper-V -All /LimitAccess /ALL
-}
 
 function win_ssh_agent_and_add_id_rsa() {
     if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
