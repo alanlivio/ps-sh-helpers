@@ -5,7 +5,10 @@ function win_update() {
     log_msg "> winget upgrade"
     winget upgrade --accept-package-agreements --accept-source-agreements --silent --scope user --all
     log_msg "> os upgrade"
-    if (win_is_not_admin) { log_msg "no sudo for os upgrade. you can do manually from Settings app."; return }
+    if (win_is_not_admin) { 
+        Write-Output "no sudo for os upgrade. `e]8;;ms-settings:windowsupdate`e\Click here to do manually`e]8;;`e\"
+        return 
+    }
     sudo {
         # https://gist.github.com/billpieper/a39173afa0b343a14ddeeb1d79ab14ea
         if (-Not(Get-Command Install-WindowsUpdate -errorAction SilentlyContinue)) {
