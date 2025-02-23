@@ -337,8 +337,26 @@ function win_env_list() {
     [Environment]::GetEnvironmentVariables()
 }
 
-# -- dir and explorer --
 
+# -- open folder --
+
+function open_folder_trash() {
+    Start-Process explorer shell:recyclebinfolder
+}
+
+function open_folder_windows_apps_() {
+    Start-Process explorer "${env:userprofile}\AppData\Local\Microsoft\WindowsApps"
+}
+
+function open_folder_winget_packages() {
+    Start-Process explorer "${env:userprofile}\AppData\Local\Microsoft\WinGet\Packages"
+}
+
+function open_folder_programs_user() {
+    Start-Process explorer "${env:userprofile}\AppData\Local\Programs"
+}
+
+# -- explorer --
 
 function explorer_restart() {
     Stop-Process -Force -ErrorAction SilentlyContinue -ProcessName Explorer
@@ -348,9 +366,6 @@ function win_explorer_hide_home_dotfiles() {
     Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }
 }
 
-function win_explorer_open_trash() {
-    Start-Process explorer shell:recyclebinfolder
-}
 
 function win_explorer_restart() {
     log_msg "win_explorer_restart"
