@@ -348,15 +348,19 @@ function open_folder_trash() {
 }
 
 function open_folder_windows_apps_() {
-    Start-Process explorer "${env:userprofile}\AppData\Local\Microsoft\WindowsApps"
+    Start-Process explorer "${env:localappdata}\Microsoft\WindowsApps"
 }
 
 function open_folder_winget_packages() {
-    Start-Process explorer "${env:userprofile}\AppData\Local\Microsoft\WinGet\Packages"
+    Start-Process explorer "${env:localappdata}\Microsoft\WinGet\Packages"
 }
 
 function open_folder_programs_user() {
-    Start-Process explorer "${env:userprofile}\AppData\Local\Programs"
+    Start-Process explorer "${env:localappdata}\Programs"
+}
+
+function open_folder_programs_user() {
+    Start-Process explorer "${env:userprofile}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
 }
 
 # -- explorer --
