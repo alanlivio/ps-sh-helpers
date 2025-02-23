@@ -287,14 +287,8 @@ function win_appx_uninstall() {
 # -- env and path --
 
 function ps_profile_reload() {
-    $file = $profile
-    if (Test-Path $file) { 
-        Write-Output "loading $file"
-        . $file
-    }
-    else { 
-        Write-Output "$file does not exists to be loaded" 
-    }
+    # TODO: this does not work properly
+    . $PROFILE.CurrentUserAllHosts
 }
 
 function ps_show_function($name) {
