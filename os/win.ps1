@@ -542,10 +542,10 @@ function win_edge_disable_edge_ctrl_shift_c() {
 function win_theme_dark_no_transparency() {
     log_msg "win_theme_dark_no_transparency"
     $reg_personalize = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
-    Set-ItemProperty -Path $reg_personalize -Name "AppsUseLightTheme" -Value '0' -Type Dword -Force 
-    Set-ItemProperty -Path $reg_personalize -Name "SystemUsesLightTheme" -Value '0' -Type Dword -Force 
-    Set-ItemProperty -Path $reg_personalize -Name "EnableTransparency" -Value '0' -Type Dword -Force 
-    Set-ItemProperty -Path $reg_personalize -Name "ColorPrevalence" -Value '0' -Type Dword -Force 
+    Set-ItemProperty -Path $reg_personalize -Name "AppsUseLightTheme" -Value 0 -Type Dword -Force 
+    Set-ItemProperty -Path $reg_personalize -Name "SystemUsesLightTheme" -Value 0 -Type Dword -Force 
+    Set-ItemProperty -Path $reg_personalize -Name "EnableTransparency" -Value 0 -Type Dword -Force 
+    Set-ItemProperty -Path $reg_personalize -Name "ColorPrevalence" -Value 0 -Type Dword -Force 
     $reg_accent = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent"
     $AccentPalette = "cc,cc,cc,00,ae,ae,ae,00,92,92,92,00,76,76,76,00,4f,4f,4f,00,37,37,37,00,26,26,26,00,d1,34,38,00"
     $hexified = $AccentPalette.Split(',') | ForEach-Object { "0x$_" }
@@ -612,16 +612,16 @@ function win_clutter_remove_osapps_unused() {
 function win_clutter_remove_3_and_4_fingers_gestures() {
     log_msg "win_clutter_remove_3_and_4_fingers_gestures"
     $reg = "HKCU:\Software\Microsoft\Windows\CurrentVersion\PrecisionTouchPad"
-    Set-ItemProperty -Path $reg -Name "FourFingerDown" -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg -Name "FourFingerLeft" -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg -Name "FourFingerRight" -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg -Name "FourFingerUp" -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg -Name "FourFingerTapEnabled" -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg -Name "ThreeFingerDown" -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg -Name "ThreeFingerLeft" -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg -Name "ThreeFingerRight" -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg -Name "ThreeFingerTapEnabled" -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg -Name "ThreeFingerUp" -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg -Name "FourFingerDown" -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg -Name "FourFingerLeft" -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg -Name "FourFingerRight" -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg -Name "FourFingerUp" -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg -Name "FourFingerTapEnabled" -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg -Name "ThreeFingerDown" -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg -Name "ThreeFingerLeft" -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg -Name "ThreeFingerRight" -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg -Name "ThreeFingerTapEnabled" -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg -Name "ThreeFingerUp" -Value 0 -Type Dword
 }
 
 function win_clutter_remove_shortcuts_unused() {
@@ -661,19 +661,19 @@ function win_clutter_remove_web_search_and_widgets() {
     # win 10
     # https://www.bennetrichter.de/en/tutorials/windows-10-disable-web-search/
     $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
-    Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value '0' -Type Dword
+    Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value 0 -Type Dword
     $reg_search2 = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings'
-    Set-ItemProperty -Path "$reg_search2" -Name 'IsDynamicSearchBoxEnabled' -Value '0' -Type Dword
+    Set-ItemProperty -Path "$reg_search2" -Name 'IsDynamicSearchBoxEnabled' -Value 0 -Type Dword
 }
 
 function win_clutter_remove_explorer() {
     log_msg "win_clutter_remove_explorer"
     $reg_explorer = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer"
     # setup folder listing
-    Set-ItemProperty -Path $reg_explorer -Name ShowFrequent -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg_explorer -Name ShowRecent -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg_explorer -Name ShowRecommendations -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg_explorer -Name HideFileExt -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg_explorer -Name ShowFrequent -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg_explorer -Name ShowRecent -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg_explorer -Name ShowRecommendations -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg_explorer -Name HideFileExt -Value 0 -Type Dword
     # remove grouping listing
     # https://answers.microsoft.com/en-us/windows/forum/all/completely-disable-file-grouping-always-everywhere/ac31a227-f585-4b0a-ab2e-a557828eaec5
     $key = 'HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell' 
@@ -686,25 +686,25 @@ function win_clutter_remove_taskbar() {
     
     # taskbar
     # https://www.askvg.com/disable-or-remove-extra-icons-and-buttons-from-windows-11-taskbar
-    Set-ItemProperty -Path $reg_explorer_adv -Name ShowTaskViewButton -Value '0' -Type Dword
-    # Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarDa -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarMn -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name ShowCopilotButton -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name UseCompactMode -Value '1' -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name ShowStatusBar -Value '1' -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAI -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarBadges -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAnimations -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name ShowTaskViewButton -Value 0 -Type Dword
+    # Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarDa -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarMn -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name ShowCopilotButton -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name UseCompactMode -Value 1 -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name ShowStatusBar -Value 1 -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAI -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarBadges -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAnimations -Value 0 -Type Dword
 
     # multitasking
     # https://www.itechtics.com/disable-edge-tabs-alt-tab
-    Set-ItemProperty -Path $reg_explorer_adv -Name MultiTaskingAltTabFilter -Value '3' -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name MultiTaskingAltTabFilter -Value 3 -Type Dword
     # https://superuser.com/questions/1516878/how-to-disable-windows-snap-assist-via-command-line
-    Set-ItemProperty -Path $reg_explorer_adv -Name SnapAssist -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name SnapAssist -Value 0 -Type Dword
     
     # search
     $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
-    Set-ItemProperty -Path $reg_search -Name SearchBoxTaskbarMode -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg_search -Name SearchBoxTaskbarMode -Value 0 -Type Dword
 }
 
 function win_clutter_remove_copilot() {
@@ -712,7 +712,7 @@ function win_clutter_remove_copilot() {
     sudo {
         $reg_explorer_pol = "HKCU:\Software\Policies\Microsoft\Windows"
         New-Item -Path "$reg_explorer_pol\WindowsCopilot" -Force | Out-Null
-        Set-ItemProperty -Path "$reg_explorer_pol\WindowsCopilot" -Name 'TurnOffWindowsCopilot' -Value '1' -Type Dword
+        Set-ItemProperty -Path "$reg_explorer_pol\WindowsCopilot" -Name 'TurnOffWindowsCopilot' -Value 1 -Type Dword
     }
 }
 
@@ -721,10 +721,10 @@ function win_clutter_remove_xbox() {
     # https://www.makeuseof.com/windows-new-app-ms-gamingoverlay-error/
 
     $reg_game_dvr = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR"
-    Set-ItemProperty -Path $reg_game_dvr -Name AppCaptureEnabled -Value '0' -Type Dword
-    Set-ItemProperty -Path $reg_game_dvr -Name HistoricalCaptureEnabled -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg_game_dvr -Name AppCaptureEnabled -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg_game_dvr -Name HistoricalCaptureEnabled -Value 0 -Type Dword
     $reg_game_store = "HKCU:\System\GameConfigStore"
-    Set-ItemProperty -Path $reg_game_store -Name GameDVR_Enabled -Value '0' -Type Dword
+    Set-ItemProperty -Path $reg_game_store -Name GameDVR_Enabled -Value 0 -Type Dword
 
     winget_uninstall 9MV0B5HZVK9Z
     winget_uninstall Microsoft.Xbox.TCUI_8wekyb3d8bbwe
