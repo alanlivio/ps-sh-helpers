@@ -375,6 +375,43 @@ function win_explorer_restart() {
 }
 
 
+
+function explorer_folder_use_pictures_icon {
+    param ([string]$FolderPath)
+    if (-Not (Test-Path $FolderPath)) {
+        Write-Host "Error: The folder '$FolderPath' does not exist." -ForegroundColor Red
+        return
+    }
+    # Get the current user's Pictures folder icon
+    $PicturesFolder = [System.Environment]::GetFolderPath("MyPictures")
+    $IconPath = "$PicturesFolder\desktop.ini"
+    # Check if the Pictures folder has a custom icon
+    if (Test-Path $IconPath) {
+        $PicturesIcon = Get-Content $IconPath | Select-String "IconResource" | ForEach-Object { ($_ -split "=")[1] }
+
+        if (-not $PicturesIcon) {
+            log_msg "Error: Unable to determine the Pictures folder icon."
+            return
+        }
+    }
+    else {
+        # Use a fallback: Known correct Pictures icon from imageres.dll
+        $PicturesIcon = "%SystemRoot%\system32\shell32.dll,39"
+    }
+    
+    $DesktopIniPath = "$FolderPath\desktop.ini"
+    @"
+[.ShellClassInfo]
+IconResource=$PicturesIcon
+IconFile=$PicturesIcon
+IconIndex=0
+"@ | Set-Content -Path $DesktopIniPath -Encoding UTF8 -Force
+    attrib +r "$FolderPath" /s /d
+    attrib +h "$DesktopIniPath"
+    log_msg "Successfully set the icon for '$FolderPath' to match the Pictures folder."
+}
+
+
 function win_hlink_create_overwrite() {
     param (
         [Parameter(Mandatory = $true)]
