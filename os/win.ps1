@@ -494,16 +494,26 @@ function win_onedrive_reset() {
     & "C:\Program Files\Microsoft OneDrive\onedrive.exe" /reset
 }
 
-function win_desktop_wallpaper_folder() {
-    param ([Parameter(Mandatory = $true)][string] $dir)
-    if (Test-Path $dir) {
-        $dir = (Resolve-Path $dir).Path
-        $reg = "HKCU:\Control Panel\Desktop"
-        Set-ItemProperty -Path $reg -Name "Wallpaper" -Value "$dir"
+function win_desktop_as_slideshow_from_folder() {
+    param ([string]$folderPath )
+    if (-Not (Test-Path $folderPath)) {
+        Write-Host "The folder '$folderPath' does not exist. Please provide a valid folder." -ForegroundColor Red
+        exit 1
     }
-    else {
-        log_error "$dir does not exists." 
+    # Enable Slideshow mode
+    $regPath = "HKCU:\Control Panel\Personalization\Desktop Slideshow"
+    $wallpaperPathReg = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Wallpapers"
+    if (-Not (Test-Path $regPath)) {
+        New-Item -Path $regPath -Force | Out-Null
     }
+    Set-ItemProperty -Path $wallpaperPathReg -Name SlideshowEnabled -Value 1
+    Set-ItemProperty -Path $wallpaperPathReg -Name SlideshowSource -Value $folderPath
+    $intervalMs = 600000  # 10 minutes
+    Set-ItemProperty -Path $regPath -Name Interval -Value $intervalMs -Type DWord
+    Set-ItemProperty -Path $regPath -Name Shuffle -Value 1 -Type DWord  # Set Shuffle Mode (1 = Enabled, 0 = Disabled)
+    
+    # Refresh the desktop settings
+    RUNDLL32.EXE USER32.DLL, UpdatePerUserSystemParameters
 }
 
 
