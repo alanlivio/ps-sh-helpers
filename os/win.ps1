@@ -341,7 +341,11 @@ function open_folder_trash() {
     Start-Process explorer shell:recyclebinfolder
 }
 
-function open_folder_windows_apps_() {
+function open_folder_appdata() {
+    Start-Process explorer "${env:appdata}"
+}
+
+function open_folder_windows_apps() {
     Start-Process explorer "${env:localappdata}\Microsoft\WindowsApps"
 }
 
