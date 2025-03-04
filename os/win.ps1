@@ -31,16 +31,16 @@ function win_version() { (Get-CimInstance Win32_OperatingSystem).version }
 function win_version_wsl_code_exts_info_for_github() {
     log_msg "alan_show_code_info_for_github"
     $command = "(Get-CimInstance Win32_OperatingSystem).version"
-    Write-Host  "> $command"
+    Write-Host "> $command"
     Invoke-Expression $command
     $command = "wsl --version | Select -First 1"
-    Write-Host  "> $command"
+    Write-Host "> $command"
     Invoke-Expression $command
     $command = "code --version | Select -First 1"
-    Write-Host  "> $command"
+    Write-Host "> $command"
     Invoke-Expression $command
     $command = "(code --show-versions --list-extensions) -match 'latex'"
-    Write-Host  "> $command"
+    Write-Host "> $command"
     Invoke-Expression $command
 }
 
