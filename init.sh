@@ -57,5 +57,3 @@ for file in "$HELPERS_DIR/programs/"*.bash; do
         source $file
     fi
 done
-
-

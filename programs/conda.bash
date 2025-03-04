@@ -12,7 +12,7 @@ function conda_env_create_python311() {
     conda create -n $1 python==3.11 -y
 }
 
-alias conda_deactivate="conda deactivate" 
+alias conda_deactivate="conda deactivate"
 alias conda_env_export_pip_requirements="conda list -e requirements.txt"
 alias conda_env_export_to_enviroment_yml="conda env export -f environment.yml"
 alias conda_env_create_from_enviroment_yml="conda env create -f environment.yml"
