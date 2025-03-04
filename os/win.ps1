@@ -248,6 +248,11 @@ function winget_uninstall() {
     }
 }
 
+function winget_fix_installation() {
+    Remove-Item -Recurse "${env:localappdata}\Temp\WinGet"
+    Add-AppPackage -path "https://cdn.winget.microsoft.com/cache/source.msix"
+}
+
 function win_check_winget() {
     if (-Not(Get-Command winget -errorAction SilentlyContinue)) {
         Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
