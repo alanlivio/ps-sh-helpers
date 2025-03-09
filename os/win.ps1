@@ -290,7 +290,7 @@ function ps_running_as_sudo {
     ([System.Security.Principal.WindowsPrincipal] [System.Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
-function ps_show_function($name) {
+function ps_func_show($name) {
     Get-Content Function:\$name
 }
 
