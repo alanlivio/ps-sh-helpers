@@ -5,11 +5,7 @@ function win_update() {
     log_msg "> winget upgrade"
     winget upgrade --accept-package-agreements --accept-source-agreements --silent --scope user --all
     log_msg "> os upgrade"
-    if (win_is_not_admin) { 
-        Write-Output "no sudo for os upgrade. `e]8;;ms-settings:windowsupdate`e\Click here to do manually`e]8;;`e\"
-        return 
-    }
-    sudo {
+    if (ps_running_as_sudo) { 
         # https://gist.github.com/billpieper/a39173afa0b343a14ddeeb1d79ab14ea
         if (-Not(Get-Command Install-WindowsUpdate -errorAction SilentlyContinue)) {
             Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
@@ -21,6 +17,9 @@ function win_update() {
                 $_.Split('', [System.StringSplitOptions]::RemoveEmptyEntries)
             }
         }
+    }
+    else {
+        Write-Output "not running as sudo. do manually by run ms-settings:windowsupdate"
     }
 }
 
@@ -44,15 +43,6 @@ function win_version_wsl_code_exts_info_for_github() {
     Invoke-Expression $command
 }
 
-
-function win_is_admin { 
-    ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator') 
-}
-
-function win_is_not_admin { 
-    -not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator') 
-}
-
 function win_enable_sudo() {
     # win 11 supports native sudo https://learn.microsoft.com/en-us/windows/sudo/
     # win 10 supports from https://github.com/gerardog/gsudo
@@ -72,7 +62,7 @@ function win_administrator_user_disable() {
 
 function win_password_policy_disable() {
     log_msg "win_disable_password_policy"
-    if (-not (win_is_admin)) { log_error "no admin. skipping disable password."; return }
+    if (-not (ps_running_as_sudo)) { log_error "no admin. skipping disable password."; return }
     $tmpfile = New-TemporaryFile
     secedit /export /cfg $tmpfile /quiet # this call requires admin
     (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
@@ -294,6 +284,10 @@ function win_appx_uninstall() {
 function ps_profile_reload() {
     # TODO: this does not work properly
     . $PROFILE.CurrentUserAllHosts
+}
+
+function ps_running_as_sudo { 
+    ([System.Security.Principal.WindowsPrincipal] [System.Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
 function ps_show_function($name) {
