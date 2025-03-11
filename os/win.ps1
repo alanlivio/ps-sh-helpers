@@ -48,7 +48,7 @@ function win_enable_sudo() {
     # win 10 supports from https://github.com/gerardog/gsudo
     if (-Not(Get-Command sudo -errorAction SilentlyContinue)) {
         winget_install gsudo
-        win_path_refresh
+        ps_path_refresh
     }
 }
 
@@ -314,10 +314,6 @@ function win_path_add($addPath) {
 
 function win_path_list() {
     (Get-ChildItem Env:Path).Value -split ';'
-}
-
-function win_path_refresh() {
-    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 }
 
 function win_env_add($name, $value) {
