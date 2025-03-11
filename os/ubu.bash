@@ -31,6 +31,15 @@ function apt_fixes() {
     sudo apt -y autoremove
 }
 
+function ubu_apt_enable_git_ppa() {
+    local codename=$(cat /etc/os-release | grep UBUNTU_CODENAME | cut -d = -f 2)
+    if ! test -f /etc/apt/sources.list.d/git-core-ubuntu-ppa-$codename.list; then
+        sudo apt-add-repository ppa:git-core/ppa --yes
+    fi
+}
+
+# -- deb --
+
 function deb_install_file_from_url() {
     : ${1?"Usage: ${FUNCNAME[0]} <debfile>"}
     local deb_name=$(basename "$1")
@@ -41,7 +50,9 @@ function deb_install_file_from_url() {
     sudo dpkg -i /tmp/$deb_name
 }
 
-function ubu_fix_esam_hook() {
+# -- services --
+
+function ubu_pro_disable() {
     if ! test /etc/apt/apt.conf.d/20apt-esm-hook.conf; then
         sudo systemctl mask apt-news.service
         sudo systemctl mask esm-cache.service
@@ -49,18 +60,15 @@ function ubu_fix_esam_hook() {
     fi
 }
 
-function ubu_enable_git_ppa() {
-    local codename=$(cat /etc/os-release | grep UBUNTU_CODENAME | cut -d = -f 2)
-    if ! test -f /etc/apt/sources.list.d/git-core-ubuntu-ppa-$codename.list; then
-        sudo apt-add-repository ppa:git-core/ppa --yes
-    fi
+function ubu_snap_disable_dir_at_home() {
+    sudo snap set system experimental.hidden-snap-folder=true
 }
 
-# -- admin --
+alias ubu_product_name='sudo dmidecode -s system-product-name'
+alias ubu_gpu_list="lspci -nn | grep -E 'VGA|Display'"
+alias ubu_initd_services_list='service --status-all'
 
-alias linux_product_name='sudo dmidecode -s system-product-name'
-alias linux_list_gpu="lspci -nn | grep -E 'VGA|Display'"
-alias linux_initd_services_list='service --status-all'
+# -- ssh --
 
 function ssh_fix_permisisons() {
     # https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open
@@ -69,13 +77,11 @@ function ssh_fix_permisisons() {
     chmod 600 $HOME/.ssh/id_rsa.pubssh-rsa
 }
 
+# -- admin --
+
 function user_sudo_no_password() {
     if ! test -d /etc/sudoers.d/; then sudo mkdir -p /etc/sudoers.d/; fi
     SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
-}
-
-function ubu_disable_snap_dir_at_home() {
-    sudo snap set system experimental.hidden-snap-folder=true
 }
 
 # -- install --
