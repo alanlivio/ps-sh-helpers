@@ -5,7 +5,7 @@ function win_update() {
     log_msg "> winget upgrade"
     winget upgrade --accept-package-agreements --accept-source-agreements --silent --scope user --all
     log_msg "> os upgrade"
-    if (ps_running_as_sudo) { 
+    if (ps_is_running_as_sudo) { 
         # https://gist.github.com/billpieper/a39173afa0b343a14ddeeb1d79ab14ea
         if (-Not(Get-Command Install-WindowsUpdate -errorAction SilentlyContinue)) {
             Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
@@ -23,7 +23,7 @@ function win_update() {
     }
 }
 
-# -- admin --
+# -- version --
 
 function win_version() { (Get-CimInstance Win32_OperatingSystem).version }
 
@@ -41,28 +41,22 @@ function win_version_wsl_code_exts_info_for_github() {
     $command = "(code --show-versions --list-extensions) -match 'latex'"
     Write-Host "> $command"
     Invoke-Expression $command
+
 }
 
-function win_enable_sudo() {
-    # win 11 supports native sudo https://learn.microsoft.com/en-us/windows/sudo/
-    # win 10 supports from https://github.com/gerardog/gsudo
-    if (-Not(Get-Command sudo -errorAction SilentlyContinue)) {
-        winget_install gsudo
-        ps_path_refresh
-    }
-}
+# -- admin --
 
-function win_administrator_user_enable() {
+function win_admin_user_enable() {
     net user administrator /active:yes
 }
 
-function win_administrator_user_disable() {
+function win_admin_user_disable() {
     net user administrator /active:no
 }
 
-function win_password_policy_disable() {
+function win_admin_password_policy_disable() {
     log_msg "win_disable_password_policy"
-    if (-not (ps_running_as_sudo)) { log_error "no admin. skipping disable password."; return }
+    if (-not (ps_is_running_as_sudo)) { log_error "no admin. skipping disable password."; return }
     $tmpfile = New-TemporaryFile
     secedit /export /cfg $tmpfile /quiet # this call requires admin
     (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
@@ -70,7 +64,7 @@ function win_password_policy_disable() {
     Remove-Item -Path $tmpfile
 }
 
-# -- installing -- 
+# -- install -- 
 
 function win_add_to_start_menu {
     param (
@@ -105,7 +99,7 @@ function win_add_to_start_menu {
 function win_install_miktex() {
     if (-Not(Get-Command miktex -errorAction SilentlyContinue)) {
         winget_install MiKTeX.MiKTeX
-        ps_path_reload
+        win_path_reload
         miktex packages update
     }
 }
@@ -183,7 +177,7 @@ function win_install_golang() {
     Remove-Item -Path $zipPath
     win_path_add("$binPath")
     log_msg "$name has been installed to $binPath and added to the PATH."
-    ps_path_reload
+    win_path_reload
 }
 
 function win_install_nodejs_noadmin() {
@@ -193,11 +187,13 @@ function win_install_nodejs_noadmin() {
         & $fnm env --use-on-cd | Out-String | Invoke-Expression
         & $fnm use --install-if-missing 20
         win_path_add($env:FNM_MULTISHELL_PATH)
-        ps_path_reload
+        win_path_reload
         node -v
         npm -v
     }
 }
+
+# -- winget --
 
 $_WINGET_ARGS = "--accept-package-agreements --accept-source-agreements --scope user"
 function winget_install() {
@@ -243,13 +239,7 @@ function winget_fix_installation() {
     Add-AppPackage -path "https://cdn.winget.microsoft.com/cache/source.msix"
 }
 
-function win_check_winget() {
-    if (-Not(Get-Command winget -errorAction SilentlyContinue)) {
-        Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
-    }
-    winget.exe list --accept-source-agreements | out-null
-}
-
+# -- appx --
 
 function win_appx_list_installed() {
     Get-AppxPackage -User $env:username | ForEach-Object { Write-Output $_.Name }
@@ -279,14 +269,14 @@ function win_appx_uninstall() {
     }
 }
 
-# -- env and path --
+# -- ps --
 
 function ps_profile_reload() {
     # TODO: this does not work properly
     . $PROFILE.CurrentUserAllHosts
 }
 
-function ps_running_as_sudo { 
+function ps_is_running_as_sudo { 
     ([System.Security.Principal.WindowsPrincipal] [System.Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
@@ -294,8 +284,24 @@ function ps_func_show($name) {
     Get-Content Function:\$name
 }
 
+# -- env --
 
-function ps_path_reload() {
+function win_env_add($name, $value) {
+    [Environment]::SetEnvironmentVariable($name, $value, 'User')
+}
+
+function win_env_add_machine($name, $value) {
+    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
+    [Environment]::SetEnvironmentVariable($name, $value, 'Machine')
+}
+
+function win_env_list() {
+    [Environment]::GetEnvironmentVariables()
+}
+
+# -- path --
+
+function win_path_reload() {
     $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", [System.EnvironmentVariableTarget]::Machine) + ";" + [System.Environment]::GetEnvironmentVariable("PATH", [System.EnvironmentVariableTarget]::User)
 }
 
@@ -315,20 +321,6 @@ function win_path_add($addPath) {
 function win_path_list() {
     (Get-ChildItem Env:Path).Value -split ';'
 }
-
-function win_env_add($name, $value) {
-    [Environment]::SetEnvironmentVariable($name, $value, 'User')
-}
-
-function win_env_add_machine($name, $value) {
-    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
-    [Environment]::SetEnvironmentVariable($name, $value, 'Machine')
-}
-
-function win_env_list() {
-    [Environment]::GetEnvironmentVariables()
-}
-
 
 # -- open folder --
 
@@ -407,8 +399,9 @@ IconIndex=0
     log_msg "Successfully set the icon for '$FolderPath' to match the Pictures folder."
 }
 
+# -- hardlink --
 
-function win_hlink_create_overwrite() {
+function win_hardlink_create() {
     param (
         [Parameter(Mandatory = $true)]
         [string] $source,
@@ -570,8 +563,6 @@ function win_edge_disable_edge_ctrl_shift_c() {
 }
 
 
-# -- win_clutter --
-
 function win_theme_dark_no_transparency() {
     log_msg "win_theme_dark_no_transparency"
     $reg_personalize = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
@@ -605,7 +596,6 @@ function win_clutter_remove_all_and_explorer_restart() {
 }
 
 function win_clutter_remove_old_unused_folders() {
-    # paths to delete
     $paths = @(
         "${env:userprofile}\Cookies"
         "${env:userprofile}\Local Settings"
