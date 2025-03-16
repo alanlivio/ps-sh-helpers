@@ -235,8 +235,10 @@ function winget_uninstall() {
 }
 
 function winget_fix_installation() {
-    Remove-Item -Recurse "${env:localappdata}\Temp\WinGet"
-    Add-AppPackage -path "https://cdn.winget.microsoft.com/cache/source.msix"
+    gsudo Remove-Item -Recurse "${env:localappdata}\Temp\WinGet\"  -Force -ErrorAction SilentlyContinue
+    gsudo Remove-Item -Recurse "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe"  -Force -ErrorAction SilentlyContinue
+    gsudo Remove-Item -Recurse "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_*"  -Force -ErrorAction SilentlyContinue
+    gsudo winget source update
 }
 
 # -- appx --
