@@ -370,32 +370,15 @@ function explorer_folder_use_pictures_icon {
         Write-Host "Error: The folder '$FolderPath' does not exist." -ForegroundColor Red
         return
     }
-    # Get the current user's Pictures folder icon
-    $PicturesFolder = [System.Environment]::GetFolderPath("MyPictures")
-    $IconPath = "$PicturesFolder\desktop.ini"
-    # Check if the Pictures folder has a custom icon
-    if (Test-Path $IconPath) {
-        $PicturesIcon = Get-Content $IconPath | Select-String "IconResource" | ForEach-Object { ($_ -split "=")[1] }
-
-        if (-not $PicturesIcon) {
-            log_msg "Error: Unable to determine the Pictures folder icon."
-            return
-        }
-    }
-    else {
-        # Use a fallback: Known correct Pictures icon from imageres.dll
-        $PicturesIcon = "%SystemRoot%\system32\shell32.dll,39"
-    }
-    
     $DesktopIniPath = "$FolderPath\desktop.ini"
     @"
 [.ShellClassInfo]
-IconResource=$PicturesIcon
-IconFile=$PicturesIcon
+IconResource=%SystemRoot%\system32\imageres.dll,-113
+IconFile=%SystemRoot%\system32\imageres.dll,-113
 IconIndex=0
 "@ | Set-Content -Path $DesktopIniPath -Encoding UTF8 -Force
-    attrib +r "$FolderPath" /s /d
-    attrib +h "$DesktopIniPath"
+    attrib +r "$FolderPath" /s /d > $null 2>&1
+    attrib +h "$DesktopIniPath" > $null 2>&1
     log_msg "Successfully set the icon for '$FolderPath' to match the Pictures folder."
 }
 
