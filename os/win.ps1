@@ -393,6 +393,7 @@ function win_hardlink_create() {
         [Parameter(Mandatory = $true)]
         [string] $target
     )
+    log_msg "> creating hardlink source=$source target=$target"
     if (!(Test-Path "$target")) { 
         Throw "target=$target is not a valid"
     }
@@ -400,15 +401,15 @@ function win_hardlink_create() {
         $hash1 = Get-FileHash "$source"
         $hash2 = Get-FileHash "$target"
         if ($hash1.Hash -ne $hash2.Hash) {
-            log_msg "remove old source=$source"
+            log_msg "> remove old source=$source"
             Remove-Item -Force "$source"
         }
         else {
+            log_msg "> it is same file"
             return # same file
         }
     }
     New-Item -ItemType Hardlink -Force -Path "$source" -Target "$target"
-    log_msg "creating Hardlink source=$source target=$target"
 }
 
 # -- wsl --
