@@ -197,32 +197,20 @@ function win_install_nodejs_noadmin() {
 
 $_WINGET_ARGS = "--accept-package-agreements --accept-source-agreements --scope user"
 function winget_install() {
-    param ([Parameter(Mandatory = $true)][string] $pkg)
-    winget list @($_WINGET_ARGS -split ' ') -q $pkg | Out-Null
-    if (-not $?) {
-        winget install @($_WINGET_ARGS -split ' ') --id $pkg
-    }
-}
-
-function winget_install_override() {
     param (
-        [Parameter(Mandatory = $true)][string] $pkg, 
-        [Parameter(Mandatory = $true)][string] $override
+        [Parameter(Mandatory = $true)][Alias('--pkg')][string] $pkg,
+        [Parameter(Mandatory = $false)][Alias('--version')][string] $version,
+        [Parameter(Mandatory = $false)][Alias('--location')][string] $location,
+        [Parameter(Mandatory = $false)][Alias('--override')][string] $override
     )
+    
     winget list --accept-source-agreements -q $pkg | Out-Null
     if (-not $?) {
-        winget install @($_WINGET_ARGS -split ' ') --id $pkg --override "$override"
-    }
-}
-
-function winget_install_at_location() {
-    param (
-        [Parameter(Mandatory = $true)][string] $pkg, 
-        [Parameter(Mandatory = $true)][string] $location
-    )
-    winget list --accept-source-agreements -q $pkg | Out-Null
-    if (-not $?) {
-        winget install @($_WINGET_ARGS -split ' ') --id $pkg --location="$location"
+        $installArgs = @($_WINGET_ARGS -split ' ') + @('--id', $pkg)
+        if ($version) { $installArgs += @('--version', $version) }
+        if ($location) { $installArgs += @('--location', $location) }
+        if ($override) { $installArgs += @('--override', $override) }
+        winget install $installArgs
     }
 }
 
