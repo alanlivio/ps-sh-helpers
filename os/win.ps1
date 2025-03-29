@@ -74,55 +74,72 @@ function win_install_miktex() {
     }
 }
 
-function win_install_vlc() {
-    $version = "3.0.21"
+function win_install_vlc () {
+    param (
+        [string]$version = "3.0.21",
+        [string]$extractPath = "$env:userprofile\bin\"
+    )
     $name = "VLC"
     $url = "https://www.mirrorservice.org/sites/videolan.org/vlc/$version/win32/vlc-$version-win32.zip"
     $zipPath = "$env:TEMP\vlc-$version-win32.zip"
-    $extractPath = "$env:userprofile\bin\" # zip has an internal folder
-    $exePath = "$env:userprofile\bin\vlc-$version\vlc.exe"
-    if (Test-Path $exePath) { return } # return if exePath already exists
-    
+    $tempExtractPath = Join-Path $env:TEMP "vlc_extract_temp"
+    $exePath = Join-Path $extractPath "vlc-$version\vlc.exe"
+
     log_msg "Downloading $name $version"
     $webClient = New-Object System.Net.WebClient
     $webClient.DownloadFile($url, $zipPath)
-    if (!(Test-Path -Path $extractPath)) {
-        New-Item -ItemType Directory -Path $extractPath | Out-Null
-    }
-    
+    if (!(Test-Path $zipPath)) { Write-Error "Download failed"; return }
+
+    if (!(Test-Path -Path $extractPath)) { New-Item -ItemType Directory -Path $extractPath | Out-Null }
+    if (Test-Path $tempExtractPath) { Remove-Item -Recurse -Force $tempExtractPath }
+    New-Item -ItemType Directory -Path $tempExtractPath | Out-Null
+
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    Write-Host "Extracting $name to $extractPath"
-    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $extractPath)
-    
+    log_msg "Extracting vlc-$version-win32.zip to temp folder..."
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $tempExtractPath)
+    log_msg "Copying vlc-$version-win32.zip to $tempExtractPath..."
+    Copy-Item -Path "$tempExtractPath\*" -Destination $extractPath -Recurse -Force
+
     Remove-Item -Path $zipPath
+    Remove-Item -Path $tempExtractPath -Recurse -Force
+
     win_start_menu_add $exePath
     log_msg "$exePath has been added to StartMenu."
 }
 
-function win_install_obs() {
-    $version = "30.2.3"
+function win_install_obs () {
+    param (
+        [string] $version = "30.2.3",
+        [string] $extractPath = "$env:userprofile\bin\OBS"
+    )
     $name = "OBS Studio"
     $url = "https://cdn-fastly.obsproject.com/downloads/OBS-Studio-$version-Windows.zip"
     $zipPath = "$env:TEMP\OBS-Studio-$version-Windows.zip"
-    $extractPath = "$env:userprofile\bin\OBS" # zip has no internal folder
-    $exePath = "$extractPath\bin\64bit\obs64.exe"
-    if (Test-Path $exePath) { return } # return if exePath already exists
+    $tempExtractPath = Join-Path $env:TEMP "obs_extract_temp"
+    $exePath = Join-Path $extractPath "bin\64bit\obs64.exe"
 
     log_msg "Downloading $name $version"
     $webClient = New-Object System.Net.WebClient
     $webClient.DownloadFile($url, $zipPath)
-    if (!(Test-Path -Path $extractPath)) {
-        New-Item -ItemType Directory -Path $extractPath | Out-Null
-    }
-    
+    if (!(Test-Path $zipPath)) { Write-Error "Download failed"; return }
+
+    if (!(Test-Path -Path $extractPath)) { New-Item -ItemType Directory -Path $extractPath | Out-Null }
+    if (Test-Path $tempExtractPath) { Remove-Item -Recurse -Force $tempExtractPath }
+    New-Item -ItemType Directory -Path $tempExtractPath | Out-Null
+
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    Write-Host "Extracting $name to $extractPath"
-    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $extractPath)
-    
+    log_msg "Extracting $name to temp folder..."
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $tempExtractPath)
+    Copy-Item -Path "$tempExtractPath\*" -Destination $extractPath -Recurse -Force
+
     Remove-Item -Path $zipPath
+    Remove-Item -Path $tempExtractPath -Recurse -Force
+
     win_start_menu_add $exePath
     log_msg "$exePath has been added to StartMenu."
 }
+
+
 
 function win_install_golang() {
     $version = "1.23.3"
