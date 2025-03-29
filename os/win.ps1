@@ -88,7 +88,7 @@ function win_install_vlc () {
     log_msg "Downloading $name $version"
     $webClient = New-Object System.Net.WebClient
     $webClient.DownloadFile($url, $zipPath)
-    if (!(Test-Path $zipPath)) { Write-Error "Download failed"; return }
+    if (!(Test-Path $zipPath)) { log_error "Download failed"; return }
 
     if (!(Test-Path -Path $extractPath)) { New-Item -ItemType Directory -Path $extractPath | Out-Null }
     if (Test-Path $tempExtractPath) { Remove-Item -Recurse -Force $tempExtractPath }
@@ -121,7 +121,7 @@ function win_install_obs () {
     log_msg "Downloading $name $version"
     $webClient = New-Object System.Net.WebClient
     $webClient.DownloadFile($url, $zipPath)
-    if (!(Test-Path $zipPath)) { Write-Error "Download failed"; return }
+    if (!(Test-Path $zipPath)) { log_error "Download failed"; return }
 
     if (!(Test-Path -Path $extractPath)) { New-Item -ItemType Directory -Path $extractPath | Out-Null }
     if (Test-Path $tempExtractPath) { Remove-Item -Recurse -Force $tempExtractPath }
@@ -158,7 +158,7 @@ function win_install_golang() {
     }
     
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    Write-Host "Extracting $name to $extractPath"
+    log_msg "Extracting $name to $extractPath"
     [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $extractPath)
     
     Remove-Item -Path $zipPath
@@ -344,7 +344,7 @@ function explorer_restart() {
 function explorer_folder_use_pictures_icon {
     param ([string]$FolderPath)
     if (-Not (Test-Path $FolderPath)) {
-        Write-Host "Error: The folder '$FolderPath' does not exist." -ForegroundColor Red
+        log_error "The folder '$FolderPath' does not exist." -ForegroundColor Red
         return
     }
     $DesktopIniPath = "$FolderPath\desktop.ini"
@@ -498,13 +498,13 @@ function win_start_menu_add {
         [string]$ExePath  # Path to the .exe file
     )
     if (-not (Test-Path $ExePath)) {
-        Write-Error "The specified executable path does not exist: $ExePath"
+        log_error "The specified executable path does not exist: $ExePath"
         return
     }
     $shortcutName = [System.IO.Path]::GetFileNameWithoutExtension($ExePath) + ".lnk"
     $startMenuFolder = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs"
     if (-not (Test-Path $startMenuFolder)) {
-        Write-Error "The Start Menu folder does not exist: $startMenuFolder"
+        log_error "The Start Menu folder does not exist: $startMenuFolder"
         return
     }
     $shortcutPath = Join-Path -Path $startMenuFolder -ChildPath $shortcutName
@@ -515,17 +515,17 @@ function win_start_menu_add {
         $shortcut.WorkingDirectory = (Split-Path -Parent $ExePath)
         $shortcut.Description = "Shortcut to $(Split-Path -Leaf $ExePath)"
         $shortcut.Save()
-        Write-Output "Shortcut successfully created: $shortcutPath"
+        log_msg "Shortcut successfully created: $shortcutPath"
     }
     catch {
-        Write-Error "An error occurred while creating the shortcut: $_"
+        log_error "An error occurred while creating the shortcut: $_"
     }
 }
 
 function win_desktop_as_slideshow_from_folder() {
     param ([string]$folderPath )
     if (-Not (Test-Path $folderPath)) {
-        Write-Host "The folder '$folderPath' does not exist. Please provide a valid folder." -ForegroundColor Red
+        log_error "The folder '$folderPath' does not exist. Please provide a valid folder." -ForegroundColor Red
         exit 1
     }
     # Enable Slideshow mode
