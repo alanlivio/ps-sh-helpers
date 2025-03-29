@@ -168,10 +168,10 @@ function win_install_nodejs_noadmin() {
 $_WINGET_ARGS = "--accept-package-agreements --accept-source-agreements --scope user"
 function winget_install() {
     param (
-        [Parameter(Mandatory = $true)][Alias('--pkg')][string] $pkg,
-        [Parameter(Mandatory = $false)][Alias('--version')][string] $version,
-        [Parameter(Mandatory = $false)][Alias('--location')][string] $location,
-        [Parameter(Mandatory = $false)][Alias('--override')][string] $override
+        [Parameter(Mandatory = $true)][string] $pkg,
+        [Parameter(Mandatory = $false)][string] $version,
+        [Parameter(Mandatory = $false)][string] $location,
+        [Parameter(Mandatory = $false)][string] $override
     )
     
     winget list --accept-source-agreements -q $pkg | Out-Null
