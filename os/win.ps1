@@ -103,7 +103,7 @@ function win_install_vlc () {
     Remove-Item -Path $zipPath
     Remove-Item -Path $tempExtractPath -Recurse -Force
 
-    win_start_menu_add $exePath
+    win_start_menu_add_lnk_to_allapps $exePath
     log_msg "$exePath has been added to StartMenu."
 }
 
@@ -135,7 +135,7 @@ function win_install_obs () {
     Remove-Item -Path $zipPath
     Remove-Item -Path $tempExtractPath -Recurse -Force
 
-    win_start_menu_add $exePath
+    win_start_menu_add_lnk_to_allapps $exePath
     log_msg "$exePath has been added to StartMenu."
 }
 
@@ -492,16 +492,15 @@ function win_onedrive_reset() {
 
 # -- start_menu/desktop --
 
-function win_start_menu_add {
+function win_start_menu_add_lnk_to_allapps {
     param (
-        [Parameter(Mandatory = $true)]
-        [string]$ExePath  # Path to the .exe file
+        [Parameter(Mandatory = $true)][string]$exePath  # Path to the .exe file
     )
-    if (-not (Test-Path $ExePath)) {
-        log_error "The specified executable path does not exist: $ExePath"
+    if (-not (Test-Path $exePath)) {
+        log_error "The specified executable path does not exist: $exePath"
         return
     }
-    $shortcutName = [System.IO.Path]::GetFileNameWithoutExtension($ExePath) + ".lnk"
+    $shortcutName = [System.IO.Path]::GetFileNameWithoutExtension($exePath) + ".lnk"
     $startMenuFolder = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs"
     if (-not (Test-Path $startMenuFolder)) {
         log_error "The Start Menu folder does not exist: $startMenuFolder"
@@ -511,9 +510,9 @@ function win_start_menu_add {
     try {
         $shell = New-Object -ComObject WScript.Shell
         $shortcut = $shell.CreateShortcut($shortcutPath)
-        $shortcut.TargetPath = $ExePath
-        $shortcut.WorkingDirectory = (Split-Path -Parent $ExePath)
-        $shortcut.Description = "Shortcut to $(Split-Path -Leaf $ExePath)"
+        $shortcut.TargetPath = $exePath
+        $shortcut.WorkingDirectory = (Split-Path -Parent $exePath)
+        $shortcut.Description = "Shortcut to $(Split-Path -Leaf $exePath)"
         $shortcut.Save()
         log_msg "Shortcut successfully created: $shortcutPath"
     }
