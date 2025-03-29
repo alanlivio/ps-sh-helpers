@@ -66,36 +66,6 @@ function win_admin_password_policy_disable() {
 
 # -- install -- 
 
-function win_add_to_start_menu {
-    param (
-        [Parameter(Mandatory = $true)]
-        [string]$ExePath  # Path to the .exe file
-    )
-    if (-not (Test-Path $ExePath)) {
-        Write-Error "The specified executable path does not exist: $ExePath"
-        return
-    }
-    $shortcutName = [System.IO.Path]::GetFileNameWithoutExtension($ExePath) + ".lnk"
-    $startMenuFolder = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs"
-    if (-not (Test-Path $startMenuFolder)) {
-        Write-Error "The Start Menu folder does not exist: $startMenuFolder"
-        return
-    }
-    $shortcutPath = Join-Path -Path $startMenuFolder -ChildPath $shortcutName
-    try {
-        $shell = New-Object -ComObject WScript.Shell
-        $shortcut = $shell.CreateShortcut($shortcutPath)
-        $shortcut.TargetPath = $ExePath
-        $shortcut.WorkingDirectory = (Split-Path -Parent $ExePath)
-        $shortcut.Description = "Shortcut to $(Split-Path -Leaf $ExePath)"
-        $shortcut.Save()
-        Write-Output "Shortcut successfully created: $shortcutPath"
-    }
-    catch {
-        Write-Error "An error occurred while creating the shortcut: $_"
-    }
-}
-
 function win_install_miktex() {
     if (-Not(Get-Command miktex -errorAction SilentlyContinue)) {
         winget_install MiKTeX.MiKTeX
@@ -125,7 +95,7 @@ function win_install_vlc() {
     [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $extractPath)
     
     Remove-Item -Path $zipPath
-    win_add_to_start_menu $exePath
+    win_start_menu_add $exePath
     log_msg "$exePath has been added to StartMenu."
 }
 
@@ -150,7 +120,7 @@ function win_install_obs() {
     [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $extractPath)
     
     Remove-Item -Path $zipPath
-    win_add_to_start_menu $exePath
+    win_start_menu_add $exePath
     log_msg "$exePath has been added to StartMenu."
 }
 
@@ -490,8 +460,49 @@ function win_system_policy_reset() {
     gpupdate.exe /force
 }
 
+
+function win_system_enable_ssh_agent() {
+    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
+    Set-Service ssh-agent -StartupType Automatic
+    Start-Service ssh-agent
+    Get-Service ssh-agent
+    ssh-add "$env:userprofile\\.ssh\\id_rsa"
+}
+
 function win_onedrive_reset() {
     & "C:\Program Files\Microsoft OneDrive\onedrive.exe" /reset
+}
+
+# -- start_menu/desktop --
+
+function win_start_menu_add {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$ExePath  # Path to the .exe file
+    )
+    if (-not (Test-Path $ExePath)) {
+        Write-Error "The specified executable path does not exist: $ExePath"
+        return
+    }
+    $shortcutName = [System.IO.Path]::GetFileNameWithoutExtension($ExePath) + ".lnk"
+    $startMenuFolder = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs"
+    if (-not (Test-Path $startMenuFolder)) {
+        Write-Error "The Start Menu folder does not exist: $startMenuFolder"
+        return
+    }
+    $shortcutPath = Join-Path -Path $startMenuFolder -ChildPath $shortcutName
+    try {
+        $shell = New-Object -ComObject WScript.Shell
+        $shortcut = $shell.CreateShortcut($shortcutPath)
+        $shortcut.TargetPath = $ExePath
+        $shortcut.WorkingDirectory = (Split-Path -Parent $ExePath)
+        $shortcut.Description = "Shortcut to $(Split-Path -Leaf $ExePath)"
+        $shortcut.Save()
+        Write-Output "Shortcut successfully created: $shortcutPath"
+    }
+    catch {
+        Write-Error "An error occurred while creating the shortcut: $_"
+    }
 }
 
 function win_desktop_as_slideshow_from_folder() {
@@ -516,14 +527,7 @@ function win_desktop_as_slideshow_from_folder() {
     RUNDLL32.EXE USER32.DLL, UpdatePerUserSystemParameters
 }
 
-
-function win_ssh_agent_and_add_id_rsa() {
-    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
-    Set-Service ssh-agent -StartupType Automatic
-    Start-Service ssh-agent
-    Get-Service ssh-agent
-    ssh-add "$env:userprofile\\.ssh\\id_rsa"
-}
+# -- win_edge --
 
 function win_edge_disable_edge_ctrl_shift_c() {
     log_msg "win_edge_disable_edge_ctrl_shift_c"
@@ -536,9 +540,10 @@ function win_edge_disable_edge_ctrl_shift_c() {
     }
 }
 
+# -- win_clutter --
 
-function win_theme_dark_no_transparency() {
-    log_msg "win_theme_dark_no_transparency"
+function win_clutter_use_dark_no_transparency() {
+    log_msg "win_clutter_use_dark_no_transparency"
     $reg_personalize = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
     Set-ItemProperty -Path $reg_personalize -Name "AppsUseLightTheme" -Value 0 -Type Dword -Force 
     Set-ItemProperty -Path $reg_personalize -Name "SystemUsesLightTheme" -Value 0 -Type Dword -Force 
@@ -552,8 +557,6 @@ function win_theme_dark_no_transparency() {
     Set-ItemProperty -Path $reg_accent -Name "AccentColorMenu" -Value 0xff767676 -Type Dword -Force
     Set-ItemProperty -Path $reg_accent -Name "StartColorMenu" -Value 0xff4f4f4f -Type Dword -Force
 }
-
-# -- win_clutter --
 
 function win_clutter_remove_all_and_explorer_restart() {
     win_clutter_remove_3_and_4_fingers_gestures
