@@ -1,20 +1,13 @@
+# -- any OS --
+
 $HELPERS_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
-
-# -- powershell basic --
-
 function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 function log_error() { Write-Host -ForegroundColor DarkRed "--" ($args -join " ") }
-function passwd_generate() {
-    $length = 12
-    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?'
-    $password = -join (1..$length | ForEach-Object { Get-Random -Maximum $characters.length | ForEach-Object { $characters[$_] } })
-    Write-Output $password
-}
+function passwd_generate { -join (1..12 | ForEach-Object { 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?' | Get-Random }) }
 
 # -- load os/<name>.ps1 files -- 
 
-$scriptToLoad = Join-Path -Path $HELPERS_DIR -ChildPath "os/win.ps1"
-. $scriptToLoad
+. "$HELPERS_DIR/os/win.ps1"
 
 # -- load <program>.bash files --
 
@@ -26,6 +19,3 @@ $scriptToLoad = Join-Path -Path $HELPERS_DIR -ChildPath "os/win.ps1"
 #     source $file
 # fi
 # end
-
-# TODO
-# skip if exists
