@@ -1,3 +1,5 @@
+# -- aliases WSL --
+
 if [[ -n $WSL_DISTRO_NAME ]]; then
     alias win_dir_as_unix_format='wslpath -m'
     alias winget='winget.exe'
@@ -11,7 +13,18 @@ else
     alias win_dir_as_unix_format='cygpath -m'
 fi
 
-# -- install --
+# -- aliases MSYS2 --
+
+if type -p pacman >/dev/null; then
+    alias msys2_search='pacman -s --noconfirm'
+    alias msys2_show='pacman -Qi'
+    alias msys2_list_installed='pacman -Qqe'
+    alias msys2_install='pacman -S --noconfirm'
+    alias msys2_uninstall='pacman -R --noconfirm'
+    alias msys2_use_same_home='echo db_home: windows >>/etc/nsswitch.conf'
+fi
+
+# -- cuda --
 
 function wsl_install_cuda_cudnn() {
     # https://canonical-ubuntu-wsl.readthedocs-hosted.com/en/latest/tutorials/gpu-cuda/
@@ -36,14 +49,3 @@ function wsl_fix_libcuda_so_slink() {
         sudo ln -s libcuda.so.1.1 libcuda.so.1
     )
 }
-
-# -- msys2 --
-
-if type -p pacman >/dev/null; then
-    alias msys2_search='pacman -s --noconfirm'
-    alias msys2_show='pacman -Qi'
-    alias msys2_list_installed='pacman -Qqe'
-    alias msys2_install='pacman -S --noconfirm'
-    alias msys2_uninstall='pacman -R --noconfirm'
-    alias msys2_use_same_home='echo db_home: windows >>/etc/nsswitch.conf'
-fi
