@@ -79,9 +79,8 @@ function ssh_fix_permisisons() {
 
 # -- admin --
 
-function user_sudo_no_password() {
-    if ! test -d /etc/sudoers.d/; then sudo mkdir -p /etc/sudoers.d/; fi
-    SET_USER=$USER && sudo sh -c "echo $SET_USER 'ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudoers-user"
+function user_as_sudoer_no_password() {
+    sudo grep -q "^$USER\\b" /etc/sudoers || sudo echo "$USER ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers
 }
 
 # -- install --
