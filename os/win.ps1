@@ -102,7 +102,7 @@ function win_install_vlc () {
     Remove-Item -Path $zipPath
     Remove-Item -Path $tempExtractPath -Recurse -Force
 
-    win_start_menu_add_lnk_to_allapps $exePath
+    win_startmenu_add_lnk_to_allapps $exePath
     log_msg "$exePath has been added to StartMenu."
 }
 
@@ -134,7 +134,7 @@ function win_install_obs () {
     Remove-Item -Path $zipPath
     Remove-Item -Path $tempExtractPath -Recurse -Force
 
-    win_start_menu_add_lnk_to_allapps $exePath
+    win_startmenu_add_lnk_to_allapps $exePath
     log_msg "$exePath has been added to StartMenu."
 }
 
@@ -299,29 +299,29 @@ function win_path_list() {
     (Get-ChildItem Env:Path).Value -split ';'
 }
 
-# -- open folder --
+# -- folder_open --
 
-function open_folder_trash() {
+function folder_open_trash() {
     Start-Process explorer shell:recyclebinfolder
 }
 
-function open_folder_appdata() {
+function folder_open_roaming_data() {
     Start-Process explorer "${env:appdata}"
 }
 
-function open_folder_windows_apps() {
-    Start-Process explorer "${env:localappdata}\Microsoft\WindowsApps"
-}
-
-function open_folder_winget_packages() {
-    Start-Process explorer "${env:localappdata}\Microsoft\WinGet\Packages"
-}
-
-function open_folder_programs_user() {
+function folder_open_local_programs() {
     Start-Process explorer "${env:localappdata}\Programs"
 }
 
-function open_folder_programs_user() {
+function folder_open_local_windows_apps() {
+    Start-Process explorer "${env:localappdata}\Microsoft\WindowsApps"
+}
+
+function folder_open_local_winget_packages() {
+    Start-Process explorer "${env:localappdata}\Microsoft\WinGet\Packages"
+}
+
+function folder_open_startmenu_programs() {
     Start-Process explorer "${env:userprofile}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
 }
 
@@ -489,9 +489,9 @@ function win_onedrive_reset() {
     & "C:\Program Files\Microsoft OneDrive\onedrive.exe" /reset
 }
 
-# -- start_menu/desktop --
+# -- startmenu/desktop --
 
-function win_start_menu_add_lnk_to_allapps {
+function win_startmenu_add_lnk_to_allapps {
     param (
         [Parameter(Mandatory = $true)][string]$exePath  # Path to the .exe file
     )
