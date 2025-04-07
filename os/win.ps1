@@ -17,8 +17,7 @@ function win_update() {
                 $_.Split('', [System.StringSplitOptions]::RemoveEmptyEntries)
             }
         }
-    }
-    else {
+    } else {
         Write-Output "not running as sudo. do manually by run ms-settings:windowsupdate"
     }
 }
@@ -210,10 +209,12 @@ function winget_uninstall() {
 }
 
 function winget_fix_installation() {
-    gsudo Remove-Item -Recurse "${env:localappdata}\Temp\WinGet\"  -Force -ErrorAction SilentlyContinue
-    gsudo Remove-Item -Recurse "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe"  -Force -ErrorAction SilentlyContinue
-    gsudo Remove-Item -Recurse "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_*"  -Force -ErrorAction SilentlyContinue
-    gsudo winget source update
+    gsudo {
+        Remove-Item -Recurse "${env:localappdata}\Temp\WinGet\"  -Force -ErrorAction SilentlyContinue
+        Remove-Item -Recurse "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe" -Force -ErrorAction SilentlyContinue
+        Remove-Item -Recurse "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_*"  -Force -ErrorAction SilentlyContinue
+        winget source update
+    }
 }
 
 # -- appx --
@@ -289,8 +290,7 @@ function win_path_add($addPath) {
         $arrPath = $path -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
         $newpath = ($arrPath + $addPath) -join ';'
         [Environment]::SetEnvironmentVariable("path", $newpath, 'User')
-    }
-    else {
+    } else {
         Throw "'$addPath' is not a valid path."
     }
 }
@@ -378,8 +378,7 @@ function win_hardlink_create() {
         if ($hash1.Hash -ne $hash2.Hash) {
             log_msg "> remove old source=$source"
             Remove-Item -Force "$source"
-        }
-        else {
+        } else {
             log_msg "> it is same file"
             return # same file
         }
@@ -515,8 +514,7 @@ function win_start_menu_add_lnk_to_allapps {
         $shortcut.Description = "Shortcut to $(Split-Path -Leaf $exePath)"
         $shortcut.Save()
         log_msg "Shortcut successfully created: $shortcutPath"
-    }
-    catch {
+    } catch {
         log_error "An error occurred while creating the shortcut: $_"
     }
 }
