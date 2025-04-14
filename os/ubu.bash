@@ -15,8 +15,6 @@ alias apt_ppa_remove="sudo add-apt-repository --remove"
 alias apt_ppa_list="apt policy"
 alias apt_autoremove="sudo apt -y autoremove"
 
-alias ps_user='ps -u $USERNAME|grep -v ps -u'
-
 function apt_file_search() {
     : ${1?"Usage: ${FUNCNAME[0]} <file>"}
     type -p apt-file >/dev/null || sudo apt install apt-file
@@ -52,6 +50,8 @@ function deb_install_file_from_url() {
 
 # -- services --
 
+alias ubu_processes_from_user='ps -u $USERNAME|grep -v ps -u'
+
 function ubu_pro_disable() {
     if ! test /etc/apt/apt.conf.d/20apt-esm-hook.conf; then
         sudo systemctl mask apt-news.service
@@ -62,6 +62,15 @@ function ubu_pro_disable() {
 
 function ubu_snap_disable_dir_at_home() {
     sudo snap set system experimental.hidden-snap-folder=true
+}
+
+function ubu_increase_swap() {
+    sudo fallocate -l 1G /swapfile
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile
+    sudo swapon /swapfile
+    sudo cp /etc/fstab /etc/fstab.bak
+    echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 }
 
 alias ubu_product_name='sudo dmidecode -s system-product-name'
@@ -80,7 +89,7 @@ function ssh_fix_permisisons() {
 # -- admin --
 
 function user_as_sudoer_no_password() {
-    sudo grep -q "^$USER\\b" /etc/sudoers || sudo echo "$USER ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers
+    sudo grep -q "^$USER\\b" /etc/sudoers || echo "$USER ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
 }
 
 # -- install --
@@ -110,15 +119,6 @@ function ubu_install_miniconda() {
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/bin/miniconda3/miniconda.sh
     bash ~/bin/miniconda3/miniconda.sh -b -u -p ~/bin/miniconda3
     rm -rf ~/bin/miniconda3/miniconda.sh
-}
-
-function ubu_increase_swap() {
-    sudo fallocate -l 1G /swapfile
-    sudo chmod 600 /swapfile
-    sudo mkswap /swapfile
-    sudo swapon /swapfile
-    sudo cp /etc/fstab /etc/fstab.bak
-    echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 }
 
 # -- customize --
