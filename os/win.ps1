@@ -247,21 +247,6 @@ function win_appx_uninstall() {
     }
 }
 
-# -- ps --
-
-function ps_profile_reload() {
-    # TODO: this does not work properly
-    . $PROFILE.CurrentUserAllHosts
-}
-
-function ps_is_running_as_sudo { 
-    ([System.Security.Principal.WindowsPrincipal] [System.Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
-}
-
-function ps_func_show($name) {
-    Get-Content Function:\$name
-}
-
 # -- env --
 
 function win_env_add($name, $value) {
