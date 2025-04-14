@@ -2,9 +2,6 @@
 
 if [[ -n $WSL_DISTRO_NAME ]]; then
     alias win_dir_as_unix_format='wslpath -m'
-    alias winget='winget.exe'
-    alias explorer='explorer.exe'
-    alias powershell='powershell.exe'
     function win_start() {
         type -p wslview >/dev/null || sudo apt install wslu
         wslview $@
