@@ -4,6 +4,8 @@
 
 `ps-sh-helpers`  organize helpers in OS-dependent from `os/<os>.*` files and loads program-dependent from `programs/<program>.*` files. It is initialized at `.bashrc` by loading `init.sh` or at `PowerShell_profile.ps1` by loading `init.ps1` (see diagram below).
 
+**from bash:**
+
 ```mermaid
 %%{init: {'theme':'dark'}}%%
 flowchart LR
@@ -15,16 +17,19 @@ flowchart LR
         ...
     "]
     OS-dependent["
+        os/any.bash
         os/win.bash
         os/ubu.bash
         ...
     "]
     
     bashrc --> |"loads"| sh-init
-    sh-init --> |"loads if program exists"| program-dependent
-    sh-init --> |"loads if running at OS"| OS-dependent
-    sh-init --> |"bash alias to each function at"| ps-init
+    sh-init --> |"1: loads if running at OS"| OS-dependent
+    sh-init --> |"2: loads if program exists"| program-dependent
+    sh-init --> |"3: create bash alias functions at"| ps-init
 ```
+
+**from powershell:**
 
 ```mermaid
 %%{init: {'theme':'dark'}}%%
@@ -37,15 +42,16 @@ flowchart LR
         ...
     "]
     OS-dependent["
+        os/any.ps1
         os/win.ps1
         os/ubu.ps1
         ...
     "]
 
     psprofile--> |"loads"| ps-init
-    ps-init --> |"loads if program exists"| program-dependent
-    ps-init --> |"loads if running at OS"| OS-dependent
-    ps-init --> |"bash alias to each function at"| sh-init
+    ps-init --> |"1: loads if running at OS"| OS-dependent
+    ps-init --> |"2: loads if program exists"| program-dependent
+    ps-init --> |"3: create ps1 alias to functions at"| sh-init
 ```
 
 ## How to install
@@ -62,7 +68,6 @@ You can use the PowerShell commands below to fetch, install, and setup `ps-sh-he
 ```ps1
 git clone https://github.com/alanlivio/ps-sh-helpers ${env:userprofile}\.ps1-sh-helpers
 $contentAdd = '. "${env:userprofile}\.ps-sh-helpers\init.ps1""'
-# to setup WindowsPowerShell
 Set-Content "${env:userprofile}/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1" $contentAdd 
 ```
 
