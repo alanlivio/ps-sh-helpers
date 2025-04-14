@@ -1,12 +1,8 @@
-# -- any OS --
-
 $HELPERS_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
-function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
-function log_error() { Write-Host -ForegroundColor DarkRed "--" ($args -join " ") }
-function passwd_generate { -join (1..12 | ForEach-Object { 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?' | Get-Random }) }
 
 # -- load os/<name>.ps1 files -- 
 
+. "$HELPERS_DIR/os/any.ps1"
 . "$HELPERS_DIR/os/win.ps1"
 
 # -- load <program>.bash files --
