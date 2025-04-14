@@ -353,7 +353,6 @@ function win_hardlink_create() {
         [Parameter(Mandatory = $true)]
         [string] $target
     )
-    log_msg "> creating hardlink source=$source target=$target"
     if (!(Test-Path "$target")) { 
         Throw "target=$target is not a valid"
     }
@@ -364,10 +363,10 @@ function win_hardlink_create() {
             log_msg "> remove old source=$source"
             Remove-Item -Force "$source"
         } else {
-            log_msg "> it is same file"
-            return # same file
+            return # it is same file
         }
     }
+    log_msg "> creating hardlink source=$source target=$target"
     New-Item -ItemType Hardlink -Force -Path "$source" -Target "$target"
 }
 
