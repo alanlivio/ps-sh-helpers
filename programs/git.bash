@@ -99,3 +99,19 @@ function git_tag_move_to_head_and_push() {
     git tag $1
     git push --force --tags
 }
+
+function git_clone_to_dir() {
+    : ${1?"Usage: ${FUNCNAME[0]} <url> <dir> <email>. if <dir> is empty, the <url> basename is used. "}
+    local url=$1
+    local basedir=$2
+    if [[ -z $3 ]]; then
+        local dir=$basedir/${1##*/}
+    else
+        local dir=$basedir/$3
+    fi
+    local email=$4
+    [[ ! -d $dir ]] && git clone $url $dir
+    if [[ -n $email ]]; then
+        (cd $dir && git config user.email "$email")
+    fi
+}
