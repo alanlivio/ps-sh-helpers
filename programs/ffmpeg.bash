@@ -20,7 +20,13 @@ function ffmpeg_convert_to_mp4_960x540_cutted_until() {
 function ffmpeg_extract_audio_mp4() {
     : ${1?"Usage: ${FUNCNAME[0]} <video>"}
     local fname_no_ext="${1%.*}"
-    ffmpeg -i "$1" -vn -acodec copy "$fname_no_ext (audio).m4a"
+    ffmpeg -i "$1" -vn -acodec copy "$fname_no_ext (audio only).m4a"
+}
+
+function ffmpeg_extract_video_mp4() {
+    : ${1?"Usage: ${FUNCNAME[0]} <video>"}
+    local fname_no_ext="${1%.*}"
+    ffmpeg -i "$1" -c:v copy -an "$fname_no_ext (video only).m4a"
 }
 
 function ffmpeg_show_motion_vectors() {
