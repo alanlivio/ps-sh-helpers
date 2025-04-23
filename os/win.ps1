@@ -469,29 +469,22 @@ function win_system_enable_ssh_agent() {
     ssh-add "$env:userprofile\\.ssh\\id_rsa"
 }
 
-# -- startmenu/desktop --
+# -- onedrive --
 
 function win_onedrive_make_folder_avaliable() {
     param(
-        [Parameter(Mandatory = $true, Position = 0, HelpMessage = "Full path to the OneDrive folder.")]
-        [ValidateScript({
-                if (Test-Path $_ -PathType Container) { return $true }
-                else { throw "Path not found or is not a directory: '$_'" }
-            })]
+        [Parameter(Mandatory = $true, HelpMessage = "Full path to the OneDrive folder.")]
         [string]$Path
     )
-    log_msg "INFO" "Executing: attrib  for '$Path'."
+    if (!(Test-Path $Path)) { log_error "Path not found or is not a directory"; return }
+    log_msg "win_onedrive_make_folder_avaliable for '$Path'."
     try {
-        # Use attrib.exe: -U (Unpin), +P (Pin), /s (Subdirs), /d (Process Dirs too)
-        $commandArgs = "-U +P ""$Path"" /s /d"
-        attrib $commandArgs
-        if ($LASTEXITCODE -eq 0) {
-            log_msg  "attrib command successful for '$Path'. OneDrive will sync."
-        } else {
-            log_error "attrib command for '$Path' finished with exit code $LASTEXITCODE."
+        attrib +P $Path
+        if ($LASTEXITCODE -ne 0) {
+            log_error "attrib command failed '$Path': finished with exit code $LASTEXITCODE."
         }
     } catch {
-        log_error "Failed attribprocessing '$Path': $($_.Exception.Message)"
+        log_error "attrib command failed '$Path': $($_.Exception.Message)"
     }
 }
 
