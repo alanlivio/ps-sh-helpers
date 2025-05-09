@@ -6,6 +6,10 @@ function pip_install() {
     done
 }
 
+function python_fix_error_externally_managed_environment() {
+    python3 -m pip config set global.break-system-packages true
+}
+
 function python_clean_pip_conda_cache() {
     pip cache purge
     conda clean --all --yes
