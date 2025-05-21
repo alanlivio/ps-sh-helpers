@@ -645,18 +645,29 @@ function win_clutter_remove_3_and_4_fingers_gestures() {
 function win_clutter_remove_shortcuts_unused() {
     log_msg "win_clutter_remove_shortcuts_unused"
     
-    # "disable AutoRotation shorcuts"
+    # "disable win+v shortcut"
+    $regPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    $valueName = "DisabledHotkeys"
+    $keyToDisable = "V"
+    $currentValue = (Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue).$valueName
+    $newValue = $currentValue
+    if ($null -eq $newValue -or $newValue -notlike "*$keyToDisable*") {
+        $newValue = ($newValue | Out-String).Trim() + $keyToDisable
+        Set-ItemProperty -Path $regPath -Name $valueName -Value $newValue
+    }
+    
+    # "disable AutoRotation shortcuts"
     $igf = "HKCU:\Software\Intel\Display\Igfxcui"
     New-Item -Path $igf -Force | Out-Null
-    Set-ItemProperty -Path $igf -Name "HotKeys" -Value 'Enable'
+    Set-ItemProperty -Path $igf -Name "HotKeys" -Value 'Disable'
 
-    # "disable language shorcuts"
+    # "disable language shortcuts"
     $reg_key_toggle = "HKCU:\Keyboard Layout\Toggle"
     Set-ItemProperty -Path $reg_key_toggle -Name "HotKey" -Value '3' -Type String
     Set-ItemProperty -Path $reg_key_toggle -Name "Language Hotkey" -Value '3' -Type String
     Set-ItemProperty -Path $reg_key_toggle -Name "Layout Hotkey" -Value '3' -Type String
 
-    # "disable acessibility shorcuts"
+    # "disable acessibility shortcuts"
     $reg_acess = "HKCU:\Control Panel\Accessibility"
     Set-ItemProperty -Path "$reg_acess\ToggleKeys" -Name "Flags" -Value '58' -Type String
     Set-ItemProperty -Path "$reg_acess\StickyKeys" -Name "Flags" -Value '26' -Type String
