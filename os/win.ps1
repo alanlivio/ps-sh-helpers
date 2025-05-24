@@ -18,7 +18,7 @@ function win_update() {
             }
         }
     } else {
-        Write-Output "not running as sudo. do manually by run ms-settings:windowsupdate"
+        Write-Output "not running as admin. you can do manually by run ms-settings:windowsupdate"
     }
 }
 
