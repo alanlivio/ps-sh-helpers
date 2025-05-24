@@ -554,13 +554,29 @@ function win_edge_disable_edge_ctrl_shift_c() {
 
 # -- win_clutter --
 
-function win_clutter_use_dark_no_transparency() {
-    log_msg "win_clutter_use_dark_no_transparency"
+function win_clutter_clean_all_and_explorer_restart() {
+    win_clutter_clean_3_and_4_fingers_gestures
+    win_clutter_clean_bell_sounds
+    win_clutter_clean_desktop_icons
+    win_clutter_clean_explorer_listing_files
+    win_clutter_clean_old_unused_folders
+    win_clutter_clean_osapps_unused
+    win_clutter_clean_unused_keyboard_shortcuts
+    win_clutter_clean_taskbar
+    win_clutter_clean_web_search_and_widgets
+    win_clutter_clean_xbox
+    explorer_restart
+}
+
+function win_clutter_clean_ui() {
+    log_msg "win_clutter_clean_ui"
+    # dark enabled and transparent disabled
     $reg_personalize = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
     Set-ItemProperty -Path $reg_personalize -Name "AppsUseLightTheme" -Value 0 -Type Dword -Force 
     Set-ItemProperty -Path $reg_personalize -Name "SystemUsesLightTheme" -Value 0 -Type Dword -Force 
     Set-ItemProperty -Path $reg_personalize -Name "EnableTransparency" -Value 0 -Type Dword -Force 
     Set-ItemProperty -Path $reg_personalize -Name "ColorPrevalence" -Value 0 -Type Dword -Force 
+    # gray accent color
     $reg_accent = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent"
     $AccentPalette = "cc,cc,cc,00,ae,ae,ae,00,92,92,92,00,76,76,76,00,4f,4f,4f,00,37,37,37,00,26,26,26,00,d1,34,38,00"
     $hexified = $AccentPalette.Split(',') | ForEach-Object { "0x$_" }
@@ -568,23 +584,12 @@ function win_clutter_use_dark_no_transparency() {
     Set-ItemProperty -Path $reg_accent -Name "AccentColor" -Value 0xff000000 -Type Dword -Force
     Set-ItemProperty -Path $reg_accent -Name "AccentColorMenu" -Value 0xff767676 -Type Dword -Force
     Set-ItemProperty -Path $reg_accent -Name "StartColorMenu" -Value 0xff4f4f4f -Type Dword -Force
+    # hide desktop icons
+    $Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    Set-ItemProperty -Path $Path -Name "HideIcons" -Value 1
 }
 
-function win_clutter_remove_all_and_explorer_restart() {
-    win_clutter_remove_3_and_4_fingers_gestures
-    win_clutter_remove_bell_sounds
-    win_clutter_remove_desktop_icons
-    win_clutter_remove_explorer
-    win_clutter_remove_old_unused_folders
-    win_clutter_remove_osapps_unused
-    win_clutter_remove_shortcuts_unused
-    win_clutter_remove_taskbar
-    win_clutter_remove_web_search_and_widgets
-    win_clutter_remove_xbox
-    explorer_restart
-}
-
-function win_clutter_remove_old_unused_folders() {
+function win_clutter_clean_old_unused_folders() {
     $paths = @(
         "${env:userprofile}\Cookies"
         "${env:userprofile}\Local Settings"
@@ -603,13 +608,8 @@ function win_clutter_remove_old_unused_folders() {
     }
 }
 
-function win_clutter_remove_desktop_icons() {
-    $Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
-    Set-ItemProperty -Path $Path -Name "HideIcons" -Value 1
-}
-
-function win_clutter_remove_osapps_unused() {
-    log_msg "win_clutter_remove_osapps_unused"
+function win_clutter_clean_osapps_unused() {
+    log_msg "win_clutter_clean_osapps_unused"
     winget_uninstall "Mail and Calendar"
     winget_uninstall "Microsoft Sticky Notes"
     winget_uninstall "Microsoft Clipchamp"
@@ -621,8 +621,8 @@ function win_clutter_remove_osapps_unused() {
     winget_uninstall "Power Automate"
 }
 
-function win_clutter_remove_3_and_4_fingers_gestures() {
-    log_msg "win_clutter_remove_3_and_4_fingers_gestures"
+function win_clutter_clean_3_and_4_fingers_gestures() {
+    log_msg "win_clutter_clean_3_and_4_fingers_gestures"
     $reg = "HKCU:\Software\Microsoft\Windows\CurrentVersion\PrecisionTouchPad"
     Set-ItemProperty -Path $reg -Name "FourFingerDown" -Value 0 -Type Dword
     Set-ItemProperty -Path $reg -Name "FourFingerLeft" -Value 0 -Type Dword
@@ -636,8 +636,8 @@ function win_clutter_remove_3_and_4_fingers_gestures() {
     Set-ItemProperty -Path $reg -Name "ThreeFingerUp" -Value 0 -Type Dword
 }
 
-function win_clutter_remove_shortcuts_unused() {
-    log_msg "win_clutter_remove_shortcuts_unused"
+function win_clutter_clean_unused_keyboard_shortcuts() {
+    log_msg "win_clutter_clean_unused_keyboard_shortcuts"
     
     # "disable win+v shortcut"
     $regPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
@@ -669,14 +669,14 @@ function win_clutter_remove_shortcuts_unused() {
     Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122' -Type String
 }
 
-function win_clutter_remove_bell_sounds() {
-    log_msg "win_clutter_remove_bell_sounds"
+function win_clutter_clean_bell_sounds() {
+    log_msg "win_clutter_clean_bell_sounds"
     Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\" "(Default)" -Value ".None"
     Get-ChildItem -Path 'HKCU:\AppEvents\Schemes\Apps' | Get-ChildItem | Get-ChildItem | Where-Object { $_.PSChildName -eq '.Current' } | Set-ItemProperty -Name '(Default)' -Value '' 
 }
 
-function win_clutter_remove_web_search_and_widgets() {
-    log_msg "win_clutter_remove_web_search_and_widgets"
+function win_clutter_clean_web_search_and_widgets() {
+    log_msg "win_clutter_clean_web_search_and_widgets"
     # win 11
     # https://www.tomshardware.com/how-to/disable-windows-web-search
     winget list --accept-source-agreements -q "MicrosoftWindows.Client.WebExperience_cw5n1h2txyew" | Out-Null
@@ -689,22 +689,29 @@ function win_clutter_remove_web_search_and_widgets() {
     Set-ItemProperty -Path "$reg_search2" -Name 'IsDynamicSearchBoxEnabled' -Value 0 -Type Dword
 }
 
-function win_clutter_remove_explorer() {
-    log_msg "win_clutter_remove_explorer"
+function win_clutter_clean_explorer_listing_files() {
+    log_msg "win_clutter_clean_explorer_listing_files"
     $reg_explorer = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer"
-    # setup folder listing
+    
     Set-ItemProperty -Path $reg_explorer -Name ShowFrequent -Value 0 -Type Dword
     Set-ItemProperty -Path $reg_explorer -Name ShowRecent -Value 0 -Type Dword
     Set-ItemProperty -Path $reg_explorer -Name ShowRecommendations -Value 0 -Type Dword
     Set-ItemProperty -Path $reg_explorer -Name HideFileExt -Value 0 -Type Dword
-    # remove grouping listing
+    Set-ItemProperty -Path $reg_explorer -Name DisableGraphRecentItems -Value 1 -Type Dword
+    
+    $reg_explorer_adv = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    Set-ItemProperty -Path $reg_explorer_adv -Name ShowAccountBasedInsights -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name Start_TrackDocs -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name ShowRecommendedFiles -Value 0 -Type Dword
+
+    # disable grouping
     # https://answers.microsoft.com/en-us/windows/forum/all/completely-disable-file-grouping-always-everywhere/ac31a227-f585-4b0a-ab2e-a557828eaec5
     $key = 'HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell' 
     Remove-Item -Path "$key\BagMRU"  -Force -ErrorAction SilentlyContinue
 }
 
-function win_clutter_remove_taskbar() {
-    log_msg "win_clutter_remove_taskbar"
+function win_clutter_clean_taskbar() {
+    log_msg "win_clutter_clean_taskbar"
     $reg_explorer_adv = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     
     # taskbar
@@ -730,7 +737,7 @@ function win_clutter_remove_taskbar() {
     Set-ItemProperty -Path $reg_search -Name SearchBoxTaskbarMode -Value 0 -Type Dword
 }
 
-function win_clutter_remove_copilot() {
+function win_clutter_clean_copilot() {
     # https://winaero.com/disable-windows-copilot/
     sudo {
         $reg_explorer_pol = "HKCU:\Software\Policies\Microsoft\Windows"
@@ -739,8 +746,8 @@ function win_clutter_remove_copilot() {
     }
 }
 
-function win_clutter_remove_xbox() {
-    log_msg "win_clutter_remove_xbox"
+function win_clutter_clean_xbox() {
+    log_msg "win_clutter_clean_xbox"
     # https://www.makeuseof.com/windows-new-app-ms-gamingoverlay-error/
 
     $reg_game_dvr = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR"
