@@ -320,12 +320,6 @@ function explorer_hide_home_dotfiles() {
     Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }
 }
 
-function explorer_restart() {
-    log_msg "explorer_restart"
-    taskkill /f /im explorer.exe | Out-Null
-    Start-Process explorer.exe
-}
-
 function explorer_folder_use_pictures_icon {
     param ([string]$FolderPath)
     if (-Not (Test-Path $FolderPath)) {
