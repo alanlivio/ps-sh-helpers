@@ -555,15 +555,15 @@ function win_edge_disable_edge_ctrl_shift_c() {
 # -- win_clutter --
 
 function win_clutter_clean_all_and_explorer_restart() {
-    win_clutter_clean_3_and_4_fingers_gestures
-    win_clutter_clean_bell_sounds
-    win_clutter_clean_desktop_icons
-    win_clutter_clean_explorer_listing_files
+    win_clutter_clean_ui
     win_clutter_clean_old_unused_folders
     win_clutter_clean_osapps_unused
+    win_clutter_clean_3_and_4_fingers_gestures
     win_clutter_clean_unused_keyboard_shortcuts
-    win_clutter_clean_taskbar
+    win_clutter_clean_bell_sounds
+    win_clutter_clean_explorer_listing_files
     win_clutter_clean_web_search_and_widgets
+    win_clutter_clean_taskbar
     win_clutter_clean_xbox
     explorer_restart
 }
@@ -735,15 +735,6 @@ function win_clutter_clean_taskbar() {
     # search
     $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
     Set-ItemProperty -Path $reg_search -Name SearchBoxTaskbarMode -Value 0 -Type Dword
-}
-
-function win_clutter_clean_copilot() {
-    # https://winaero.com/disable-windows-copilot/
-    sudo {
-        $reg_explorer_pol = "HKCU:\Software\Policies\Microsoft\Windows"
-        New-Item -Path "$reg_explorer_pol\WindowsCopilot" -Force | Out-Null
-        Set-ItemProperty -Path "$reg_explorer_pol\WindowsCopilot" -Name 'TurnOffWindowsCopilot' -Value 1 -Type Dword
-    }
 }
 
 function win_clutter_clean_xbox() {
