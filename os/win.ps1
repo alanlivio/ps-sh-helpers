@@ -197,7 +197,7 @@ function winget_uninstall() {
     param ([Parameter(Mandatory = $true)][string] $pkg)
     winget list --accept-source-agreements -q $pkg | Out-Null
     if ($?) {
-        winget uninstall --id $pkg --silent 
+        winget uninstall $pkg
     }
 }
 
@@ -605,6 +605,7 @@ function win_clutter_clean_osapps_unused() {
     winget_uninstall "Microsoft Sticky Notes"
     winget_uninstall "Microsoft Clipchamp"
     winget_uninstall "Solitaire & Casual Games"
+    winget_uninstall "Game Bar"
     winget_uninstall "News"
     winget_uninstall "Windows Maps"
     winget_uninstall "Microsoft People"
