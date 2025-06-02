@@ -602,6 +602,7 @@ function win_clutter_clean_old_unused_folders() {
 function win_clutter_clean_osapps_unused() {
     log_msg "win_clutter_clean_osapps_unused"
     winget_uninstall "Mail and Calendar"
+    winget_uninstall "MSN Weather"
     winget_uninstall "Microsoft Sticky Notes"
     winget_uninstall "Microsoft Clipchamp"
     winget_uninstall "Solitaire & Casual Games"
@@ -747,5 +748,6 @@ function win_clutter_clean_xbox() {
     winget_uninstall 9MV0B5HZVK9Z
     winget_uninstall "Xbox TCUI" 
     winget_uninstall "Xbox Identity Provider" 
+    winget_uninstall "Microsoft Edge Game Assist" 
     winget_uninstall Microsoft.XboxSpeechToTextOverlay_8wekyb3d8bbwe
 }
