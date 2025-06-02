@@ -75,16 +75,20 @@ function win_install_miktex() {
 
 function win_install_vlc () {
     param (
-        [string]$version = "3.0.21",
         [string]$extractPath = "$env:userprofile\bin\"
     )
-    $name = "VLC"
-    $url = "https://www.mirrorservice.org/sites/videolan.org/vlc/$version/win32/vlc-$version-win32.zip"
-    $zipPath = "$env:TEMP\vlc-$version-win32.zip"
+    $vlcLatestWin64Url = "https://get.videolan.org/vlc/last/win64/"
+    $webRequest = Invoke-WebRequest -Uri $vlcLatestWin64Url -Method Get -ErrorAction Stop
+    $vlcZipLink = $webRequest.Links | Where-Object { $_.href -like "*win64.zip" } | Select-Object -First 1
+    if (-not ($vlcZipLink)) { log_error "Download failed"; return }
+    $vlcZip = $vlcZipLink.href
+    $name = $vlcZip -replace '-win64\.zip$'
+    $url = "https://get.videolan.org/vlc/last/win64/$vlcZip"
+    $zipPath = "$env:TEMP\$vlcZip"
     $tempExtractPath = Join-Path $env:TEMP "vlc_extract_temp"
-    $exePath = Join-Path $extractPath "vlc-$version\vlc.exe"
+    $exePath = Join-Path $extractPath "$name\vlc.exe"
 
-    log_msg "Downloading $name $version"
+    log_msg "Downloading $name"
     $webClient = New-Object System.Net.WebClient
     $webClient.DownloadFile($url, $zipPath)
     if (!(Test-Path $zipPath)) { log_error "Download failed"; return }
@@ -94,9 +98,9 @@ function win_install_vlc () {
     New-Item -ItemType Directory -Path $tempExtractPath | Out-Null
 
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    log_msg "Extracting vlc-$version-win32.zip to temp folder..."
+    log_msg "Extracting $vlcZip to temp folder..."
     [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $tempExtractPath)
-    log_msg "Copying vlc-$version-win32.zip to $tempExtractPath..."
+    log_msg "Copying $vlcZip to $tempExtractPath..."
     Copy-Item -Path "$tempExtractPath\*" -Destination $extractPath -Recurse -Force
 
     Remove-Item -Path $zipPath
@@ -108,11 +112,14 @@ function win_install_vlc () {
 
 function win_install_obs () {
     param (
-        [string] $version = "30.2.3",
         [string] $extractPath = "$env:userprofile\bin\OBS"
     )
+    $apiUrl = "https://api.github.com/repos/obsproject/obs-studio/releases/latest"
+    $response = Invoke-RestMethod -Uri $apiUrl -Method Get -Headers @{"Accept" = "application/vnd.github.v3+json" }
+    if (-not ($response)) { log_error "Download failed"; return }
+    $version = $response.tag_name
     $name = "OBS Studio"
-    $url = "https://cdn-fastly.obsproject.com/downloads/OBS-Studio-$version-Windows.zip"
+    $url = "https://github.com/obsproject/obs-studio/releases/download/$version/OBS-Studio-$version-Windows.zip"
     $zipPath = "$env:TEMP\OBS-Studio-$version-Windows.zip"
     $tempExtractPath = Join-Path $env:TEMP "obs_extract_temp"
     $exePath = Join-Path $extractPath "bin\64bit\obs64.exe"
@@ -137,8 +144,6 @@ function win_install_obs () {
     win_startmenu_add_lnk_to_allapps $exePath
     log_msg "$exePath has been added to StartMenu."
 }
-
-
 
 function win_install_golang() {
     $version = "1.23.3"
@@ -321,8 +326,8 @@ IconResource=%SystemRoot%\system32\imageres.dll,-113
 IconFile=%SystemRoot%\system32\imageres.dll,-113
 IconIndex=0
 "@ | Set-Content -Path $DesktopIniPath -Encoding UTF8 -Force
-    attrib +r "$FolderPath" /s /d > $null 2>&1
-    attrib +h "$DesktopIniPath" > $null 2>&1
+    attrib +r "$FolderPath" /s /d > $null
+    attrib +h "$DesktopIniPath" > $null
     log_msg "Successfully set the icon for '$FolderPath' to match the Pictures folder."
 }
 
@@ -553,6 +558,7 @@ function win_clutter_clean_all_and_explorer_restart() {
     win_clutter_clean_web_search_and_widgets
     win_clutter_clean_taskbar
     win_clutter_clean_xbox
+    win_office_disable_warn_local_link
     explorer_restart
 }
 
