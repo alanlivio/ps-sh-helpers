@@ -694,6 +694,7 @@ function win_clutter_clean_explorer_listing_files() {
     Set-ItemProperty -Path $reg_explorer_adv -Name ShowAccountBasedInsights -Value 0 -Type Dword
     Set-ItemProperty -Path $reg_explorer_adv -Name Start_TrackDocs -Value 0 -Type Dword
     Set-ItemProperty -Path $reg_explorer_adv -Name ShowRecommendedFiles -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name LaunchTo -Value 1 -Type Dword # This PC
 
     # disable grouping
     # https://answers.microsoft.com/en-us/windows/forum/all/completely-disable-file-grouping-always-everywhere/ac31a227-f585-4b0a-ab2e-a557828eaec5
