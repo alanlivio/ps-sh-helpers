@@ -745,10 +745,7 @@ function win_clutter_clean_xbox() {
     Set-ItemProperty -Path $reg_game_store -Name GameDVR_Enabled -Value 0 -Type Dword
 
     winget_uninstall 9MV0B5HZVK9Z
-    winget_uninstall Microsoft.Xbox.TCUI_8wekyb3d8bbwe
-    winget_uninstall Microsoft.XboxApp_8wekyb3d8bbwe
-    winget_uninstall Microsoft.XboxGameOverlay_8wekyb3d8bbwe
-    winget_uninstall Microsoft.XboxGamingOverlay_8wekyb3d8bbwe
-    winget_uninstall Microsoft.XboxIdentityProvider_8wekyb3d8bbwe
+    winget_uninstall "Xbox TCUI" 
+    winget_uninstall "Xbox Identity Provider" 
     winget_uninstall Microsoft.XboxSpeechToTextOverlay_8wekyb3d8bbwe
 }
