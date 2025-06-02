@@ -309,10 +309,6 @@ function explorer_restart() {
     Stop-Process -Force -ErrorAction SilentlyContinue -ProcessName Explorer
 }
 
-function explorer_hide_home_dotfiles() {
-    Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }
-}
-
 function explorer_folder_use_pictures_icon {
     param ([string]$FolderPath)
     if (-Not (Test-Path $FolderPath)) {
@@ -555,6 +551,7 @@ function win_clutter_clean_all_and_explorer_restart() {
     win_clutter_clean_unused_keyboard_shortcuts
     win_clutter_clean_bell_sounds
     win_clutter_clean_explorer_listing_files
+    win_clutter_clean_explorer_hide_home_dotfiles
     win_clutter_clean_web_search_and_widgets
     win_clutter_clean_taskbar
     win_clutter_clean_xbox
@@ -702,6 +699,10 @@ function win_clutter_clean_explorer_listing_files() {
     # https://answers.microsoft.com/en-us/windows/forum/all/completely-disable-file-grouping-always-everywhere/ac31a227-f585-4b0a-ab2e-a557828eaec5
     $key = 'HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell' 
     Remove-Item -Path "$key\BagMRU"  -Force -ErrorAction SilentlyContinue
+}
+
+function win_clutter_clean_explorer_hide_home_dotfiles() {
+    Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }
 }
 
 function win_clutter_clean_taskbar() {
