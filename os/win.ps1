@@ -87,27 +87,28 @@ function win_install_vlc () {
     $zipPath = "$env:TEMP\$vlcZip"
     $tempExtractPath = Join-Path $env:TEMP "vlc_extract_temp"
     $exePath = Join-Path $extractPath "$name\vlc.exe"
+    if (!(Test-Path -Path $exePath)) {
+        log_msg "Downloading $name"
+        $webClient = New-Object System.Net.WebClient
+        $webClient.DownloadFile($url, $zipPath)
+        if (!(Test-Path $zipPath)) { log_error "Download failed"; return }
 
-    log_msg "Downloading $name"
-    $webClient = New-Object System.Net.WebClient
-    $webClient.DownloadFile($url, $zipPath)
-    if (!(Test-Path $zipPath)) { log_error "Download failed"; return }
+        if (!(Test-Path -Path $extractPath)) { New-Item -ItemType Directory -Path $extractPath | Out-Null }
+        if (Test-Path $tempExtractPath) { Remove-Item -Recurse -Force $tempExtractPath }
+        New-Item -ItemType Directory -Path $tempExtractPath | Out-Null
 
-    if (!(Test-Path -Path $extractPath)) { New-Item -ItemType Directory -Path $extractPath | Out-Null }
-    if (Test-Path $tempExtractPath) { Remove-Item -Recurse -Force $tempExtractPath }
-    New-Item -ItemType Directory -Path $tempExtractPath | Out-Null
+        Add-Type -AssemblyName System.IO.Compression.FileSystem
+        log_msg "Extracting $vlcZip to temp folder..."
+        [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $tempExtractPath)
+        log_msg "Copying $vlcZip to $tempExtractPath..."
+        Copy-Item -Path "$tempExtractPath\*" -Destination $extractPath -Recurse -Force
 
-    Add-Type -AssemblyName System.IO.Compression.FileSystem
-    log_msg "Extracting $vlcZip to temp folder..."
-    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $tempExtractPath)
-    log_msg "Copying $vlcZip to $tempExtractPath..."
-    Copy-Item -Path "$tempExtractPath\*" -Destination $extractPath -Recurse -Force
+        Remove-Item -Path $zipPath
+        Remove-Item -Path $tempExtractPath -Recurse -Force
 
-    Remove-Item -Path $zipPath
-    Remove-Item -Path $tempExtractPath -Recurse -Force
-
-    win_startmenu_add_lnk_to_allapps $exePath
-    log_msg "$exePath has been added to StartMenu."
+        win_startmenu_add_lnk_to_allapps $exePath
+        log_msg "$exePath has been added to StartMenu."
+    }
 }
 
 function win_install_obs () {
@@ -123,26 +124,27 @@ function win_install_obs () {
     $zipPath = "$env:TEMP\OBS-Studio-$version-Windows.zip"
     $tempExtractPath = Join-Path $env:TEMP "obs_extract_temp"
     $exePath = Join-Path $extractPath "bin\64bit\obs64.exe"
+    if (!(Test-Path -Path $exePath)) {
+        log_msg "Downloading $name $version"
+        $webClient = New-Object System.Net.WebClient
+        $webClient.DownloadFile($url, $zipPath)
+        if (!(Test-Path $zipPath)) { log_error "Download failed"; return }
 
-    log_msg "Downloading $name $version"
-    $webClient = New-Object System.Net.WebClient
-    $webClient.DownloadFile($url, $zipPath)
-    if (!(Test-Path $zipPath)) { log_error "Download failed"; return }
+        if (!(Test-Path -Path $extractPath)) { New-Item -ItemType Directory -Path $extractPath | Out-Null }
+        if (Test-Path $tempExtractPath) { Remove-Item -Recurse -Force $tempExtractPath }
+        New-Item -ItemType Directory -Path $tempExtractPath | Out-Null
 
-    if (!(Test-Path -Path $extractPath)) { New-Item -ItemType Directory -Path $extractPath | Out-Null }
-    if (Test-Path $tempExtractPath) { Remove-Item -Recurse -Force $tempExtractPath }
-    New-Item -ItemType Directory -Path $tempExtractPath | Out-Null
+        Add-Type -AssemblyName System.IO.Compression.FileSystem
+        log_msg "Extracting $name to temp folder..."
+        [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $tempExtractPath)
+        Copy-Item -Path "$tempExtractPath\*" -Destination $extractPath -Recurse -Force
 
-    Add-Type -AssemblyName System.IO.Compression.FileSystem
-    log_msg "Extracting $name to temp folder..."
-    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $tempExtractPath)
-    Copy-Item -Path "$tempExtractPath\*" -Destination $extractPath -Recurse -Force
+        Remove-Item -Path $zipPath
+        Remove-Item -Path $tempExtractPath -Recurse -Force
 
-    Remove-Item -Path $zipPath
-    Remove-Item -Path $tempExtractPath -Recurse -Force
-
-    win_startmenu_add_lnk_to_allapps $exePath
-    log_msg "$exePath has been added to StartMenu."
+        win_startmenu_add_lnk_to_allapps $exePath
+        log_msg "$exePath has been added to StartMenu."
+    }
 }
 
 function win_install_golang() {
@@ -190,7 +192,10 @@ $_WINGET_ARGS = "--accept-package-agreements --accept-source-agreements --scope=
 
 function winget_install() {
     $installArgs = @($_WINGET_ARGS -split ' ') + $args
-    winget install $installArgs
+    winget list --accept-source-agreements -q $args[0] | Out-Null
+    if (-not($?)) {
+        winget install $installArgs
+    }
 }
 
 function winget_uninstall() {
