@@ -460,19 +460,16 @@ function win_system_enable_ssh_agent() {
 # -- onedrive --
 
 function win_onedrive_make_folder_avaliable() {
-    param(
-        [Parameter(Mandatory = $true, HelpMessage = "Full path to the OneDrive folder.")]
-        [string]$Path
+    param (
+        [string]$Path = (Get-Location).Path
     )
-    if (!(Test-Path $Path)) { log_error "Path not found or is not a directory"; return }
-    log_msg "win_onedrive_make_folder_avaliable for '$Path'."
-    try {
-        attrib +P $Path
-        if ($LASTEXITCODE -ne 0) {
-            log_error "attrib command failed '$Path': finished with exit code $LASTEXITCODE."
+    $files = Get-ChildItem -Path $Path -File -Recurse -ErrorAction SilentlyContinue
+    foreach ($file in $files) {
+        # Check if the file is a reparse point (i.e., online-only OneDrive file)
+        if (($file.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -eq [System.IO.FileAttributes]::ReparsePoint) {
+            $fs = [System.IO.FileStream]::new($file.FullName, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::Read)
+            $null = $fs.Read([byte[]]::new(1024), 0, 1024); $fs.Close(); $fs.Dispose()
         }
-    } catch {
-        log_error "attrib command failed '$Path': $($_.Exception.Message)"
     }
 }
 
