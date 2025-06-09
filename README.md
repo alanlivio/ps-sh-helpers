@@ -10,7 +10,7 @@
 %%{init: {'theme':'dark'}}%%
 flowchart LR
     bashrc[".bashrc"]
-    ps-init["init.ps1"]
+    %% ps-init["init.ps1"]
     sh-init["init.sh"]
     program-dependent["
         programs/[program].bash
@@ -25,8 +25,8 @@ flowchart LR
     
     bashrc --> |"loads"| sh-init
     sh-init --> |"1: loads if running at OS"| OS-dependent
-    sh-init --> |"2: loads if program exists"| program-dependent
-    sh-init --> |"3: create bash alias functions at"| ps-init
+    sh-init --> |"2: loads if [program].bash exists"| program-dependent
+    %% sh-init --> |"3: create bash alias functions at"| ps-init
 ```
 
 **from powershell:**
@@ -36,7 +36,7 @@ flowchart LR
 flowchart LR
     psprofile["profile.ps1"]
     ps-init["init.ps1"]
-    sh-init["init.sh"]
+    %% sh-init["init.sh"]
     program-dependent["
         programs/[program].ps1
         ...
@@ -50,8 +50,8 @@ flowchart LR
 
     psprofile--> |"loads"| ps-init
     ps-init --> |"1: loads if running at OS"| OS-dependent
-    ps-init --> |"2: loads if program exists"| program-dependent
-    ps-init --> |"3: create ps1 alias to functions at"| sh-init
+    ps-init --> |"2: loads if [program].ps1 exists"| program-dependent
+    %%ps-init --> |"3: create ps1 alias to functions at"| sh-init
 ```
 
 ## How to install
