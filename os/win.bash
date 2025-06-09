@@ -10,6 +10,35 @@ else
     alias win_dir_as_unix_format='cygpath -m'
 fi
 
+# -- ps --
+
+function _ps_call() {
+    powershell -command "& { . $(wslpath -w $HELPERS_DIR/init.ps1); $* }"
+}
+
+function _ps_def_func() {
+    if ! typeset -f $1 >/dev/null 2>&1; then
+        eval 'function '$1'() { _ps_call' $1 '$*; }'
+    fi
+}
+
+function ps_def_funcs_from_ps1_file() {
+    : ${1?"Usage: ${FUNCNAME[0]} <ps1_file>"}
+    # load functions from file that does not start with _
+    # TODO: skip if exists
+    if test -f $1; then
+        _regex_no_underscore_func='function\s([^_][^{]+)\('
+        while read -r line; do
+            if [[ $line =~ $_regex_no_underscore_func ]]; then
+                func=${BASH_REMATCH[1]}
+                _ps_def_func $func
+            fi
+        done <$1
+    else
+        echo "$1 does not exist"
+    fi
+}
+
 # -- aliases MSYS2 --
 
 if type -p pacman >/dev/null; then
