@@ -17,7 +17,7 @@ function ffmpeg_convert_to_mp4_960x540_cutted_until() {
     ffmpeg -i "$1" -ss 00:00:00 -t "$2" -vf "scale=960:540" -c:v libx264 -c:a aac "$fname_no_ext (converted).mp4"
 }
 
-function ffmpeg_extract_audio_mp4() {
+function ffmpeg_extract_audio_m4a() {
     : ${1?"Usage: ${FUNCNAME[0]} <video>"}
     local fname_no_ext="${1%.*}"
     ffmpeg -i "$1" -vn -acodec copy "$fname_no_ext (audio only).m4a"
@@ -26,7 +26,7 @@ function ffmpeg_extract_audio_mp4() {
 function ffmpeg_extract_video_mp4() {
     : ${1?"Usage: ${FUNCNAME[0]} <video>"}
     local fname_no_ext="${1%.*}"
-    ffmpeg -i "$1" -c:v copy -an "$fname_no_ext (video only).m4a"
+    ffmpeg -i "$1" -c:v copy -an "$fname_no_ext (video only).mp4"
 }
 
 function ffmpeg_show_motion_vectors() {
