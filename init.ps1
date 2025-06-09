@@ -5,13 +5,13 @@ $HELPERS_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
 . "$HELPERS_DIR/os/any.ps1"
 . "$HELPERS_DIR/os/win.ps1"
 
-# -- load <program>.bash files --
+# -- load <program>.ps1 files --
 
-# TODO: redo this code to load .bash if program exist. 
-# make sure to create aliases for the windows .exe. Maybe do it at _sh_aliases_to_funcs_at_bash_file
-# for file in "$HELPERS_DIR/programs/"*.bash; do
-# program=$(basename ${file%.*})
-# if type $program &>/dev/null; then
-#     source $file
-# fi
-# end
+$helpersDir = "$PSScriptRoot/programs"
+
+Get-ChildItem -Path "$helpersDir\*.ps1" | ForEach-Object {
+    $program = $_.BaseName
+    if (Get-Command $program -ErrorAction SilentlyContinue) {
+        . $_.FullName
+    }
+}
