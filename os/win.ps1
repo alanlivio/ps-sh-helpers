@@ -545,24 +545,24 @@ function win_edge_disable_edge_ctrl_shift_c() {
 
 # -- win_clutter --
 
-function win_clutter_clean_all_and_explorer_restart() {
-    win_clutter_clean_ui
-    win_clutter_clean_old_unused_folders
-    win_clutter_clean_osapps_unused
-    win_clutter_clean_3_and_4_fingers_gestures
-    win_clutter_clean_unused_keyboard_shortcuts
-    win_clutter_clean_bell_sounds
-    win_clutter_clean_explorer_listing_files
-    win_clutter_clean_explorer_hide_home_dotfiles
-    win_clutter_clean_web_search_and_widgets
-    win_clutter_clean_taskbar
-    win_clutter_clean_xbox
+function win_declutter_all_and_explorer_restart() {
+    win_declutter_ui
+    win_declutter_home_folders
+    win_declutter_osapps
+    win_declutter_3_and_4_fingers_gestures
+    win_declutter_unused_keyboard_shortcuts
+    win_declutter_bell_sounds
+    win_declutter_explorer_listing_files
+    win_declutter_explorer_hide_home_dotfiles
+    win_declutter_web_search_and_widgets
+    win_declutter_taskbar
+    win_declutter_xbox
     win_office_disable_warn_local_link
     explorer_restart
 }
 
-function win_clutter_clean_ui() {
-    log_msg "win_clutter_clean_ui"
+function win_declutter_ui() {
+    log_msg "win_declutter_ui"
     # dark enabled and transparent disabled
     $reg_personalize = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
     Set-ItemProperty -Path $reg_personalize -Name "AppsUseLightTheme" -Value 0 -Type Dword -Force 
@@ -584,7 +584,7 @@ function win_clutter_clean_ui() {
     Set-ItemProperty -Path $Path -Name "TaskbarEndTask" -Value 1 -Force
 }
 
-function win_clutter_clean_old_unused_folders() {
+function win_declutter_home_folders() {
     $paths = @(
         "${env:userprofile}\Cookies"
         "${env:userprofile}\Local Settings"
@@ -603,8 +603,8 @@ function win_clutter_clean_old_unused_folders() {
     }
 }
 
-function win_clutter_clean_osapps_unused() {
-    log_msg "win_clutter_clean_osapps_unused"
+function win_declutter_osapps() {
+    log_msg "win_declutter_osapps"
     winget_uninstall "Mail and Calendar"
     winget_uninstall "MSN Weather"
     winget_uninstall "Microsoft Sticky Notes"
@@ -618,8 +618,8 @@ function win_clutter_clean_osapps_unused() {
     winget_uninstall "Power Automate"
 }
 
-function win_clutter_clean_3_and_4_fingers_gestures() {
-    log_msg "win_clutter_clean_3_and_4_fingers_gestures"
+function win_declutter_3_and_4_fingers_gestures() {
+    log_msg "win_declutter_3_and_4_fingers_gestures"
     $reg = "HKCU:\Software\Microsoft\Windows\CurrentVersion\PrecisionTouchPad"
     Set-ItemProperty -Path $reg -Name "FourFingerDown" -Value 0 -Type Dword
     Set-ItemProperty -Path $reg -Name "FourFingerLeft" -Value 0 -Type Dword
@@ -633,8 +633,8 @@ function win_clutter_clean_3_and_4_fingers_gestures() {
     Set-ItemProperty -Path $reg -Name "ThreeFingerUp" -Value 0 -Type Dword
 }
 
-function win_clutter_clean_unused_keyboard_shortcuts() {
-    log_msg "win_clutter_clean_unused_keyboard_shortcuts"
+function win_declutter_unused_keyboard_shortcuts() {
+    log_msg "win_declutter_unused_keyboard_shortcuts"
     
     # "disable win+v shortcut"
     $regPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
@@ -666,14 +666,14 @@ function win_clutter_clean_unused_keyboard_shortcuts() {
     Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122' -Type String
 }
 
-function win_clutter_clean_bell_sounds() {
-    log_msg "win_clutter_clean_bell_sounds"
+function win_declutter_bell_sounds() {
+    log_msg "win_declutter_bell_sounds"
     Set-ItemProperty -Path "HKCU:\AppEvents\Schemes\" "(Default)" -Value ".None"
     Get-ChildItem -Path 'HKCU:\AppEvents\Schemes\Apps' | Get-ChildItem | Get-ChildItem | Where-Object { $_.PSChildName -eq '.Current' } | Set-ItemProperty -Name '(Default)' -Value '' 
 }
 
-function win_clutter_clean_web_search_and_widgets() {
-    log_msg "win_clutter_clean_web_search_and_widgets"
+function win_declutter_web_search_and_widgets() {
+    log_msg "win_declutter_web_search_and_widgets"
     # win 11
     # https://www.tomshardware.com/how-to/disable-windows-web-search
     winget list --accept-source-agreements -q "MicrosoftWindows.Client.WebExperience_cw5n1h2txyew" | Out-Null
@@ -686,8 +686,8 @@ function win_clutter_clean_web_search_and_widgets() {
     Set-ItemProperty -Path "$reg_search2" -Name 'IsDynamicSearchBoxEnabled' -Value 0 -Type Dword
 }
 
-function win_clutter_clean_explorer_listing_files() {
-    log_msg "win_clutter_clean_explorer_listing_files"
+function win_declutter_explorer_listing_files() {
+    log_msg "win_declutter_explorer_listing_files"
     $reg_explorer = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer"
     
     Set-ItemProperty -Path $reg_explorer -Name ShowFrequent -Value 0 -Type Dword
@@ -708,12 +708,12 @@ function win_clutter_clean_explorer_listing_files() {
     Remove-Item -Path "$key\BagMRU"  -Force -ErrorAction SilentlyContinue
 }
 
-function win_clutter_clean_explorer_hide_home_dotfiles() {
+function win_declutter_explorer_hide_home_dotfiles() {
     Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }
 }
 
-function win_clutter_clean_taskbar() {
-    log_msg "win_clutter_clean_taskbar"
+function win_declutter_taskbar() {
+    log_msg "win_declutter_taskbar"
     $reg_explorer_adv = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     
     # taskbar
@@ -739,8 +739,8 @@ function win_clutter_clean_taskbar() {
     Set-ItemProperty -Path $reg_search -Name SearchBoxTaskbarMode -Value 0 -Type Dword
 }
 
-function win_clutter_clean_xbox() {
-    log_msg "win_clutter_clean_xbox"
+function win_declutter_xbox() {
+    log_msg "win_declutter_xbox"
     # https://www.makeuseof.com/windows-new-app-ms-gamingoverlay-error/
 
     $reg_game_dvr = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR"
