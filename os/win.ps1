@@ -580,6 +580,8 @@ function win_clutter_clean_ui() {
     # hide desktop icons
     $Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     Set-ItemProperty -Path $Path -Name "HideIcons" -Value 1
+    $Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings"
+    Set-ItemProperty -Path $Path -Name "TaskbarEndTask" -Value 1 -Force
 }
 
 function win_clutter_clean_old_unused_folders() {
