@@ -65,13 +65,13 @@ function win_admin_password_policy_disable() {
 
 # -- install -- 
 
-function win_install_exe_from_zip {
+function win_install_exe_from_zip() {
     param(
-        [string]$url_or_path_to_zip,
-        [string]$extractPath,
-        [string]$relativeExePath
+        [Parameter(Mandatory = $true)][string]$url_or_path_to_zip,
+        [Parameter(Mandatory = $true)][string]$extractPath, # it should has a name if the zip has no main folder
+        [Parameter(Mandatory = $true)][string]$exePathOnZip # exe inside the zip
     )
-    $exePath = Join-Path $extractPath $relativeExePath
+    $exePath = Join-Path $extractPath $exePathOnZip
     $sourceZipFilePath = ""
     $downloadedFileCleanup = $false
     if (!(Test-Path -Path $exePath)) {
@@ -80,18 +80,15 @@ function win_install_exe_from_zip {
             $uri = New-Object System.Uri($url_or_path_to_zip)
             $derivedZipFileName = [System.IO.Path]::GetFileName($uri.LocalPath)
             $randomDownloadFileName = [System.Guid]::NewGuid().ToString().Replace("-", "") + "-" + $derivedZipFileName
-            
             $downloadPath = Join-Path $env:TEMP $randomDownloadFileName
             if (Test-Path $downloadPath) { Remove-Item $downloadPath -Force }
 
             $webClient = New-Object System.Net.WebClient
             $webClient.DownloadFile($url_or_path_to_zip, $downloadPath)
-            if (!(Test-Path $downloadPath)) { return }
-
+            if (!(Test-Path $downloadPath)) { log_error "download failed"; return }
             $sourceZipFilePath = $downloadPath
             $downloadedFileCleanup = $true
         } else {
-            if (!(Test-Path $url_or_path_to_zip)) { return }
             $sourceZipFilePath = $url_or_path_to_zip
         }
         # extract
@@ -115,30 +112,23 @@ function win_install_exe_from_zip {
 }
 
 function win_install_vlc() {
-    param (
-        [string]$extractPath = "$env:userprofile\bin\"
-    )
     $vlcLatestWin64Url = "https://get.videolan.org/vlc/last/win64/"
     $webRequest = Invoke-WebRequest -Uri $vlcLatestWin64Url -Method Get -ErrorAction Stop
     $vlcZipLink = $webRequest.Links | Where-Object { $_.href -like "*win64.zip" } | Select-Object -First 1
     if (-not ($vlcZipLink)) { log_error "Download failed"; return }
     $vlcZip = $vlcZipLink.href
-    $name = $vlcZip -replace '-win64\.zip$'
     $url = "https://get.videolan.org/vlc/last/win64/$vlcZip"
-    win_install_exe_from_zip $url $extractPath "$name\vlc.exe"
+    $name = $vlcZip -replace '-win64\.zip$'
+    win_install_exe_from_zip $url "$env:userprofile\bin\$name" "vlc.exe"
 }
 
 function win_install_obs() {
-    param (
-        [string] $extractPath = "$env:userprofile\bin\"
-    )
     $apiUrl = "https://api.github.com/repos/obsproject/obs-studio/releases/latest"
     $response = Invoke-RestMethod -Uri $apiUrl -Method Get -Headers @{"Accept" = "application/vnd.github.v3+json" }
     if (-not ($response)) { log_error "Download failed"; return }
     $version = $response.tag_name
     $url = "https://github.com/obsproject/obs-studio/releases/download/$version/OBS-Studio-$version-Windows.zip"
-    $relativeExePath = "bin\64bit\obs64.exe"
-    win_install_exe_from_zip $url $extractPath $relativeExePath
+    win_install_exe_from_zip $url "$env:userprofile\bin\OBS" "bin\64bit\obs64.exe"
 }
 
 # -- winget --
