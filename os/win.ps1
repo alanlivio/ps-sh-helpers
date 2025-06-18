@@ -65,15 +65,56 @@ function win_admin_password_policy_disable() {
 
 # -- install -- 
 
-function win_install_miktex() {
-    if (-Not(Get-Command miktex -errorAction SilentlyContinue)) {
-        winget_install MiKTeX.MiKTeX
-        win_path_reload
-        miktex packages update
+function win_install_exe_from_zip {
+    param(
+        [string]$url_or_path_to_zip,
+        [string]$extractPath,
+        [string]$relativeExePath
+    )
+    $exePath = Join-Path $extractPath $relativeExePath
+    $sourceZipFilePath = ""
+    $downloadedFileCleanup = $false
+    if (!(Test-Path -Path $exePath)) {
+        # download
+        if ($url_or_path_to_zip.StartsWith("http://") -or $url_or_path_to_zip.StartsWith("https://")) {
+            $uri = New-Object System.Uri($url_or_path_to_zip)
+            $derivedZipFileName = [System.IO.Path]::GetFileName($uri.LocalPath)
+            $randomDownloadFileName = [System.Guid]::NewGuid().ToString().Replace("-", "") + "-" + $derivedZipFileName
+            
+            $downloadPath = Join-Path $env:TEMP $randomDownloadFileName
+            if (Test-Path $downloadPath) { Remove-Item $downloadPath -Force }
+
+            $webClient = New-Object System.Net.WebClient
+            $webClient.DownloadFile($url_or_path_to_zip, $downloadPath)
+            if (!(Test-Path $downloadPath)) { return }
+
+            $sourceZipFilePath = $downloadPath
+            $downloadedFileCleanup = $true
+        } else {
+            if (!(Test-Path $url_or_path_to_zip)) { return }
+            $sourceZipFilePath = $url_or_path_to_zip
+        }
+        # extract
+        $randomExtractFolderName = [System.Guid]::NewGuid().ToString().Replace("-", "")
+        $tempExtractPath = Join-Path $env:TEMP $randomExtractFolderName
+        if (!(Test-Path -Path $extractPath)) { New-Item -ItemType Directory -Path $extractPath | Out-Null }
+        if (Test-Path $tempExtractPath) { Remove-Item -Recurse -Force $tempExtractPath }
+        New-Item -ItemType Directory -Path $tempExtractPath | Out-Null
+        Add-Type -AssemblyName System.IO.Compression.FileSystem
+        try { 
+            [System.IO.Compression.ZipFile]::ExtractToDirectory($sourceZipFilePath, $tempExtractPath) 
+        } catch { log_error "extract failed"; return }
+        Copy-Item -Path "$tempExtractPath\*" -Destination $extractPath -Recurse -Force
+        # cleanup
+        if ($downloadedFileCleanup) { Remove-Item -Path $sourceZipFilePath -Force }
+        Remove-Item -Path $tempExtractPath -Recurse -Force
+        # add start menu
+        log_msg "add $exePath to StartMenu."
+        win_startmenu_add_lnk_to_allapps $exePath
     }
 }
 
-function win_install_vlc () {
+function win_install_vlc() {
     param (
         [string]$extractPath = "$env:userprofile\bin\"
     )
@@ -84,106 +125,20 @@ function win_install_vlc () {
     $vlcZip = $vlcZipLink.href
     $name = $vlcZip -replace '-win64\.zip$'
     $url = "https://get.videolan.org/vlc/last/win64/$vlcZip"
-    $zipPath = "$env:TEMP\$vlcZip"
-    $tempExtractPath = Join-Path $env:TEMP "vlc_extract_temp"
-    $exePath = Join-Path $extractPath "$name\vlc.exe"
-    if (!(Test-Path -Path $exePath)) {
-        log_msg "Downloading $name"
-        $webClient = New-Object System.Net.WebClient
-        $webClient.DownloadFile($url, $zipPath)
-        if (!(Test-Path $zipPath)) { log_error "Download failed"; return }
-
-        if (!(Test-Path -Path $extractPath)) { New-Item -ItemType Directory -Path $extractPath | Out-Null }
-        if (Test-Path $tempExtractPath) { Remove-Item -Recurse -Force $tempExtractPath }
-        New-Item -ItemType Directory -Path $tempExtractPath | Out-Null
-
-        Add-Type -AssemblyName System.IO.Compression.FileSystem
-        log_msg "Extracting $vlcZip to temp folder..."
-        [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $tempExtractPath)
-        log_msg "Copying $vlcZip to $tempExtractPath..."
-        Copy-Item -Path "$tempExtractPath\*" -Destination $extractPath -Recurse -Force
-
-        Remove-Item -Path $zipPath
-        Remove-Item -Path $tempExtractPath -Recurse -Force
-
-        win_startmenu_add_lnk_to_allapps $exePath
-        log_msg "$exePath has been added to StartMenu."
-    }
+    win_install_exe_from_zip $url $extractPath "$name\vlc.exe"
 }
 
-function win_install_obs () {
+function win_install_obs() {
     param (
-        [string] $extractPath = "$env:userprofile\bin\OBS"
+        [string] $extractPath = "$env:userprofile\bin\"
     )
     $apiUrl = "https://api.github.com/repos/obsproject/obs-studio/releases/latest"
     $response = Invoke-RestMethod -Uri $apiUrl -Method Get -Headers @{"Accept" = "application/vnd.github.v3+json" }
     if (-not ($response)) { log_error "Download failed"; return }
     $version = $response.tag_name
-    $name = "OBS Studio"
     $url = "https://github.com/obsproject/obs-studio/releases/download/$version/OBS-Studio-$version-Windows.zip"
-    $zipPath = "$env:TEMP\OBS-Studio-$version-Windows.zip"
-    $tempExtractPath = Join-Path $env:TEMP "obs_extract_temp"
-    $exePath = Join-Path $extractPath "bin\64bit\obs64.exe"
-    if (!(Test-Path -Path $exePath)) {
-        log_msg "Downloading $name $version"
-        $webClient = New-Object System.Net.WebClient
-        $webClient.DownloadFile($url, $zipPath)
-        if (!(Test-Path $zipPath)) { log_error "Download failed"; return }
-
-        if (!(Test-Path -Path $extractPath)) { New-Item -ItemType Directory -Path $extractPath | Out-Null }
-        if (Test-Path $tempExtractPath) { Remove-Item -Recurse -Force $tempExtractPath }
-        New-Item -ItemType Directory -Path $tempExtractPath | Out-Null
-
-        Add-Type -AssemblyName System.IO.Compression.FileSystem
-        log_msg "Extracting $name to temp folder..."
-        [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $tempExtractPath)
-        Copy-Item -Path "$tempExtractPath\*" -Destination $extractPath -Recurse -Force
-
-        Remove-Item -Path $zipPath
-        Remove-Item -Path $tempExtractPath -Recurse -Force
-
-        win_startmenu_add_lnk_to_allapps $exePath
-        log_msg "$exePath has been added to StartMenu."
-    }
-}
-
-function win_install_golang() {
-    $version = "1.23.3"
-    $name = "Go"
-    $url = "https://golang.org/dl/go$version.windows-amd64.zip"
-    $extractPath = "$env:userprofile\bin\go$version"
-    $binPath = "$extractPath\bin"
-    $zipPath = "$env:TEMP\go$version.zip"
-    if (Test-Path $binPath) { return } # return if binPath already exists
-
-    log_msg "Downloading $name $version"
-    $webClient = New-Object System.Net.WebClient
-    $webClient.DownloadFile($url, $zipPath)
-    if (!(Test-Path -Path $extractPath)) {
-        New-Item -ItemType Directory -Path $extractPath | Out-Null
-    }
-    
-    Add-Type -AssemblyName System.IO.Compression.FileSystem
-    log_msg "Extracting $name to $extractPath"
-    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $extractPath)
-    
-    Remove-Item -Path $zipPath
-    win_path_add("$binPath")
-    log_msg "$name has been installed to $binPath and added to the PATH."
-    win_path_reload
-}
-
-function win_install_nodejs_noadmin() {
-    if (-Not(Get-Command node -errorAction SilentlyContinue)) {
-        winget install Schniz.fnm
-        $fnm = "$env:LOCALAPPDATA\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe\fnm.exe"
-        & $fnm env --use-on-cd | Out-String | Invoke-Expression
-        & $fnm use --install-if-missing 20
-        win_path_add($env:FNM_MULTISHELL_PATH)
-        win_path_reload
-        node -v
-        npm -v
-    }
+    $relativeExePath = "bin\64bit\obs64.exe"
+    win_install_exe_from_zip $url $extractPath $relativeExePath
 }
 
 # -- winget --
@@ -447,7 +402,6 @@ function win_system_policy_reset() {
     cmd.exe /C 'RD /S /Q %WinDir%\System32\GroupPolicy '
     gpupdate.exe /force
 }
-
 
 function win_system_enable_ssh_agent() {
     if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
