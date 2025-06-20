@@ -407,6 +407,7 @@ function win_onedrive_make_folder_avaliable() {
     param (
         [string]$Path = (Get-Location).Path
     )
+    log_msg "win_onedrive_make_folder_avaliable $Path"
     $files = Get-ChildItem -Path $Path -File -Recurse -ErrorAction SilentlyContinue
     foreach ($file in $files) {
         # Check if the file is a reparse point (i.e., online-only OneDrive file)
