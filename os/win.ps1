@@ -1,9 +1,11 @@
+$_WINGET_ARGS = @("--accept-package-agreements --accept-source-agreements --silent --scope user" -split ' ')
+
 # -- update --
 
 function win_update() {
     log_msg "win_update"
     log_msg "> winget upgrade"
-    winget upgrade --accept-package-agreements --accept-source-agreements --silent --scope user --all
+    winget upgrade --all $_WINGET_ARGS 
     log_msg "> os upgrade"
     if (ps_is_running_as_sudo) { 
         # https://gist.github.com/billpieper/a39173afa0b343a14ddeeb1d79ab14ea
@@ -18,7 +20,7 @@ function win_update() {
             }
         }
     } else {
-        Write-Output "not running as admin. you can do manually by run ms-settings:windowsupdate"
+        log_msg "not running as admin. you can do manually by run ms-settings:windowsupdate"
     }
 }
 
@@ -133,13 +135,10 @@ function win_install_obs() {
 
 # -- winget --
 
-$_WINGET_ARGS = "--accept-package-agreements --accept-source-agreements --scope=user"
-
 function winget_install() {
-    $installArgs = @($_WINGET_ARGS -split ' ') + $args
     winget list --accept-source-agreements -q $args[0] | Out-Null
     if (-not($?)) {
-        winget install $installArgs
+        winget install $_WINGET_ARGS
     }
 }
 
