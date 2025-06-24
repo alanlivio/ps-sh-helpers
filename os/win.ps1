@@ -138,7 +138,7 @@ function win_install_obs() {
 function winget_install() {
     winget list --accept-source-agreements -q $args[0] | Out-Null
     if (-not($?)) {
-        winget install $_WINGET_ARGS
+        winget install $_WINGET_ARGS $args[0]
     }
 }
 
@@ -403,9 +403,7 @@ function win_system_enable_ssh_agent() {
 # -- onedrive --
 
 function win_onedrive_make_folder_avaliable() {
-    param (
-        [string]$Path = (Get-Location).Path
-    )
+    param ([string]$Path = (Get-Location).Path)
     log_msg "win_onedrive_make_folder_avaliable $Path"
     $files = Get-ChildItem -Path $Path -File -Recurse -ErrorAction SilentlyContinue
     foreach ($file in $files) {
