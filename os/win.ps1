@@ -68,6 +68,11 @@ function win_admin_password_policy_disable() {
 # -- install -- 
 
 function win_install_exe_from_zip() {
+    # if the basename of extractPath exist inside extracted Path so get from inside that folder
+    # For example: win_install_exe_from_zip ""...\vlc-3.0.21.zip" "...\bin\vlc-3.0.21" "vlc.exe" 
+    # there is a vlc-3.0.21 folder inside vlc-3.0.21-win64.zip
+    # so the content of that nested folder is used
+    
     param(
         [Parameter(Mandatory = $true)][string]$url_or_path_to_zip,
         [Parameter(Mandatory = $true)][string]$extractPath, # it should has a name if the zip has no main folder
@@ -103,7 +108,13 @@ function win_install_exe_from_zip() {
         try { 
             [System.IO.Compression.ZipFile]::ExtractToDirectory($sourceZipFilePath, $tempExtractPath) 
         } catch { log_error "extract failed"; return }
-        Copy-Item -Path "$tempExtractPath\*" -Destination $extractPath -Recurse -Force
+        # if the basename of extractPath exist inside extracted Path so get from inside that folder
+        $extractPathBasename = (Split-Path -Path $extractPath -Leaf)
+        if (Test-Path (Join-Path $tempExtractPath $extractPathBasename)) {
+            Copy-Item -Path "$tempExtractPath\$extractPathBasename\*" -Destination $extractPath -Recurse -Force
+        } else {
+            Copy-Item -Path "$tempExtractPath\*" -Destination $extractPath -Recurse -Force
+        }
         # cleanup
         if ($downloadedFileCleanup) { Remove-Item -Path $sourceZipFilePath -Force }
         Remove-Item -Path $tempExtractPath -Recurse -Force
