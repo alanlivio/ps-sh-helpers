@@ -513,17 +513,18 @@ function win_declutter_ui() {
     Set-ItemProperty -Path $reg_personalize -Name "ColorPrevalence" -Value 0 -Type Dword -Force 
     # gray accent color
     $reg_accent = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent"
-    $AccentPalette = "cc,cc,cc,00,ae,ae,ae,00,92,92,92,00,76,76,76,00,4f,4f,4f,00,37,37,37,00,26,26,26,00,d1,34,38,00"
-    $hexified = $AccentPalette.Split(',') | ForEach-Object { "0x$_" }
+    $accent_palette = "cc,cc,cc,00,ae,ae,ae,00,92,92,92,00,76,76,76,00,4f,4f,4f,00,37,37,37,00,26,26,26,00,d1,34,38,00"
+    $hexified = $accent_palette.Split(',') | ForEach-Object { "0x$_" }
     Set-ItemProperty -Path $reg_accent -Name "AccentPalette" -Value ([byte[]]$hexified) -Type Binary
     Set-ItemProperty -Path $reg_accent -Name "AccentColor" -Value 0xff000000 -Type Dword -Force
     Set-ItemProperty -Path $reg_accent -Name "AccentColorMenu" -Value 0xff767676 -Type Dword -Force
     Set-ItemProperty -Path $reg_accent -Name "StartColorMenu" -Value 0xff4f4f4f -Type Dword -Force
     # hide desktop icons
-    $Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
-    Set-ItemProperty -Path $Path -Name "HideIcons" -Value 1
-    $Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings"
-    Set-ItemProperty -Path $Path -Name "TaskbarEndTask" -Value 1 -Force
+    $path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    Set-ItemProperty -Path $path -Name "HideIcons" -Value 1
+    $path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings"
+    New-Item -Path "$path" -Force | Out-Null
+    Set-ItemProperty -Path $path -Name "TaskbarEndTask" -Value 1 -Force
 }
 
 function win_declutter_home_folders() {
