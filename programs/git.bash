@@ -3,11 +3,6 @@ alias git_count_commits_by_user='git shortlog -s -n'
 alias git_diff_files_last_commit='git diff --stat HEAD^1'
 alias git_diff_last_commit='git diff HEAD^1'
 
-function git_overleaf_boostrap() {
-    git_gitignore_create latex >.gitignore
-    echo _main.pdf >>.gitignore
-}
-
 function git_overleaf_push_commit_all() {
     git commit -am "Update from local git"
     git push
@@ -54,9 +49,17 @@ function git_push_after_amend_all() {
     git push --force
 }
 
-function git_gitignore_create() {
-    : ${1?"Usage: ${FUNCNAME[0]} <contexts,..>"}
-    curl -L -s "https://www.gitignore.io/api/$1"
+function git_gitignore_types_list() {
+    curl -L -s "https://www.gitignore.io/api/list"
+}
+
+function git_gitignore_types_add() {
+    : ${1?"Usage: ${FUNCNAME[0]} <type1,type2..>"}
+    curl -L -s "https://www.gitignore.io/api/$1" >>.gitignore
+}
+
+function git_gitignore_types_add_vscode {
+    curl -L -s "https://www.gitignore.io/api/visualstudiocode" >>.gitignore
 }
 
 function git_formated_patch_n_last_commits() {

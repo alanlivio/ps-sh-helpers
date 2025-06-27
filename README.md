@@ -78,17 +78,17 @@ Pay attention that to setup a PowerShell >= 6, the last line should be:
 
 This project takes inspiration from:
 
-- <https://github.com/Bash-it/bash-it>
-- <https://github.com/milianw/shell-helpers>
-- <https://github.com/wd5gnr/bashrc>
-- <https://github.com/martinburger/bash-common-helpers>
-- <https://github.com/jonathantneal/git-bash-helpers>
-- <https://github.com/donnemartin/dev-setup>
-- <https://github.com/aspiers/shell-env>
-- <https://github.com/nafigator/bash-helpers>
-- <https://github.com/TiSiE/BASH.helpers>
-- <https://github.com/midwire/bash.env>
-- <https://github.com/e-picas/bash-library>
-- <https://github.com/awesome-windows11/windows11>
-- <https://github.com/99natmar99/Windows-11-Fixer>
-- <https://github.com/W4RH4WK/Debloat-windows-10/tree/master/scripts>
+* <https://github.com/Bash-it/bash-it>
+* <https://github.com/milianw/shell-helpers>
+* <https://github.com/wd5gnr/bashrc>
+* <https://github.com/martinburger/bash-common-helpers>
+* <https://github.com/jonathantneal/git-bash-helpers>
+* <https://github.com/donnemartin/dev-setup>
+* <https://github.com/aspiers/shell-env>
+* <https://github.com/nafigator/bash-helpers>
+* <https://github.com/TiSiE/BASH.helpers>
+* <https://github.com/midwire/bash.env>
+* <https://github.com/e-picas/bash-library>
+* <https://github.com/awesome-windows11/windows11>
+* <https://github.com/99natmar99/Windows-11-Fixer>
+* <https://github.com/W4RH4WK/Debloat-windows-10/tree/master/scripts>
