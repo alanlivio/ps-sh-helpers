@@ -123,25 +123,10 @@ function ubu_install_miniconda() {
 
 # -- customize --
 
-function gnome_dark_mode() {
-    # dark mode
-    gsettings set org.gnome.desktop.interface cursor-theme 'DMZ-Black'
-    gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
-    gsettings set org.gnome.desktop.interface icon-theme 'ubuntu-mono-dark'
-    # dark desktop
-    gsettings set org.gnome.desktop.background color-shading-type "solid"
-    gsettings set org.gnome.desktop.background picture-uri ''
-    gsettings set org.gnome.desktop.background primary-color "#000000"
-    gsettings set org.gnome.desktop.background secondary-color "#000000"
-}
-
-function gnome_nautilus_list_view() {
-    # recent files
+function gnome_declutter_files() {
     gsettings set org.gnome.desktop.privacy remember-recent-files false
-    # nautilus
     gsettings set org.gnome.nautilus.list-view default-zoom-level 'small'
     gsettings set org.gnome.nautilus.list-view default-visible-columns "['name', 'size']"
     gsettings set org.gnome.nautilus.list-view use-tree-view true
     gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view'
-    gsettings set org.gnome.nautilus.window-state sidebar-width 180
 }
