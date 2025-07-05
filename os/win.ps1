@@ -276,6 +276,8 @@ function win_hardlink_create() {
         [Parameter(Mandatory = $true)]
         [string] $target
     )
+    $source = Resolve-Path $source
+    $target = Resolve-Path $target
     if (!(Test-Path "$target")) { log_error "hardlink target $target is not a valid"; return }
     if (Test-Path "$source") { 
         $hash1 = Get-FileHash "$source"
