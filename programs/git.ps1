@@ -14,26 +14,34 @@ function git_gitignore_types_add_vscode {
     (Invoke-WebRequest -Uri "https://www.toptal.com/developers/gitignore/api/visualstudiocode" -UseBasicParsing).Content
 }
 
-function git_clone_to_dir {
+function git_clone_or_pull {
     param(
-        [Parameter(Mandatory = $true, HelpMessage = "Usage: git_clone_to_dir <url> <dir> [<name>] [<email>]. If <name> is empty, the <url> basename is used.")]
+        [Parameter(Mandatory = $true, HelpMessage = "Usage: git_clone_or_pull <url> <basedir> [<name>] [<email>]. It fetchs repo to <basedir>/<name>. if <name> is empty, the <url> basename is used.")]
         [string]$url,
         [Parameter(Mandatory = $true)]
-        [string]$dir,
+        [string]$basedir,
         [string]$name,
         [string]$email
     )
+    log_msg "git_clone_or_pull $url"
+    if (-not (Test-Path $basedir)) {
+        New-Item -Path $basedir -ItemType Directory -Force
+    }
     if ([string]::IsNullOrEmpty($name)) {
         $dir = Join-Path $dir (Split-Path $url -Leaf)
     } else {
         $dir = Join-Path $dir $name
     }
-    if (-not (Test-Path $dir)) {
-        git clone $url $dir
-    }
-    if (-not ([string]::IsNullOrEmpty($email))) {
+    if (Test-Path $dir) {
         Push-Location $dir
-        git config user.email "$email"
+        git pull
         Pop-Location
+    } else {    
+        git clone $url $dir
+        if (-not ([string]::IsNullOrEmpty($email))) {
+            Push-Location $dir
+            git config user.email "$email"
+            Pop-Location
+        }
     }
 }

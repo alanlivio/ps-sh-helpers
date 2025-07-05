@@ -103,18 +103,31 @@ function git_tag_move_to_head_and_push() {
     git push --force --tags
 }
 
-function git_clone_to_dir() {
-    : ${1?"Usage: ${FUNCNAME[0]} <url> <dir> <email>. if <dir> is empty, the <url> basename is used. "}
+function git_clone_or_pull() {
+    : ${1?"Usage: ${FUNCNAME[0]} <url> <basedir> [<name>] [<email>]. It fetchs repo to <basedir>/<name>. if <name> is empty, the <url> basename is used. "}
     local url=$1
     local basedir=$2
+    local name=$3
+    local email=$4
+    log_msg "git_clone_or_pull $url"
+    if [[ ! -d dir ]]; then mkdir -p $basedir; fi
     if [[ -z $3 ]]; then
         local dir=$basedir/${1##*/}
     else
-        local dir=$basedir/$3
+        local dir=$basedir/$name
     fi
-    local email=$4
-    [[ ! -d $dir ]] && git clone $url $dir
-    if [[ -n $email ]]; then
-        (cd $dir && git config user.email "$email")
+    if [[ -d dir ]]; then
+        (
+            cd $dir
+            git pull
+        )
+    else
+        git clone $url $dir
+        (
+            cd $dir
+            if [[ -n $email ]]; then
+                git config user.email "$email"
+            fi
+        )
     fi
 }
