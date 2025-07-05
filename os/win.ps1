@@ -1,49 +1,24 @@
 $_WINGET_ARGS = @("--accept-package-agreements --accept-source-agreements --silent --scope user" -split ' ')
 
-# -- update --
+# -- os_upgrade --
 
-function win_update() {
-    log_msg "win_update"
-    log_msg "> winget upgrade"
-    winget upgrade --all $_WINGET_ARGS 
-    log_msg "> os upgrade"
-    if (ps_is_running_as_sudo) { 
-        # https://gist.github.com/billpieper/a39173afa0b343a14ddeeb1d79ab14ea
-        if (-Not(Get-Command Install-WindowsUpdate -errorAction SilentlyContinue)) {
-            Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-            Install-Module -Name PSWindowsUpdate -Scope CurrentUser -Force
-            # Add-WUServiceManager -MicrosoftUpdate -Confirm:$false | Out-Null
+function win_os_upgrade() {
+    log_msg "win_os_upgrade"
+    if (-not (ps_is_running_as_sudo)) { log_msg "not running as admin. skipping"; return }
+    # https://gist.github.com/billpieper/a39173afa0b343a14ddeeb1d79ab14ea
+    if (-Not(Get-Command Install-WindowsUpdate -errorAction SilentlyContinue)) {
+        Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+        Install-Module -Name PSWindowsUpdate -Scope CurrentUser -Force
+        # Add-WUServiceManager -MicrosoftUpdate -Confirm:$false | Out-Null
+    }
+    $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object {
+        if ($_ -is [string]) {
+            $_.Split('', [System.StringSplitOptions]::RemoveEmptyEntries)
         }
-        $(Install-WindowsUpdate -AcceptAll -IgnoreReboot) | Where-Object {
-            if ($_ -is [string]) {
-                $_.Split('', [System.StringSplitOptions]::RemoveEmptyEntries)
-            }
-        }
-    } else {
-        log_msg "not running as admin. you can do manually by run ms-settings:windowsupdate"
     }
 }
 
-# -- version --
 
-function win_version() { (Get-CimInstance Win32_OperatingSystem).version }
-
-function win_version_wsl_code_exts_info_for_github() {
-    log_msg "alan_show_code_info_for_github"
-    $command = "(Get-CimInstance Win32_OperatingSystem).version"
-    Write-Host "> $command"
-    Invoke-Expression $command
-    $command = "wsl --version | Select -First 1"
-    Write-Host "> $command"
-    Invoke-Expression $command
-    $command = "code --version | Select -First 1"
-    Write-Host "> $command"
-    Invoke-Expression $command
-    $command = "(code --show-versions --list-extensions) -match 'latex'"
-    Write-Host "> $command"
-    Invoke-Expression $command
-
-}
 
 # -- admin --
 
@@ -57,7 +32,8 @@ function win_admin_user_disable() {
 
 function win_admin_password_policy_disable() {
     log_msg "win_disable_password_policy"
-    if (-not (ps_is_running_as_sudo)) { log_error "no admin. skipping disable password."; return }
+
+    if (-not (ps_is_running_as_sudo)) { log_msg "not running as admin. skipping"; return }
     $tmpfile = New-TemporaryFile
     secedit /export /cfg $tmpfile /quiet # this call requires admin
     (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
@@ -145,6 +121,10 @@ function win_install_obs() {
 }
 
 # -- winget --
+
+function winget_upgrade() {
+    winget upgrade --all $_WINGET_ARGS 
+}
 
 function winget_install() {
     winget list --accept-source-agreements -q $args[0] | Out-Null

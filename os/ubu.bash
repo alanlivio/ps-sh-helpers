@@ -1,19 +1,13 @@
-# -- update --
-
-function ubu_update() {
-    log_msg "> apt update"
-    sudo apt update
-    log_msg "> apt upgrade all"
-    sudo apt -y upgrade
-    log_msg "> apt autoremove"
-    sudo apt -y autoremove
-}
-
 # -- apt --
 
 alias apt_ppa_remove="sudo add-apt-repository --remove"
 alias apt_ppa_list="apt policy"
 alias apt_autoremove="sudo apt -y autoremove"
+
+function apt_upgrade() {
+    sudo apt update
+    sudo apt -y upgrade
+}
 
 function apt_file_search() {
     : ${1?"Usage: ${FUNCNAME[0]} <file>"}
