@@ -1,21 +1,43 @@
-alias git_count_commits='git rev-list --all --count'
-alias git_count_commits_by_user='git shortlog -s -n'
-alias git_diff_files_last_commit='git diff --stat HEAD^1'
-alias git_diff_last_commit='git diff HEAD^1'
-
-function git_overleaf_push_commit_all() {
-    git commit -am "Update from local git"
-    git push
+function git_clone_or_pull() {
+    : ${2?"Usage: ${FUNCNAME[0]} <url> <basedir> [<name>] [<email>]. It fetchs repo to <basedir>/<name>. If <name> is empty, the <url> basename is used. "}
+    local url=$1
+    local basedir=$2
+    local name=$3
+    local email=$4
+    log_msg "git_clone_or_pull $url"
+    if [[ ! -d dir ]]; then mkdir -p $basedir; fi
+    if [[ -z $3 ]]; then
+        local dir=$basedir/${1##*/}
+    else
+        local dir=$basedir/$name
+    fi
+    if [[ -d dir ]]; then
+        (
+            cd $dir
+            git pull
+        )
+    else
+        git clone $url $dir
+        (
+            cd $dir
+            if [[ -n $email ]]; then
+                git config user.email "$email"
+            fi
+        )
+    fi
 }
 
-function git_assume_unchanged() {
-    : ${1?"Usage: ${FUNCNAME[0]} <file>"}
-    git update-index --assume-unchanged $1
+function git_gitignore_types_list() {
+    curl -L -s "https://www.gitignore.io/api/list"
 }
 
-function git_assume_unchanged_disable() {
-    : ${1?"Usage: ${FUNCNAME[0]} <file>"}
-    git update-index --no-assume-unchanged $1
+function git_gitignore_types_add() {
+    : ${1?"Usage: ${FUNCNAME[0]} <type1,type2..>"}
+    curl -L -s "https://www.gitignore.io/api/$1" >>.gitignore
+}
+
+function git_gitignore_types_add_vscode {
+    curl -L -s "https://www.gitignore.io/api/visualstudiocode" >>.gitignore
 }
 
 function git_branch_remove_local_and_remote() {
@@ -49,19 +71,6 @@ function git_push_after_amend_all() {
     git push --force
 }
 
-function git_gitignore_types_list() {
-    curl -L -s "https://www.gitignore.io/api/list"
-}
-
-function git_gitignore_types_add() {
-    : ${1?"Usage: ${FUNCNAME[0]} <type1,type2..>"}
-    curl -L -s "https://www.gitignore.io/api/$1" >>.gitignore
-}
-
-function git_gitignore_types_add_vscode {
-    curl -L -s "https://www.gitignore.io/api/visualstudiocode" >>.gitignore
-}
-
 function git_formated_patch_n_last_commits() {
     : ${1?"Usage: ${FUNCNAME[0]} <number_of_last_commits>"}
     git format-patch HEAD~$1
@@ -71,63 +80,8 @@ function git_formated_patch_apply() {
     git am <"$@"
 }
 
-function git_subdirs_pull() {
-    find . -type d -iname .git | sed 's/\.git//g' | while read i; do
-        (
-            cd "$i"
-            if test -d .git; then
-                log_msg "pull on $i"
-                git pull
-            fi
-        )
-    done
-}
-
-function git_subdirs_reset_clean() {
-    find . -type d -iname .git | sed 's/\.git//g' | while read i; do
-        (
-            cd "$i"
-            if test -d .git; then
-                log_msg "pull on $i"
-                git reset --hard
-                git clean -df
-                git pull
-            fi
-        )
-    done
-}
-
 function git_tag_move_to_head_and_push() {
     git tag -d $1
     git tag $1
     git push --force --tags
-}
-
-function git_clone_or_pull() {
-    : ${1?"Usage: ${FUNCNAME[0]} <url> <basedir> [<name>] [<email>]. It fetchs repo to <basedir>/<name>. if <name> is empty, the <url> basename is used. "}
-    local url=$1
-    local basedir=$2
-    local name=$3
-    local email=$4
-    log_msg "git_clone_or_pull $url"
-    if [[ ! -d dir ]]; then mkdir -p $basedir; fi
-    if [[ -z $3 ]]; then
-        local dir=$basedir/${1##*/}
-    else
-        local dir=$basedir/$name
-    fi
-    if [[ -d dir ]]; then
-        (
-            cd $dir
-            git pull
-        )
-    else
-        git clone $url $dir
-        (
-            cd $dir
-            if [[ -n $email ]]; then
-                git config user.email "$email"
-            fi
-        )
-    fi
 }
