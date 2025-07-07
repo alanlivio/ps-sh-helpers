@@ -28,9 +28,9 @@ function git_clone_or_pull {
         New-Item -Path $basedir -ItemType Directory -Force
     }
     if ([string]::IsNullOrEmpty($name)) {
-        $dir = Join-Path $dir (Split-Path $url -Leaf)
+        $dir = Join-Path $basedir (Split-Path $url -Leaf)
     } else {
-        $dir = Join-Path $dir $name
+        $dir = Join-Path $basedir $name
     }
     if (Test-Path $dir) {
         Push-Location $dir
