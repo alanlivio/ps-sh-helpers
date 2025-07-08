@@ -288,8 +288,21 @@ function win_hardlink_create() {
             return # it is same file
         }
     }
-    log_msg "> creating hardlink source=$source target=$target"
+    log_msg "> creating HardLink source=$source target=$target"
     New-Item -ItemType Hardlink -Force -Path "$source" -Target "$target"
+}
+
+function win_symboliclink_create() {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $source,
+        [Parameter(Mandatory = $true)]
+        [string] $target
+    )
+    $target = Resolve-Path $target
+    if (!(Test-Path "$target")) { log_error "SymbolicLink target $target is not a valid"; return }
+    log_msg "> creating SymbolicLink source=$source target=$target"
+    New-Item -ItemType SymbolicLink -Force -Path "$source" -Target "$target"
 }
 
 # -- wsl --
