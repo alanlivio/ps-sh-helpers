@@ -11,7 +11,7 @@ function git_clone_or_pull() {
     else
         local dir=$basedir/$name
     fi
-    if [[ -d dir ]]; then
+    if [[ -d $dir ]]; then
         (
             cd $dir
             git pull
