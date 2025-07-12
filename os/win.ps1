@@ -236,7 +236,14 @@ IconIndex=0
 }
 
 function explorer_hide_home_dotfiles() {
-    Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }
+    Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { 
+        if (Test-Path -Path "$_") {
+            # Get-Item should use -Force if already hidden
+            if (-Not(Get-Item "$_" -Force).attributes.ToString().Contains('Hidden')) {
+                (Get-Item("$_") -Force).Attributes += "Hidden"  
+            }
+        }
+    }
 }
 
 # -- hardlink --
