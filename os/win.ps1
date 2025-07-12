@@ -148,36 +148,6 @@ function winget_fix_installation() {
     }
 }
 
-# -- appx --
-
-function win_appx_list_installed() {
-    Get-AppxPackage -User $env:username | ForEach-Object { Write-Output $_.Name }
-}
-
-function win_appx_install() {
-    $pkgs_to_install = ""
-    foreach ($name in $args) {
-        if (-Not (Get-AppxPackage -User $env:username -Name $name)) {
-            $pkgs_to_install = "$pkgs_to_install $name"
-        }
-    }
-    if ($pkgs_to_install) {
-        log_msg "pkgs_to_install=$pkgs_to_install"
-        foreach ($pkg in $pkgs_to_install) {
-            Get-AppxPackage -User $env:username -Name $pkg | ForEach-Object { Add-AppxPackage -ea 0 -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" }
-        }
-    }
-}
-
-function win_appx_uninstall() {
-    foreach ($name in $args) {
-        if (Get-AppxPackage -User $env:username -Name $name) {
-            log_msg "uninstall $name"
-            Get-AppxPackage -User $env:username -Name $name | Remove-AppxPackage
-        }
-    }
-}
-
 # -- env --
 
 function win_env_add($name, $value) {
