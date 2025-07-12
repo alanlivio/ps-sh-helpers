@@ -18,8 +18,6 @@ function win_os_upgrade() {
     }
 }
 
-
-
 # -- admin --
 
 function win_admin_user_enable() {
@@ -384,6 +382,10 @@ function win_office_disable_warn_local_link() {
 }
 
 # -- system --
+
+function win_system_disable_power_sleep_buttons() {
+    powercfg -setacvalueindex SCHEME_CURRENT 4f971e89-eebd-4455-a8de-9e59040e7347 7648efa3-dd9c-4e3e-b566-50f929386280 0
+}
 
 function win_system_image_scan_cleanup() {
     if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
