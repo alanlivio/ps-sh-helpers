@@ -267,6 +267,10 @@ IconIndex=0
     log_msg "Successfully set the icon for '$FolderPath' to match the Pictures folder."
 }
 
+function explorer_hide_home_dotfiles() {
+    Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }
+}
+
 # -- hardlink --
 
 function win_hardlink_create() {
@@ -498,7 +502,6 @@ function win_declutter_all_and_explorer_restart() {
     win_declutter_unused_keyboard_shortcuts
     win_declutter_bell_sounds
     win_declutter_explorer_listing_files
-    win_declutter_explorer_hide_home_dotfiles
     win_declutter_web_search_and_widgets
     win_declutter_taskbar
     win_declutter_xbox
@@ -652,10 +655,6 @@ function win_declutter_explorer_listing_files() {
     # https://answers.microsoft.com/en-us/windows/forum/all/completely-disable-file-grouping-always-everywhere/ac31a227-f585-4b0a-ab2e-a557828eaec5
     $key = 'HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell' 
     Remove-Item -Path "$key\BagMRU"  -Force -ErrorAction SilentlyContinue
-}
-
-function win_declutter_explorer_hide_home_dotfiles() {
-    Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { $_.Attributes += "Hidden" }
 }
 
 function win_declutter_taskbar() {
