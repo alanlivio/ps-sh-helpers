@@ -2,7 +2,7 @@
 
 function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 function log_error() { Write-Host -ForegroundColor DarkRed "--" ($args -join " ") }
-function passwd_generate { -join (1..12 | ForEach-Object { 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?' | Get-Random }) }
+function passwd_generate { -join (1..12 | ForEach-Object { [char[]]'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?' | Get-Random }) }
 
 # -- ps --
 
