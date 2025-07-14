@@ -1,11 +1,10 @@
 # ps-sh-helpers
 
-`ps-sh-helpers` is way to organise your PowerShell and Bash helper scripts. It orgenise helper scripts in OS-dependent from `os/<os>.*` files and loads program-dependent from `programs/<program>.*` files. It is initialized at `.bashrc` by loading `init.sh` or at `PowerShell_profile.ps1` by loading `init.ps1` (see diagram below).
+`ps-sh-helpers` is way to organise your PowerShell and Bash helper scripts. It organise helper scripts in OS-dependent from `os/<os>.*` files and loads program-dependent from `programs/<program>.*` files. It is initialized at `.bashrc` by loading `init.sh` or at `PowerShell_profile.ps1` by loading `init.ps1` (see diagram below).
 
 **from bash:**
 
 ```mermaid
-%%{init: {'theme':'dark'}}%%
 flowchart LR
     bashrc[".bashrc"]
     %% ps-init["init.ps1"]
@@ -30,7 +29,6 @@ flowchart LR
 **from powershell:**
 
 ```mermaid
-%%{init: {'theme':'dark'}}%%
 flowchart LR
     psprofile["profile.ps1"]
     ps-init["init.ps1"]
@@ -52,7 +50,7 @@ flowchart LR
     %%ps-init --> |"3: create ps1 alias to functions at"| sh-init
 ```
 
-## How to install
+## Setup at your bash profile
 
 You can use the Bash commands below to fetch, install, and setup `ps-sh-helpers` to be loaded in your `.bashrc`:
 
@@ -60,6 +58,8 @@ You can use the Bash commands below to fetch, install, and setup `ps-sh-helpers`
 git clone https://github.com/alanlivio/ps-sh-helpers ~/.ps1-sh-helpers
 echo "source ~/.ps-sh-helpers/init.sh" >> ~/.bashrc
 ```
+
+## Setup at your PowerShell profile
 
 You can use the PowerShell commands below to fetch, install, and setup `ps-sh-helpers`  to be loaded in your `profile.ps1`:
 
