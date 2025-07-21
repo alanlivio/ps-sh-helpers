@@ -118,6 +118,16 @@ function win_install_obs() {
     win_install_exe_from_zip $url "$env:userprofile\bin\OBS" "bin\64bit\obs64.exe"
 }
 
+function win_install_gh() {
+    $apiUrl = "https://api.github.com/repos/cli/cli/releases/latest"
+    $response = Invoke-RestMethod -Uri $apiUrl -Method Get -Headers @{"Accept" = "application/vnd.github.v3+json" }
+    if (-not ($response)) { log_error "Download failed"; return }
+    $version = $response.tag_name.Substring(1)
+    $url = "https://github.com/cli/cli/releases/download/v$version/gh_${version}_windows_amd64.zip" 
+    win_install_exe_from_zip $url "$env:userprofile\bin\gh" "bin\gh.exe"
+    win_path_add "$env:userprofile\bin\gh\bin"
+}
+
 # -- winget --
 
 function winget_upgrade() {
