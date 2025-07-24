@@ -135,9 +135,9 @@ function winget_upgrade() {
 }
 
 function winget_install() {
-    winget list --accept-source-agreements -q $args[0] | Out-Null
+    winget list --accept-source-agreements -q $args[0] | Out-Null # first arg is the id
     if (-not($?)) {
-        winget install $_WINGET_ARGS $args[0]
+        winget install $_WINGET_ARGS $args # --location will be passed
     }
 }
 
