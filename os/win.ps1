@@ -1,5 +1,3 @@
-$_WINGET_ARGS = @("--accept-package-agreements --accept-source-agreements --silent --scope user" -split ' ')
-
 # -- os_upgrade --
 
 function win_os_upgrade() {
@@ -143,13 +141,14 @@ function win_install_tor() {
 # -- winget --
 
 function winget_upgrade() {
-    winget upgrade --all $_WINGET_ARGS 
+    winget upgrade --all --accept-package-agreements --accept-source-agreements --silent --scope user
+
 }
 
 function winget_install() {
     winget list --accept-source-agreements -q $args[0] | Out-Null # first arg is the id
     if (-not($?)) {
-        winget install $_WINGET_ARGS $args # --location will be passed
+        winget install "$args" --accept-package-agreements --accept-source-agreements --silent
     }
 }
 
