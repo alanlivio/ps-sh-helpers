@@ -90,13 +90,12 @@ function win_install_exe_from_zip() {
         # cleanup
         if ($downloadedFileCleanup) { Remove-Item -Path $sourceZipFilePath -Force }
         Remove-Item -Path $tempExtractPath -Recurse -Force
-        # add start menu
-        log_msg "add $exePath to StartMenu."
-        win_startmenu_add_lnk_to_allapps $exePath
     }
 }
 
 function win_install_vlc() {
+    $vlcExists = Get-ChildItem -Path "$env:LOCALAPPDATA\Programs" -Directory -Filter "vlc-*" | Where-Object { $_.Name -match "^vlc-\d+\.\d+\.\d+$" }
+    if ($vlcExists) { return; } # winget -q return false for vim.vim
     $vlcLatestWin64Url = "https://get.videolan.org/vlc/last/win64/"
     $webRequest = Invoke-WebRequest -Uri $vlcLatestWin64Url -Method Get -ErrorAction Stop
     $vlcZipLink = $webRequest.Links | Where-Object { $_.href -like "*win64.zip" } | Select-Object -First 1
@@ -104,38 +103,47 @@ function win_install_vlc() {
     $vlcZip = $vlcZipLink.href
     $url = "https://get.videolan.org/vlc/last/win64/$vlcZip"
     $name = $vlcZip -replace '-win64\.zip$'
-    win_install_exe_from_zip $url "$env:userprofile\bin\$name" "vlc.exe"
+    win_install_exe_from_zip $url "$env:LOCALAPPDATA\Programs\$name" "vlc.exe"
+    win_startmenu_add_lnk_to_allapps "$env:LOCALAPPDATA\Programs\$name\vlc.exe"
 }
 
 function win_install_obs() {
+    if (Test-Path "$env:LOCALAPPDATA\Programs\OBS") { return; } # winget -q return false for vim.vim
     $apiUrl = "https://api.github.com/repos/obsproject/obs-studio/releases/latest"
     $response = Invoke-RestMethod -Uri $apiUrl -Method Get -Headers @{"Accept" = "application/vnd.github.v3+json" }
     if (-not ($response)) { log_error "Download failed"; return }
     $version = $response.tag_name
-    $url = "https://github.com/obsproject/obs-studio/releases/download/$version/OBS-Studio-$version-Windows.zip"
-    win_install_exe_from_zip $url "$env:userprofile\bin\OBS" "bin\64bit\obs64.exe"
+    $url = "https://github.com/obsproject/obs-studio/releases/download/$version/OBS-Studio-$version-Windows-x64.zip"
+    win_install_exe_from_zip $url "$env:LOCALAPPDATA\Programs\OBS" "bin\64bit\obs64.exe"
+    win_startmenu_add_lnk_to_allapps "$env:LOCALAPPDATA\Programs\OBS\bin\64bit\obs64.exe" OBS
 }
 
 function win_install_gh() {
+    if (Test-Path "$env:LOCALAPPDATA\Programs\gh") { return; } # winget -q return false for vim.vim
     $apiUrl = "https://api.github.com/repos/cli/cli/releases/latest"
     $response = Invoke-RestMethod -Uri $apiUrl -Method Get -Headers @{"Accept" = "application/vnd.github.v3+json" }
     if (-not ($response)) { log_error "Download failed"; return }
     $version = $response.tag_name.Substring(1)
     $url = "https://github.com/cli/cli/releases/download/v$version/gh_${version}_windows_amd64.zip" 
-    win_install_exe_from_zip $url "$env:userprofile\bin\gh" "bin\gh.exe"
-    win_path_add "$env:userprofile\bin\gh\bin"
+    win_install_exe_from_zip $url "$env:LOCALAPPDATA\Programs\gh" "bin\gh.exe"
+    win_path_add "$env:LOCALAPPDATA\Programs\gh\bin"
+}
+
+function win_install_ffmpeg() {
+    winget_install Gyan.FFmpeg
+    win_path_add("${env:localappdata}\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-7.1.1-full_build\bin")
 }
 
 function win_install_vim() {
-    winget_install vim.vim
+    if (Test-Path "$env:LOCALAPPDATA\Programs\vim") { return; } # winget -q return false for vim.vim
+    winget_install vim.vim --location="$env:LOCALAPPDATA\Programs\vim"
     win_path_add "$env:LOCALAPPDATA\Programs\vim\vim91"
 }
 
 function win_install_tor() {
-    if (!(Test-Path "$env:LOCALAPPDATA\Programs\TorBrowser")) { 
-        winget install TorProject.TorBrowser --location="$env:LOCALAPPDATA\Programs\TorBrowser" 
-        win_startmenu_add_lnk_to_allapps "$env:LOCALAPPDATA\Programs\TorBrowser\Browser\firefox.exe" TorBrowser
-    }
+    if (Test-Path "$env:LOCALAPPDATA\Programs\TorBrowser") { return; } # winget -q return false for TorBrowser
+    winget_install TorProject.TorBrowser --location="$env:LOCALAPPDATA\Programs\TorBrowser" 
+    win_startmenu_add_lnk_to_allapps "$env:LOCALAPPDATA\Programs\TorBrowser\Browser\firefox.exe" TorBrowser
 }
 
 # -- winget --
