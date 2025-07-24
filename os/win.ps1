@@ -127,6 +127,11 @@ function win_install_gh() {
     win_install_exe_from_zip $url "$env:userprofile\bin\gh" "bin\gh.exe"
     win_path_add "$env:userprofile\bin\gh\bin"
 }
+function win_install_vim() {
+    winget_install vim.vim
+    win_path_add "$env:LOCALAPPDATA\Programs\vim\vim91"
+}
+
 
 # -- winget --
 
