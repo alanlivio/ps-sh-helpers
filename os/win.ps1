@@ -127,11 +127,18 @@ function win_install_gh() {
     win_install_exe_from_zip $url "$env:userprofile\bin\gh" "bin\gh.exe"
     win_path_add "$env:userprofile\bin\gh\bin"
 }
+
 function win_install_vim() {
     winget_install vim.vim
     win_path_add "$env:LOCALAPPDATA\Programs\vim\vim91"
 }
 
+function win_install_tor() {
+    if (!(Test-Path "$env:LOCALAPPDATA\Programs\TorBrowser")) { 
+        winget install TorProject.TorBrowser --location="$env:LOCALAPPDATA\Programs\TorBrowser" 
+        win_startmenu_add_lnk_to_allapps "$env:LOCALAPPDATA\Programs\TorBrowser\Browser\firefox.exe" TorBrowser
+    }
+}
 
 # -- winget --
 
@@ -425,14 +432,23 @@ function win_onedrive_reset() {
 
 function win_startmenu_add_lnk_to_allapps {
     param (
-        [Parameter(Mandatory = $true)][string]$exePath  # Path to the .exe file
+        [Parameter(Mandatory = $true)][string]$exePath,                # Path to the .exe file
+        [Parameter(Mandatory = $false)][string]$shortcutName           # Optional shortcut name
     )
+
     if (-not (Test-Path $exePath)) {
         log_error "The specified executable path does not exist: $exePath"
         return
     }
-    $shortcutName = [System.IO.Path]::GetFileNameWithoutExtension($exePath) + ".lnk"
+
+    if (-not $shortcutName) {
+        $shortcutName = [System.IO.Path]::GetFileNameWithoutExtension($exePath) + ".lnk"
+    } elseif (-not $shortcutName.EndsWith(".lnk")) {
+        $shortcutName += ".lnk"
+    }
+
     $startMenuFolder = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs"
+
     if (-not (Test-Path $startMenuFolder)) {
         log_error "The Start Menu folder does not exist: $startMenuFolder"
         return
