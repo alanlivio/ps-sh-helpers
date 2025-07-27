@@ -149,14 +149,21 @@ function win_install_tor() {
 # -- winget --
 
 function winget_upgrade() {
-    winget upgrade --all --accept-package-agreements --accept-source-agreements --silent --scope user
-
+    if (-not (Get-Command Get-WinGetPackage -ErrorAction SilentlyContinue)) {
+        msg_log "onstalling Microsoft.WinGet.Client ps module"
+        Install-Module Microsoft.WinGet.Client -Scope CurrentUser -Force -AllowClobber
+    }
+    Import-Module Microsoft.WinGet.Client -ErrorAction Stop
+    $packages = Get-WinGetPackage -Scope User | Where-Object IsUpdateAvailable
+    if ($packages.Count -gt 0) {
+        winget upgrade --all --accept-package-agreements --accept-source-agreements --scope user
+    }
 }
 
 function winget_install() {
     winget list --accept-source-agreements -q $args[0] | Out-Null # first arg is the id
     if (-not($?)) {
-        winget install "$args" --accept-package-agreements --accept-source-agreements --silent
+        winget install "$args" --accept-package-agreements --accept-source-agreements
     }
 }
 
