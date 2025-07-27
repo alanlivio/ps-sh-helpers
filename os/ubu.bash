@@ -5,22 +5,24 @@ alias apt_ppa_list="apt policy"
 alias apt_autoremove="sudo apt -y autoremove"
 
 function apt_upgrade() {
+    log_msg "apt update and upgrade"
     sudo apt update
     sudo apt -y upgrade
+}
+
+function apt_fixes() {
+    log_msg "apt_fixes"
+    sudo dpkg --configure -a
+    sudo apt install -f --fix-broken
+    sudo apt-get update --fix-missing
+    sudo apt -y dist-upgrade
+    sudo apt -y autoremove
 }
 
 function apt_file_search() {
     : ${1?"Usage: ${FUNCNAME[0]} <file>"}
     type -p apt-file >/dev/null || sudo apt install apt-file
     apt-file search $1
-}
-
-function apt_fixes() {
-    sudo dpkg --configure -a
-    sudo apt install -f --fix-broken
-    sudo apt-get update --fix-missing
-    sudo apt -y dist-upgrade
-    sudo apt -y autoremove
 }
 
 function apt_enable_git_ppa() {
