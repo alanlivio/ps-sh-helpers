@@ -240,6 +240,7 @@ function folder_open_startmenu_programs() {
 # -- explorer --
 
 function explorer_restart() {
+    log_msg "explorer_restart"
     Stop-Process -Force -ErrorAction SilentlyContinue -ProcessName Explorer
 }
 
