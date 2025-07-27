@@ -199,15 +199,12 @@ function win_path_reload() {
 }
 
 function win_path_add($addPath) {
-    if (Test-Path $addPath) {
-        $path = [Environment]::GetEnvironmentVariable('path', 'User')
-        $regexAddPath = [regex]::Escape($addPath)
-        $arrPath = $path -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
-        $newpath = ($arrPath + $addPath) -join ';'
-        [Environment]::SetEnvironmentVariable("path", $newpath, 'User')
-    } else {
-        Throw "'$addPath' is not a valid path."
-    }
+    if (-not(Test-Path $addPath)) { msg_error "'$addPath' is not a valid path."; return }
+    $path = [Environment]::GetEnvironmentVariable('path', 'User')
+    $regexAddPath = [regex]::Escape($addPath)
+    $arrPath = $path -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
+    $newpath = ($arrPath + $addPath) -join ';'
+    [Environment]::SetEnvironmentVariable("path", $newpath, 'User')
 }
 
 function win_path_list() {
