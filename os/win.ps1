@@ -95,7 +95,7 @@ function win_install_exe_from_zip() {
 
 function win_install_vlc() {
     $vlcExists = Get-ChildItem -Path "$env:LOCALAPPDATA\Programs" -Directory -Filter "vlc-*" | Where-Object { $_.Name -match "^vlc-\d+\.\d+\.\d+$" }
-    if ($vlcExists) { return; } # winget -q return false for vim.vim
+    if ($vlcExists) { return; }
     $vlcLatestWin64Url = "https://get.videolan.org/vlc/last/win64/"
     $webRequest = Invoke-WebRequest -Uri $vlcLatestWin64Url -Method Get -ErrorAction Stop
     $vlcZipLink = $webRequest.Links | Where-Object { $_.href -like "*win64.zip" } | Select-Object -First 1
@@ -127,6 +127,18 @@ function win_install_gh() {
     $url = "https://github.com/cli/cli/releases/download/v$version/gh_${version}_windows_amd64.zip" 
     win_install_exe_from_zip $url "$env:LOCALAPPDATA\Programs\gh" "bin\gh.exe"
     win_path_add "$env:LOCALAPPDATA\Programs\gh\bin"
+}
+
+function win_install_node() {
+    if (Test-Path "$env:LOCALAPPDATA\Programs\nodejs") { return; } # winget -q return false for vim.vim
+    $nodeIndexUrl = "https://nodejs.org/dist/index.json"
+    $nodeIndex = Invoke-RestMethod -Uri $nodeIndexUrl
+    $latestLTS = $nodeIndex | Where-Object { $_.lts } | Select-Object -First 1
+    $version = $latestLTS.version.TrimStart("v")  # e.g. "20.12.2"
+    $arch = "x64"
+    $url = "https://nodejs.org/dist/v$version/node-v$version-win-$arch.zip"
+    win_install_exe_from_zip $url "$env:LOCALAPPDATA\Programs\nodejs" "node-v$version-win-$arch\node.exe"
+    win_path_add "$env:LOCALAPPDATA\Programs\nodejs\node-v$version-win-$arch\"
 }
 
 function win_install_ffmpeg() {
