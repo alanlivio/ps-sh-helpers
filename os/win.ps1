@@ -161,15 +161,7 @@ function win_install_tor() {
 # -- winget --
 
 function winget_upgrade() {
-    if (-not (Get-Command Get-WinGetPackage -ErrorAction SilentlyContinue)) {
-        msg_log "onstalling Microsoft.WinGet.Client ps module"
-        Install-Module Microsoft.WinGet.Client -Scope CurrentUser -Force -AllowClobber
-    }
-    Import-Module Microsoft.WinGet.Client -ErrorAction Stop
-    $packages = Get-WinGetPackage -Scope User | Where-Object IsUpdateAvailable
-    if ($packages.Count -gt 0) {
-        winget upgrade --all --accept-package-agreements --accept-source-agreements --scope user
-    }
+    winget upgrade --all --accept-package-agreements --accept-source-agreements --scope user
 }
 
 function winget_install() {
