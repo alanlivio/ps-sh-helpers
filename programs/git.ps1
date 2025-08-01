@@ -45,3 +45,34 @@ function git_gitignore_types_add {
 function git_gitignore_types_add_vscode {
     (Invoke-WebRequest -Uri "https://www.toptal.com/developers/gitignore/api/visualstudiocode" -UseBasicParsing).Content
 }
+
+
+function git_branch_remove_local_and_remote {
+    param ( [Parameter(Mandatory = $true)] [string]$branchname )
+    git branch -d $branchname
+    git push origin --delete $branchname
+}
+
+function git_push_after_amend_all {
+    git commit -a --amend --no-edit
+    git push --force
+}
+
+function git_formated_patch_n_last_commits {
+    param ( [Parameter(Mandatory = $true)] [int]$number_of_last_commits )
+    git format-patch HEAD~$number_of_last_commits
+}
+
+function git_formated_patch_apply {
+    param ( [Parameter(Mandatory = $true)] [string[]]$args )
+    foreach ($file in $args) {
+        git am $file
+    }
+}
+
+function git_tag_move_to_head_and_push {
+    param ( [Parameter(Mandatory = $true)] [string]$tagname )
+    git tag -d $tagname
+    git tag $tagname
+    git push --force --tags
+}
