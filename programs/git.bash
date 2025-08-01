@@ -46,26 +46,6 @@ function git_branch_remove_local_and_remote() {
     git push origin --delete $1
 }
 
-function git_branch_all_remotes_checkout_and_reset() {
-    local CURRENT=$(git branch --show-current)
-    git fetch -p origin
-    git branch -r | grep -v '\->' | while read -r remote; do
-        git reset --hard
-        git clean -ndf
-        log_msg "updating ${remote#origin/}"
-        git checkout "${remote#origin/}"
-        if test $? != 0; then
-            log_error "cannot goes to ${remote#origin/} because there are local changes" && return 1
-        fi
-        git pull --all
-        if test $? != 0; then
-            log_error "cannot pull ${remote#origin/} because there are local changes" && return 1
-        fi
-    done
-    log_msg "returning to branch $CURRENT"
-    git checkout $CURRENT
-}
-
 function git_push_after_amend_all() {
     git commit -a --amend --no-edit
     git push --force
@@ -84,4 +64,24 @@ function git_tag_move_to_head_and_push() {
     git tag -d $1
     git tag $1
     git push --force --tags
+}
+
+function git_branch_all_remotes_checkout_and_reset() {
+    local CURRENT=$(git branch --show-current)
+    git fetch -p origin
+    git branch -r | grep -v '\->' | while read -r remote; do
+        git reset --hard
+        git clean -ndf
+        log_msg "updating ${remote#origin/}"
+        git checkout "${remote#origin/}"
+        if test $? != 0; then
+            log_error "cannot goes to ${remote#origin/} because there are local changes" && return 1
+        fi
+        git pull --all
+        if test $? != 0; then
+            log_error "cannot pull ${remote#origin/} because there are local changes" && return 1
+        fi
+    done
+    log_msg "returning to branch $CURRENT"
+    git checkout $CURRENT
 }
