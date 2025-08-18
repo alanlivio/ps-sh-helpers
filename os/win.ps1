@@ -154,7 +154,7 @@ function win_install_vim() {
 
 function win_install_tor() {
     if (Test-Path "$env:LOCALAPPDATA\Programs\TorBrowser") { return; } # winget -q return false for TorBrowser
-    winget_install TorProject.TorBrowser --location="$env:LOCALAPPDATA\Programs\TorBrowser" 
+    winget install TorProject.TorBrowser --location="$env:LOCALAPPDATA\Programs\TorBrowser" 
     win_startmenu_add_lnk_to_allapps "$env:LOCALAPPDATA\Programs\TorBrowser\Browser\firefox.exe" TorBrowser
 }
 
