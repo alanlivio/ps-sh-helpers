@@ -53,7 +53,7 @@ function win_install_exe_from_zip() {
     $exePath = Join-Path $extractPath $exePathOnZip
     $sourceZipFilePath = ""
     $downloadedFileCleanup = $false
-    if (!(Test-Path -Path $exePath)) {
+    if (!(Test-Path $exePath)) {
         # download
         if ($url_or_path_to_zip.StartsWith("http://") -or $url_or_path_to_zip.StartsWith("https://")) {
             $uri = New-Object System.Uri($url_or_path_to_zip)
@@ -73,7 +73,7 @@ function win_install_exe_from_zip() {
         # extract
         $randomExtractFolderName = [System.Guid]::NewGuid().ToString().Replace("-", "")
         $tempExtractPath = Join-Path $env:TEMP $randomExtractFolderName
-        if (!(Test-Path -Path $extractPath)) { New-Item -ItemType Directory -Path $extractPath | Out-Null }
+        if (!(Test-Path $extractPath)) { New-Item -ItemType Directory -Path $extractPath | Out-Null }
         if (Test-Path $tempExtractPath) { Remove-Item -Recurse -Force $tempExtractPath }
         New-Item -ItemType Directory -Path $tempExtractPath | Out-Null
         Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -275,7 +275,7 @@ IconIndex=0
 
 function explorer_hide_home_dotfiles() {
     Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { 
-        if (Test-Path -Path "$_") {
+        if (Test-Path "$_") {
             # Get-Item should use -Force if already hidden
             if (-Not(Get-Item "$_" -Force).attributes.ToString().Contains('Hidden')) {
                 (Get-Item("$_") -Force).Attributes += "Hidden"  
@@ -293,20 +293,12 @@ function win_hardlink_create() {
         [Parameter(Mandatory = $true)]
         [string] $target
     )
-    $target = Resolve-Path $target
-    if (!(Test-Path "$target")) { log_error "hardlink target $target is not a valid"; return }
+    if (!(Test-Path "$target")) { log_error "target=$target is not a valid"; return }
     if (Test-Path "$source") { 
-        $hash1 = Get-FileHash "$source"
-        $hash2 = Get-FileHash "$target"
-        if ($hash1.Hash -ne $hash2.Hash) {
-            log_msg "> remove old source=$source"
-            Remove-Item -Force "$source"
-        } else {
-            return # it is same file
-        }
+        Remove-Item -Force "$source"
     }
     log_msg "> creating HardLink source=$source target=$target"
-    New-Item -ItemType Hardlink -Force -Path "$source" -Target "$target"
+    New-Item -ItemType Hardlink -Path "$source" -Target "$target"
 }
 
 function win_symboliclink_create() {
@@ -316,10 +308,12 @@ function win_symboliclink_create() {
         [Parameter(Mandatory = $true)]
         [string] $target
     )
-    $target = Resolve-Path $target
-    if (!(Test-Path "$target")) { log_error "SymbolicLink target $target is not a valid"; return }
+    if (!(Test-Path "$target")) { log_error "target=$target is not a valid"; return }
+    if (Test-Path "$source") { 
+        Remove-Item -Force "$source"
+    }
     log_msg "> creating SymbolicLink source=$source target=$target"
-    New-Item -ItemType SymbolicLink -Force -Path "$source" -Target "$target"
+    New-Item -ItemType SymbolicLink -Path "$source" -Target "$target"
 }
 
 # -- wsl --
@@ -572,7 +566,7 @@ function win_declutter_home_folders() {
         "${env:userprofile}\Templates"
     )
     $paths | ForEach-Object { 
-        if (Test-Path -Path "$_") {
+        if (Test-Path "$_") {
             Remove-Item $_
         }
     }
