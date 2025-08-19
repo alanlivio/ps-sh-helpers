@@ -255,6 +255,21 @@ function explorer_restart() {
     Stop-Process -Force -ErrorAction SilentlyContinue -ProcessName Explorer
 }
 
+function explorer_reset_shell_folders {
+    $folders = @{
+        "My Music"    = "${env:userprofile}\Music"
+        "Personal"    = "${env:userprofile}\Documents"
+        "My Video"    = "${env:userprofile}\Videos"
+        "My Pictures" = "${env:userprofile}\Pictures"
+    }
+    $regPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders"
+    foreach ($key in $folders.Keys) {
+        Set-ItemProperty -Path $regPath -Name $key -Value $folders[$key]
+        if (-not (Test-Path $folders[$key])) { New-Item -ItemType Directory -Path $folders[$key] | Out-Null }
+    }
+    explorer_restart
+}
+
 function explorer_folder_use_pictures_icon {
     param ([string]$FolderPath)
     if (-Not (Test-Path $FolderPath)) {
@@ -415,7 +430,7 @@ function win_system_enable_ssh_agent() {
     Set-Service ssh-agent -StartupType Automatic
     Start-Service ssh-agent
     Get-Service ssh-agent
-    ssh-add "$env:userprofile\\.ssh\\id_rsa"
+    ssh-add "${env:userprofile}\\.ssh\\id_rsa"
 }
 
 # -- onedrive --
