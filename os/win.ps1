@@ -288,14 +288,28 @@ IconIndex=0
     log_msg "Successfully set the icon for '$FolderPath' to match the Pictures folder."
 }
 
-function explorer_hide_home_dotfiles() {
-    Get-ChildItem "${env:userprofile}\.*" | ForEach-Object { 
-        if (Test-Path "$_") {
-            # Get-Item should use -Force if already hidden
-            if (-Not(Get-Item "$_" -Force).attributes.ToString().Contains('Hidden')) {
-                (Get-Item("$_") -Force).Attributes += "Hidden"  
-            }
-        }
+function explorer_hide_home_dotfiles {
+    $paths = Get-ChildItem -LiteralPath $env:userprofile -Filter '.*' -Force -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName
+    $paths = $paths | Where-Object { Test-Path -LiteralPath $_ }
+    $hidden = [IO.FileAttributes]::Hidden
+    foreach ($p in $paths) {
+        $i = Get-Item -LiteralPath $p -Force
+        if (-not $i.Attributes.HasFlag($hidden)) { $i.Attributes = $i.Attributes -bor $hidden }
+    }
+}
+
+function explorer_hide_unused_and_shell_folders {
+    $roots = @($env:OneDrive, $env:OneDriveCommercial) | Where-Object { $_ } | Sort-Object -Unique
+    $subs = @('Apps', 'Whiteboards', 'Attachments', 'Scans', 'Microsoft Copilot Chat Files', 'Microsoft Teams Chat Files', 'Documents', 'Desktop')
+    $folders = foreach ($r in $roots) { foreach ($s in $subs) { Join-Path $r $s } }
+    $folders_extra = 'CrossDevice', 'vimfiles', 'vscode-remote-wsl', 'Contacts', 'Documents', 'Music', 'Games', 'Videos', 'Links', 'Favorites', 'Saved Games', 'Searches' |
+    ForEach-Object { Join-Path $env:userprofile $_ }
+    $paths = $folders + $folders_extra
+    $paths = $paths | Sort-Object -Unique | Where-Object { Test-Path -LiteralPath $_ }
+    $hidden = [IO.FileAttributes]::Hidden
+    foreach ($p in $paths) {
+        $i = Get-Item -LiteralPath $p -Force
+        if (-not $i.Attributes.HasFlag($hidden)) { $i.Attributes = $i.Attributes -bor $hidden }
     }
 }
 
