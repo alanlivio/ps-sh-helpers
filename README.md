@@ -1,6 +1,6 @@
 # ps-sh-helpers
 
-`ps-sh-helpers` is way to organise your PowerShell and Bash helper scripts. It organise helper scripts in OS-dependent from `os/<os>.*` files and loads program-dependent from `programs/<program>.*` files. It is initialized at `.bashrc` by loading `init.sh` or at `PowerShell_profile.ps1` by loading `init.ps1` (see diagram below).
+`ps-sh-helpers` ps-sh-helpers is library to organise your PowerShell and Bash helper scripts. It organise them in OS-dependent from `os/` files and program-dependent from `programs/` files. It is initialized at `.bashrc` by loading `init.sh` or at `profile.ps1` by loading `init.ps1` (see diagram below).
 
 **from bash:**
 
@@ -61,15 +61,12 @@ echo "source ~/.ps-sh-helpers/init.sh" >> ~/.bashrc
 
 ## Setup at your PowerShell profile
 
-You can use the PowerShell commands below to fetch, install, and setup `ps-sh-helpers`  to be loaded in your `profile.ps1`:
+You can use the PowerShell commands below to fetch, install, and setup `ps-sh-helpers` to be loaded in your `profile.ps1`:
 
 ```bash
-git clone https://github.com/alanlivio/ps-sh-helpers ${env:userprofile}\.ps1-sh-helpers
-Set-Content $profile '. "${env:userprofile}\.ps-sh-helpers\init.ps1""'
+git clone https://github.com/alanlivio/ps-sh-helpers ${env:userprofile}\ps1-sh-helpers
+Set-Content $profile '. "${env:userprofile}\ps-sh-helpers\init.ps1"'
 ```
-
-Pay attention that to setup a PowerShell >= 6, the last line should be:
-`Set-Content "${env:userprofile}/Documents/PowerShell/profile.ps1" $contentAdd`
 
 ## References
 
