@@ -1,30 +1,39 @@
-function git_clone_or_pull() {
-    : ${2?"Usage: git_clone_or_pull <url> <basedir> [<newname>] [<email>]. Use <newname> to differ from <url> basename; <email> to differ from ~/.gitconfig email."}
+function git_clone_to() {
+    : ${2?"Usage: git_clone_to <url> <basedir> [<newname>] [<email>]. Use <newname> to differ from <url> basename; <email> to differ from ~/.gitconfig email."}
     local url=$1
     local basedir=$2
     local newname=$3
     local email=$4
-    log_msg "git_clone_or_pull $url"
-    if [[ ! -d dir ]]; then mkdir -p $basedir; fi
     if [[ -z $3 ]]; then
         local dir=$basedir/${1##*/}
     else
         local dir=$basedir/$newname
     fi
-    if [[ -d $dir ]]; then
-        (
-            cd $dir
-            git pull
-        )
-    else
+    if [[ ! -d $dir ]]; then
+        if [[ ! -d $basedir ]]; then mkdir -p $basedir; fi
+        log_msg "git clone $url at $dir"
         git clone $url $dir
+        if [[ -n $email ]]; then
         (
             cd $dir
-            if [[ -n $email ]]; then
-                git config user.email "$email"
-            fi
+            git config user.email "$email"
         )
+        fi
     fi
+}
+
+function git_pull_subfolders() {
+    : ${1?"Usage: git_pull_subfolders <folder>"}
+    local folder=$1
+    for dir in "$folder"/*; do
+        if [[ -d "$dir/.git" ]]; then
+            (
+                cd "$dir" 
+                log_msg "git pull at $dir"
+                git pull
+            )
+        fi
+    done
 }
 
 function git_gitignore_types_list() {

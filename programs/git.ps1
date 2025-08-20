@@ -1,4 +1,4 @@
-function git_clone_or_pull() {
+function git_clone_to() {
     param(
         [string]$url, 
         [string]$basedir, 
@@ -6,26 +6,35 @@ function git_clone_or_pull() {
         [string]$email
     )
     if ($PSBoundParameters.Keys.Count -lt 2) { 
-        log_error "Usage: git_clone_or_pull <url> <basedir> [<newname>] [<email>]. Use <newname> to differ from <url> basename; <email> to differ from ~/.gitconfig email."; return 
+        log_error "Usage: git_clone_to <url> <basedir> [<newname>] [<email>]. Use <newname> to differ from <url> basename; <email> to differ from ~/.gitconfig email."; return 
     }
     if ([string]::IsNullOrEmpty($newname)) {
         $dir = Join-Path $basedir (Split-Path $url -Leaf)
     } else {
         $dir = Join-Path $basedir $newname
     }
-    log_msg "git_clone_or_pull $url"
-    if (-not (Test-Path $basedir)) {
-        New-Item -Path $basedir -ItemType Directory -Force
-    }
-    if (Test-Path $dir) {
-        Push-Location $dir
-        git pull
-        Pop-Location
-    } else {
+    if (-not (Test-Path $dir)) {
+        if (-not (Test-Path $basedir)) {
+            New-Item -Path $basedir -ItemType Directory -Force
+        }
+        log_msg "git clone $url at $dir"
         git clone $url $dir
         if (-not ([string]::IsNullOrEmpty($email))) {
             Push-Location $dir
             git config user.email "$email"
+            Pop-Location
+        }
+    }
+}
+
+function git_pull_subfolders {
+    param( [Parameter(Mandatory = $true)] [string]$folder )
+    Get-ChildItem -Path $folder -Directory | ForEach-Object {
+        $dir = $_.FullName
+        if (Test-Path $dir) {
+            log_msg "git pull at $dir"
+            Push-Location $dir
+            git pull
             Pop-Location
         }
     }
