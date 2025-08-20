@@ -347,8 +347,12 @@ function win_symboliclink_create() {
 
 # -- wsl --
 
-function wsl_call_with_profile() {
-    bash  -i -c "$args"
+function bash_ic() {
+    param(
+        [Parameter(ValueFromRemainingArguments = $true)]
+        [string[]]$cmd
+    )
+    bash -i -c "$cmd"
 }
 
 function wsl_list() {
