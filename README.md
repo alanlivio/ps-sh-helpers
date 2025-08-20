@@ -22,7 +22,7 @@ flowchart LR
     
     bashrc --> |"loads"| sh-init
     sh-init --> |"1: loads if running at OS"| OS-dependent
-    sh-init --> |"2: loads if [program].bash exists"| program-dependent
+    sh-init --> |"2: loads if program installed"| program-dependent
     %% sh-init --> |"3: create bash alias functions at"| ps-init
 ```
 
@@ -46,7 +46,7 @@ flowchart LR
 
     psprofile--> |"loads"| ps-init
     ps-init --> |"1: loads if running at OS"| OS-dependent
-    ps-init --> |"2: loads if [program].ps1 exists"| program-dependent
+    ps-init --> |"2: loads if program installed"| program-dependent
     %%ps-init --> |"3: create ps1 alias to functions at"| sh-init
 ```
 
@@ -63,10 +63,9 @@ echo "source ~/.ps-sh-helpers/init.sh" >> ~/.bashrc
 
 You can use the PowerShell commands below to fetch, install, and setup `ps-sh-helpers`  to be loaded in your `profile.ps1`:
 
-```ps1
+```bash
 git clone https://github.com/alanlivio/ps-sh-helpers ${env:userprofile}\.ps1-sh-helpers
-$contentAdd = '. "${env:userprofile}\.ps-sh-helpers\init.ps1""'
-Set-Content "${env:userprofile}/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1" $contentAdd 
+Set-Content $profile '. "${env:userprofile}\.ps-sh-helpers\init.ps1""'
 ```
 
 Pay attention that to setup a PowerShell >= 6, the last line should be:
