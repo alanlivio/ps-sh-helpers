@@ -1,26 +1,27 @@
-function git_clone_or_pull {
+function git_clone_or_pull() {
     param(
-        [Parameter(Mandatory = $true, HelpMessage = "Usage: git_clone_or_pull <url> <basedir> [<name>] [<email>]. It fetchs repo to <basedir>/<name>. If <name> is empty, the <url> basename is used.")]
-        [string]$url,
-        [Parameter(Mandatory = $true)]
-        [string]$basedir,
-        [string]$name,
+        [string]$url, 
+        [string]$basedir, 
+        [string]$newname, 
         [string]$email
     )
+    if ($PSBoundParameters.Keys.Count -lt 2) { 
+        log_error "Usage: git_clone_or_pull <url> <basedir> [<newname>] [<email>]. Use <newname> to differ from <url> basename; <email> to differ from ~/.gitconfig email."; return 
+    }
+    if ([string]::IsNullOrEmpty($newname)) {
+        $dir = Join-Path $basedir (Split-Path $url -Leaf)
+    } else {
+        $dir = Join-Path $basedir $newname
+    }
     log_msg "git_clone_or_pull $url"
     if (-not (Test-Path $basedir)) {
         New-Item -Path $basedir -ItemType Directory -Force
-    }
-    if ([string]::IsNullOrEmpty($name)) {
-        $dir = Join-Path $basedir (Split-Path $url -Leaf)
-    } else {
-        $dir = Join-Path $basedir $name
     }
     if (Test-Path $dir) {
         Push-Location $dir
         git pull
         Pop-Location
-    } else {    
+    } else {
         git clone $url $dir
         if (-not ([string]::IsNullOrEmpty($email))) {
             Push-Location $dir

@@ -1,15 +1,15 @@
 function git_clone_or_pull() {
-    : ${2?"Usage: ${FUNCNAME[0]} <url> <basedir> [<name>] [<email>]. It fetchs repo to <basedir>/<name>. If <name> is empty, the <url> basename is used. "}
+    : ${2?"Usage: git_clone_or_pull <url> <basedir> [<newname>] [<email>]. Use <newname> to differ from <url> basename; <email> to differ from ~/.gitconfig email."}
     local url=$1
     local basedir=$2
-    local name=$3
+    local newname=$3
     local email=$4
     log_msg "git_clone_or_pull $url"
     if [[ ! -d dir ]]; then mkdir -p $basedir; fi
     if [[ -z $3 ]]; then
         local dir=$basedir/${1##*/}
     else
-        local dir=$basedir/$name
+        local dir=$basedir/$newname
     fi
     if [[ -d $dir ]]; then
         (
