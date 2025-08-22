@@ -326,8 +326,8 @@ function win_hardlink_create() {
     if (Test-Path "$source") { 
         Remove-Item -Force "$source"
     }
-    log_msg "> creating HardLink source=$source target=$target"
-    New-Item -ItemType Hardlink -Path "$source" -Target "$target"
+    log_msg "> HardLink source=$source target=$target"
+    New-Item -ItemType Hardlink -Path "$source" -Target "$target" | Out-Null
 }
 
 function win_symboliclink_create() {
@@ -341,8 +341,8 @@ function win_symboliclink_create() {
     if (Test-Path "$source") { 
         Remove-Item -Force "$source"
     }
-    log_msg "> creating SymbolicLink source=$source target=$target"
-    New-Item -ItemType SymbolicLink -Path "$source" -Target "$target"
+    log_msg "> SymbolicLink source=$source target=$target"
+    New-Item -ItemType SymbolicLink -Path "$source" -Target "$target" | Out-Null
 }
 
 # -- wsl --
