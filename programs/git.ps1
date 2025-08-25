@@ -27,13 +27,14 @@ function git_clone_to() {
     }
 }
 
-function git_pull_subfolders {
-    param( [Parameter(Mandatory = $true)] [string]$folder )
+function G {
+    param([string]$folder = "")
+    if (-not (Test-Path $folder)) { return; }
     Get-ChildItem -Path $folder -Directory | ForEach-Object {
-        $dir = $_.FullName
-        if (Test-Path $dir) {
-            log_msg "git pull at $dir"
-            Push-Location $dir
+        $sub = $_.FullName
+        if (Test-Path "$sub/.git") {
+            Push-Location $sub
+            log_msg "git pull at $sub"
             git pull
             Pop-Location
         }
