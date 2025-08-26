@@ -22,16 +22,16 @@ function git_clone_to() {
     fi
 }
 
-function git_pull_subfolders() {
-    : ${1?"Usage: git_pull_subfolders <folder>"}
+function git_pull_recursive() {
+    : ${1?"Usage: git_pull_recursive <folder>"}
     local folder=$1
     if [[ ! -d $folder ]]; then return; fi;
-    for sub in "$folder"/*; do
+    for sub in "$folder" "$folder"/*; do
         if [[ -d "$sub/.git" ]]; then
             (
                 cd "$sub" 
                 log_msg "git pull at $sub"
-                git pull
+                git pull -q
             )
         fi
     done

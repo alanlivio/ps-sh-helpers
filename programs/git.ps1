@@ -27,15 +27,18 @@ function git_clone_to() {
     }
 }
 
-function G {
-    param([string]$folder = "")
+function git_pull_recursive {
+    param([string]$folder)
+    if ($PSBoundParameters.Keys.Count -lt 1) {
+        log_error "Usage: git_pull_recursive <folder>"; return 
+    }
     if (-not (Test-Path $folder)) { return; }
-    Get-ChildItem -Path $folder -Directory | ForEach-Object {
+    @(Get-Item -LiteralPath $folder; Get-ChildItem -LiteralPath $folder -Directory) | ForEach-Object {
         $sub = $_.FullName
         if (Test-Path "$sub/.git") {
             Push-Location $sub
             log_msg "git pull at $sub"
-            git pull
+            git pull -q
             Pop-Location
         }
     }
