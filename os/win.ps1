@@ -161,6 +161,7 @@ function win_install_tor() {
 # -- winget --
 
 function winget_upgrade() {
+    log_msg "winget update"
     winget upgrade --all --accept-package-agreements --accept-source-agreements --scope user
 }
 
@@ -326,7 +327,7 @@ function win_hardlink_create() {
     if (Test-Path "$source") { 
         Remove-Item -Force "$source"
     }
-    log_msg "> HardLink source=$source target=$target"
+    log_msg "HardLink source=$source target=$target"
     New-Item -ItemType Hardlink -Path "$source" -Target "$target" | Out-Null
 }
 
@@ -341,7 +342,7 @@ function win_symboliclink_create() {
     if (Test-Path "$source") { 
         Remove-Item -Force "$source"
     }
-    log_msg "> SymbolicLink source=$source target=$target"
+    log_msg "SymbolicLink source=$source target=$target"
     New-Item -ItemType SymbolicLink -Path "$source" -Target "$target" | Out-Null
 }
 
