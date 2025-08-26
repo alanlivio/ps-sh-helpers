@@ -400,7 +400,6 @@ function wsl_use_same_home() {
     log_msg "create a link /home/user at /mnt/c/Users/user"
     wsl -u root rm -rf /home/$user_name
     wsl -u root ln -s /mnt/c/Users/$env:UserName /home/$user_name
-
 }
 
 function wsl_fix_metadata() {
