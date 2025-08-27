@@ -314,37 +314,6 @@ function explorer_hide_unused_and_shell_folders {
     }
 }
 
-# -- hardlink --
-
-function win_hardlink_create() {
-    param (
-        [Parameter(Mandatory = $true)]
-        [string] $source,
-        [Parameter(Mandatory = $true)]
-        [string] $target
-    )
-    if (!(Test-Path "$target")) { log_error "target=$target is not a valid"; return }
-    if (Test-Path "$source") { 
-        Remove-Item -Force "$source"
-    }
-    log_msg "HardLink source=$source target=$target"
-    New-Item -ItemType Hardlink -Path "$source" -Target "$target" | Out-Null
-}
-
-function win_symboliclink_create() {
-    param (
-        [Parameter(Mandatory = $true)]
-        [string] $source,
-        [Parameter(Mandatory = $true)]
-        [string] $target
-    )
-    if (!(Test-Path "$target")) { log_error "target=$target is not a valid"; return }
-    if (Test-Path "$source") { 
-        Remove-Item -Force "$source"
-    }
-    log_msg "SymbolicLink source=$source target=$target"
-    New-Item -ItemType SymbolicLink -Path "$source" -Target "$target" | Out-Null
-}
 
 # -- wsl --
 
