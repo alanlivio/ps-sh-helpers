@@ -1,9 +1,5 @@
 # -- apt --
 
-alias apt_ppa_remove="sudo add-apt-repository --remove"
-alias apt_ppa_list="apt policy"
-alias apt_autoremove="sudo apt -y autoremove"
-
 function apt_upgrade() {
     log_msg "apt update and upgrade"
     sudo apt update
