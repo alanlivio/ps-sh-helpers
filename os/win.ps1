@@ -670,6 +670,7 @@ function win_declutter_explorer_listing_files() {
     $reg_explorer_adv = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     Set-ItemProperty -Path $reg_explorer_adv -Name ShowAccountBasedInsights -Value 0 -Type Dword
     Set-ItemProperty -Path $reg_explorer_adv -Name Start_TrackDocs -Value 0 -Type Dword
+    Set-ItemProperty -Path $reg_explorer_adv -Name Start_TrackDocsInJumpLists -Value 0 -Type Dword
     Set-ItemProperty -Path $reg_explorer_adv -Name ShowRecommendedFiles -Value 0 -Type Dword
     Set-ItemProperty -Path $reg_explorer_adv -Name LaunchTo -Value 1 -Type Dword # This PC
 
