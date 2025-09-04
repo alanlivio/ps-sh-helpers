@@ -87,7 +87,7 @@ function user_as_sudoer_no_password() {
 # -- install --
 
 function ubu_install_latex() {
-    sudo apt install -y latexmk texlive-latex-extra texlive-fonts-extra
+    sudo apt install -y latexmk texlive-latex-extra texlive-fonts-extra texlive-extra-utils
 }
 
 function ubu_install_node() {
