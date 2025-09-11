@@ -582,7 +582,6 @@ function win_declutter_all_and_explorer_restart() {
     win_declutter_web_search_and_widgets
     win_declutter_taskbar
     win_declutter_xbox
-    win_office_disable_warn_local_link
     explorer_restart
 }
 
