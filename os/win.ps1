@@ -385,11 +385,37 @@ function wsl_fix_metadata() {
 
 # -- office --
 
-function win_office_disable_warn_local_link() {
-    # https://superuser.com/questions/1307645/how-to-disable-hyperlink-security-notice-in-onenote-2016
-    $reg = "HKCU:\Software\Microsoft\Office\16.0\Common\Security"
-    New-Item -Path $reg -Force | Out-Null
-    Set-ItemProperty -Path $reg -Name "DisableHyperlinkWarning" -Value 1 -Type Dword -Force
+function office_onenote_deeplink_from_url {
+    param([Parameter(Mandatory)][string]$url)
+
+    if (-not $script:onenote_cache) { $script:onenote_cache = @{} }
+    if ($script:onenote_cache.ContainsKey($url)) { return $script:onenote_cache[$url] }
+
+    Add-Type -AssemblyName System.Web | Out-Null
+    $uri = [Uri]$url
+    $qs = [System.Web.HttpUtility]::ParseQueryString($uri.Query)
+
+    $resid = $qs['resid']
+    $root_resid = ($resid -split '!')[0]
+    $wd = $qs['wd']
+    $decoded_wd = [System.Web.HttpUtility]::UrlDecode($wd)
+    $decoded_wd -match 'target\((.+)\)' | Out-Null
+    $target = $Matches[1]
+
+    $parts = $target -split '\|'
+    $notebook_file = $parts[0]
+    $section_split = $parts[1] -split '/', 2
+    $section_guid = $section_split[0]
+    $section_name = $section_split[1]
+    $page_guid = if ($parts.Count -ge 3 -and $parts[2]) { ($parts[2] -replace '/$', '') } else { $null }
+
+    $section_name_escaped = [System.Uri]::EscapeDataString($section_name)
+    $onenote = "onenote:https://d.docs.live.net/$root_resid/$notebook_file#$section_name_escaped&section-id={$section_guid}"
+    if ($page_guid) { $onenote += "&page-id={$page_guid}" }
+    $onenote += "&end"
+
+    $script:onenote_cache[$url] = $onenote
+    $onenote
 }
 
 # -- system --
