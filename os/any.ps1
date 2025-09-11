@@ -18,3 +18,9 @@ function ps_is_running_as_sudo {
 function ps_func_show($name) {
     Get-Content Function:\$name
 }
+
+
+function ps_open_admin_shell_with_cur_profile {
+    $profilePath = $profile
+    Start-Process wt -ArgumentList "powershell -NoExit -ExecutionPolicy Bypass -File `"$profilePath`"" -Verb RunAs
+}

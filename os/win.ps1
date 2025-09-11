@@ -385,6 +385,19 @@ function wsl_fix_metadata() {
 
 # -- office --
 
+function win_office_disable_warn_local_link {
+    # requireq admin
+    $regPaths = @(
+        "HKCU:\Software\Microsoft\Office\16.0\Common\Security",
+        "HKCU:\Software\Policies\Microsoft\Office\16.0\Common\Security"
+    )
+
+    foreach ($path in $regPaths) {
+        if (-not (Test-Path $path)) { New-Item -Path $path -Force | Out-Null }
+        New-ItemProperty -Path $path -Name "DisableHyperlinkWarning" -Value 1 -PropertyType DWord -Force | Out-Null
+    }
+}
+
 function office_onenote_deeplink_from_url {
     param([Parameter(Mandatory)][string]$url)
 
