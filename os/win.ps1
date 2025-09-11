@@ -141,13 +141,29 @@ function win_install_node() {
     win_path_add "$env:LOCALAPPDATA\Programs\nodejs\node-v$version-win-$arch\"
 }
 
+function win_install_latex() {
+    winget_install MikTex.MikTex
+    # install perl required by latexmk 
+    if (Test-Path "$env:LOCALAPPDATA\Programs\StrawberryPerl") { return; } 
+    $apiUrl = "https://api.github.com/repos/StrawberryPerl/Perl-Dist-Strawberry/releases/latest"
+    $response = Invoke-RestMethod -Uri $apiUrl -Method Get -Headers @{"Accept" = "application/vnd.github.v3+json" }
+    if (-not ($response)) { log_error "Download failed"; return }
+    $asset = $response.assets | Where-Object {
+        $_.name -match '^strawberry-perl-[\d\.]+-64bit-portable\.zip$'
+    } | Select-Object -First 1
+    $url = $asset.browser_download_url
+    win_install_exe_from_zip $url "$env:LOCALAPPDATA\Programs\gh" "bin\gh.exe"
+    win_install_exe_from_zip $url "$env:LOCALAPPDATA\Programs\StrawberryPerl" "perl\bin\perl.exe"
+    win_path_add("${env:localappdata}\Programs\StrawberryPerl\perl\bin")
+}
+
 function win_install_ffmpeg() {
     winget_install Gyan.FFmpeg
     win_path_add("${env:localappdata}\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-7.1.1-full_build\bin")
 }
 
 function win_install_vim() {
-    if (Test-Path "$env:LOCALAPPDATA\Programs\vim\vim91\vim.exe") { return; } # winget -q return false for vim.vim
+    if (Test-Path "$env:LOCALAPPDATA\Programs\vim\vim91\vim.exe") { return; } # winget -q return false for vim.vim  
     winget_install vim.vim --location="$env:LOCALAPPDATA\Programs\vim"
     win_path_add "$env:LOCALAPPDATA\Programs\vim\vim91"
 }
@@ -211,7 +227,7 @@ function win_path_reload() {
 }
 
 function win_path_add($addPath) {
-    if (-not(Test-Path $addPath)) { msg_error "'$addPath' is not a valid path."; return }
+    if (-not(Test-Path $addPath)) { log_error "'$addPath' is not a valid path."; return }
     $path = [Environment]::GetEnvironmentVariable('path', 'User')
     $regexAddPath = [regex]::Escape($addPath)
     $arrPath = $path -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
