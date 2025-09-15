@@ -556,19 +556,6 @@ function win_desktop_as_slideshow_from_folder() {
     RUNDLL32.EXE USER32.DLL, UpdatePerUserSystemParameters
 }
 
-# -- win_edge --
-
-function win_edge_disable_edge_ctrl_shift_c() {
-    log_msg "win_edge_disable_edge_ctrl_shift_c"
-    if (Test-IsNotAdmin) { log_error "no admin. skipping."; return }
-    $reg_edge_pol = "HKCU:\Software\Policies\Microsoft\Edge"
-    New-Item -Path $reg_edge_pol -Force | Out-Null
-    if (-not (Get-ItemPropertyValue -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts')) {
-        Set-ItemProperty -Path $reg_edge_pol -Name 'ConfigureKeyboardShortcuts' -Value '{"disabled": ["dev_tools_elements"]}'
-        gpupdate.exe /force
-    }
-}
-
 # -- win_clutter --
 
 function win_declutter_all_and_explorer_restart() {
