@@ -306,7 +306,9 @@ IconIndex=0
 }
 
 function explorer_hide_home_dotfiles {
-    $paths = Get-ChildItem -LiteralPath $env:userprofile -Filter '.*' -Force -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName
+    $paths = Get-ChildItem -LiteralPath $env:userprofile -Force -ErrorAction SilentlyContinue |
+    Where-Object { $_.Name -like '.*' -or $_.Name -like '*.lock' } |
+    Select-Object -ExpandProperty FullName
     $paths = $paths | Where-Object { Test-Path -LiteralPath $_ }
     $hidden = [IO.FileAttributes]::Hidden
     foreach ($p in $paths) {
