@@ -1,24 +1,19 @@
 function git_clone_to() {
-    : ${2?"Usage: git_clone_to <url> <basedir> [<newname>] [<email>]. Use <newname> to differ from <url> basename; <email> to differ from ~/.gitconfig email."}
+    : ${2?"Usage: git_clone_to <url> <basedir> [<email>]. Use <email> to differ from ~/.gitconfig email."}
     local url=$1
     local basedir=$2
-    local newname=$3
-    local email=$4
-    if [[ -z $3 ]]; then
-        local dir=$basedir/${1##*/}
-    else
-        local dir=$basedir/$newname
-    fi
+    local email=$3
+    local dir=$basedir/${1##*/}
     if [[ ! -d $dir ]]; then
         if [[ ! -d $basedir ]]; then mkdir -p $basedir; fi
         log_msg "git clone $url at $dir"
         git clone $url $dir
-        if [[ -n $email ]]; then
-        (
-            cd $dir
-            git config user.email "$email"
-        )
-        fi
+    fi
+    if [[ -n $email ]]; then
+    (
+        cd $dir
+        git config user.email "$email"
+    )
     fi
 }
 
