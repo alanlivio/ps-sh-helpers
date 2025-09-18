@@ -44,7 +44,6 @@ function win_install_exe_from_zip() {
     # For example: win_install_exe_from_zip ""...\vlc-3.0.21.zip" "...\bin\vlc-3.0.21" "vlc.exe" 
     # there is a vlc-3.0.21 folder inside vlc-3.0.21-win64.zip
     # so the content of that nested folder is used
-    
     param(
         [Parameter(Mandatory = $true)][string]$url_or_path_to_zip,
         [Parameter(Mandatory = $true)][string]$extractPath, # it should has a name if the zip has no main folder
@@ -52,34 +51,33 @@ function win_install_exe_from_zip() {
     )
     $exePath = Join-Path $extractPath $exePathOnZip
     $sourceZipFilePath = ""
-    $downloadedFileCleanup = $false
     if (!(Test-Path $exePath)) {
         # download
         if ($url_or_path_to_zip.StartsWith("http://") -or $url_or_path_to_zip.StartsWith("https://")) {
-            $uri = New-Object System.Uri($url_or_path_to_zip)
-            $derivedZipFileName = [System.IO.Path]::GetFileName($uri.LocalPath)
-            $randomDownloadFileName = [System.Guid]::NewGuid().ToString().Replace("-", "") + "-" + $derivedZipFileName
-            $downloadPath = Join-Path $env:TEMP $randomDownloadFileName
-            if (Test-Path $downloadPath) { Remove-Item $downloadPath -Force }
-
-            $webClient = New-Object System.Net.WebClient
-            $webClient.DownloadFile($url_or_path_to_zip, $downloadPath)
-            if (!(Test-Path $downloadPath)) { log_error "download failed"; return }
-            $sourceZipFilePath = $downloadPath
-            $downloadedFileCleanup = $true
+            $url = New-Object System.Uri($url_or_path_to_zip)
+            $derivedZipFileName = [System.IO.Path]::GetFileName($url.LocalPath)
+            $outZip = Join-Path $env:TEMP $derivedZipFileName
+            if (Test-Path $outZip) {
+                log_msg "skip download and using existing $outZip"
+            } else {
+                New-Item -ItemType Directory -Path $downloadPath -Force | Out-Null
+                $webClient = New-Object System.Net.WebClient
+                $webClient.DownloadFile($url, $downloadPath)
+                if (!(Test-Path $outZip)) { log_error "download failed"; return }
+            }
+            $sourceZipFilePath = $outZip
         } else {
             $sourceZipFilePath = $url_or_path_to_zip
         }
-        # extract
-        $randomExtractFolderName = [System.Guid]::NewGuid().ToString().Replace("-", "")
-        $tempExtractPath = Join-Path $env:TEMP $randomExtractFolderName
-        if (!(Test-Path $extractPath)) { New-Item -ItemType Directory -Path $extractPath | Out-Null }
-        if (Test-Path $tempExtractPath) { Remove-Item -Recurse -Force $tempExtractPath }
+        # extract, using a randomExtractFolder may needed when no internal folder.
+        $randomExtractFolder = [System.Guid]::NewGuid().ToString().Replace("-", "")
+        $tempExtractPath = Join-Path $env:TEMP $randomExtractFolder
         New-Item -ItemType Directory -Path $tempExtractPath | Out-Null
         Add-Type -AssemblyName System.IO.Compression.FileSystem
         try { 
             [System.IO.Compression.ZipFile]::ExtractToDirectory($sourceZipFilePath, $tempExtractPath) 
         } catch { log_error "extract failed"; return }
+        if (!(Test-Path $extractPath)) { New-Item -ItemType Directory -Path $extractPath | Out-Null }
         # if the basename of extractPath exist inside extracted Path so get from inside that folder
         $extractPathBasename = (Split-Path -Path $extractPath -Leaf)
         if (Test-Path (Join-Path $tempExtractPath $extractPathBasename)) {
@@ -87,9 +85,6 @@ function win_install_exe_from_zip() {
         } else {
             Copy-Item -Path "$tempExtractPath\*" -Destination $extractPath -Recurse -Force
         }
-        # cleanup
-        if ($downloadedFileCleanup) { Remove-Item -Path $sourceZipFilePath -Force }
-        Remove-Item -Path $tempExtractPath -Recurse -Force
     }
 }
 
@@ -152,8 +147,9 @@ function win_install_latex() {
         $_.name -match '^strawberry-perl-[\d\.]+-64bit-portable\.zip$'
     } | Select-Object -First 1
     $url = $asset.browser_download_url
-    win_install_exe_from_zip $url "$env:LOCALAPPDATA\Programs\gh" "bin\gh.exe"
+    log_msg "download and extracting StrawberryPerl (~15min)"
     win_install_exe_from_zip $url "$env:LOCALAPPDATA\Programs\StrawberryPerl" "perl\bin\perl.exe"
+    log_msg "download and extracting finished"
     win_path_add("${env:localappdata}\Programs\StrawberryPerl\perl\bin")
 }
 
