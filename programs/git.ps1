@@ -2,28 +2,23 @@ function git_clone_to() {
     param(
         [string]$url, 
         [string]$basedir, 
-        [string]$newname, 
         [string]$email
     )
     if ($PSBoundParameters.Keys.Count -lt 2) { 
-        log_error "Usage: git_clone_to <url> <basedir> [<newname>] [<email>]. Use <newname> to differ from <url> basename; <email> to differ from ~/.gitconfig email."; return 
+        log_error "Usage: git_clone_to <url> <basedir> [<email>]. Use <email> to differ from ~/.gitconfig email."; return 
     }
-    if ([string]::IsNullOrEmpty($newname)) {
-        $dir = Join-Path $basedir (Split-Path $url -Leaf)
-    } else {
-        $dir = Join-Path $basedir $newname
-    }
+    $dir = Join-Path $basedir (Split-Path $url -Leaf)
     if (-not (Test-Path $dir)) {
         if (-not (Test-Path $basedir)) {
             New-Item -Path $basedir -ItemType Directory -Force
         }
         log_msg "git clone $url at $dir"
         git clone $url $dir
-        if (-not ([string]::IsNullOrEmpty($email))) {
-            Push-Location $dir
-            git config user.email "$email"
-            Pop-Location
-        }
+    }
+    if (-not ([string]::IsNullOrEmpty($email))) {
+        Push-Location $dir
+        git config user.email "$email"
+        Pop-Location
     }
 }
 
