@@ -1,7 +1,8 @@
 {
     "recommendations": [
         "davidanson.vscode-markdownlint",
-        "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
-        "bierner.markdown-mermaid"
+        "mermaidchart.vscode-mermaid-chart",
+        "ms-vscode.powershell",
+        "foxundermoon.shell-format"
     ]
 }
