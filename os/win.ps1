@@ -103,7 +103,7 @@ function win_install_vlc() {
 }
 
 function win_install_obs() {
-    if (Test-Path "$env:LOCALAPPDATA\Programs\OBS\bin\64bit\obs64.exe") { return; } # winget -q return false for vim.vim
+    if (Test-Path "$env:LOCALAPPDATA\Programs\OBS\bin\64bit\obs64.exe") { return; }
     $apiUrl = "https://api.github.com/repos/obsproject/obs-studio/releases/latest"
     $response = Invoke-RestMethod -Uri $apiUrl -Method Get -Headers @{"Accept" = "application/vnd.github.v3+json" }
     if (-not ($response)) { log_error "Download failed"; return }
@@ -114,7 +114,7 @@ function win_install_obs() {
 }
 
 function win_install_gh() {
-    if (Test-Path "$env:LOCALAPPDATA\Programs\gh\bin\gh.exe") { return; } # winget -q return false for vim.vim
+    if (Test-Path "$env:LOCALAPPDATA\Programs\gh\bin\gh.exe") { return; }
     $apiUrl = "https://api.github.com/repos/cli/cli/releases/latest"
     $response = Invoke-RestMethod -Uri $apiUrl -Method Get -Headers @{"Accept" = "application/vnd.github.v3+json" }
     if (-not ($response)) { log_error "Download failed"; return }
@@ -125,7 +125,7 @@ function win_install_gh() {
 }
 
 function win_install_node() {
-    if (Test-Path "$env:LOCALAPPDATA\Programs\nodejs") { return; } # winget -q return false for vim.vim
+    if (Test-Path "$env:LOCALAPPDATA\Programs\nodejs") { return; }
     $nodeIndexUrl = "https://nodejs.org/dist/index.json"
     $nodeIndex = Invoke-RestMethod -Uri $nodeIndexUrl
     $latestLTS = $nodeIndex | Where-Object { $_.lts } | Select-Object -First 1
@@ -159,7 +159,7 @@ function win_install_ffmpeg() {
 }
 
 function win_install_vim() {
-    if (Test-Path "$env:LOCALAPPDATA\Programs\vim\vim91\vim.exe") { return; } # winget -q return false for vim.vim  
+    if (Test-Path "$env:LOCALAPPDATA\Programs\vim\vim91\vim.exe") { return; }  
     winget_install vim.vim --location="$env:LOCALAPPDATA\Programs\vim"
     win_path_add "$env:LOCALAPPDATA\Programs\vim\vim91"
 }
