@@ -60,9 +60,8 @@ function win_install_exe_from_zip() {
             if (Test-Path $outZip) {
                 log_msg "skip download and using existing $outZip"
             } else {
-                New-Item -ItemType Directory -Path $downloadPath -Force | Out-Null
                 $webClient = New-Object System.Net.WebClient
-                $webClient.DownloadFile($url, $downloadPath)
+                $webClient.DownloadFile($url, $outZip)
                 if (!(Test-Path $outZip)) { log_error "download failed"; return }
             }
             $sourceZipFilePath = $outZip
@@ -160,7 +159,7 @@ function win_install_ffmpeg() {
 
 function win_install_vim() {
     if (Test-Path "$env:LOCALAPPDATA\Programs\vim\vim91\vim.exe") { return; }  
-    winget_install vim.vim --location="$env:LOCALAPPDATA\Programs\vim"
+    winget install vim.vim --location="$env:LOCALAPPDATA\Programs\vim"
     win_path_add "$env:LOCALAPPDATA\Programs\vim\vim91"
 }
 
