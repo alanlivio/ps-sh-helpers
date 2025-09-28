@@ -1,7 +1,7 @@
 $HELPERS_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 function profile_add_helpers { 
-    $sourceLine = '. "$HELPERS_DIR/init.ps1"'
+    $sourceLine = '. ' + "$HELPERS_DIR/init.ps1"
     if (-not (Test-Path $profile)) {
         $folder = [System.IO.Path]::GetDirectoryName($profile)
         New-Item -Path $folder -ItemType Directory | Out-Null
