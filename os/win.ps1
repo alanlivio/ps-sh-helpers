@@ -569,6 +569,21 @@ function win_declutter_all_and_explorer_restart() {
     explorer_restart
 }
 
+function win_dev_declutter_all_and_explorer_restart() {
+    winget_uninstall 9P6PMZTM93LR # Defender
+    winget_uninstall 9WZDNCRD29V9 # Microsoft 365 Copilot
+    winget_uninstall 9MSMLRH6LZF3 # Notepad
+    winget_uninstall 9PCFS5B6T72H # Paint
+    winget_uninstall "Phone Link"
+    winget_uninstall "Windows Web Experience Pack"
+    winget_uninstall "Windows Sound Recorder"
+    winget_uninstall "Microsoft Store"
+    winget_install Microsoft.VisualStudioCode
+    winget_install Microsoft.WindowsTerminal
+    winget_install Microsoft.PowerToys
+    win_declutter_all_and_explorer_restart
+}
+
 function win_declutter_ui() {
     log_msg "win_declutter_ui"
     # dark enabled and transparent disabled
@@ -618,6 +633,7 @@ function win_declutter_osapps() {
     winget_uninstall "MSN Weather"
     winget_uninstall "Microsoft Sticky Notes"
     winget_uninstall "Microsoft Clipchamp"
+    winget_uninstall "Microsoft Journal"
     winget_uninstall "Solitaire & Casual Games"
     winget_uninstall "Game Bar"
     winget_uninstall "News"
@@ -625,6 +641,8 @@ function win_declutter_osapps() {
     winget_uninstall "Microsoft People"
     winget_uninstall "Films & TV"
     winget_uninstall "Power Automate"
+    winget_uninstall "Dev HOME"
+    winget_uninstall 9PDJDJS743XF # Family
 }
 
 function win_declutter_3_and_4_fingers_gestures() {
