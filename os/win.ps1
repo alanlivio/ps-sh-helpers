@@ -268,19 +268,25 @@ function explorer_restart() {
 }
 
 function explorer_reset_shell_folders {
-    $folders = @{
-        "My Music"    = "${env:userprofile}\Music"
-        "Personal"    = "${env:userprofile}\Documents"
-        "My Video"    = "${env:userprofile}\Videos"
-        "My Pictures" = "${env:userprofile}\Pictures"
+    $folders_expandable = @{
+        "My Music"    = "%USERPROFILE%\Music"
+        "Personal"    = "%USERPROFILE%\Documents"
+        "My Video"    = "%USERPROFILE%\Videos"
+        "My Pictures" = "%USERPROFILE%\Pictures"
     }
-    $regPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders"
-    foreach ($key in $folders.Keys) {
-        Set-ItemProperty -Path $regPath -Name $key -Value $folders[$key]
-        if (-not (Test-Path $folders[$key])) { New-Item -ItemType Directory -Path $folders[$key] | Out-Null }
+    $reg_path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders"
+    New-Item -Path $reg_path -Force | Out-Null
+    foreach ($name in $folders_expandable.Keys) {
+        $expand_value = $folders_expandable[$name]
+        $real_path = [Environment]::ExpandEnvironmentVariables($expand_value)
+        New-ItemProperty -Path $reg_path -Name $name -Value $expand_value -PropertyType ExpandString -Force | Out-Null
+        if (-not (Test-Path -LiteralPath $real_path)) {
+            New-Item -ItemType Directory -Path $real_path -Force | Out-Null
+        }
     }
     explorer_restart
 }
+
 
 function explorer_folder_use_pictures_icon {
     param ([string]$FolderPath)
@@ -555,7 +561,7 @@ function win_desktop_as_slideshow_from_folder() {
 
 # -- win_clutter --
 
-function win_declutter_all_and_explorer_restart() {
+function win_declutter_all() {
     win_declutter_ui
     win_declutter_home_folders
     win_declutter_osapps
@@ -569,7 +575,7 @@ function win_declutter_all_and_explorer_restart() {
     explorer_restart
 }
 
-function win_dev_declutter_all_and_explorer_restart() {
+function win_declutter_all_dev() {
     winget_uninstall 9P6PMZTM93LR # Defender
     winget_uninstall 9WZDNCRD29V9 # Microsoft 365 Copilot
     winget_uninstall 9MSMLRH6LZF3 # Notepad
@@ -581,7 +587,7 @@ function win_dev_declutter_all_and_explorer_restart() {
     winget_install Microsoft.VisualStudioCode
     winget_install Microsoft.WindowsTerminal
     winget_install Microsoft.PowerToys
-    win_declutter_all_and_explorer_restart
+    win_declutter_all
 }
 
 function win_declutter_ui() {
