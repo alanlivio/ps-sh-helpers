@@ -234,32 +234,6 @@ function win_path_list() {
     (Get-ChildItem Env:Path).Value -split ';'
 }
 
-# -- folder_open --
-
-function folder_open_trash() {
-    Start-Process explorer shell:recyclebinfolder
-}
-
-function folder_open_roaming_data() {
-    Start-Process explorer "${env:appdata}"
-}
-
-function folder_open_local_programs() {
-    Start-Process explorer "${env:localappdata}\Programs"
-}
-
-function folder_open_local_windows_apps() {
-    Start-Process explorer "${env:localappdata}\Microsoft\WindowsApps"
-}
-
-function folder_open_local_winget_packages() {
-    Start-Process explorer "${env:localappdata}\Microsoft\WinGet\Packages"
-}
-
-function folder_open_startmenu_programs() {
-    Start-Process explorer "${env:userprofile}\AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
-}
-
 # -- explorer --
 
 function explorer_restart() {
