@@ -18,32 +18,37 @@ function win_os_upgrade() {
 
 # -- admin --
 
-function win_admin_user_enable() {
+function win_admin_enable_administrator() {
     net user administrator /active:yes
 }
 
-function win_admin_user_disable() {
+function win_admin_disable_administrator() {
     net user administrator /active:no
 }
 
-function win_admin_current_user_disable() {
-    $current_user = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
-    net localgroup 'Administrators' $current_user /delete
-}
-
-function win_admin_current_user_enable {
+function win_admin_add_current_user {
     $current_user = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
     net localgroup 'Administrators' $current_user /add
 }
 
-function win_admin_password_policy_disable() {
-    log_msg "win_disable_password_policy"
-    if (-not (ps_is_running_as_sudo)) { log_msg "not running as admin. skipping"; return }
-    $tmpfile = New-TemporaryFile
-    secedit /export /cfg $tmpfile /quiet # this call requires admin
-    (Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
-    secedit /configure /db "$env:SYSTEMROOT\security\database\local.sdb" /cfg $tmpfile /areas SECURITYPOLICY | Out-Null
-    Remove-Item -Path $tmpfile
+function win_admin_romove_current_user() {
+    $current_user = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+    $raw = net localgroup 'Administrators'
+    $members = $raw |
+        ForEach-Object { $_.Trim() } |
+        Where-Object {
+            $_ -and
+            $_ -notmatch 'command completed successfully' -and
+            $_ -notmatch 'Alias name' -and
+            $_ -notmatch 'Comment' -and
+            $_ -notmatch 'Members' -and
+            $_ -notmatch '^-+$'
+        }
+    if ($members.Count -eq 1) {
+        Write-Host "There is only on admin Nothing to do."
+        return
+    }
+    net localgroup 'Administrators' $current_user /delete
 }
 
 # -- install -- 
