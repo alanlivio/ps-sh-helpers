@@ -563,10 +563,12 @@ function win_declutter_all_dev() {
     winget_uninstall 9WZDNCRD29V9 # Microsoft 365 Copilot
     winget_uninstall 9MSMLRH6LZF3 # Notepad
     winget_uninstall 9PCFS5B6T72H # Paint
+    winget_uninstall 9WZDNCRFHVN5 # Calculator
     winget_uninstall "Phone Link"
     winget_uninstall "Windows Web Experience Pack"
     winget_uninstall "Windows Sound Recorder"
     winget_uninstall "Microsoft Store"
+    winget_uninstall "Cross Device Experience Host"
     winget_install Microsoft.VisualStudioCode
     winget_install Microsoft.WindowsTerminal
     win_declutter_all
