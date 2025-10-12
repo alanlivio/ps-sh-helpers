@@ -26,9 +26,18 @@ function win_admin_user_disable() {
     net user administrator /active:no
 }
 
+function win_admin_current_user_disable() {
+    $current_user = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+    net localgroup 'Administrators' $current_user /delete
+}
+
+function win_admin_current_user_enable {
+    $current_user = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+    net localgroup 'Administrators' $current_user /add
+}
+
 function win_admin_password_policy_disable() {
     log_msg "win_disable_password_policy"
-
     if (-not (ps_is_running_as_sudo)) { log_msg "not running as admin. skipping"; return }
     $tmpfile = New-TemporaryFile
     secedit /export /cfg $tmpfile /quiet # this call requires admin
@@ -560,7 +569,6 @@ function win_declutter_all_dev() {
     winget_uninstall "Microsoft Store"
     winget_install Microsoft.VisualStudioCode
     winget_install Microsoft.WindowsTerminal
-    winget_install Microsoft.PowerToys
     win_declutter_all
 }
 
