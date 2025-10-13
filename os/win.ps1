@@ -563,20 +563,6 @@ function win_declutter_all() {
     explorer_restart
 }
 
-function win_declutter_all_dev() {
-    winget_uninstall 9P6PMZTM93LR # Defender
-    winget_uninstall 9WZDNCRD29V9 # Microsoft 365 Copilot
-    winget_uninstall 9MSMLRH6LZF3 # Notepad
-    winget_uninstall 9WZDNCRFHVN5 # Calculator
-    winget_uninstall "Phone Link"
-    winget_uninstall "Windows Web Experience Pack"
-    winget_uninstall "Windows Sound Recorder"
-    winget_uninstall "Microsoft Store"
-    winget_uninstall "Cross Device Experience Host"
-    winget_install Microsoft.VisualStudioCode
-    winget_install Microsoft.WindowsTerminal
-    win_declutter_all
-}
 
 function win_declutter_ui() {
     log_msg "win_declutter_ui"
@@ -636,7 +622,13 @@ function win_declutter_osapps() {
     winget_uninstall "Films & TV"
     winget_uninstall "Power Automate"
     winget_uninstall "Dev HOME"
+    winget_uninstall 9P6PMZTM93LR # Defender
+    winget_uninstall 9WZDNCRD29V9 # Microsoft 365 Copilot
     winget_uninstall 9PDJDJS743XF # Family
+    winget_uninstall "Phone Link"
+    winget_uninstall "Windows Web Experience Pack"
+    winget_uninstall "Windows Sound Recorder"
+    winget_uninstall "Cross Device Experience Host"
 }
 
 function win_declutter_3_and_4_fingers_gestures() {
