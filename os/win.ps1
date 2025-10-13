@@ -35,15 +35,15 @@ function win_admin_romove_current_user() {
     $current_user = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
     $raw = net localgroup 'Administrators'
     $members = $raw |
-        ForEach-Object { $_.Trim() } |
-        Where-Object {
-            $_ -and
-            $_ -notmatch 'command completed successfully' -and
-            $_ -notmatch 'Alias name' -and
-            $_ -notmatch 'Comment' -and
-            $_ -notmatch 'Members' -and
-            $_ -notmatch '^-+$'
-        }
+    ForEach-Object { $_.Trim() } |
+    Where-Object {
+        $_ -and
+        $_ -notmatch 'command completed successfully' -and
+        $_ -notmatch 'Alias name' -and
+        $_ -notmatch 'Comment' -and
+        $_ -notmatch 'Members' -and
+        $_ -notmatch '^-+$'
+    }
     if ($members.Count -eq 1) {
         Write-Host "There is only on admin Nothing to do."
         return
@@ -567,7 +567,6 @@ function win_declutter_all_dev() {
     winget_uninstall 9P6PMZTM93LR # Defender
     winget_uninstall 9WZDNCRD29V9 # Microsoft 365 Copilot
     winget_uninstall 9MSMLRH6LZF3 # Notepad
-    winget_uninstall 9PCFS5B6T72H # Paint
     winget_uninstall 9WZDNCRFHVN5 # Calculator
     winget_uninstall "Phone Link"
     winget_uninstall "Windows Web Experience Pack"
