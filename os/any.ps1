@@ -7,7 +7,6 @@ function passwd_generate { -join (1..12 | ForEach-Object { [char[]]'abcdefghijkl
 # -- ps --
 
 function ps_profile_reload() {
-    # TODO: this does not work properly
     . $PROFILE.CurrentUserAllHosts
 }
 
@@ -18,7 +17,6 @@ function ps_is_running_as_sudo {
 function ps_func_show($name) {
     Get-Content Function:\$name
 }
-
 
 function ps_open_admin_shell_with_cur_profile {
     $profilePath = $profile
