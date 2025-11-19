@@ -1,6 +1,8 @@
-$HELPERS_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
+function log_msg() { Write-Host -ForegroundColor DarkYellow "--" ($args -join " ") }
 
+$HELPERS_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
 $sourceLine = '. ' + "$HELPERS_DIR/init.ps1"
+
 if (-not (Test-Path $profile)) {
     $folder = [System.IO.Path]::GetDirectoryName($profile)
     New-Item -Path $folder -ItemType Directory | Out-Null

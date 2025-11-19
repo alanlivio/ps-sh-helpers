@@ -55,8 +55,8 @@ flowchart LR
 You can use the Bash commands below to fetch, install, and setup `ps-sh-helpers` to be loaded in your `.bashrc`:
 
 ```bash
-git clone https://github.com/alanlivio/ps-sh-helpers ~/.ps-sh-helpers
-. ~/.ps-sh-helpers/setup_profile.ps1
+git clone https://github.com/alanlivio/ps-sh-helpers ~/ps-sh-helpers
+. ~/ps-sh-helpers/setup_profile_loading.ps1
 ```
 
 ## Setup at your PowerShell profile
@@ -65,7 +65,7 @@ You can use the PowerShell commands below to fetch, install, and setup `ps-sh-he
 
 ```bash
 git clone https://github.com/alanlivio/ps-sh-helpers ${env:userprofile}\ps1-sh-helpers
-. ~/.ps-sh-helpers/setup_profile.sh
+. ~/ps-sh-helpers/setup_profile_loading.sh
 ```
 
 ## References
