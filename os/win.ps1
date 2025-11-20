@@ -19,19 +19,23 @@ function win_os_upgrade() {
 # -- admin --
 
 function win_admin_enable_administrator() {
+    if (-not (ps_is_running_as_sudo)) { log_msg "not running as admin. skipping"; return }
     net user administrator /active:yes
 }
 
 function win_admin_disable_administrator() {
+    if (-not (ps_is_running_as_sudo)) { log_msg "not running as admin. skipping"; return }
     net user administrator /active:no
 }
 
 function win_admin_add_current_user {
+    if (-not (ps_is_running_as_sudo)) { log_msg "not running as admin. skipping"; return }
     $current_user = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
     net localgroup 'Administrators' $current_user /add
 }
 
 function win_admin_romove_current_user() {
+    if (-not (ps_is_running_as_sudo)) { log_msg "not running as admin. skipping"; return }
     $current_user = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
     $raw = net localgroup 'Administrators'
     $members = $raw |
@@ -49,6 +53,15 @@ function win_admin_romove_current_user() {
         return
     }
     net localgroup 'Administrators' $current_user /delete
+}
+
+# -- system
+
+function win_system_disable_altgr_shorcuts {
+    if (-not (ps_is_running_as_sudo)) { log_msg "not running as admin. skipping"; return }
+    $layout_key = "HKLM:\System\CurrentControlSet\Control\Keyboard Layout"
+    New-Item -Path "$layout_key\Scancode Map" -Force | Out-Null
+    Set-ItemProperty "$layout_key\Scancode Map" ([byte[]](0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x0e, 0x00, 0x3a, 0x00, 0x53, 0xe0, 0x36, 0x00, 0x00, 0x00, 0x00, 0x00))
 }
 
 # -- install -- 
