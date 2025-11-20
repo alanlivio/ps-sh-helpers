@@ -3,7 +3,8 @@ function latex_clean() {
 }
 
 function latex_word_count() {
-    if ($PSBoundParameters.Keys.Count -lt 1) { log_error "Usage: latex_word_count<file.tex>"; }
+    param([string]$file)
+    if ($PSBoundParameters.Keys.Count -lt 1) { log_error "Usage: $($MyInvocation.MyCommand.Name) <file.tex>"; return }
     (texcount -inc -sum $file 2>$null) |
     ForEach-Object {
         if ($_ -match '^Sum count:\s*(\d+)') { $matches[1] }
