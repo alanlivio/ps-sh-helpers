@@ -262,12 +262,12 @@ function explorer_reset_shell_folders {
         "My Video"    = "%USERPROFILE%\Videos"
         "My Pictures" = "%USERPROFILE%\Pictures"
     }
-    $reg_path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders"
-    New-Item -Path $reg_path -Force | Out-Null
+    $path_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders"
+    New-Item -Path $path_key -Force | Out-Null
     foreach ($name in $folders_expandable.Keys) {
         $expand_value = $folders_expandable[$name]
         $real_path = [Environment]::ExpandEnvironmentVariables($expand_value)
-        New-ItemProperty -Path $reg_path -Name $name -Value $expand_value -PropertyType ExpandString -Force | Out-Null
+        New-ItemProperty -Path $path_key -Name $name -Value $expand_value -PropertyType ExpandString -Force | Out-Null
         if (-not (Test-Path -LiteralPath $real_path)) {
             New-Item -ItemType Directory -Path $real_path -Force | Out-Null
         }
@@ -394,12 +394,12 @@ function wsl_fix_metadata() {
 
 function win_office_disable_warn_local_link {
     # requireq admin
-    $regPaths = @(
+    $keys = @(
         "HKCU:\Software\Microsoft\Office\16.0\Common\Security",
         "HKCU:\Software\Policies\Microsoft\Office\16.0\Common\Security"
     )
 
-    foreach ($path in $regPaths) {
+    foreach ($path in $keys) {
         if (-not (Test-Path $path)) { New-Item -Path $path -Force | Out-Null }
         New-ItemProperty -Path $path -Name "DisableHyperlinkWarning" -Value 1 -PropertyType DWord -Force | Out-Null
     }
@@ -493,20 +493,16 @@ function win_startmenu_add_lnk_to_allapps {
         [Parameter(Mandatory = $true)][string]$exePath,                # Path to the .exe file
         [Parameter(Mandatory = $false)][string]$shortcutName           # Optional shortcut name
     )
-
     if (-not (Test-Path $exePath)) {
         log_error "The specified executable path does not exist: $exePath"
         return
     }
-
     if (-not $shortcutName) {
         $shortcutName = [System.IO.Path]::GetFileNameWithoutExtension($exePath) + ".lnk"
     } elseif (-not $shortcutName.EndsWith(".lnk")) {
         $shortcutName += ".lnk"
     }
-
     $startMenuFolder = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs"
-
     if (-not (Test-Path $startMenuFolder)) {
         log_error "The Start Menu folder does not exist: $startMenuFolder"
         return
@@ -531,17 +527,18 @@ function win_desktop_as_slideshow_from_folder() {
         log_error "The folder '$folderPath' does not exist. Please provide a valid folder." -ForegroundColor Red
         exit 1
     }
+    $slideshow_key = "HKCU:\Control Panel\Personalization\Desktop Slideshow"
+    $wallpapers_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Wallpapers"
+    
     # Enable Slideshow mode
-    $regPath = "HKCU:\Control Panel\Personalization\Desktop Slideshow"
-    $wallpaperPathReg = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Wallpapers"
-    if (-Not (Test-Path $regPath)) {
-        New-Item -Path $regPath -Force | Out-Null
+    if (-Not (Test-Path $slideshow_key)) {
+        New-Item -Path $slideshow_key -Force | Out-Null
     }
-    Set-ItemProperty -Path $wallpaperPathReg -Name SlideshowEnabled -Value 1
-    Set-ItemProperty -Path $wallpaperPathReg -Name SlideshowSource -Value $folderPath
+    Set-ItemProperty -Path $wallpapers_key -Name SlideshowEnabled -Value 1
+    Set-ItemProperty -Path $wallpapers_key -Name SlideshowSource -Value $folderPath
     $intervalMs = 600000  # 10 minutes
-    Set-ItemProperty -Path $regPath -Name Interval -Value $intervalMs -Type DWord
-    Set-ItemProperty -Path $regPath -Name Shuffle -Value 1 -Type DWord  # Set Shuffle Mode (1 = Enabled, 0 = Disabled)
+    Set-ItemProperty -Path $slideshow_key -Name Interval -Value $intervalMs -Type DWord
+    Set-ItemProperty -Path $slideshow_key -Name Shuffle -Value 1 -Type DWord  # Set Shuffle Mode (1 = Enabled, 0 = Disabled)
     
     # Refresh the desktop settings
     RUNDLL32.EXE USER32.DLL, UpdatePerUserSystemParameters
@@ -558,7 +555,7 @@ function win_declutter_all() {
     win_declutter_bell_sounds
     win_declutter_explorer_listing_files
     win_declutter_web_search_and_widgets
-    win_declutter_taskbar
+    win_declutter_taskbar_startmenu
     win_declutter_xbox
     explorer_restart
 }
@@ -566,26 +563,36 @@ function win_declutter_all() {
 
 function win_declutter_ui() {
     log_msg "win_declutter_ui"
+    $personalize_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+    $accent_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent"
+    $path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    $dyn_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\DynamicLighting"
+    $taskbar_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings"
+    
     # dark enabled and transparent disabled
-    $reg_personalize = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
-    Set-ItemProperty -Path $reg_personalize -Name "AppsUseLightTheme" -Value 0 -Type Dword -Force 
-    Set-ItemProperty -Path $reg_personalize -Name "SystemUsesLightTheme" -Value 0 -Type Dword -Force 
-    Set-ItemProperty -Path $reg_personalize -Name "EnableTransparency" -Value 0 -Type Dword -Force 
-    Set-ItemProperty -Path $reg_personalize -Name "ColorPrevalence" -Value 0 -Type Dword -Force 
+    Set-ItemProperty -Path $personalize_key -Name "AppsUseLightTheme" -Value 0 -Type Dword -Force 
+    Set-ItemProperty -Path $personalize_key -Name "SystemUsesLightTheme" -Value 0 -Type Dword -Force 
+    Set-ItemProperty -Path $personalize_key -Name "EnableTransparency" -Value 0 -Type Dword -Force 
+    Set-ItemProperty -Path $personalize_key -Name "ColorPrevalence" -Value 0 -Type Dword -Force 
+    
     # gray accent color
-    $reg_accent = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent"
     $accent_palette = "cc,cc,cc,00,ae,ae,ae,00,92,92,92,00,76,76,76,00,4f,4f,4f,00,37,37,37,00,26,26,26,00,d1,34,38,00"
     $hexified = $accent_palette.Split(',') | ForEach-Object { "0x$_" }
-    Set-ItemProperty -Path $reg_accent -Name "AccentPalette" -Value ([byte[]]$hexified) -Type Binary
-    Set-ItemProperty -Path $reg_accent -Name "AccentColor" -Value 0xff000000 -Type Dword -Force
-    Set-ItemProperty -Path $reg_accent -Name "AccentColorMenu" -Value 0xff767676 -Type Dword -Force
-    Set-ItemProperty -Path $reg_accent -Name "StartColorMenu" -Value 0xff4f4f4f -Type Dword -Force
+    Set-ItemProperty -Path $accent_key -Name "AccentPalette" -Value ([byte[]]$hexified) -Type Binary
+    Set-ItemProperty -Path $accent_key -Name "AccentColor" -Value 0xff000000 -Type Dword -Force
+    Set-ItemProperty -Path $accent_key -Name "AccentColorMenu" -Value 0xff767676 -Type Dword -Force
+    Set-ItemProperty -Path $accent_key -Name "StartColorMenu" -Value 0xff4f4f4f -Type Dword -Force
+    
     # hide desktop icons
-    $path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     Set-ItemProperty -Path $path -Name "HideIcons" -Value 1
-    $path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings"
-    New-Item -Path "$path" -Force | Out-Null
-    Set-ItemProperty -Path $path -Name "TaskbarEndTask" -Value 1 -Force
+    New-Item -Path $taskbar_key -Force | Out-Null
+    Set-ItemProperty -Path $taskbar_key -Name "TaskbarEndTask" -Value 1 -Force
+    
+    # disable dynamic light
+    New-Item $dyn_key -Force | Out-Null
+    Set-ItemProperty -Path $dyn_key -Name "EnableDynamicLighting" -Type DWord -Value 0
+    Set-ItemProperty -Path $dyn_key -Name "AppForegroundControl" -Type DWord -Value 0
+
 }
 
 function win_declutter_home_folders() {
@@ -648,35 +655,35 @@ function win_declutter_3_and_4_fingers_gestures() {
 
 function win_declutter_unused_keyboard_shortcuts() {
     log_msg "win_declutter_unused_keyboard_shortcuts"
+    $advanced_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    $access_key = "HKCU:\Control Panel\Accessibility"
+    $toggle_key = "HKCU:\Keyboard Layout\Toggle"
+    $igf_key = "HKCU:\Software\Intel\Display\Igfxcui"
     
     # "disable win+v shortcut"
-    $regPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
-    $valueName = "DisabledHotkeys"
-    $keyToDisable = "V"
-    $currentValue = (Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue).$valueName
-    $newValue = $currentValue
-    if ($null -eq $newValue -or $newValue -notlike "*$keyToDisable*") {
-        $newValue = ($newValue | Out-String).Trim() + $keyToDisable
-        Set-ItemProperty -Path $regPath -Name $valueName -Value $newValue
+    $value_name = "DisabledHotkeys"
+    $key_to_disable = "V"
+    $current = (Get-ItemProperty -Path $advanced_key -Name $value_name -ErrorAction SilentlyContinue).$value_name
+    $new_value = $current
+    if ($null -eq $new_value -or $new_value -notlike "*$key_to_disable*") {
+        $new_value = ($new_value | Out-String).Trim() + $key_to_disable
+        Set-ItemProperty -Path $advanced_key -Name $value_name -Value $new_value
     }
     
     # "disable AutoRotation shortcuts"
-    $igf = "HKCU:\Software\Intel\Display\Igfxcui"
-    New-Item -Path $igf -Force | Out-Null
-    Set-ItemProperty -Path $igf -Name "HotKeys" -Value 'Disable'
+    New-Item -Path $igf_key -Force | Out-Null
+    Set-ItemProperty -Path $igf_key -Name "HotKeys" -Value 'Disable'
 
     # "disable language shortcuts"
-    $reg_key_toggle = "HKCU:\Keyboard Layout\Toggle"
-    Set-ItemProperty -Path $reg_key_toggle -Name "HotKey" -Value '3' -Type String
-    Set-ItemProperty -Path $reg_key_toggle -Name "Language Hotkey" -Value '3' -Type String
-    Set-ItemProperty -Path $reg_key_toggle -Name "Layout Hotkey" -Value '3' -Type String
+    Set-ItemProperty -Path $toggle_key -Name "HotKey" -Value '3' -Type String
+    Set-ItemProperty -Path $toggle_key -Name "Language Hotkey" -Value '3' -Type String
+    Set-ItemProperty -Path $toggle_key -Name "Layout Hotkey" -Value '3' -Type String
 
     # "disable acessibility shortcuts"
-    $reg_acess = "HKCU:\Control Panel\Accessibility"
-    Set-ItemProperty -Path "$reg_acess\ToggleKeys" -Name "Flags" -Value '58' -Type String
-    Set-ItemProperty -Path "$reg_acess\StickyKeys" -Name "Flags" -Value '26' -Type String
-    New-Item -Path "$reg_acess\Keyboard Response" -Force | Out-Null
-    Set-ItemProperty -Path "$reg_acess\Keyboard Response" -Name "Flags" -Value '122' -Type String
+    Set-ItemProperty -Path "$access_key\ToggleKeys" -Name "Flags" -Value '58' -Type String
+    Set-ItemProperty -Path "$access_key\StickyKeys" -Name "Flags" -Value '26' -Type String
+    New-Item -Path "$access_key\Keyboard Response" -Force | Out-Null
+    Set-ItemProperty -Path "$access_key\Keyboard Response" -Name "Flags" -Value '122' -Type String
 }
 
 function win_declutter_bell_sounds() {
@@ -687,78 +694,90 @@ function win_declutter_bell_sounds() {
 
 function win_declutter_web_search_and_widgets() {
     log_msg "win_declutter_web_search_and_widgets"
+    $search_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
+    
     # win 11
     # https://www.tomshardware.com/how-to/disable-windows-web-search
     winget list --accept-source-agreements -q "MicrosoftWindows.Client.WebExperience_cw5n1h2txyew" | Out-Null
     if ($?) { winget.exe uninstall MicrosoftWindows.Client.WebExperience_cw5n1h2txyewy }
     # win 10
     # https://www.bennetrichter.de/en/tutorials/windows-10-disable-web-search/
-    $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
-    Set-ItemProperty -Path "$reg_search" -Name 'BingSearchEnabled' -Value 0 -Type Dword
-    $reg_search2 = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings'
-    Set-ItemProperty -Path "$reg_search2" -Name 'IsDynamicSearchBoxEnabled' -Value 0 -Type Dword
+    Set-ItemProperty -Path "$search_key" -Name 'BingSearchEnabled' -Value 0 -Type Dword
+    $search_key2 = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings'
+    Set-ItemProperty -Path "$search_key2" -Name 'IsDynamicSearchBoxEnabled' -Value 0 -Type Dword
 }
 
 function win_declutter_explorer_listing_files() {
     log_msg "win_declutter_explorer_listing_files"
-    $reg_explorer = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer"
+    $explorer_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer"
+    $advanced_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    $shell_key = 'HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell' 
     
-    Set-ItemProperty -Path $reg_explorer -Name ShowFrequent -Value 0 -Type Dword
-    Set-ItemProperty -Path $reg_explorer -Name ShowRecent -Value 0 -Type Dword
-    Set-ItemProperty -Path $reg_explorer -Name ShowRecommendations -Value 0 -Type Dword
-    Set-ItemProperty -Path $reg_explorer -Name HideFileExt -Value 0 -Type Dword
-    Set-ItemProperty -Path $reg_explorer -Name DisableGraphRecentItems -Value 1 -Type Dword
-    
-    $reg_explorer_adv = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
-    Set-ItemProperty -Path $reg_explorer_adv -Name ShowAccountBasedInsights -Value 0 -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name Start_TrackDocs -Value 0 -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name Start_TrackDocsInJumpLists -Value 0 -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name ShowRecommendedFiles -Value 0 -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name LaunchTo -Value 1 -Type Dword # This PC
+    Set-ItemProperty -Path $explorer_key -Name "ShowFrequent" -Value 0 -Type Dword
+    Set-ItemProperty -Path $explorer_key -Name "ShowRecent" -Value 0 -Type Dword
+    Set-ItemProperty -Path $explorer_key -Name "ShowRecommendations" -Value 0 -Type Dword
+    Set-ItemProperty -Path $explorer_key -Name "HideFileExt" -Value 0 -Type Dword
+    Set-ItemProperty -Path $explorer_key -Name "DisableGraphRecentItems" -Value 1 -Type Dword
+    Set-ItemProperty -Path $advanced_key -Name "ShowAccountBasedInsights" -Value 0 -Type Dword
+    Set-ItemProperty -Path $advanced_key -Name "Start_TrackDocs" -Value 0 -Type Dword
+    Set-ItemProperty -Path $advanced_key -Name "Start_TrackDocsInJumpLists" -Value 0 -Type Dword
+    Set-ItemProperty -Path $advanced_key -Name "ShowRecommendedFiles" -Value 0 -Type Dword
+    Set-ItemProperty -Path $advanced_key -Name "LaunchTo" -Value 1 -Type Dword # This PC
 
     # disable grouping
     # https://answers.microsoft.com/en-us/windows/forum/all/completely-disable-file-grouping-always-everywhere/ac31a227-f585-4b0a-ab2e-a557828eaec5
-    $key = 'HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell' 
-    Remove-Item -Path "$key\BagMRU"  -Force -ErrorAction SilentlyContinue
+    Remove-Item -Path "$shell_key\BagMRU"  -Force -ErrorAction SilentlyContinue
 }
 
-function win_declutter_taskbar() {
-    log_msg "win_declutter_taskbar"
-    $reg_explorer_adv = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+function win_declutter_taskbar_startmenu() {
+    log_msg "win_declutter_taskbar_startmenu"
+    $start_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Start"
+    $advanced_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    $search_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
+    $pen_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\PenWorkspace"
+    $touch_key = "HKCU:\Software\Microsoft\TabletTip\1.7"
     
     # taskbar
     # https://www.askvg.com/disable-or-remove-extra-icons-and-buttons-from-windows-11-taskbar
-    Set-ItemProperty -Path $reg_explorer_adv -Name ShowTaskViewButton -Value 0 -Type Dword
-    # Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarDa -Value 0 -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarMn -Value 0 -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name ShowCopilotButton -Value 0 -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name UseCompactMode -Value 1 -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name ShowStatusBar -Value 1 -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAI -Value 0 -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarBadges -Value 0 -Type Dword
-    Set-ItemProperty -Path $reg_explorer_adv -Name TaskbarAnimations -Value 0 -Type Dword
+    Set-ItemProperty -Path $advanced_key -Name "ShowTaskViewButton" -Value 0 -Type Dword
+    Set-ItemProperty -Path $advanced_key -Name "TaskbarMn" -Value 0 -Type Dword
+    Set-ItemProperty -Path $advanced_key -Name "ShowCopilotButton" -Value 0 -Type Dword
+    Set-ItemProperty -Path $advanced_key -Name "UseCompactMode" -Value 1 -Type Dword
+    Set-ItemProperty -Path $advanced_key -Name "ShowStatusBar" -Value 1 -Type Dword
+    Set-ItemProperty -Path $advanced_key -Name "TaskbarAI" -Value 0 -Type Dword
+    Set-ItemProperty -Path $advanced_key -Name "TaskbarBadges" -Value 0 -Type Dword
+    Set-ItemProperty -Path $advanced_key -Name "TaskbarAnimations" -Value 0 -Type Dword
+    New-ItemProperty -Path $pen_key -Name "PenWorkspaceButtonDesiredVisibility" -PropertyType DWord -Value 0 -Force | Out-Null
+    New-ItemProperty -Path $touch_key -Name "TipbandDesiredVisibility" -PropertyType DWord -Value 0 -Force | Out-Null
 
     # multitasking
     # https://www.itechtics.com/disable-edge-tabs-alt-tab
-    Set-ItemProperty -Path $reg_explorer_adv -Name MultiTaskingAltTabFilter -Value 3 -Type Dword
+    Set-ItemProperty -Path $advanced_key -Name "MultiTaskingAltTabFilter" -Value 3 -Type Dword
     # https://superuser.com/questions/1516878/how-to-disable-windows-snap-assist-via-command-line
-    Set-ItemProperty -Path $reg_explorer_adv -Name SnapAssist -Value 0 -Type Dword
+    Set-ItemProperty -Path $advanced_key -Name "SnapAssist" -Value 0 -Type Dword
     
+    # startmenu
+    Set-ItemProperty -Path $start_key -Name "ShowRecentList" -Value 0 -Type DWord
+    Set-ItemProperty -Path $advanced_key -Name "Start_TrackProgs" -Value 0 -Type DWord
+    Set-ItemProperty -Path $advanced_key -Name "Start_TrackDocs" -Value 0 -Type DWord
+    Set-ItemProperty -Path $advanced_key -Name "Start_IrisRecommendations" -Value 0 -Type DWord
+    Set-ItemProperty -Path $advanced_key -Name "Start_AccountNotifications" -Type DWord -Value 0
+
     # search
-    $reg_search = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
-    Set-ItemProperty -Path $reg_search -Name SearchBoxTaskbarMode -Value 0 -Type Dword
+    $search_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
+    New-ItemProperty -Path $search_key -Name "SearchboxTaskbarMode" -PropertyType DWord -Value 0 -Force | Out-Null
+    New-ItemProperty -Path $search_key -Name "SearchboxTaskbarModeCache" -PropertyType DWord -Value 0 -Force | Out-Null
 }
 
 function win_declutter_xbox() {
     log_msg "win_declutter_xbox"
     # https://www.makeuseof.com/windows-new-app-ms-gamingoverlay-error/
+    $game_dvr_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\GameDVR"
+    $game_store_key = "HKCU:\System\GameConfigStore"
 
-    $reg_game_dvr = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR"
-    Set-ItemProperty -Path $reg_game_dvr -Name AppCaptureEnabled -Value 0 -Type Dword
-    Set-ItemProperty -Path $reg_game_dvr -Name HistoricalCaptureEnabled -Value 0 -Type Dword
-    $reg_game_store = "HKCU:\System\GameConfigStore"
-    Set-ItemProperty -Path $reg_game_store -Name GameDVR_Enabled -Value 0 -Type Dword
-
+    Set-ItemProperty -Path $game_dvr_key -Name "AppCaptureEnabled" -Value 0 -Type Dword
+    Set-ItemProperty -Path $game_dvr_key -Name "HistoricalCaptureEnabled" -Value 0 -Type Dword
+    Set-ItemProperty -Path $game_store_key -Name "GameDVR_Enabled" -Value 0 -Type Dword
     winget_uninstall 9MV0B5HZVK9Z
     winget_uninstall "Xbox TCUI" 
     winget_uninstall "Xbox Identity Provider" 
