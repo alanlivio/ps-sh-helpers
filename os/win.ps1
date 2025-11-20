@@ -267,7 +267,7 @@ function explorer_reset_shell_folders {
     foreach ($name in $folders_expandable.Keys) {
         $expand_value = $folders_expandable[$name]
         $real_path = [Environment]::ExpandEnvironmentVariables($expand_value)
-        New-ItemProperty -Path $path_key -Name $name -Value $expand_value -PropertyType ExpandString -Force | Out-Null
+        Set-ItemProperty -Path $path_key -Name $name -Value $expand_value -Type ExpandString -Force | Out-Null
         if (-not (Test-Path -LiteralPath $real_path)) {
             New-Item -ItemType Directory -Path $real_path -Force | Out-Null
         }
@@ -401,7 +401,7 @@ function win_office_disable_warn_local_link {
 
     foreach ($path in $keys) {
         if (-not (Test-Path $path)) { New-Item -Path $path -Force | Out-Null }
-        New-ItemProperty -Path $path -Name "DisableHyperlinkWarning" -Value 1 -PropertyType DWord -Force | Out-Null
+        Set-ItemProperty -Path $path -Name "DisableHyperlinkWarning" -Value 1 -Type DWord -Force | Out-Null
     }
 }
 
@@ -522,26 +522,33 @@ function win_startmenu_add_lnk_to_allapps {
 }
 
 function win_desktop_as_slideshow_from_folder() {
-    param ([string]$folderPath )
-    if (-Not (Test-Path $folderPath)) {
-        log_error "The folder '$folderPath' does not exist. Please provide a valid folder." -ForegroundColor Red
+    param ([string] $folder)
+    if (-Not (Test-Path $folder)) {
+        log_error "The folder '$folder' does not exist. Please provide a valid folder."
         exit 1
     }
+    $folder = (Get-Item $folder).FullName
     $slideshow_key = "HKCU:\Control Panel\Personalization\Desktop Slideshow"
+    $desktop_key = "HKCU:\Control Panel\Desktop"
     $wallpapers_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Wallpapers"
+    New-Item $slideshow_key -Force | Out-Null
+    New-Item $desktop_key -Force | Out-Null
+    New-Item $wallpapers_key -Force | Out-Null
+    $interval_ms = 600000   # 10 minutes
+    # Desktop set tatic wallpaper
+    Set-ItemProperty -Path $desktop_key -Name "Wallpaper" -Type String -Value "C:\Users\tb931382\AppData\Roaming\Microsoft\Windows\Themes\TranscodedWallpaper" 
+    Set-ItemProperty -Path $desktop_key -Name "WallpaperStyle" -Type String -Value "6"
+    Set-ItemProperty -Path $desktop_key -Name "TileWallpaper"  -Type String -Value "0"
+    # Desktop set Slideshow interval + shuffle
+    Set-ItemProperty -Path $slideshow_key -Name "Interval" -Type DWord -Value $interval_ms
+    Set-ItemProperty -Path $slideshow_key -Name "Shuffle"  -Type DWord -Value 1
     
-    # Enable Slideshow mode
-    if (-Not (Test-Path $slideshow_key)) {
-        New-Item -Path $slideshow_key -Force | Out-Null
-    }
-    Set-ItemProperty -Path $wallpapers_key -Name SlideshowEnabled -Value 1
-    Set-ItemProperty -Path $wallpapers_key -Name SlideshowSource -Value $folderPath
-    $intervalMs = 600000  # 10 minutes
-    Set-ItemProperty -Path $slideshow_key -Name Interval -Value $intervalMs -Type DWord
-    Set-ItemProperty -Path $slideshow_key -Name Shuffle -Value 1 -Type DWord  # Set Shuffle Mode (1 = Enabled, 0 = Disabled)
-    
-    # Refresh the desktop settings
-    RUNDLL32.EXE USER32.DLL, UpdatePerUserSystemParameters
+    # Explorer\Wallpapers – slideshow config
+    Set-ItemProperty -Path $wallpapers_key -Name "SlideshowEnabled" -Type DWord -Value 1
+    Set-ItemProperty -Path $wallpapers_key -Name "BackgroundType"   -Type DWord -Value 2
+    Set-ItemProperty -Path $wallpapers_key -Name "SlideshowDirectoryPath" -Type String -Value $folder
+    Set-ItemProperty -Path $wallpapers_key -Name "SlideshowTickCount" -Type DWord -Value $interval_ms
+    rundll32.exe user32.dll, UpdatePerUserSystemParameters
 }
 
 # -- win_clutter --
@@ -747,8 +754,8 @@ function win_declutter_taskbar_startmenu() {
     Set-ItemProperty -Path $advanced_key -Name "TaskbarAI" -Value 0 -Type Dword
     Set-ItemProperty -Path $advanced_key -Name "TaskbarBadges" -Value 0 -Type Dword
     Set-ItemProperty -Path $advanced_key -Name "TaskbarAnimations" -Value 0 -Type Dword
-    New-ItemProperty -Path $pen_key -Name "PenWorkspaceButtonDesiredVisibility" -PropertyType DWord -Value 0 -Force | Out-Null
-    New-ItemProperty -Path $touch_key -Name "TipbandDesiredVisibility" -PropertyType DWord -Value 0 -Force | Out-Null
+    Set-ItemProperty -Path $pen_key -Name "PenWorkspaceButtonDesiredVisibility" -Type DWord -Value 0 -Force | Out-Null
+    Set-ItemProperty -Path $touch_key -Name "TipbandDesiredVisibility" -Type DWord -Value 0 -Force | Out-Null
 
     # multitasking
     # https://www.itechtics.com/disable-edge-tabs-alt-tab
@@ -765,8 +772,8 @@ function win_declutter_taskbar_startmenu() {
 
     # search
     $search_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
-    New-ItemProperty -Path $search_key -Name "SearchboxTaskbarMode" -PropertyType DWord -Value 0 -Force | Out-Null
-    New-ItemProperty -Path $search_key -Name "SearchboxTaskbarModeCache" -PropertyType DWord -Value 0 -Force | Out-Null
+    Set-ItemProperty -Path $search_key -Name "SearchboxTaskbarMode" -Type DWord -Value 0 -Force | Out-Null
+    Set-ItemProperty -Path $search_key -Name "SearchboxTaskbarModeCache" -Type DWord -Value 0 -Force | Out-Null
 }
 
 function win_declutter_xbox() {
