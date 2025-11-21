@@ -679,6 +679,8 @@ function win_declutter_unused_keyboard_shortcuts() {
     $access_key = "HKCU:\Control Panel\Accessibility"
     $toggle_key = "HKCU:\Keyboard Layout\Toggle"
     $igf_key = "HKCU:\Software\Intel\Display\Igfxcui"
+    $narrator_key = "HKCU:\Software\Microsoft\Narrator"
+    $narrator_cp_key = "HKCU:\Control Panel\Accessibility\Narrator"
     
     # "disable win+v shortcut"
     $value_name = "DisabledHotkeys"
@@ -702,6 +704,11 @@ function win_declutter_unused_keyboard_shortcuts() {
     # "disable acessibility shortcuts"
     Set-ItemProperty -Path "$access_key\ToggleKeys" -Name "Flags" -Value '58' -Type String
     Set-ItemProperty -Path "$access_key\StickyKeys" -Name "Flags" -Value '26' -Type String
+    Set-ItemProperty -Path $narrator_key -Name "NarratorRunning" -Value 0 -Type DWord 
+    Set-ItemProperty -Path $narrator_key -Name "StartNarratorHotkey" -Value 0 -Type DWord 
+    Set-ItemProperty -Path $narrator_key -Name "Autostart" -Value 0 -Type DWord 
+    Set-ItemProperty -Path $narrator_cp_key -Name "WinEnterLaunchEnabled" -Value 0 -Type DWord
+    Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\Narrator" -Name "WinEnterLaunchEnabled" -Value 0 -Type DWord
     New-Item -Path "$access_key\Keyboard Response" -Force | Out-Null
     Set-ItemProperty -Path "$access_key\Keyboard Response" -Name "Flags" -Value '122' -Type String
 }
