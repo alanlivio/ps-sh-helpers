@@ -55,15 +55,6 @@ function win_admin_romove_current_user() {
     net localgroup 'Administrators' $current_user /delete
 }
 
-# -- system
-
-function win_system_disable_altgr_shorcuts {
-    if (-not (ps_is_running_as_sudo)) { log_msg "not running as admin. skipping"; return }
-    $layout_key = "HKLM:\System\CurrentControlSet\Control\Keyboard Layout"
-    New-Item -Path "$layout_key\Scancode Map" -Force | Out-Null
-    Set-ItemProperty "$layout_key\Scancode Map" ([byte[]](0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x0e, 0x00, 0x3a, 0x00, 0x53, 0xe0, 0x36, 0x00, 0x00, 0x00, 0x00, 0x00))
-}
-
 # -- install -- 
 
 function win_install_exe_from_zip() {
