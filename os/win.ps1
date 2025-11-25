@@ -590,8 +590,7 @@ function win_declutter_ui() {
     log_msg "win_declutter_ui"
     $personalize_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
     $accent_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent"
-    $path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
-    $dyn_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\DynamicLighting"
+    $advanced_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
     $taskbar_key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings"
     
     # dark enabled and transparent disabled
@@ -609,15 +608,9 @@ function win_declutter_ui() {
     Set-ItemProperty -Path $accent_key -Name "StartColorMenu" -Value 0xff4f4f4f -Type Dword -Force
     
     # hide desktop icons
-    Set-ItemProperty -Path $path -Name "HideIcons" -Value 1
+    Set-ItemProperty -Path $advanced_key -Name "HideIcons" -Value 1
     New-Item -Path $taskbar_key -Force | Out-Null
     Set-ItemProperty -Path $taskbar_key -Name "TaskbarEndTask" -Value 1 -Force
-    
-    # disable dynamic light
-    New-Item $dyn_key -Force | Out-Null
-    Set-ItemProperty -Path $dyn_key -Name "EnableDynamicLighting" -Type DWord -Value 0
-    Set-ItemProperty -Path $dyn_key -Name "AppForegroundControl" -Type DWord -Value 0
-
 }
 
 function win_declutter_home_folders() {
