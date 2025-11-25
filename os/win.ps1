@@ -707,15 +707,19 @@ function win_declutter_unused_keyboard_shortcuts() {
     Set-ItemProperty -Path $toggle_key -Name "Layout Hotkey" -Value '3' -Type String
 
     # "disable acessibility shortcuts"
+    New-Item -Path $access_key -Force | Out-Null
+    New-Item -Path "$access_key\ToggleKeys" -Force | Out-null
+    New-Item -Path "$access_key\StickyKeys" -Force | Out-null
+    New-Item -Path "$access_key\Keyboard Response"  -Force | Out-null
     Set-ItemProperty -Path "$access_key\ToggleKeys" -Name "Flags" -Value '58' -Type String
     Set-ItemProperty -Path "$access_key\StickyKeys" -Name "Flags" -Value '26' -Type String
-    Set-ItemProperty -Path $narrator_key -Name "NarratorRunning" -Value 0 -Type DWord 
+    Set-ItemProperty -Path "$access_key\Keyboard Response" -Name "Flags" -Value '122' -Type String
+    New-Item -Path $narrator_key -Force | Out-Null
+    Set-ItemProperty -Path $narrator_key -Name "NarratorRunning" -Value 0 -Type DWord
     Set-ItemProperty -Path $narrator_key -Name "StartNarratorHotkey" -Value 0 -Type DWord 
     Set-ItemProperty -Path $narrator_key -Name "Autostart" -Value 0 -Type DWord 
-    Set-ItemProperty -Path $narrator_cp_key -Name "WinEnterLaunchEnabled" -Value 0 -Type DWord
-    Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\Narrator" -Name "WinEnterLaunchEnabled" -Value 0 -Type DWord
-    New-Item -Path "$access_key\Keyboard Response" -Force | Out-Null
-    Set-ItemProperty -Path "$access_key\Keyboard Response" -Name "Flags" -Value '122' -Type String
+    New-Item -Path $narrator_cp_key -Force | Out-Null
+    Set-ItemProperty -Path $narrator_cp_key -Name "WinEnterLaunchEnabled" -Value 0 -Type DWord 
 }
 
 function win_declutter_bell_sounds() {
