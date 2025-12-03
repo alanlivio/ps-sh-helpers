@@ -55,20 +55,6 @@ function win_admin_romove_current_user() {
     net localgroup 'Administrators' $current_user /delete
 }
 
-# -- system
-
-function win_keyboard_list_only_with_us_internation_legacy {
-    # US-International (Legacy) has all the internal keys like áéíóúãõ 
-    # but ctrl+shift+1 is stills ctrl+shift+1.
-    # this is helpfull for use in-app shortcuts, e.g. Edge, Word
-    $legacy = New-WinUserLanguageList -Language "en-US"
-    $legacy[0].InputMethodTips.Clear()
-    $legacy[0].InputMethodTips.Add("0409:00020409")   # US-International (Legacy)
-    # Apply it as the ONLY language
-    Set-WinUserLanguageList $legacy -Force
-}
-
-
 # -- install -- 
 
 function win_install_exe_from_zip() {
@@ -224,7 +210,7 @@ function winget_uninstall() {
 }
 
 function winget_fix_installation() {
-    gsudo {
+    sudo {
         Remove-Item -Recurse "${env:localappdata}\Temp\WinGet\"  -Force -ErrorAction SilentlyContinue
         Remove-Item -Recurse "$env:LOCALAPPDATA\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe" -Force -ErrorAction SilentlyContinue
         Remove-Item -Recurse "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_*"  -Force -ErrorAction SilentlyContinue
